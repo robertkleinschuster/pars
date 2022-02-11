@@ -1,9 +1,9 @@
 <?php
 namespace Pars\App\Frontend\Error;
 
-use GuzzleHttp\Psr7\Response;
 use JetBrains\PhpStorm\Pure;
 use Pars\Core\Container\ContainerFactoryInterface;
+use Pars\Core\Http\ClosureResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -11,6 +11,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class NotFoundMiddleware implements MiddlewareInterface, ContainerFactoryInterface
 {
+
+    protected string $heading;
+
     #[Pure] public function create(array $params, string $id): static
     {
         return new static;
@@ -19,10 +22,15 @@ class NotFoundMiddleware implements MiddlewareInterface, ContainerFactoryInterfa
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $this->heading = '404 - Seite nicht gefunden!';
+
+        return create(ClosureResponse::class, $this->render(...), 404);
+    }
+
+    protected function render()
+    {
         ob_start();
-        require_once 'templates/error.phtml';
-        $html = ob_get_clean();
-        return new Response(404, [], $html);
+        include 'templates/error.phtml';
+        return ob_get_clean();
     }
 
     public function __get(string $name)

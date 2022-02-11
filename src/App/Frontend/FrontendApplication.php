@@ -11,6 +11,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class FrontendApplication extends AbstractApplication
 {
+    protected string $body;
+    protected string $language;
+    protected string $title;
+
     protected function init()
     {
         $this->container->register(NotFoundMiddleware::class, Error\NotFoundMiddleware::class);
@@ -23,12 +27,13 @@ class FrontendApplication extends AbstractApplication
         $response = $this->pipeline->handle($request);
         $this->body = $response->getBody()->getContents();
         $this->language = 'de';
+        $this->title = 'title';
         return $response->withBody(new ClosureStream($this->renderLayout(...)));
     }
 
     public function renderLayout()
     {
-        require_once 'templates/layout.phtml';
+        include 'templates/layout.phtml';
     }
 
     public function __get(string $name)

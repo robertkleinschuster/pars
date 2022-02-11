@@ -1,13 +1,17 @@
 <?php
+
 namespace Pars\Core\Http;
 
+use Closure;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\UploadedFile;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\Utils;
+use InvalidArgumentException;
 use Pars\Core\Container\ContainerFactoryInterface;
 use Pars\Core\Container\NotFoundException;
+use Pars\Core\Stream\ClosureStream;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -20,6 +24,9 @@ use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
+use RuntimeException;
+use function in_array;
+use const UPLOAD_ERR_OK;
 
 class HttpFactory implements
     RequestFactoryInterface,
@@ -32,11 +39,12 @@ class HttpFactory implements
 {
     public function createUploadedFile(
         StreamInterface $stream,
-        int $size = null,
-        int $error = \UPLOAD_ERR_OK,
-        string $clientFilename = null,
-        string $clientMediaType = null
-    ): UploadedFileInterface {
+        int             $size = null,
+        int             $error = UPLOAD_ERR_OK,
+        string          $clientFilename = null,
+        string          $clientMediaType = null
+    ): UploadedFileInterface
+    {
         if ($size === null) {
             $size = $stream->getSize();
         }
@@ -53,9 +61,9 @@ class HttpFactory implements
     {
         try {
             $resource = Utils::tryFopen($file, $mode);
-        } catch (\RuntimeException $e) {
-            if ('' === $mode || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'], true)) {
-                throw new \InvalidArgumentException(sprintf('Invalid file opening mode "%s"', $mode), 0, $e);
+        } catch (RuntimeException $e) {
+            if ('' === $mode || false === in_array($mode[0], ['r', 'w', 'a', 'x', 'c'], true)) {
+                throw new InvalidArgumentException(sprintf('Invalid file opening mode "%s"', $mode), 0, $e);
             }
 
             throw $e;
@@ -75,7 +83,7 @@ class HttpFactory implements
             if (!empty($serverParams['REQUEST_METHOD'])) {
                 $method = $serverParams['REQUEST_METHOD'];
             } else {
-                throw new \InvalidArgumentException('Cannot determine HTTP method');
+                throw new InvalidArgumentException('Cannot determine HTTP method');
             }
         }
 
@@ -106,10 +114,28 @@ class HttpFactory implements
     {
         switch ($id) {
             case NotFoundResponse::class:
-                return new Response(404);
+                return $this->createNotFoundResponse();
+            case ClosureResponse::class:
+                return $this->createClosureResponse(...$params);
             case ServerRequest::class:
                 return (new ServerRequestFactory())->create($params, $id);
         }
         throw new NotFoundException('Unknown: ' . $id);
+    }
+
+    public function createClosureResponse(Closure $closure, int $status = 200)
+    {
+        return new class($status, [], new ClosureStream($closure)) extends Response implements ClosureResponse {
+        };
+    }
+
+    public function createNotFoundResponse(): NotFoundResponse
+    {
+        return new class extends Response implements NotFoundResponse {
+            public function __construct(int $status = 404, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
+            {
+                parent::__construct($status, $headers, $body, $version, $reason);
+            }
+        };
     }
 }

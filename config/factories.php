@@ -1,4 +1,6 @@
 <?php
+
+use Pars\Core\Http\ClosureResponse;
 use Pars\Core\Http\HttpFactory;
 use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\ServerRequest;
@@ -18,5 +20,6 @@ return [
     StreamFactoryInterface::class => HttpFactory::class,
     UploadedFileFactoryInterface::class => HttpFactory::class,
     ServerRequest::class => ServerRequestFactory::class,
-    NotFoundResponse::class =>HttpFactory::class
+    NotFoundResponse::class => HttpFactory::class,
+    ClosureResponse::class => HttpFactory::class
 ];
