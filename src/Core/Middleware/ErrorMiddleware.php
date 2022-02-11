@@ -20,6 +20,7 @@ class ErrorMiddleware implements MiddlewareInterface
             $response = $handler->handle($request);
         } catch (Throwable $exception) {
             $this->error = $exception->__toString();
+            error_log($this->error);
             return new Response(500, [], new ClosureStream($this->render(...)));
         }
         return $response;
