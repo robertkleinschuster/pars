@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+    volumes:
+      - .:/var/www
+  nginx:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/sites-available
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
+    depends_on:
+      - php-fpm
+    ports:
+      - "8080:80"
+  mariadb:
+    build:
+      context: ./docker/mariadb
+    environment:
+      - MYSQL_DATABASE=pars
+      - MYSQL_USER=pars
+      - MYSQL_PASSWORD=pars
+      - MYSQL_ROOT_PASSWORD=pars
+    volumes:
+      - ./docker/mariadb/data.sql:/docker-entrypoint-initdb.d/data.sql
