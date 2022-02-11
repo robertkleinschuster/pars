@@ -2,6 +2,7 @@
 namespace Pars\App\Frontend;
 
 use Pars\App\Frontend\Favicon\FaviconMiddleware;
+use Pars\App\Frontend\Startpage\StartpageHandler;
 use Pars\Core\Application\Base\AbstractApplication;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Stream\ClosureStream;
@@ -14,12 +15,14 @@ class FrontendApplication extends AbstractApplication
     {
         $this->container->register(NotFoundMiddleware::class, Error\NotFoundMiddleware::class);
         $this->pipeline->pipe('/favicon', $this->container->get(FaviconMiddleware::class));
+        $this->router->route('/', $this->container->get(StartpageHandler::class));
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->pipeline->handle($request);
         $this->body = $response->getBody()->getContents();
+        $this->language = 'de';
         return $response->withBody(new ClosureStream($this->renderLayout(...)));
     }
 

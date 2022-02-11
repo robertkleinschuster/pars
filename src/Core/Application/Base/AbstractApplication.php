@@ -7,6 +7,7 @@ use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\ServerRequest;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
+use Pars\Core\Router\RequestRouter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -16,12 +17,15 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 {
     protected Container $container;
     protected MiddlewarePipeline $pipeline;
+    protected RequestRouter $router;
 
     public function __construct(Container $container = null)
     {
         $this->container = $container ?? new Container();
+        $this->router = $this->container->get(RequestRouter::class);
         $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
         $this->init();
+        $this->pipeline->pipe($this->router);
         $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));
     }
 
