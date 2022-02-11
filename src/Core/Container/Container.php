@@ -1,8 +1,10 @@
 <?php
+
 namespace Pars\Core\Container;
 require_once "global.php";
 
 use Psr\Container\ContainerInterface;
+
 class Container implements ContainerInterface
 {
     /**
@@ -33,20 +35,22 @@ class Container implements ContainerInterface
      * @param string $factory
      * @return void
      */
-    public function register(string $class, string $factory) {
+    public function register(string $class, string $factory)
+    {
         $this->factories[$class] = $factory;
     }
 
     /**
-     * @param string $className
-     * @return ContainerFactoryInterface
+     * @param string $id
+     * @param mixed ...$params
+     * @return mixed|object
      */
-    protected function resolve(string $className): ContainerFactoryInterface
+    public function get(string $id, ...$params): mixed
     {
-        if (isset($this->factories[$className]) && is_string($this->factories[$className])) {
-            $this->factories[$className] = new ($this->factories[$className]);
+        if (!isset($this->services[$id])) {
+            $this->services[$id] = $this->create($id, ...$params);
         }
-        return $this->factories[$className] ?? $this->defaultFactory;
+        return $this->services[$id];
     }
 
     /**
@@ -61,16 +65,15 @@ class Container implements ContainerInterface
     }
 
     /**
-     * @param string $id
-     * @param mixed ...$params
-     * @return mixed|object
+     * @param string $className
+     * @return ContainerFactoryInterface
      */
-    public function get(string $id, ...$params): mixed
+    protected function resolve(string $className): ContainerFactoryInterface
     {
-        if (!isset($this->services[$id])) {
-            $this->services[$id] = $this->create($id, ...$params);
+        if (isset($this->factories[$className]) && is_string($this->factories[$className])) {
+            $this->factories[$className] = new ($this->factories[$className]);
         }
-        return $this->services[$id];
+        return $this->factories[$className] ?? $this->defaultFactory;
     }
 
     /**

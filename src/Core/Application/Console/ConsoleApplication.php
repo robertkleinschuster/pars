@@ -3,7 +3,6 @@
 namespace Pars\Core\Application\Console;
 
 use Pars\Core\Application\Base\AbstractApplication;
-use Pars\Core\Container\NotFoundException;
 
 class ConsoleApplication extends AbstractApplication
 {

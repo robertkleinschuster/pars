@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\App\Frontend\Error;
 
 use JetBrains\PhpStorm\Pure;
@@ -26,16 +27,16 @@ class NotFoundMiddleware implements MiddlewareInterface, ContainerFactoryInterfa
         return create(ClosureResponse::class, $this->render(...), 404);
     }
 
+    public function __get(string $name)
+    {
+        return '';
+    }
+
     protected function render()
     {
         ob_start();
         include 'templates/error.phtml';
         return ob_get_clean();
-    }
-
-    public function __get(string $name)
-    {
-        return '';
     }
 
 }

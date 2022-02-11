@@ -18,15 +18,20 @@ class ClosureStream implements StreamInterface
         $this->closure = $closure;
     }
 
+    public function __toString()
+    {
+        return $this->getContents() ?? '';
+    }
+
+    public function getContents()
+    {
+        return $this->call();
+    }
+
     protected function call()
     {
         $this->executed = true;
         return ($this->closure)();
-    }
-
-    public function __toString()
-    {
-        return $this->getContents() ?? '';
     }
 
     public function close()
@@ -84,11 +89,6 @@ class ClosureStream implements StreamInterface
     }
 
     public function read($length)
-    {
-        return $this->call();
-    }
-
-    public function getContents()
     {
         return $this->call();
     }

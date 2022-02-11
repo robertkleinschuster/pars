@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Application\Console\Generate;
 
 use Pars\Core\Generator\EmptyClass\EmptyClassGenerator;
@@ -17,7 +18,8 @@ class GenerateClass
     }
 
 
-    public function run(): string {
+    public function run(): string
+    {
         if (isset($this->params[0])) {
             $generator = new EmptyClassGenerator();
             $generator->generateClass($this->params[0]);

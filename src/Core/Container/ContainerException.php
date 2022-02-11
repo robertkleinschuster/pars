@@ -1,7 +1,10 @@
 <?php
+
 namespace Pars\Core\Container;
 
-class ContainerException extends \Exception
+use Exception;
+
+class ContainerException extends Exception
 {
 
 }

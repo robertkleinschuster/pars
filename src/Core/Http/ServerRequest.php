@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Http;
 
 use GuzzleHttp\Psr7\CachingStream;

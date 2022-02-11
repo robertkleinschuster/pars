@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\App\Frontend\Startpage;
 
 use Pars\Core\Http\ClosureResponse;

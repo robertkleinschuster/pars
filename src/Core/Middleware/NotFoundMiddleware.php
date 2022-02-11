@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Middleware;
 
 use Pars\Core\Http\NotFoundResponse;

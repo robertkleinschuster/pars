@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Container;
 
 use JetBrains\PhpStorm\Pure;
@@ -6,13 +7,32 @@ use Throwable;
 
 class DefaultFactory implements ContainerFactoryInterface
 {
-    protected string $className;
     public const GENERATE_PATH = 'generated' . DIRECTORY_SEPARATOR . 'factories';
+    protected string $className;
 
     public function __construct()
     {
         if (!is_dir(self::GENERATE_PATH)) {
             mkdir(self::GENERATE_PATH, 0777, true);
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    #[Pure] public function create(array $params, string $id): mixed
+    {
+        $class = $id;
+        try {
+            return ($this->generateFactory($class))(...$params);
+        } catch (Throwable $exception) {
+            $fileName = str_replace("\\", '-', $class);
+            $fileName = self::GENERATE_PATH . DIRECTORY_SEPARATOR . $fileName . '.php';
+            unlink($fileName);
+            if (function_exists('opcache_invalidate')) {
+                opcache_invalidate($fileName);
+            }
+            throw $exception;
         }
     }
 
@@ -34,24 +54,5 @@ class DefaultFactory implements ContainerFactoryInterface
     return new $className(...\$params);
 };";
         file_put_contents($fileName, $content);
-    }
-
-    /**
-     * @throws Throwable
-     */
-    #[Pure] public function create(array $params, string $id): mixed
-    {
-        $class = $id;
-        try {
-            return ($this->generateFactory($class))(...$params);
-        } catch (Throwable $exception) {
-            $fileName = str_replace("\\", '-', $class);
-            $fileName = self::GENERATE_PATH . DIRECTORY_SEPARATOR . $fileName . '.php';
-            unlink($fileName);
-            if (function_exists('opcache_invalidate')) {
-                opcache_invalidate($fileName);
-            }
-            throw $exception;
-        }
     }
 }

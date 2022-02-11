@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Application\Base;
 
 interface PathApplicationInterface

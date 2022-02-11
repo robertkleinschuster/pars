@@ -11,6 +11,7 @@
             background: #eee;
             font-family: sans-serif;
         }
+
         p {
             background: #fff;
             padding: 1rem;
@@ -22,7 +23,7 @@
 <body>
 <h1>Ooops!</h1>
 <p>
-    <?= str_replace("\n", "<br>", $this->error ?? 'Error')  ?>
+    <?= str_replace("\n", "<br>", $this->error ?? 'Error') ?>
 </p>
 </body>
 </html>

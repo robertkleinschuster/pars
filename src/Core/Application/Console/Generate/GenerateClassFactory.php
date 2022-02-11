@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Application\Console\Generate;
 
 use JetBrains\PhpStorm\Pure;

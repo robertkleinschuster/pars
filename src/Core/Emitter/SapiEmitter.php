@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Emitter;
 
 
@@ -17,12 +18,6 @@ class SapiEmitter
         $this->closeConnection();
     }
 
-
-    private function emitBody(ResponseInterface $response): void
-    {
-        echo $response->getBody();
-    }
-
     protected function assertNoPreviousOutput(): void
     {
         $file = $line = null;
@@ -32,7 +27,7 @@ class SapiEmitter
                 'Unable to emit response: Headers already sent in file %s on line %s. '
                 . 'This happens if echo, print, printf, print_r, var_dump, var_export or similar statement that writes to the output buffer are used.',
                 $file,
-                (string) $line
+                (string)$line
             ));
         }
 
@@ -47,22 +42,20 @@ class SapiEmitter
         throw new RuntimeException('Output has been emitted previously; cannot emit response.');
     }
 
-    protected function emitStatusLine(ResponseInterface $response): void
+    public function injectContentLength(ResponseInterface $response): ResponseInterface
     {
-        $statusCode = $response->getStatusCode();
+        if ($response->hasHeader('Content-Length')) {
+            return $response;
+        }
 
-        header(
-            vsprintf(
-                'HTTP/%s %d%s',
-                [
-                    $response->getProtocolVersion(),
-                    $statusCode,
-                    rtrim(' ' . $response->getReasonPhrase()),
-                ]
-            ),
-            true,
-            $statusCode
-        );
+        $responseBody = $response->getBody();
+
+        if ($responseBody->getSize() !== null) {
+            /** @var ResponseInterface $response */
+            $response = $response->withHeader('Content-Length', (string)$responseBody->getSize());
+        }
+
+        return $response;
     }
 
     protected function emitHeaders(ResponseInterface $response): void
@@ -89,7 +82,6 @@ class SapiEmitter
         }
     }
 
-
     protected function toWordCase(string $header): string
     {
         $filtered = str_replace('-', ' ', $header);
@@ -98,10 +90,32 @@ class SapiEmitter
         return str_replace(' ', '-', $filtered);
     }
 
+    protected function emitStatusLine(ResponseInterface $response): void
+    {
+        $statusCode = $response->getStatusCode();
+
+        header(
+            vsprintf(
+                'HTTP/%s %d%s',
+                [
+                    $response->getProtocolVersion(),
+                    $statusCode,
+                    rtrim(' ' . $response->getReasonPhrase()),
+                ]
+            ),
+            true,
+            $statusCode
+        );
+    }
+
+    private function emitBody(ResponseInterface $response): void
+    {
+        echo $response->getBody();
+    }
 
     protected function closeConnection(): void
     {
-        if (! in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
+        if (!in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
             $this->closeOutputBuffers(0, true);
         }
 
@@ -110,31 +124,13 @@ class SapiEmitter
         }
     }
 
-
-    public function injectContentLength(ResponseInterface $response): ResponseInterface
-    {
-        if ($response->hasHeader('Content-Length')) {
-            return $response;
-        }
-
-        $responseBody = $response->getBody();
-
-        if ($responseBody->getSize() !== null) {
-            /** @var ResponseInterface $response */
-            $response = $response->withHeader('Content-Length', (string) $responseBody->getSize());
-        }
-
-        return $response;
-    }
-
-
     public function closeOutputBuffers(int $maxBufferLevel, bool $flush): void
     {
         $status = ob_get_status(true);
         $level = count($status);
         $flags = PHP_OUTPUT_HANDLER_REMOVABLE | ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE);
 
-        while ($level-- > $maxBufferLevel && isset($status[$level]) && ($status[$level]['del'] ?? ! isset($status[$level]['flags']) || $flags === ($status[$level]['flags'] & $flags))) {
+        while ($level-- > $maxBufferLevel && isset($status[$level]) && ($status[$level]['del'] ?? !isset($status[$level]['flags']) || $flags === ($status[$level]['flags'] & $flags))) {
             if ($flush) {
                 ob_end_flush();
             } else {

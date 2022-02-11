@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\App\Frontend\Favicon;
 
 use GuzzleHttp\Psr7\Response;

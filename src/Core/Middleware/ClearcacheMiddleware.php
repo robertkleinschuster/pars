@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Middleware;
 
 use GuzzleHttp\Psr7\Response;

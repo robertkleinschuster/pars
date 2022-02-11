@@ -1,11 +1,11 @@
 <?php
+
 namespace Pars\Core\Application\Base;
 
 use Pars\Core\Container\Container;
 use Pars\Core\Emitter\SapiEmitter;
 use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\ServerRequest;
-use Pars\Core\Middleware\ErrorMiddleware;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
 use Pars\Core\Router\RequestRouter;
@@ -39,13 +39,13 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         $emitter->emit($this->pipeline->handle($this->container->get(ServerRequest::class)));
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
-    {
-        return $this->container->get(NotFoundResponse::class);
-    }
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         return $this->handle($request);
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->container->get(NotFoundResponse::class);
     }
 }

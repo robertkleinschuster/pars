@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\App\Frontend;
 
 use Pars\App\Frontend\Favicon\FaviconMiddleware;
@@ -14,13 +15,6 @@ class FrontendApplication extends AbstractApplication
     protected string $body;
     protected string $language;
     protected string $title;
-
-    protected function init()
-    {
-        $this->container->register(NotFoundMiddleware::class, Error\NotFoundMiddleware::class);
-        $this->pipeline->pipe('/favicon', $this->container->get(FaviconMiddleware::class));
-        $this->router->route('/', $this->container->get(StartpageHandler::class));
-    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -39,5 +33,12 @@ class FrontendApplication extends AbstractApplication
     public function __get(string $name)
     {
         return '';
+    }
+
+    protected function init()
+    {
+        $this->container->register(NotFoundMiddleware::class, Error\NotFoundMiddleware::class);
+        $this->pipeline->pipe('/favicon', $this->container->get(FaviconMiddleware::class));
+        $this->router->route('/', $this->container->get(StartpageHandler::class));
     }
 }

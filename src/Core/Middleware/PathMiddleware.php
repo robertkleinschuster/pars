@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Middleware;
 
 use Psr\Http\Message\ResponseInterface;

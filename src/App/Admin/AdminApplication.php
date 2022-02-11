@@ -1,11 +1,10 @@
 <?php
+
 namespace Pars\App\Admin;
 
-use GuzzleHttp\Psr7\Response;
 use Pars\Core\Application\Base\AbstractApplication;
 use Pars\Core\Application\Base\PathApplicationInterface;
 use Pars\Core\Middleware\ClearcacheMiddleware;
-use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Middleware\PhpinfoMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

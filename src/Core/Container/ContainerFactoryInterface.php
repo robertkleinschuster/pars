@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Container;
 
 interface ContainerFactoryInterface

@@ -123,12 +123,6 @@ class HttpFactory implements
         throw new NotFoundException('Unknown: ' . $id);
     }
 
-    public function createClosureResponse(Closure $closure, int $status = 200)
-    {
-        return new class($status, [], new ClosureStream($closure)) extends Response implements ClosureResponse {
-        };
-    }
-
     public function createNotFoundResponse(): NotFoundResponse
     {
         return new class extends Response implements NotFoundResponse {
@@ -136,6 +130,12 @@ class HttpFactory implements
             {
                 parent::__construct($status, $headers, $body, $version, $reason);
             }
+        };
+    }
+
+    public function createClosureResponse(Closure $closure, int $status = 200)
+    {
+        return new class($status, [], new ClosureStream($closure)) extends Response implements ClosureResponse {
         };
     }
 }
