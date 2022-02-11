@@ -1,18 +1,28 @@
 <!doctype html>
-<html lang="<?= $this->language ?>">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?= $this->title ?></title>
+    <title>Error</title>
     <style>
         body {
+            background: #eee;
             font-family: sans-serif;
+        }
+        p {
+            background: #fff;
+            padding: 1rem;
+            border-radius: .5rem;
+            box-shadow: 2px 2px 10px #999;
         }
     </style>
 </head>
 <body>
-    <?= $this->body ?>
+<h1>Ooops!</h1>
+<p>
+    <?= str_replace("\n", "<br>", $this->error ?? 'Error')  ?>
+</p>
 </body>
 </html>

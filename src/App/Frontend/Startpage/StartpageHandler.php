@@ -8,8 +8,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class StartpageHandler implements RequestHandlerInterface
 {
+    protected string $heading;
+    protected string $teaser;
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->heading = 'Startpage';
+        $this->teaser = 'lorem ipsum dolor sit amet';
         return create(ClosureResponse::class, $this->render(...));
     }
 

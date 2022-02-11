@@ -5,6 +5,7 @@ use Pars\Core\Container\Container;
 use Pars\Core\Emitter\SapiEmitter;
 use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\ServerRequest;
+use Pars\Core\Middleware\ErrorMiddleware;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
 use Pars\Core\Router\RequestRouter;
