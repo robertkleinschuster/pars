@@ -13,7 +13,13 @@ class ConsoleApplication extends AbstractApplication
     public function run(array $params = [])
     {
         $command = array_shift($params);
-        echo $this->createObject($command, $params)->run() . "\n";
+        if (!$command) {
+            echo "Available commands:\n";
+            echo " -> " . self::COMMAND_GENERATE_CLASS . ' <className>';
+            echo "\n\n";
+        } else {
+            echo $this->createObject($command, $params)->run() . "\n\n";
+        }
     }
 
     /**
