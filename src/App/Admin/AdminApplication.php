@@ -4,6 +4,7 @@ namespace Pars\App\Admin;
 use GuzzleHttp\Psr7\Response;
 use Pars\Core\Application\Base\AbstractApplication;
 use Pars\Core\Application\Base\PathApplicationInterface;
+use Pars\Core\Middleware\ClearcacheMiddleware;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Middleware\PhpinfoMiddleware;
 use Psr\Http\Message\ResponseInterface;
@@ -24,6 +25,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
     protected function init()
     {
         $this->pipeline->pipe('/phpinfo', $this->container->get(PhpinfoMiddleware::class));
+        $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
     }
 
 
