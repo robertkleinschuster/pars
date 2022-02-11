@@ -6,6 +6,7 @@ services:
       context: ./docker/php-fpm
     volumes:
       - .:/var/www
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
   nginx:
     build:
       context: ./docker/nginx

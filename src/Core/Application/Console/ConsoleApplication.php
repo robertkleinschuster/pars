@@ -32,5 +32,10 @@ class ConsoleApplication extends AbstractApplication
         ];
     }
 
+    protected function init()
+    {
+
+    }
+
 
 }

@@ -2,8 +2,10 @@
 namespace Pars\Core\Application\Base;
 
 use Pars\Core\Container\Container;
+use Pars\Core\Emitter\SapiEmitter;
 use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\ServerRequest;
+use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,24 +17,21 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     protected Container $container;
     protected MiddlewarePipeline $pipeline;
 
-    public function __construct()
+    public function __construct(Container $container = null)
     {
-        $this->container = new Container();
+        $this->container = $container ?? new Container();
         $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
         $this->init();
+        $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));
     }
 
-    protected function init()
-    {
-
-    }
+    protected abstract function init();
 
     public function run()
     {
-        $request = $this->container->get(ServerRequest::class);
-        $response = $this->pipeline->handle($request);
-        http_response_code($response->getStatusCode());
-        echo $response->getBody()->getContents();
+        /* @var $emitter SapiEmitter */
+        $emitter = $this->container->get(SapiEmitter::class);
+        $emitter->emit($this->pipeline->handle($this->container->get(ServerRequest::class)));
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

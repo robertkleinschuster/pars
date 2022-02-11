@@ -3,6 +3,7 @@
 namespace Pars\Core\Pipeline;
 
 use JetBrains\PhpStorm\Pure;
+use Pars\Core\Application\Base\PathApplicationInterface;
 use Pars\Core\Middleware\PathMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

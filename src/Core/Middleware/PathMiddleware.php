@@ -21,7 +21,8 @@ class PathMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (str_starts_with($request->getUri()->getPath(), $this->path)) {
-            return $this->middleware->process($request, $handler);
+            $path = substr_replace($request->getUri()->getPath(), '', 0, strlen($this->path));
+            return $this->middleware->process($request->withUri($request->getUri()->withPath($path)), $handler);
         }
         return $handler->handle($request);
     }
