@@ -18,7 +18,9 @@ class Route
 
     public function match(string $path, ?array &$attributes)
     {
-        if ($path === $this->route) {
+        $path = rtrim($path, '/');
+
+        if ($path === rtrim($this->route, '/')) {
             return true;
         }
 
@@ -29,7 +31,7 @@ class Route
             $keys[] = $a;
         });
 
-        $result = preg_match($pattern, rtrim($path, '/'), $ma);
+        $result = preg_match($pattern, $path, $ma);
         array_shift($ma);
         if (is_array($keys)) {
             foreach ($keys as $index => $key) {

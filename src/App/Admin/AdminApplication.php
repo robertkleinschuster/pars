@@ -45,7 +45,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
     {
         $this->pipeline->pipe('/phpinfo', $this->container->get(PhpinfoMiddleware::class));
         $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
-        $this->router->route('/:controller/:action', $this->container->get(MvcHandler::class));
+        $this->router->route('/', $this->container->get(MvcHandler::class));
     }
 
 
