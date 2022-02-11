@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Error</title>
     <style>
-        body {
-            background: #eee;
+        .error {
             font-family: sans-serif;
+            background: #eee;
         }
 
-        p {
+        .error__text {
             background: #fff;
             padding: 1rem;
             border-radius: .5rem;
@@ -20,9 +20,9 @@
         }
     </style>
 </head>
-<body>
-<h1>Ooops!</h1>
-<p>
+<body class="error">
+<h1 class="error__heading">Ooops!</h1>
+<p class="error__text">
     <?= str_replace("\n", "<br>", $this->error ?? 'Error') ?>
 </p>
 </body>

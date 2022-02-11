@@ -30,16 +30,6 @@ class SapiEmitter
                 (string)$line
             ));
         }
-
-        if (ob_get_level() <= 0) {
-            return;
-        }
-
-        if (ob_get_length() <= 0) {
-            return;
-        }
-
-        throw new RuntimeException('Output has been emitted previously; cannot emit response.');
     }
 
     public function injectContentLength(ResponseInterface $response): ResponseInterface
