@@ -15,6 +15,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Build Composer
+        run: composer install --no-dev && composer dump-autoload -a
+
       - name: Build Webpack
         run: yarn install --silent && yarn build
 
