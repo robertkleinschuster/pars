@@ -1,2 +1,2 @@
 <?php
-require_once '../bootstrap.php';
+require_once '../src/bootstrap.php';

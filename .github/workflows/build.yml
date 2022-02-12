@@ -37,7 +37,7 @@ jobs:
       - name: Create zip
         uses: vimtor/action-zip@v1
         with:
-          files: .
+          files: config/ docker/ public/ src/ vendor/ docker-compose.yml README.md
           dest: ${{ github.event.repository.name }}.zip
 
       - name: Create a GitHub release
