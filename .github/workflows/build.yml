@@ -57,19 +57,19 @@ jobs:
           name: ${{ github.event.repository.name }}
           path: ${{ github.event.repository.name }}.zip
 
-      - name: Copy zip for ftp upload
-        run: mkdir latest && cp ${{ github.event.repository.name }}.zip latest/pars-latest.zip
+#      - name: Copy zip for ftp upload
+#        run: mkdir latest && cp ${{ github.event.repository.name }}.zip latest/pars-latest.zip
+#
+#      - name: Write version for ftp upload
+#        run: echo "${{ steps.tag_version.outputs.new_tag }}" > latest/version.txt
 
-      - name: Write version for ftp upload
-        run: echo "${{ steps.tag_version.outputs.new_tag }}" > latest/version.txt
-
-      - name: Upload to FTP Server
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
-        with:
-          server: e60366-ftp.services.easyname.eu
-          username: 84215ftp1
-          password: ${{ secrets.ftp_password }}
-          local-dir: ./latest/
-          server-dir: ./latest.pars-php.org/monorep/
+#      - name: Upload to FTP Server
+#        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+#        with:
+#          server: e60366-ftp.services.easyname.eu
+#          username: 84215ftp1
+#          password: ${{ secrets.ftp_password }}
+#          local-dir: ./latest/
+#          server-dir: ./latest.pars-php.org/monorep/
 
 
