@@ -39,6 +39,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
     {
         $renderer = $this->createViewRenderer();
         $navigation = $this->createNavigationComponent();
+        $navigation->addEntry(__('admin.navigation.startpage'), url());
         $navigation->addEntry(__('admin.navigation.content'), url('/content'));
         $navigation->addEntry(__('admin.navigation.system'), url('/system'));
         $renderer->setComponent($navigation);
