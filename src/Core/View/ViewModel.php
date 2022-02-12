@@ -27,7 +27,7 @@ class ViewModel implements IteratorAggregate
 
     public function getIterator(): Traversable
     {
-        return $this->list;
+        return $this->getList();
     }
 
     public function isList(): bool

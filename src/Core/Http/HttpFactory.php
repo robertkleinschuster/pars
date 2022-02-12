@@ -117,6 +117,8 @@ class HttpFactory implements
                 return $this->createNotFoundResponse();
             case ClosureResponse::class:
                 return $this->createClosureResponse(...$params);
+            case UriInterface::class:
+                return $this->createUri(...$params);
             case ServerRequest::class:
                 return (new ServerRequestFactory())->create($params, $id);
         }

@@ -14,3 +14,13 @@ if (!function_exists('get')) {
         return $container->get($class, ...$params);
     }
 }
+
+if (!function_exists('url')) {
+    function url(string $url = null): \Pars\Core\Url\UrlBuilder {
+        $builder = get(\Pars\Core\Url\UrlBuilder::class);
+        if ($url) {
+            return $builder->withUri(create(\Psr\Http\Message\UriInterface::class, $url));
+        }
+        return $builder;
+    }
+}

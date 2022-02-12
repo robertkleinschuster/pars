@@ -11,6 +11,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
+use Psr\Http\Message\UriInterface;
 
 return [
     UriFactoryInterface::class => HttpFactory::class,
@@ -21,5 +22,6 @@ return [
     UploadedFileFactoryInterface::class => HttpFactory::class,
     ServerRequest::class => ServerRequestFactory::class,
     NotFoundResponse::class => HttpFactory::class,
-    ClosureResponse::class => HttpFactory::class
+    ClosureResponse::class => HttpFactory::class,
+    UriInterface::class => HttpFactory::class
 ];

@@ -1,0 +1,7 @@
+<ul class="navigation">
+    <?php foreach ($this->model as $item): ?>
+        <li class="navigation__item">
+            <a href="<?= $item->link ?>" class="navigation__link"><?= $item->value ?></a>
+        </li>
+    <?php endforeach; ?>
+</ul>
