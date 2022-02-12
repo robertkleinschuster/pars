@@ -9,8 +9,27 @@
     <style>
         body {
             font-family: sans-serif;
+            margin: 0;
+        }
+
+        main {
+            margin: .5rem;
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
+    <script>
+        function toggle(trigger) {
+            trigger.classList.toggle('active');
+            toggleClass(trigger.dataset.toggleId, trigger.dataset.toggle);
+        }
+
+        function toggleClass(id, cssClass) {
+            document.getElementById(id).classList.toggle(cssClass);
+        }
+    </script>
 </head>
 <body>
 <header>

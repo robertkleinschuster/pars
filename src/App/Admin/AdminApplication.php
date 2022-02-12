@@ -31,14 +31,15 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         $this->main = $response->getBody()->getContents();
         $this->language = Locale::getPrimaryLanguage($locale);
         $this->title = __('admin.title');
-        $this->header = $this->renderHeader();
+        $this->header = $this->renderHeader($request->getUri()->getPath());
         return $response->withBody(new ClosureStream($this->renderLayout(...)));
     }
 
-    protected function renderHeader(): string
+    protected function renderHeader(string $activePath): string
     {
         $renderer = $this->createViewRenderer();
         $navigation = $this->createNavigationComponent();
+        $navigation->getModel()->setActive(url($activePath));
         $navigation->addEntry(__('admin.navigation.startpage'), url());
         $navigation->addEntry(__('admin.navigation.content'), url('/content'));
         $navigation->addEntry(__('admin.navigation.system'), url('/system'));

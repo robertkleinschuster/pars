@@ -44,7 +44,7 @@ class ViewRenderer
         }
 
         if ($component->getTemplate()) {
-            $this->content =  $component->getModel()->getValue() . $result;
+            $this->content = $result;
             $this->initVariables($component);
             $result = $this->renderTemplate($component->getTemplate());
         }
