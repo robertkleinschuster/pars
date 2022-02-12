@@ -1,0 +1,75 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Webpack
+        run: yarn install --silent && yarn build
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create zip
+        uses: vimtor/action-zip@v1
+        with:
+          files: .
+          dest: ${{ github.event.repository.name }}.zip
+
+      - name: Create a GitHub release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ github.event.repository.name }}.zip
+          asset_name: ${{ github.event.repository.name }}_${{ steps.tag_version.outputs.new_tag }}.zip
+          asset_content_type: application/zip
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}
+          path: ${{ github.event.repository.name }}.zip
+
+      - name: Copy zip for ftp upload
+        run: mkdir latest && cp ${{ github.event.repository.name }}.zip latest/pars-latest.zip
+
+      - name: Write version for ftp upload
+        run: echo "${{ steps.tag_version.outputs.new_tag }}" > latest/version.txt
+
+      - name: Upload to FTP Server
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: e60366-ftp.services.easyname.eu
+          username: 84215ftp1
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./latest/
+          server-dir: ./latest.pars-php.org/monorep/
+
+
