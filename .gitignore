@@ -3,3 +3,6 @@
 composer.lock
 vendor
 generated
+node_modules
+yarn.lock
+public/static

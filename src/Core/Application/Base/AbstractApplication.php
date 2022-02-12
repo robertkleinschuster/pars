@@ -20,6 +20,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     protected Container $container;
     protected MiddlewarePipeline $pipeline;
     protected RequestRouter $router;
+    protected array $entrypoints = [];
 
     public function __construct(Container $container = null)
     {
@@ -27,6 +28,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         $this->router = $this->container->get(RequestRouter::class);
         $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
         $this->init();
+        $this->loadEntrypoints();
         $this->pipeline->pipe($this->router);
         $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));
     }
@@ -48,5 +50,15 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->container->get(NotFoundResponse::class);
+    }
+
+    protected function loadEntrypoints()
+    {
+        if (file_exists('public/static/entrypoints.json')) {
+            $entrypoints = json_decode(file_get_contents('public/static/entrypoints.json'), true);
+            if (is_array($entrypoints)) {
+                $this->entrypoints = $entrypoints;
+            }
+        }
     }
 }

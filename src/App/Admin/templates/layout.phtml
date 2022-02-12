@@ -6,20 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $this->title ?></title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-        }
-
-        main {
-            margin: .5rem;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-    </style>
     <script>
         function toggle(trigger) {
             trigger.classList.toggle('active');
@@ -30,6 +16,9 @@
             document.getElementById(id).classList.toggle(cssClass);
         }
     </script>
+    <?php foreach ($this->entrypoints['entrypoints']['admin']['css'] ?? [] as $file): ?>
+        <link rel="stylesheet" href="<?= $file ?>"
+    <?php endforeach; ?>
 </head>
 <body>
 <header>
@@ -38,5 +27,9 @@
 <main>
     <?= $this->main ?>
 </main>
+
+<?php foreach ($this->entrypoints['entrypoints']['admin']['js'] ?? [] as $file): ?>
+    <script defer src="<?= $file ?>"></script>
+<?php endforeach; ?>
 </body>
 </html>
