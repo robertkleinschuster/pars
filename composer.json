@@ -20,7 +20,7 @@
   "minimum-stability": "stable",
   "name": "vendor_name/pars",
   "require": {
-    "php": "8.1",
+    "php": "^8.1",
     "ext-pdo": "*",
     "ext-intl": "*",
     "psr/container": "2.0.2",
