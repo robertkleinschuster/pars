@@ -18,10 +18,6 @@ class ViewRenderer
         return $this->renderComponent($this->component);
     }
 
-    /**
-     * @param ViewComponent $component
-     * @return ViewRenderer
-     */
     public function setComponent(ViewComponent $component): ViewRenderer
     {
         $this->component = $component;

@@ -1,0 +1,16 @@
+<?php ob_start();
+$model = $this->model;
+foreach ($model as $item) {
+    if ($item->isList()) {
+        $this->model = $item;
+        $this->model->hidden = !$item->isActive();
+        include 'navigation.phtml';
+    }
+}
+$subnavigation = ob_get_clean(); ?>
+
+<?php if ($subnavigation): ?>
+    <div class="subnavigation">
+        <?= $subnavigation ?>
+    </div>
+<?php endif; ?>

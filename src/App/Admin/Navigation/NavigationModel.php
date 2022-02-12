@@ -56,7 +56,16 @@ class NavigationModel extends ViewModel
 
     public function isActive(): bool
     {
-        return rtrim($this->link, '/') === rtrim($this->active, '/');
+        $active = rtrim($this->link, '/') === rtrim($this->active, '/');
+
+        if (!$active) {
+            foreach ($this as $item) {
+                if ($item->isActive()) {
+                    return true;
+                }
+            }
+        }
+        return $active;
     }
 
 

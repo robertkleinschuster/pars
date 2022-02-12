@@ -61,6 +61,7 @@
     width: 10px;
     height: 10px;
     left: 10px;
+    top: 2px;
     border-bottom: 1px solid black;
     border-right: 1px solid black;
     transform: rotate(45deg);
@@ -70,7 +71,7 @@
 
   &__toggle.active:after {
     transform: rotate(-135deg);
-    top: 5px;
+    top: 7px;
   }
 }
 

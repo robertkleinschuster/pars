@@ -5,6 +5,7 @@ namespace Pars\App\Admin;
 use Locale;
 use Pars\App\Admin\Login\LoginHandler;
 use Pars\App\Admin\Navigation\NavigationComponent;
+use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
 use Pars\Core\Application\Base\AbstractApplication;
 use Pars\Core\Application\Base\PathApplicationInterface;
@@ -40,9 +41,12 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         $renderer = $this->createViewRenderer();
         $navigation = $this->createNavigationComponent();
         $navigation->getModel()->setActive(url($activePath));
-        $navigation->addEntry(__('admin.navigation.startpage'), url());
+        $navigation->addEntry(__('admin.navigation.startpage'), url())
+        ->addEntry('startpage subitem', url('/start-subitem'));
         $navigation->addEntry(__('admin.navigation.content'), url('/content'));
-        $navigation->addEntry(__('admin.navigation.system'), url('/system'));
+        $navigation->addEntry(__('admin.navigation.system'), url('/system'))
+            ->addEntry('system subitem', url('/system-subitem'))
+            ->addEntry('system subsubitem', url('/system-subsubitem'));
         $renderer->setComponent($navigation);
         return $renderer->render();
     }
@@ -86,6 +90,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
         $this->router->route('/login', $this->container->get(LoginHandler::class));
         $this->router->route('/', $this->container->get(StartpageHandler::class));
+        $this->router->route('/:entity', $this->container->get(OverviewHandler::class));
     }
 
 

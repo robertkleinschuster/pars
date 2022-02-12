@@ -1,22 +1,14 @@
 <ul class="navigation<?= $this->model->hidden ? ' hidden' : '' ?>" id="<?= $this->model->getId() ?>">
     <?php foreach ($this->model as $item): ?>
         <li class="navigation__item<?= $item->isList() ? ' toggle' : '' ?>">
-            <a href="<?= $item->link ?>" class="navigation__link<?= $item->isActive() ? ' active' : '' ?>"><?= $item->value ?></a>
+            <a href="<?= $item->link ?>"
+               class="navigation__link<?= $item->isActive() ? ' active' : '' ?>"><?= $item->value ?></a>
             <?php if ($item->isList()): ?>
-                <span class="navigation__toggle"
+                <span class="navigation__toggle<?= $item->isActive() ? ' active' : '' ?>"
                       onclick="toggle(this)" data-toggle="hidden" data-toggle-id="<?= $item->getId() ?>"
                 ></span>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>
 </ul>
-<div class="subnavigation">
-    <?php $model = $this->model; ?>
-    <?php foreach ($model as $item): ?>
-        <?php if ($item->isList()): ?>
-            <?php $this->model = $item; ?>
-            <?php $this->model->hidden = true; ?>
-            <?php include __FILE__; ?>
-        <?php endif; ?>
-    <?php endforeach; ?>
-</div>
+<?php include 'subnavigation.phtml' ?>
