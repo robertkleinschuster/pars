@@ -18,16 +18,20 @@ class Container implements ContainerInterface
     protected array $services = [];
 
     /**
+     * @var Container
+     */
+    public static Container $instance;
+
+    /**
      * @var DefaultFactory
      */
     protected DefaultFactory $defaultFactory;
 
     public function __construct()
     {
+        $this::$instance = $this;
         $this->defaultFactory = new DefaultFactory();
         $this->factories = include "config/factories.php";
-        global $container;
-        $container = $this;
     }
 
     /**

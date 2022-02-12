@@ -2,6 +2,7 @@
 
 namespace Pars\App\Admin;
 
+use Locale;
 use Pars\App\Admin\Login\LoginHandler;
 use Pars\App\Admin\Navigation\NavigationComponent;
 use Pars\App\Admin\Startpage\StartpageHandler;
@@ -10,6 +11,7 @@ use Pars\Core\Application\Base\PathApplicationInterface;
 use Pars\Core\Middleware\ClearcacheMiddleware;
 use Pars\Core\Middleware\PhpinfoMiddleware;
 use Pars\Core\Stream\ClosureStream;
+use Pars\Core\Translator\Translator;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,10 +25,12 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $locale = Locale::acceptFromHttp($request->getHeaderLine('Accept-Language'));
+        Locale::setDefault($locale);
         $response = $this->pipeline->handle($request);
         $this->main = $response->getBody()->getContents();
-        $this->language = 'de';
-        $this->title = 'PARS Admin';
+        $this->language = Locale::getPrimaryLanguage($locale);
+        $this->title = __('admin.title');
         $this->header = $this->renderHeader();
         return $response->withBody(new ClosureStream($this->renderLayout(...)));
     }
@@ -35,20 +39,25 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
     {
         $renderer = $this->createViewRenderer();
         $navigation = $this->createNavigationComponent();
-        $navigation->addEntry('Inhalte', url('/content'));
-        $navigation->addEntry('System', url('/system'));
+        $navigation->addEntry(__('admin.navigation.content'), url('/content'));
+        $navigation->addEntry(__('admin.navigation.system'), url('/system'));
         $renderer->setComponent($navigation);
         return $renderer->render();
     }
 
     protected function createNavigationComponent(): NavigationComponent
     {
-        return create(NavigationComponent::class);
+        return $this->container->create(NavigationComponent::class);
     }
 
     protected function createViewRenderer(): ViewRenderer
     {
-        return create(ViewRenderer::class);
+        return $this->container->create(ViewRenderer::class);
+    }
+
+    protected function getTranslator(): Translator
+    {
+        return get(Translator::class);
     }
 
     public function renderLayout()
@@ -70,6 +79,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
 
     protected function init()
     {
+        $this->getTranslator()->addPath(__DIR__ . '/translations');
         $this->pipeline->pipe('/phpinfo', $this->container->get(PhpinfoMiddleware::class));
         $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
         $this->router->route('/login', $this->container->get(LoginHandler::class));

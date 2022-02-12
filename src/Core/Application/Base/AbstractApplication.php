@@ -2,6 +2,7 @@
 
 namespace Pars\Core\Application\Base;
 
+use Locale;
 use Pars\Core\Container\Container;
 use Pars\Core\Emitter\SapiEmitter;
 use Pars\Core\Http\NotFoundResponse;
