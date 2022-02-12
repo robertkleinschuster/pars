@@ -44,4 +44,11 @@ class UrlBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/admin/second/target', $builder->withUri(new Uri('/target'))->__toString());
         $this->assertEquals('/admin/second', $builder->__toString());
     }
+
+    public function testQueryParamsFromArray()
+    {
+        $builder = new UrlBuilder();
+        $builder->addBaseUri(new Uri('/admin'));
+        $this->assertEquals('/admin/index?a=b', $builder->withPath('/index')->withParams(['a' => 'b'])->__toString());
+    }
 }
