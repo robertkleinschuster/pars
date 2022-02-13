@@ -28,19 +28,21 @@ class ViewRenderer
     protected function renderComponent(ViewComponent $component)
     {
         $result = '';
-        if ($component->getModel()->isList()) {
-            foreach ($component->getModel() as $model) {
-                $result .= $this->renderComponent($component->withModel($model));
+        if (!$component->getContent()) {
+            if ($component->getModel()->isList()) {
+                foreach ($component->getModel() as $model) {
+                    $result .= $this->renderComponent($component->withModel($model));
+                }
+            } else {
+                foreach ($component->getChildren() as $child) {
+                    /* @var $child ViewComponent */
+                    $result .= $this->renderComponent($child);
+                }
             }
-        } else {
-            foreach ($component->getChildren() as $child) {
-                /* @var $child ViewComponent */
-                $result .= $this->renderComponent($child);
-            }
+            $component->setContent($result);
         }
 
         if ($component->getTemplate()) {
-            $component->setContent($result);
             $result = $this->renderTemplate($component);
         }
         return $result;

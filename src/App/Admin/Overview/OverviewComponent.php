@@ -9,6 +9,7 @@ use Pars\Core\View\ViewModel;
  */
 class OverviewComponent extends ViewComponent
 {
+    public string $toolbar = '';
 
     protected ViewComponent $thead;
     protected ViewComponent $tbody;

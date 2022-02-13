@@ -38,3 +38,11 @@ if (!function_exists('__pl')) {
         return $translator->translatepl($code, $count, $placeholder);
     }
 }
+
+if (!function_exists('render')) {
+    function render(\Pars\Core\View\ViewComponent $component) {
+        $renderer = new \Pars\Core\View\ViewRenderer();
+        $renderer->setComponent($component);
+        return $renderer->render();
+    }
+}

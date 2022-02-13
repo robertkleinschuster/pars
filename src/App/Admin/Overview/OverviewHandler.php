@@ -1,9 +1,9 @@
 <?php
 namespace Pars\App\Admin\Overview;
 
+use Pars\App\Admin\Toolbar\ToolbarComponent;
 use Pars\Core\Http\ClosureResponse;
 use Pars\Core\View\ViewModel;
-use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -51,10 +51,10 @@ class OverviewHandler implements RequestHandlerInterface
         foreach ($this->fields as $field) {
             $overview->addField(__($field), $field);
         }
-
-        $renderer = new ViewRenderer();
-        $renderer->setComponent($overview);
-        return $renderer->render();
+        $toolbar = new ToolbarComponent();
+        $toolbar->addButton(__('new'));
+        $overview->toolbar = render($toolbar);
+        return render($overview);
     }
 
 }

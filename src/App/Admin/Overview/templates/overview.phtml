@@ -1,5 +1,6 @@
 <div id="<?= \Pars\App\Admin\Overview\OverviewHandler::class ?>" class="overview">
     <h1><?= $this->getValue('heading') ?></h1>
+    <?= $this->toolbar ?>
     <table class="overview__table">
         <?= $this->getContent() ?>
     </table>
