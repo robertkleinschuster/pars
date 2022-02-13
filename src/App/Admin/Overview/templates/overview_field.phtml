@@ -1,0 +1,7 @@
+<?php if ($this->isFirstChild()): ?>
+<tr>
+    <?php endif; ?>
+    <td <?= $this->attr ?>><?= $this->getContent() ?></td>
+    <?php if ($this->isLastChild()): ?>
+</tr>
+<?php endif; ?>

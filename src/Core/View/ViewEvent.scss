@@ -1,0 +1,10 @@
+[data-event] {
+  cursor: pointer;
+  text-decoration: underline;
+  color: -webkit-link;
+  color: -moz-hyperlinktext;
+}
+
+[data-event]:hover {
+  text-decoration: none;
+}

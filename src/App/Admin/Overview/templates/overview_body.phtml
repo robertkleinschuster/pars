@@ -1,0 +1,7 @@
+<?php if ($this->isFirstChild()): ?>
+    <tbody>
+<?php endif; ?>
+<?= $this->getContent() ?>
+<?php if ($this->isFirstChild()): ?>
+    </tbody>
+<?php endif; ?>

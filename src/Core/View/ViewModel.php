@@ -9,7 +9,7 @@ class ViewModel implements IteratorAggregate
 {
     protected string $value = '';
 
-    protected ?SplDoublyLinkedList $list = null;
+    protected SplDoublyLinkedList $list;
 
     public function push(ViewModel $model)
     {
@@ -40,23 +40,23 @@ class ViewModel implements IteratorAggregate
         return $this->$name ?? '';
     }
 
+    public function get(string $name)
+    {
+        return $this->__get($name);
+    }
+
     public function set(string $name, $value)
     {
         $this->$name = $value;
     }
 
-    /**
-     * @return string
-     */
+
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     * @return ViewModel
-     */
+
     public function setValue(string $value): ViewModel
     {
         $this->value = $value;

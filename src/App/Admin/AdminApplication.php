@@ -29,11 +29,15 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         $locale = Locale::acceptFromHttp($request->getHeaderLine('Accept-Language'));
         Locale::setDefault($locale);
         $response = $this->pipeline->handle($request);
-        $this->main = $response->getBody()->getContents();
-        $this->language = Locale::getPrimaryLanguage($locale);
-        $this->title = __('admin.title');
-        $this->header = $this->renderHeader($request->getUri()->getPath());
-        return $response->withBody(new ClosureStream($this->renderLayout(...)));
+        if (isset($request->getQueryParams()['handler'])) {
+            return $response;
+        } else {
+            $this->main = $response->getBody()->getContents();
+            $this->language = Locale::getPrimaryLanguage($locale);
+            $this->title = __('admin.title');
+            $this->header = $this->renderHeader($request->getUri()->getPath());
+            return $response->withBody(new ClosureStream($this->renderLayout(...)));
+        }
     }
 
     protected function renderHeader(string $activePath): string

@@ -1,10 +1,11 @@
 <?php
+
 namespace Pars\Core\View;
 
 class ViewRenderer
 {
     protected ?ViewComponent $component = null;
-    protected ViewModel $model;
+
     protected string $attributes = '';
     protected string $content = '';
     protected string $value = '';
@@ -24,7 +25,6 @@ class ViewRenderer
         return $this;
     }
 
-
     protected function renderComponent(ViewComponent $component)
     {
         $result = '';
@@ -40,26 +40,19 @@ class ViewRenderer
         }
 
         if ($component->getTemplate()) {
-            $this->content = $result;
-            $this->initVariables($component);
-            $result = $this->renderTemplate($component->getTemplate());
+            $component->setContent($result);
+            $result = $this->renderTemplate($component);
         }
         return $result;
     }
 
-    protected function renderTemplate(string $template): string
+    protected function renderTemplate(ViewComponent $component)
     {
-        ob_start();
-        include $template;
-        return ob_get_clean();
-    }
-
-    protected function initVariables(ViewComponent $component)
-    {
-        $this->attributes = "";
-        $this->model = $component->getModel();
-        if ($component->getEvent()) {
-            $this->attributes .= " data-event=\"" . json_encode($component->getEvent()) . "\"";
-        }
+        return (function (ViewComponent $component) {
+            ob_start();
+            $model = $component->getModel();
+            include $component->getTemplate();
+            return ob_get_clean();
+        })(...)->call($component, $component);
     }
 }
