@@ -1,5 +1,6 @@
 <?php
 return [
+    'overview' => 'Overview',
     'create' => 'Create',
     'delete' => 'Delete',
     'created' => 'Created',
@@ -14,4 +15,6 @@ return [
     'timezone' => 'Timezone',
     'time' => 'Time',
     'timestamp' => 'Timestamp',
+    'id' => 'ID',
+    'code' => 'Code',
 ];

@@ -2,8 +2,6 @@
 namespace Pars\App\Admin\Overview;
 
 use Pars\Core\Http\ClosureResponse;
-use Pars\Core\View\ViewComponent;
-use Pars\Core\View\ViewEvent;
 use Pars\Core\View\ViewModel;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
@@ -12,38 +10,47 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class OverviewHandler implements RequestHandlerInterface
 {
+    protected array $entries = [];
+    protected array $fields = [];
+    protected string $heading = '';
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $entity = $request->getAttribute('entity');
+        $this->entries[] = [
+            'id' => 'first'
+        ];
+        $this->entries[] = [
+            'id' => 'second'
+        ];
+        $this->entries[] = [
+            'id' => 'third'
+        ];
+        $this->fields[] = 'id';
+        $this->fields[] = 'code';
+        if ($entity) {
+            $this->heading = __($entity . '.overview');
+        } else {
+            $this->heading = __('overview');
+        }
         return create(ClosureResponse::class, $this->renderOverview(...));
     }
 
     public function renderOverview()
     {
         $overview = new OverviewComponent();
-        $overview->addField('foo', 'foo');
-        $event = new ViewEvent();
-        $event->handler = static::class;
-        $event->url = url('/test/:id');
-        $overview->addField('bar', 'bar')->setEvent($event);
-        
-        $entry = new ViewModel();
-        $entry->set('foo', 'test');
-        $entry->set('id', '1');
-        $entry->set('bar', 'test');
-        $overview->addEntry($entry);
+        $overview->getModel()->set('heading', $this->heading);
+        foreach ($this->entries as $entry) {
+            $model = new ViewModel();
+            foreach ($entry as $key => $value) {
+                $model->set($key, $value);
+            }
+            $overview->addEntry($model);
+        }
 
-        $entry = new ViewModel();
-        $entry->set('id', '2');
-        $entry->set('foo', 'test');
-        $entry->set('bar', 'test2');
-        $overview->addEntry($entry);
-
-        $entry = new ViewModel();
-        $entry->set('foo', 'test 3');
-        $entry->set('bar', 'test3');
-        $overview->addEntry($entry);
-
+        foreach ($this->fields as $field) {
+            $overview->addField(__($field), $field);
+        }
 
         $renderer = new ViewRenderer();
         $renderer->setComponent($overview);
