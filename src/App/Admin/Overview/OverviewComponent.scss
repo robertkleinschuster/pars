@@ -13,8 +13,29 @@
     }
   }
 
-  &__field {
+  &__field,
+  &__buttons {
     border-bottom: 1px solid #525252;
+  }
+
+  &__buttons {
+    width: 0;
+    white-space: nowrap;
+  }
+
+  &__button {
+    border: none;
+    border-radius: .25rem;
+    padding: .25rem .5rem;
+    background: #eaeaea;
+    cursor: pointer;
+  }
+
+  &__button:hover {
+    background: #dadada;
+  }
+  &__button:active {
+    background: #b0b0b0;
   }
 }
 

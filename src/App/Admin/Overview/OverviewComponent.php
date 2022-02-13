@@ -1,8 +1,10 @@
 <?php
+
 namespace Pars\App\Admin\Overview;
 
 use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewModel;
+use SplDoublyLinkedList;
 
 /**
  * @method OverviewModel getModel()
@@ -10,13 +12,15 @@ use Pars\Core\View\ViewModel;
 class OverviewComponent extends ViewComponent
 {
     public string $toolbar = '';
-
+    protected SplDoublyLinkedList $buttons;
     protected ViewComponent $thead;
     protected ViewComponent $tbody;
 
     public function __construct()
     {
+        parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/overview.phtml');
+        $this->buttons = new SplDoublyLinkedList();
         $this->model = new OverviewModel();
         $this->thead = new ViewComponent();
         $this->tbody = new ViewComponent();
@@ -26,6 +30,18 @@ class OverviewComponent extends ViewComponent
         $this->push($this->tbody);
     }
 
+    public function getButtons(): SplDoublyLinkedList
+    {
+        return $this->buttons;
+    }
+
+    public function addButton(string $name): OverviewButtonComponent
+    {
+        $button = new OverviewButtonComponent();
+        $button->setContent($name);
+        $this->buttons->push($button);
+        return $button;
+    }
 
     public function addField(string $name, string $key): OverviewFieldComponent
     {

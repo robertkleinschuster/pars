@@ -12,8 +12,15 @@ class ViewComponent
     protected ?ViewEvent $event = null;
     protected SplDoublyLinkedList $children;
     protected ?self $parent = null;
+    protected ?self $main = null;
     protected string $content = '';
     protected string $tag = 'div';
+
+    public function __construct()
+    {
+        $this->main = $this;
+    }
+
 
     public function getParent(): ?self
     {
@@ -24,6 +31,13 @@ class ViewComponent
     {
         return $this->content;
     }
+
+
+    public function getMain(): ?ViewComponent
+    {
+        return $this->main;
+    }
+
 
     public function setContent(string $content): ViewComponent
     {
@@ -71,6 +85,7 @@ class ViewComponent
     public function push(ViewComponent $component): static
     {
         $component->parent = $this;
+        $component->main = $this->main;
         $this->getChildren()->push($component);
         return $this;
     }

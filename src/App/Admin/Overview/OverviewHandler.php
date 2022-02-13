@@ -54,6 +54,8 @@ class OverviewHandler implements RequestHandlerInterface
         $toolbar = new ToolbarComponent();
         $toolbar->addButton(__('new'));
         $overview->toolbar = render($toolbar);
+        $overview->addButton(__('edit'));
+        $overview->addButton(__('delete'));
         return render($overview);
     }
 

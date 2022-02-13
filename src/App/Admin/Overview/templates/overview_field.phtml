@@ -1,5 +1,10 @@
 <?php if ($this->isFirstChild()): ?>
 <tr>
+    <td class="overview__buttons">
+        <?php foreach ($this->getMain()->getButtons() as $button): ?>
+            <button class="overview__button" <?= $button->attr ?>><?= $button->getContent() ?></button>
+        <?php endforeach; ?>
+    </td>
     <?php endif; ?>
     <td class="overview__field" <?= $this->attr ?>><?= $this->getContent() ?></td>
     <?php if ($this->isLastChild()): ?>
