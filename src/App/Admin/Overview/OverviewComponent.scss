@@ -1,0 +1,19 @@
+.overview {
+
+  &__table {
+    width: 100%;
+    border-spacing: 0;
+  }
+
+  &__head {
+    background: #525252;
+    color: #fff;
+    th {
+      font-weight: lighter;
+    }
+  }
+
+  &__field {
+    border-bottom: 1px solid #525252;
+  }
+}
