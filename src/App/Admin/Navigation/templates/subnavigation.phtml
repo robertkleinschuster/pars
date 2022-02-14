@@ -3,7 +3,7 @@ $model = $this->model;
 foreach ($model as $item) {
     if ($item->isList()) {
         $this->model = $item;
-        $this->model->hidden = !$item->isActive();
+        $this->model->hidden = true;
         include 'navigation.phtml';
     }
 }

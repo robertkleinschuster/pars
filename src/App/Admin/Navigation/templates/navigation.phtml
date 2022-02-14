@@ -4,7 +4,7 @@
             <a href="<?= $item->link ?>"
                class="navigation__link<?= $item->isActive() ? ' active' : '' ?>"><?= $item->value ?></a>
             <?php if ($item->isList()): ?>
-                <span class="navigation__toggle<?= $item->isActive() ? ' active' : '' ?>"
+                <span class="navigation__toggle"
                       onclick="toggle(this)" data-toggle="hidden" data-toggle-id="<?= $item->getId() ?>"
                 ></span>
             <?php endif; ?>
