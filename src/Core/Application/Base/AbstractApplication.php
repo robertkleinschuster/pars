@@ -61,4 +61,11 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
             }
         }
     }
+
+    protected function addEntrypointHeader(ResponseInterface $response, string $entrypoint)
+    {
+        foreach ($this->entrypoints['entrypoints'][$entrypoint]['css'] ?? [] as $cssFile) {
+            $response = $response->withAddedHeader('Link', "<$cssFile>; rel=\"preload\"; as=\"style\"");
+        }
+    }
 }

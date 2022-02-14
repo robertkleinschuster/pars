@@ -26,9 +26,11 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+
         $locale = Locale::acceptFromHttp($request->getHeaderLine('Accept-Language'));
         Locale::setDefault($locale);
         $response = $this->pipeline->handle($request);
+        $this->addEntrypointHeader($response, 'admin');
         if (isset($request->getQueryParams()['handler'])) {
             return $response;
         } else {
@@ -39,6 +41,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
             return $response->withBody(new ClosureStream($this->renderLayout(...)));
         }
     }
+
 
     protected function renderHeader(string $activePath): string
     {

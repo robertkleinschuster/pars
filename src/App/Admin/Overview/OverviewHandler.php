@@ -3,6 +3,7 @@ namespace Pars\App\Admin\Overview;
 
 use Pars\App\Admin\Toolbar\ToolbarComponent;
 use Pars\Core\Http\ClosureResponse;
+use Pars\Core\View\ViewEvent;
 use Pars\Core\View\ViewModel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -54,8 +55,18 @@ class OverviewHandler implements RequestHandlerInterface
         $toolbar = new ToolbarComponent();
         $toolbar->addButton(__('new'));
         $overview->toolbar = render($toolbar);
-        $overview->addButton(__('edit'));
-        $overview->addButton(__('delete'));
+        $event  = new ViewEvent();
+        $event->url = url('/test');
+        $event->target = ViewEvent::TARGET_WINDOW;
+        $event->title = __('edit');
+        $event->handler = static::class;
+        $overview->addButton(__('edit'))->setEvent($event);
+        $event  = new ViewEvent();
+        $event->url = url('/test');
+        $event->target = ViewEvent::TARGET_ACTION;
+        $event->title = __('delete');
+        $event->handler = static::class;
+        $overview->addButton(__('delete'))->setEvent($event);
         return render($overview);
     }
 

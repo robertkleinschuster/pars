@@ -6,8 +6,11 @@ import OverviewComponent from "./Overview/OverviewComponent";
 export default class AdminApplication {
     public run()
     {
-        const eventHandler = new ViewEventHandler();
-        eventHandler.init(document.body);
+        document.querySelectorAll('.component').forEach( (component: HTMLElement) => {
+            const eventHandler = new ViewEventHandler(new URL(document.location.href, document.baseURI), component);
+            eventHandler.init();
+        });
+
         const overview = new OverviewComponent();
     }
 }

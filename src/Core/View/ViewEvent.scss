@@ -1,4 +1,4 @@
-[data-event] {
+[data-event]:not(button) {
   cursor: pointer;
   text-decoration: underline;
   color: -webkit-link;

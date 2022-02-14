@@ -6,3 +6,4 @@ generated
 node_modules
 yarn.lock
 public/static
+package-lock.json
