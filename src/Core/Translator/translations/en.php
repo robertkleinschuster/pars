@@ -1,6 +1,7 @@
 <?php
 return [
     'overview' => 'Overview',
+    'detail' => 'Detail',
     'create' => 'Create',
     'delete' => 'Delete',
     'created' => 'Created',
