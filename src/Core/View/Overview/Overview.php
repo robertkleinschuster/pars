@@ -1,15 +1,12 @@
 <?php
+namespace Pars\Core\View\Overview;
 
-namespace Pars\App\Admin\Overview;
-
+use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewModel;
 use SplDoublyLinkedList;
 
-/**
- * @method OverviewModel getModel()
- */
-class OverviewComponent extends ViewComponent
+class Overview extends ViewComponent
 {
     public string $toolbar = '';
     protected SplDoublyLinkedList $buttons;
@@ -21,9 +18,8 @@ class OverviewComponent extends ViewComponent
         parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/overview.phtml');
         $this->buttons = new SplDoublyLinkedList();
-        $this->model = new OverviewModel();
-        $this->thead = new ViewComponent();
-        $this->tbody = new ViewComponent();
+        $this->thead = create(ViewComponent::class);
+        $this->tbody = create(ViewComponent::class);
         $this->thead->setTemplate(__DIR__ . '/templates/overview_head.phtml');
         $this->tbody->setTemplate(__DIR__ . '/templates/overview_body.phtml');
         $this->push($this->thead);
@@ -35,26 +31,34 @@ class OverviewComponent extends ViewComponent
         return $this->buttons;
     }
 
-    public function addButton(string $name): OverviewButtonComponent
+    public function addButton(string $name): OverviewButton
     {
-        $button = new OverviewButtonComponent();
+        $button = create(OverviewButton::class);
         $button->setContent($name);
         $this->buttons->push($button);
         return $button;
     }
 
-    public function addField(string $name, string $key): OverviewFieldComponent
+    public function addIconButton(Icon $icon): OverviewButton
     {
-        $field = new OverviewFieldComponent($key, $name);
+        $button = create(OverviewButton::class);
+        $button->push($icon);
+        $this->buttons->push($button);
+        return $button;
+    }
+
+
+    public function addField(string $name, string $key): OverviewField
+    {
+        $field = create(OverviewField::class, $key, $name);
         $this->thead->push($field);
         $this->tbody->push($field);
         return $field;
     }
 
-    public function addEntry(ViewModel $model)
+    public function addEntry(ViewModel $model): static
     {
         $this->tbody->getModel()->push($model);
         return $this;
     }
-
 }

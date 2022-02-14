@@ -1,9 +1,10 @@
 <?php
 namespace Pars\App\Admin\Overview;
 
-use Pars\App\Admin\Toolbar\ToolbarComponent;
 use Pars\Core\Http\ClosureResponse;
-use Pars\Core\View\ViewEvent;
+use Pars\Core\View\Icon\Icon;
+use Pars\Core\View\Overview\Overview;
+use Pars\Core\View\Toolbar\Toolbar;
 use Pars\Core\View\ViewModel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -14,10 +15,11 @@ class OverviewHandler implements RequestHandlerInterface
     protected array $entries = [];
     protected array $fields = [];
     protected string $heading = '';
-
+    protected string $entity = '';
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $entity = $request->getAttribute('entity');
+        $this->entity = $request->getAttribute('entity');
         $this->entries[] = [
             'id' => 'first'
         ];
@@ -39,7 +41,7 @@ class OverviewHandler implements RequestHandlerInterface
 
     public function renderOverview()
     {
-        $overview = new OverviewComponent();
+        $overview = new Overview();
         $overview->getModel()->set('heading', $this->heading);
         foreach ($this->entries as $entry) {
             $model = new ViewModel();
@@ -50,23 +52,14 @@ class OverviewHandler implements RequestHandlerInterface
         }
 
         foreach ($this->fields as $field) {
-            $overview->addField(__($field), $field);
+            $overview->addField(__($field), $field)->setWindow(url("/{$this->entity}/:id"), __('detail'));
         }
-        $toolbar = new ToolbarComponent();
-        $toolbar->addButton(__('new'));
+        $toolbar = new Toolbar();
+        $button = $toolbar->addIconButton(Icon::create());
+        $button->setWindow(url('/new'), __('new'));
         $overview->toolbar = render($toolbar);
-        $event  = new ViewEvent();
-        $event->url = url('/test');
-        $event->target = ViewEvent::TARGET_WINDOW;
-        $event->title = __('edit');
-        $event->handler = static::class;
-        $overview->addButton(__('edit'))->setEvent($event);
-        $event  = new ViewEvent();
-        $event->url = url('/test');
-        $event->target = ViewEvent::TARGET_ACTION;
-        $event->title = __('delete');
-        $event->handler = static::class;
-        $overview->addButton(__('delete'))->setEvent($event);
+        $button = $overview->addIconButton(Icon::delete());
+        $button->setWindow(url('/delete'), __('delete'));
         return render($overview);
     }
 

@@ -33,6 +33,10 @@ export default class ViewEventHandler {
             url.searchParams.append('handler', viewEvent.handler);
         }
 
+        if (viewEvent.target) {
+            url.searchParams.append('target', viewEvent.target);
+        }
+
         const options: RequestInit = {};
         if (viewEvent.target == 'action') {
             options.method = 'post';
@@ -50,11 +54,15 @@ export default class ViewEventHandler {
             }
         }
 
-
+        document.body.classList.add('overlay');
         fetch(url.toString(), options).then(r => r.text()).then(html => {
             if (html) {
                 this.handleResponse(viewEvent, html);
             }
+            document.body.classList.remove('overlay');
+        }).catch((e) => {
+            console.error(e);
+            window.location.href = url.toString();
         });
     }
 

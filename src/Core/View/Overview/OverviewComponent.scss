@@ -1,21 +1,35 @@
 .overview {
-
   &__table {
     width: 100%;
     border-spacing: 0;
+    border-collapse: collapse;
   }
 
   &__head {
     background: #525252;
     color: #fff;
     th {
+      padding: .25rem;
       font-weight: lighter;
+      text-align: left;
     }
+  }
+
+  tbody tr {
+    transition: .2s ease-in-out;
+  }
+
+  tbody tr:nth-child(2n) {
+    background: #eaeaea;
+  }
+
+  tbody tr:hover {
+    background: #e5e5e5;
   }
 
   &__field,
   &__buttons {
-    border-bottom: 1px solid #525252;
+    border: 1px solid #d5d5d5;
   }
 
   &__buttons {
@@ -24,11 +38,12 @@
   }
 
   &__button {
-    border: none;
     border-radius: .25rem;
     padding: .25rem .5rem;
-    background: #eaeaea;
+    border: 1px solid #838383;
     cursor: pointer;
+    background: #fff;
+    transition: .2s ease-in-out;
   }
 
   &__button:hover {
@@ -39,24 +54,3 @@
   }
 }
 
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .25rem;
-  padding: .25rem 0;
-
-  &__button {
-    border: none;
-    border-radius: .25rem;
-    padding: .25rem .5rem;
-    background: #eaeaea;
-    cursor: pointer;
-  }
-
-  &__button:hover {
-    background: #dadada;
-  }
-  &__button:active {
-    background: #b0b0b0;
-  }
-}

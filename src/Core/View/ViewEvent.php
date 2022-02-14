@@ -19,5 +19,30 @@ class ViewEvent
         $this->url = url();
     }
 
+    public static function window(string $uri, string $title): static
+    {
+        /* @var $event ViewEvent */
+        $event = create(static::class);
+        $event->url = $uri;
+        $event->target = self::TARGET_WINDOW;
+        $event->title = $title;
+        return $event;
+    }
+
+    public static function self(string $uri): static {
+        /* @var $event ViewEvent */
+        $event = create(static::class);
+        $event->url = $uri;
+        $event->target = self::TARGET_SELF;
+        return $event;
+    }
+
+    public static function action(string $uri): static {
+        /* @var $event ViewEvent */
+        $event = create(static::class);
+        $event->url = $uri;
+        $event->target = self::TARGET_ACTION;
+        return $event;
+    }
 
 }

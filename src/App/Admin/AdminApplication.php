@@ -31,7 +31,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         Locale::setDefault($locale);
         $response = $this->pipeline->handle($request);
         $this->addEntrypointHeader($response, 'admin');
-        if (isset($request->getQueryParams()['handler'])) {
+        if (isset($request->getQueryParams()['target'])) {
             return $response;
         } else {
             $this->main = $response->getBody()->getContents();

@@ -1,7 +1,9 @@
 import "./AdminApplication.scss";
 import "./Navigation/NavigationComponent";
 import ViewEventHandler from "../../Core/View/ViewEventHandler";
-import OverviewComponent from "./Overview/OverviewComponent";
+import OverviewComponent from "../../Core/View/Overview/OverviewComponent";
+import Toolbar from "../../Core/View/Toolbar/Toolbar";
+import Icon from "../../Core/View/Icon/Icon";
 
 export default class AdminApplication {
     public run()
@@ -12,6 +14,8 @@ export default class AdminApplication {
         });
 
         const overview = new OverviewComponent();
+        const toolbar = new Toolbar();
+        const icon = new Icon();
     }
 }
 

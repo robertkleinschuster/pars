@@ -1,5 +1,5 @@
 <?php
-namespace ParsTest\App\Admin\Overview;
+namespace ParsTest\Core\View\Overview;
 
 class OverviewModelTest extends \PHPUnit\Framework\TestCase
 {

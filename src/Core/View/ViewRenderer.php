@@ -39,7 +39,7 @@ class ViewRenderer
                     $result .= $this->renderComponent($child);
                 }
             }
-            $component->setContent($result);
+            $component->setContent($result, clone $this);
         }
 
         if ($component->getTemplate()) {

@@ -3,11 +3,12 @@
 namespace Pars\Core\View;
 
 use Pars\Core\Router\Route;
+use Psr\Http\Message\UriInterface;
 use SplDoublyLinkedList;
 
 class ViewComponent
 {
-    protected ?string $template = 'templates/default.phtml';
+    protected ?string $template = __DIR__ . '/templates/default.phtml';
     protected ViewModel $model;
     protected ?ViewEvent $event = null;
     protected SplDoublyLinkedList $children;
@@ -15,6 +16,7 @@ class ViewComponent
     protected ?self $main = null;
     protected string $content = '';
     protected string $tag = 'div';
+    protected array $class = [];
 
     public function __construct()
     {
@@ -39,7 +41,7 @@ class ViewComponent
     }
 
 
-    public function setContent(string $content): ViewComponent
+    public function setContent(string $content, ViewRenderer $renderer = null): ViewComponent
     {
         $this->content = $content;
         return $this;
@@ -58,7 +60,7 @@ class ViewComponent
     public function getModel(): ViewModel
     {
         if (!isset($this->model)) {
-            $this->model = new ViewModel();
+            $this->model = create(ViewModel::class);
         }
         return $this->model;
     }
@@ -141,6 +143,10 @@ class ViewComponent
                 }
             }
         }
+        if (count($this->class)) {
+            $class = implode(' ', $this->class);
+            $result[] = "class='$class'";
+        }
         return implode(' ', $result);
     }
 
@@ -155,6 +161,24 @@ class ViewComponent
             return $this->attr();
         }
         return null;
+    }
+
+    public function setWindow(string $uri, string $title): ViewEvent
+    {
+        $this->setEvent(ViewEvent::window($uri, $title));
+        return $this->getEvent();
+    }
+
+    public function setLink(string $uri): ViewEvent
+    {
+        $this->setEvent(ViewEvent::self($uri));
+        return $this->getEvent();
+    }
+
+    public function setAction(string $uri): ViewEvent
+    {
+        $this->setEvent(ViewEvent::action($uri));
+        return $this->getEvent();
     }
 
 
