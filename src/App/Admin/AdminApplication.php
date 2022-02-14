@@ -3,6 +3,7 @@
 namespace Pars\App\Admin;
 
 use Locale;
+use Pars\App\Admin\Detail\DetailHandler;
 use Pars\App\Admin\Login\LoginHandler;
 use Pars\App\Admin\Navigation\NavigationComponent;
 use Pars\App\Admin\Overview\OverviewHandler;
@@ -95,9 +96,10 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         $this->getTranslator()->addPath(__DIR__ . '/translations');
         $this->pipeline->pipe('/phpinfo', $this->container->get(PhpinfoMiddleware::class));
         $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
-        $this->router->route('/login', $this->container->get(LoginHandler::class));
         $this->router->route('/', $this->container->get(StartpageHandler::class));
         $this->router->route('/:entity', $this->container->get(OverviewHandler::class));
+        $this->router->route('/:entity/:id', $this->container->get(DetailHandler::class));
+        $this->router->route('/login', $this->container->get(LoginHandler::class));
     }
 
 

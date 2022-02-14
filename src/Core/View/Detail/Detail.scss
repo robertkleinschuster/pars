@@ -1,0 +1,27 @@
+.detail {
+  &__chapter {
+    &__name {
+      width: 100%;
+      font-weight: 600;
+      padding: .25rem 0;
+      border-bottom: 1px solid #bbb;
+    }
+  }
+
+  &__group {
+    &__name {
+      position: relative;
+      margin: .75rem 0;
+      padding-left: 1rem;
+    }
+
+    &__name:before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      top: 50%;
+      left: 0;
+      border-bottom: 1px solid #939393;
+    }
+  }
+}

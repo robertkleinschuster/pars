@@ -21,203 +21,194 @@ class OverviewHandler implements RequestHandlerInterface
         $entity = $request->getAttribute('entity');
         $this->entity = $request->getAttribute('entity');
         $this->entries[] = [
-            'id' => 'first'
+            'id' => 'first',
+            'code' => 'first code',
         ];
         $this->entries[] = [
-            'id' => 'second'
+            'id' => 'second',
+            'code' => 'second code',
         ];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
-        $this->entries[] = ['id' => 'third'];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+        $this->entries[] = [
+            'id' => 'third',
+            'code' => 'third code',
+        ];
+
         $this->fields[] = 'id';
         $this->fields[] = 'code';
         if ($entity) {

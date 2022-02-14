@@ -17,4 +17,6 @@ return [
     'timestamp' => 'Timestamp',
     'id' => 'ID',
     'code' => 'Code',
+    'username' => 'User',
+    'password' => 'Password',
 ];

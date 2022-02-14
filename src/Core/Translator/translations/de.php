@@ -17,4 +17,6 @@ return [
     'timestamp' => 'Zeitstempel',
     'id' => 'ID',
     'code' => 'Code',
+    'username' => 'Benutzer',
+    'password' => 'Passwort',
 ];
