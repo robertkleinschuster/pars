@@ -27,6 +27,7 @@ class ViewRenderer
 
     protected function renderComponent(ViewComponent $component)
     {
+        $component->onRender(clone $this);
         $result = '';
         if (!$component->getContent()) {
             if ($component->getModel()->isList()) {
@@ -39,7 +40,7 @@ class ViewRenderer
                     $result .= $this->renderComponent($child);
                 }
             }
-            $component->setContent($result, clone $this);
+            $component->setContent($result);
         }
 
         if ($component->getTemplate()) {

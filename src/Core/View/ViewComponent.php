@@ -40,8 +40,11 @@ class ViewComponent
         return $this->main;
     }
 
+    public function onRender(ViewRenderer $renderer) {
 
-    public function setContent(string $content, ViewRenderer $renderer = null): ViewComponent
+    }
+
+    public function setContent(string $content): ViewComponent
     {
         $this->content = $content;
         return $this;
@@ -175,9 +178,9 @@ class ViewComponent
         return $this->getEvent();
     }
 
-    public function setAction(string $uri): ViewEvent
+    public function setAction(string $uri, string $title): ViewEvent
     {
-        $this->setEvent(ViewEvent::action($uri));
+        $this->setEvent(ViewEvent::action($uri, $title));
         return $this->getEvent();
     }
 

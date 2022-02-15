@@ -37,11 +37,12 @@ class ViewEvent
         return $event;
     }
 
-    public static function action(string $uri): static {
+    public static function action(string $uri, string $title): static {
         /* @var $event ViewEvent */
         $event = create(static::class);
         $event->url = $uri;
         $event->target = self::TARGET_ACTION;
+        $event->title = $title;
         return $event;
     }
 

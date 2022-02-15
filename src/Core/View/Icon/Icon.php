@@ -25,7 +25,14 @@ class Icon extends ViewComponent
         return $icon;
     }
 
-    public static function create(): static {
+    public static function run()
+    {
+        $icon = new static();
+        $icon->setIcon('play');
+        return $icon;
+    }
+
+    public static function create() {
         $icon = new static();
         $icon->setIcon('plus-square');
         return $icon;

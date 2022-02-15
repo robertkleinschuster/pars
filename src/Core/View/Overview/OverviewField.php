@@ -18,13 +18,16 @@ class OverviewField extends ViewComponent
         $this->setTemplate(__DIR__ . '/templates/overview_field.phtml');
     }
 
-    public function setContent(string $content, ViewRenderer $renderer = null): ViewComponent
+    public function onRender(ViewRenderer $renderer)
     {
+        parent::onRender($renderer);
+        $this->buttons = '';
         foreach ($this->getMain()->getButtons() as $button) {
+            $button = $button->withModel($this->getParent()->getModel());
             $this->buttons .= $renderer->setComponent($button)->render();
         }
-        return parent::setContent($content);
     }
+
 
     public function getContent(): string
     {
