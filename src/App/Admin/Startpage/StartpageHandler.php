@@ -2,6 +2,8 @@
 namespace Pars\App\Admin\Startpage;
 
 use Pars\Core\Http\ClosureResponse;
+use Pars\Core\Http\HtmlResponse;
+use Pars\Core\View\Detail\Detail;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -10,6 +12,8 @@ class StartpageHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $detail = new Detail();
+        return create(HtmlResponse::class, render($detail));
         return create(ClosureResponse::class, $this->renderTemplate(...));
     }
 

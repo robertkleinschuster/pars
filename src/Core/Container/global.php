@@ -16,7 +16,7 @@ if (!function_exists('get')) {
 }
 
 if (!function_exists('url')) {
-    function url(string $path = '', $params = []): \Pars\Core\Url\UrlBuilder {
+    function url(string $path = '/', $params = []): \Pars\Core\Url\UrlBuilder {
         /* @var $builder \Pars\Core\Url\UrlBuilder */
         $builder = get(\Pars\Core\Url\UrlBuilder::class);
         return $builder->withPath($path)->withParams($params);

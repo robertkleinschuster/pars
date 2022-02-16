@@ -6,7 +6,6 @@ use Pars\Core\Application\Base\AbstractApplication;
 
 class ConsoleApplication extends AbstractApplication
 {
-    public const COMMAND_GENERATE_CLASS = 'generate:class';
 
     /**
      */
@@ -14,8 +13,10 @@ class ConsoleApplication extends AbstractApplication
     {
         $command = array_shift($params);
         if (!$command) {
-            echo "Available commands:\n";
-            echo " -> " . self::COMMAND_GENERATE_CLASS . ' <className>';
+            echo "\nCommands:";
+            foreach ($this->descriptionMap() as $command => $description) {
+                echo "\n - $command $description";
+            }
             echo "\n\n";
         } else {
             echo $this->createObject($command, $params)->run() . "\n\n";
@@ -24,18 +25,30 @@ class ConsoleApplication extends AbstractApplication
 
     /**
      */
-    protected function createObject(string $command, array $params): Generate\GenerateClass
+    protected function createObject(string $command, array $params): ConsoleInterface
     {
         $class = $this->classMap()[$command];
         return $this->container->get($class, $params);
     }
 
+
     protected function classMap(): array
     {
         return [
-            self::COMMAND_GENERATE_CLASS => Generate\GenerateClass::class
+            Generate\GenerateClass::command() => Generate\GenerateClass::class,
+            Development\Development::command() => Development\Development::class,
         ];
     }
+
+    protected function descriptionMap(): array
+    {
+        return [
+            Generate\GenerateClass::command() => Generate\GenerateClass::description(),
+            Development\Development::command() => Development\Development::description(),
+        ];
+    }
+
+
 
     protected function init()
     {

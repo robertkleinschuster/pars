@@ -1,0 +1,10 @@
+<?php /* @var $item \Pars\Core\View\Navigation\NavigationModel */ ?>
+<li class="navigation__item<?= $item->isList() ? ' toggle' : '' ?>">
+    <a href="<?= $item->link ?>"
+       class="navigation__link<?= $item->isActive() ? ' active' : '' ?>"><?= $item->value ?></a>
+    <?php if ($item->isList()): ?>
+        <span class="navigation__toggle"
+              onclick="toggle(this)" data-toggle="hidden" data-toggle-id="<?= $item->getId() ?>"
+        ></span>
+    <?php endif; ?>
+</li>

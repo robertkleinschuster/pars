@@ -2,10 +2,12 @@
 
 namespace Pars\Core\Application\Console\Generate;
 
+use Pars\Core\Application\Console\ConsoleInterface;
 use Pars\Core\Generator\EmptyClass\EmptyClassGenerator;
 
-class GenerateClass
+class GenerateClass implements ConsoleInterface
 {
+
 
     protected array $params = [];
 
@@ -20,12 +22,22 @@ class GenerateClass
 
     public function run(): string
     {
+        $result = 'missing: ' . self::description();
         if (isset($this->params[0])) {
             $generator = new EmptyClassGenerator();
             $generator->generateClass($this->params[0]);
-            return 'Generated: ' . $this->params[0];
-        } else {
-            return 'Error';
+            $result = 'Generated: ' . $this->params[0];
         }
+        return $result;
+    }
+
+    public static function description(): string
+    {
+        return '<className>';
+    }
+
+    public static function command(): string
+    {
+        return 'generate:class';
     }
 }

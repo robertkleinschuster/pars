@@ -6,7 +6,9 @@ class ViewEvent
     public const TARGET_SELF = 'self';
     public const TARGET_WINDOW = 'window';
     public const TARGET_ACTION = 'action';
+    public const TARGET_BLANK = 'blank';
     public const EVENT_CLICK = 'click';
+    public const EVENT_CHANGE = 'change';
 
     public string $event = self::EVENT_CLICK;
     public string $url = '';
@@ -42,6 +44,15 @@ class ViewEvent
         $event = create(static::class);
         $event->url = $uri;
         $event->target = self::TARGET_ACTION;
+        $event->title = $title;
+        return $event;
+    }
+
+    public static function blank(string $uri, string $title): static {
+        /* @var $event ViewEvent */
+        $event = create(static::class);
+        $event->url = $uri;
+        $event->target = self::TARGET_BLANK;
         $event->title = $title;
         return $event;
     }
