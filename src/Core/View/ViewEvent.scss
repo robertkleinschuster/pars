@@ -38,7 +38,7 @@ td[data-event]
   content: attr(data-title);
   position: absolute;
   opacity: 0;
-  top:-110%;
+  bottom: 110%;
   left: 0;
   background: #000000bb;
   color: #ffffff;
