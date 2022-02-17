@@ -5,7 +5,6 @@ namespace Pars\App\Admin;
 use Locale;
 use Pars\App\Admin\Detail\DetailHandler;
 use Pars\App\Admin\Login\LoginHandler;
-use Pars\App\Admin\Navigation\NavigationComponent;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
 use Pars\Core\Application\Base\AbstractApplication;
@@ -14,6 +13,7 @@ use Pars\Core\Middleware\ClearcacheMiddleware;
 use Pars\Core\Middleware\PhpinfoMiddleware;
 use Pars\Core\Stream\ClosureStream;
 use Pars\Core\Translator\Translator;
+use Pars\Core\View\Navigation\Navigation;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -59,9 +59,9 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         return $renderer->render();
     }
 
-    protected function createNavigationComponent(): NavigationComponent
+    protected function createNavigationComponent(): Navigation
     {
-        return $this->container->create(NavigationComponent::class);
+        return $this->container->create(Navigation::class);
     }
 
     protected function createViewRenderer(): ViewRenderer

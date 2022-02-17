@@ -236,7 +236,7 @@ class OverviewHandler implements RequestHandlerInterface
         }
         $toolbar = new Toolbar();
         $button = $toolbar->addIconButton(Icon::create());
-        $button->setWindow(url('/new'), __('new'));
+        $button->setLink(url('/new'), __('new'))->target = 'blank';
         $overview->toolbar = render($toolbar);
         $button = $overview->addIconButton(Icon::delete());
         $button->setWindow(url('/delete'), __('delete'));

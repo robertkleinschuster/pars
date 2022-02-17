@@ -1,0 +1,10 @@
+<ul class="navigation<?= $this->model->hidden ? ' hidden' : '' ?>" id="<?= $this->model->getId() ?>">
+    <?php foreach ($this->model->getLeft() as $item): ?>
+        <?php include "navigation_item.phtml"; ?>
+    <?php endforeach; ?>
+    <li class="navigation__filler"></li>
+    <?php foreach ($this->model->getRight() as $item): ?>
+        <?php include "navigation_item.phtml"; ?>
+    <?php endforeach; ?>
+</ul>
+<?php include 'subnavigation.phtml' ?>

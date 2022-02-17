@@ -1,5 +1,5 @@
 import "./AdminApplication.scss";
-import "./Navigation/NavigationComponent";
+import "../../Core/View/Navigation/NavigationComponent";
 import ViewEventHandler from "../../Core/View/ViewEventHandler";
 import OverviewComponent from "../../Core/View/Overview/OverviewComponent";
 import Toolbar from "../../Core/View/Toolbar/Toolbar";

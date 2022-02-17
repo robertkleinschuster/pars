@@ -113,6 +113,12 @@ class HttpFactory implements
     public function create(array $params, string $id): mixed
     {
         switch ($id) {
+            case ResponseInterface::class:
+                return new Response(...$params);
+            case HtmlResponse::class:
+                return new Response(200, [], $params[0]);
+            case RedirectResponse::class:
+                return new Response(302, ['Location' => $params[0]]);
             case NotFoundResponse::class:
                 return $this->createNotFoundResponse();
             case ClosureResponse::class:

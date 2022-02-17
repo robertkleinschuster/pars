@@ -1,15 +1,16 @@
 <?php
-namespace Pars\App\Admin\Navigation;
+namespace Pars\Core\View\Navigation;
 
 use Pars\Core\View\ViewComponent;
 
 /**
  * @method NavigationModel getModel()
  */
-class NavigationComponent extends ViewComponent
+class Navigation extends ViewComponent
 {
     public function __construct()
     {
+        parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/navigation.phtml');
         $this->model = new NavigationModel();
     }

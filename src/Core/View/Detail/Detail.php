@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View\Detail;
 
+use Pars\Core\View\Input\Input;
 use Pars\Core\View\ViewComponent;
 
 class Detail extends ViewComponent
@@ -37,5 +38,12 @@ class Detail extends ViewComponent
             $this->push($this->chapter[$name]);
         }
         return $this->chapter[$name];
+    }
+
+    public function addInput(string $key, string $name, string $chapter = null, string $group = null)
+    {
+        $input = create(Input::class);
+        $this->push($input);
+        return $input;
     }
 }

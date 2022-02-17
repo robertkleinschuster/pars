@@ -54,13 +54,30 @@ export default class ViewEventHandler {
             }
         }
 
+        this.fetch(viewEvent, url, options);
+    }
+
+    protected fetch(viewEvent: ViewEvent, url: URL, options: RequestInit) {
         document.body.classList.add('overlay');
-        fetch(url.toString(), options).then(r => r.text()).then(html => {
-            if (html) {
+        fetch(url.toString(), options)
+            .then(response => {
+                if (response.headers.has('Location')) {
+                    if (viewEvent.target == 'blank') {
+                        this.handleTargetBlank(viewEvent);
+                    } else {
+                        window.location.href = response.headers.get('Location');
+                    }
+                }
+                if (response.status == 500) {
+                    window.location.href = url.toString();
+                }
+                return response;
+            })
+            .then(r => r.text())
+            .then(html => {
+                document.body.classList.remove('overlay');
                 this.handleResponse(viewEvent, html);
-            }
-            document.body.classList.remove('overlay');
-        }).catch((e) => {
+            }).catch((e) => {
             console.error(e);
             window.location.href = url.toString();
         });
@@ -68,11 +85,30 @@ export default class ViewEventHandler {
 
     protected handleResponse(viewEvent: ViewEvent, html: string) {
         switch (viewEvent.target) {
-            case 'action':
+            case 'blank':
+                return this.handleTargetBlank(viewEvent);
             case 'self':
-                return this.handleTargetSelf(viewEvent, html);
+                return this.handleTargetSelf(viewEvent, html)
+            case 'action':
+                return this.handleTargetAction(viewEvent, html);
             case 'window':
                 return this.handleTargetWindow(viewEvent, html);
+        }
+    }
+
+    protected handleTargetBlank(viewEvent: ViewEvent) {
+        window.open(viewEvent.url, '_blank').focus();
+    }
+
+    protected handleTargetAction(viewEvent: ViewEvent, html: string) {
+        html = html.trim();
+        if (html) {
+            const target = this.element;
+            const tmpDiv = document.createElement('div');
+            tmpDiv.innerHTML = html;
+            this.element = tmpDiv.firstElementChild as HTMLElement;
+            this.init();
+            target.replaceWith(this.element);
         }
     }
 
@@ -82,12 +118,7 @@ export default class ViewEventHandler {
 
 
     protected handleTargetSelf(viewEvent: ViewEvent, html: string) {
-        const target = this.element;
-        const tmpDiv = document.createElement('div');
-        tmpDiv.innerHTML = html.trim();
-        this.element = tmpDiv.firstElementChild as HTMLElement;
-        this.init();
-        target.replaceWith(this.element);
         history.replaceState({}, '', viewEvent.url);
+        this.handleTargetAction(viewEvent, html);
     }
 }

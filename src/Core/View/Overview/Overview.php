@@ -4,6 +4,7 @@ namespace Pars\Core\View\Overview;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewModel;
+use Pars\Core\View\ViewRenderer;
 use SplDoublyLinkedList;
 
 class Overview extends ViewComponent
@@ -25,6 +26,15 @@ class Overview extends ViewComponent
         $this->push($this->thead);
         $this->push($this->tbody);
     }
+
+    public function onRender(ViewRenderer $renderer)
+    {
+        parent::onRender($renderer);
+        if (!$this->tbody->getModel()->isList()) {
+            $this->children = new SplDoublyLinkedList();
+        }
+    }
+
 
     public function getButtons(): SplDoublyLinkedList
     {
@@ -48,7 +58,7 @@ class Overview extends ViewComponent
     }
 
 
-    public function addField(string $name, string $key): OverviewField
+    public function addField(string $key, string $name = ''): OverviewField
     {
         $field = create(OverviewField::class, $key, $name);
         $this->thead->push($field);

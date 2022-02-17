@@ -1,5 +1,5 @@
 <?php
-namespace Pars\App\Admin\Navigation;
+namespace Pars\Core\View\Navigation;
 
 use Pars\Core\View\ViewModel;
 
@@ -7,6 +7,7 @@ class NavigationModel extends ViewModel
 {
     protected string $link = '';
     protected string $active = '';
+    protected string $align = 'left';
 
     public function addEntry(string $name, string $link): static
     {
@@ -16,6 +17,24 @@ class NavigationModel extends ViewModel
         $model->setLink($link);
         $this->push($model);
         return $model;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlign(): string
+    {
+        return $this->align;
+    }
+
+    /**
+     * @param string $align
+     * @return NavigationModel
+     */
+    public function setAlign(string $align): NavigationModel
+    {
+        $this->align = $align;
+        return $this;
     }
 
     /**
@@ -68,5 +87,22 @@ class NavigationModel extends ViewModel
         return $active;
     }
 
+    public function getLeft()
+    {
+        foreach ($this as $item) {
+            if ($item->getAlign() == 'left') {
+                yield $item;
+            }
+        }
+    }
+
+    public function getRight()
+    {
+        foreach ($this as $item) {
+            if ($item->getAlign() == 'right') {
+                yield $item;
+            }
+        }
+    }
 
 }
