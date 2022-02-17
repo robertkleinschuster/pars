@@ -71,4 +71,42 @@ class Overview extends ViewComponent
         $this->tbody->getModel()->push($model);
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getToolbar(): string
+    {
+        return $this->toolbar;
+    }
+
+    /**
+     * @param string $toolbar
+     * @return Overview
+     */
+    public function setToolbar(string $toolbar): Overview
+    {
+        $this->toolbar = $toolbar;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeading(): string
+    {
+        return $this->heading;
+    }
+
+    /**
+     * @param string $heading
+     * @return Overview
+     */
+    public function setHeading(string $heading): Overview
+    {
+        $this->heading = $heading;
+        return $this;
+    }
+
+
 }
