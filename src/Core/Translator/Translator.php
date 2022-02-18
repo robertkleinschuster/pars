@@ -2,6 +2,7 @@
 namespace Pars\Core\Translator;
 
 use Locale;
+use Pars\Core\Placeholder\PlaceholderHelper;
 
 class Translator
 {
@@ -15,18 +16,18 @@ class Translator
     public function translate(string $code, array $placeholder = []): string
     {
         $translations = $this->loadTranslations();
-        return $translations[$code] ?? $code;
+        return PlaceholderHelper::replacePlaceholder($translations[$code] ?? $code, $placeholder);
     }
 
-    public function translatepl(string $code, int $count, array $placeholder): string
+    public function translatepl(string $code, int $count, array $placeholder = []): string
     {
         $translations = $this->loadTranslations();
-        for ($i = $count; $i > 0; $i--) {
-            if (isset($translations["$code.$count"])) {
-                return $translations["$code.$count"];
+        for ($i = $count; $i >= 0; $i--) {
+            if (isset($translations["$code.$i"])) {
+                return PlaceholderHelper::replacePlaceholder($translations["$code.$i"] ?? $code, $placeholder);
             }
         }
-        return $translations[$code] ?? $code;
+        return PlaceholderHelper::replacePlaceholder($translations[$code] ?? $code, $placeholder);
     }
 
     protected function loadTranslations(): array

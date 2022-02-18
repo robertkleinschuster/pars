@@ -59,14 +59,12 @@ export default class ViewEventHandler {
 
     protected fetch(viewEvent: ViewEvent, url: URL, options: RequestInit) {
         document.body.classList.add('overlay');
+        options.redirect = 'manual';
+
         fetch(url.toString(), options)
             .then(response => {
-                if (response.headers.has('Location')) {
-                    if (viewEvent.target == 'blank') {
-                        this.handleTargetBlank(viewEvent);
-                    } else {
-                        window.location.href = response.headers.get('Location');
-                    }
+                if (response.type == 'opaqueredirect' && viewEvent.target != 'blank') {
+                    window.location.href = viewEvent.url;
                 }
                 if (response.status == 500) {
                     window.location.href = url.toString();

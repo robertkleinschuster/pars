@@ -68,4 +68,9 @@ class UrlBuilder
         }
         return $result;
     }
+
+    public function toString(): string
+    {
+        return $this->__toString();
+    }
 }
