@@ -2,8 +2,6 @@
 
 namespace Pars\Core\View;
 
-use Pars\Core\Router\Route;
-use Psr\Http\Message\UriInterface;
 use SplDoublyLinkedList;
 
 class ViewComponent
@@ -100,6 +98,8 @@ class ViewComponent
         return $this->event;
     }
 
+
+
     public function setEvent(?ViewEvent $event): ViewComponent
     {
         $this->event = $event;
@@ -135,16 +135,11 @@ class ViewComponent
     {
         $result = [];
         if ($this->getEvent()) {
-            foreach ($this->getEvent() as $key => $value) {
-                if ($value) {
-                    if ($key == 'url') {
-                        foreach (Route::findKeys($value) as $k) {
-                            $value = str_replace(":$k", $this->getValue($k), $value);
-                        }
-                    }
-                    $result[] = "data-$key='$value'";
-                }
+            $params = $this->getEvent()->getUrlParams();
+            foreach ($params as $param) {
+                $this->getEvent()->setUrlParam($param, $this->getValue($param));
             }
+            $result[] = $this->getEvent()->toAttributes();
         }
         if (count($this->class)) {
             $class = implode(' ', $this->class);

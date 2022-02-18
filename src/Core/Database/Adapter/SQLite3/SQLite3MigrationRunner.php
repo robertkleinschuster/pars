@@ -1,5 +1,5 @@
 <?php
-namespace Pars\Core\Database\Adapter;
+namespace Pars\Core\Database\Adapter\SQLite3;
 
 use SplStack;
 
@@ -25,7 +25,7 @@ class SQLite3MigrationRunner
     public function run()
     {
         foreach ($this->stack as $item) {
-            /* @var $item \Pars\Core\Database\Adapter\SQLite3Migration */
+            /* @var $item \Pars\Core\Database\Adapter\SQLite3\SQLite3Migration */
             $item->execute($this->adapter);
         }
     }

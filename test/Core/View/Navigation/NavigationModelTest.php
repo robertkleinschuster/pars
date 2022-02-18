@@ -1,5 +1,5 @@
 <?php
-namespace ParsTest\App\Admin\Navigation;
+namespace ParsTest\Core\View\Navigation;
 
 class NavigationModelTest extends \PHPUnit\Framework\TestCase
 {

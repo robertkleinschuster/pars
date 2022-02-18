@@ -1,6 +1,8 @@
 <?php
 namespace Pars\Core\View;
 
+use Pars\Core\Router\Route;
+
 class ViewEvent
 {
     public const TARGET_SELF = 'self';
@@ -19,6 +21,28 @@ class ViewEvent
     public function __construct()
     {
         $this->url = url();
+    }
+
+    public function getUrlParams(): array
+    {
+       return Route::findKeys($this->url);
+    }
+
+    public function setUrlParam(string $key, string $value): self
+    {
+       $this->url = str_replace(":$key", $value, $this->url);
+       return $this;
+    }
+
+    public function toAttributes(): string
+    {
+        $attributes = [];
+        foreach ($this as $key => $value) {
+            if ($value) {
+                $attributes[] = "data-$key='$value'";
+            }
+        }
+        return implode(' ', $attributes);
     }
 
     public static function window(string $uri, string $title): static

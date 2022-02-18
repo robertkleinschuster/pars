@@ -10,6 +10,7 @@ use Pars\Core\Http\ServerRequest;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
 use Pars\Core\Router\RequestRouter;
+use Pars\Core\Session\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -27,6 +28,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         $this->container = $container ?? new Container();
         $this->router = $this->container->get(RequestRouter::class);
         $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
+        $this->pipeline->pipe($this->container->get(SessionMiddleware::class));
         $this->init();
         $this->loadEntrypoints();
         $this->pipeline->pipe($this->router);
