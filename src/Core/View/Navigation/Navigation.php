@@ -1,22 +1,33 @@
 <?php
+
 namespace Pars\Core\View\Navigation;
 
-use Pars\Core\View\ViewComponent;
+use Pars\Core\View\Tree\Tree;
+use Pars\Core\View\ViewRenderer;
 
 /**
  * @method NavigationModel getModel()
+ * @property NavigationModel $model
+ * @method NavigationItem getItem()
  */
-class Navigation extends ViewComponent
+class Navigation extends Tree
 {
     public function __construct()
     {
         parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/navigation.phtml');
-        $this->model = new NavigationModel();
+        $this->setItemClass(NavigationItem::class);
+        $this->model = create(NavigationModel::class);
     }
 
-    public function addEntry(string $name, string $link): NavigationModel
+    public function onRender(ViewRenderer $renderer)
     {
-        return $this->getModel()->addEntry($name, $link);
+        $this->getItem()->getModel()->setActive($this->getModel()->getActive());
+        foreach ($this->getItem()->getModel()->getList() as $item) {
+            $item->setActive($this->getModel()->getActive());
+        }
+        parent::onRender($renderer);
     }
+
+
 }

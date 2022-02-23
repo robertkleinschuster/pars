@@ -10,35 +10,34 @@ use SplDoublyLinkedList;
 class Overview extends ViewComponent
 {
     public string $toolbar = '';
-    protected SplDoublyLinkedList $buttons;
+    public string $heading = '';
+    protected OverviewField $buttons;
     protected ViewComponent $thead;
     protected ViewComponent $tbody;
+    protected ViewComponent $trow;
 
     public function __construct()
     {
         parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/overview.phtml');
-        $this->buttons = new SplDoublyLinkedList();
         $this->thead = create(ViewComponent::class);
         $this->tbody = create(ViewComponent::class);
+        $this->trow = create(ViewComponent::class);
         $this->thead->setTemplate(__DIR__ . '/templates/overview_head.phtml');
-        $this->tbody->setTemplate(__DIR__ . '/templates/overview_body.phtml');
+        $this->tbody->setTag('tbody');
+        $this->trow->setTag('tr');
         $this->push($this->thead);
         $this->push($this->tbody);
+        $this->tbody->push($this->trow);
+        $this->buttons = $this->addField('');
     }
 
     public function onRender(ViewRenderer $renderer)
     {
         parent::onRender($renderer);
-        if (!$this->tbody->getModel()->isList()) {
+        if (!$this->trow->getModel()->isList()) {
             $this->children = new SplDoublyLinkedList();
         }
-    }
-
-
-    public function getButtons(): SplDoublyLinkedList
-    {
-        return $this->buttons;
     }
 
     public function addButton(string $name): OverviewButton
@@ -62,13 +61,13 @@ class Overview extends ViewComponent
     {
         $field = create(OverviewField::class, $key, $name);
         $this->thead->push($field);
-        $this->tbody->push($field);
+        $this->trow->push($field);
         return $field;
     }
 
     public function addEntry(ViewModel $model): static
     {
-        $this->tbody->getModel()->push($model);
+        $this->trow->getModel()->push($model);
         return $this;
     }
 

@@ -5,14 +5,19 @@
       width: 100%;
       font-weight: 600;
       padding: .25rem 0;
+      margin: .25rem 0;
       border-bottom: 1px solid #bbb;
+    }
+    &__content {
+      display: flex;
+      flex-direction: column;
     }
   }
 
   &__group {
     &__name {
       position: relative;
-      margin: .75rem 0;
+      margin: .25rem 0;
       padding-left: 1rem;
     }
 
@@ -23,6 +28,11 @@
       top: 50%;
       left: 0;
       border-bottom: 1px solid #939393;
+    }
+
+    &__content {
+      display: flex;
+      gap: 1rem;
     }
   }
 }

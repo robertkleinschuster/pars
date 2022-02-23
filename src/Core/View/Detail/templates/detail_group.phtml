@@ -4,5 +4,7 @@ namespace Pars\Core\View\Detail;
 /* @var $this DetailGroup */ ?>
 <div class="detail__group">
     <p class="detail__group__name"><?= $this->getName() ?></p>
-    <?= $this->getContent() ?>
+    <div class="detail__group__content">
+        <?= $this->getContent() ?>
+    </div>
 </div>

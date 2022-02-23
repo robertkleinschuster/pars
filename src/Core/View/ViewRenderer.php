@@ -16,7 +16,11 @@ class ViewRenderer
         if (!$this->component) {
             throw new \Exception('No component set!');
         }
-        return $this->renderComponent($this->component);
+        if ($this->component->getModel()->isList()) {
+            return $this->renderList($this->component);
+        } else {
+            return $this->renderComponent($this->component);
+        }
     }
 
     public function setComponent(ViewComponent $component): ViewRenderer
@@ -27,35 +31,43 @@ class ViewRenderer
 
     protected function renderComponent(ViewComponent $component)
     {
+        $component = clone $component;
         $component->onRender(clone $this);
+        $component->setContent($this->renderChildren($component));
+        return trim($this->renderTemplate($component));
+    }
+
+    protected function renderChildren(ViewComponent $component): string
+    {
         $result = '';
-        if (!$component->getContent()) {
-            if ($component->getModel()->isList()) {
-                foreach ($component->getModel() as $model) {
-                    $result .= $this->renderComponent($component->withModel($model));
-                }
+
+        foreach ($component->getChildren() as $child) {
+            if ($child->isList()) {
+                $result .= trim($this->renderList($child));
             } else {
-                foreach ($component->getChildren() as $child) {
-                    /* @var $child ViewComponent */
-                    $result .= $this->renderComponent($child);
-                }
+                $result .= trim($this->renderComponent($child));
             }
-            $component->setContent($result);
         }
 
-        if ($component->getTemplate()) {
-            $result = $this->renderTemplate($component);
+        return $result;
+    }
+
+    protected function renderList(ViewComponent $component): string
+    {
+        $result = '';
+        foreach ($component->getModel()->getList() as $model) {
+            $result .= trim($this->renderComponent($component->withModel($model)));
         }
         return $result;
     }
 
     protected function renderTemplate(ViewComponent $component)
     {
-        return (function (ViewComponent $component) {
+        $template = $component->getTemplate();
+        return (function () use ($template) {
             ob_start();
-            $model = $component->getModel();
-            include $component->getTemplate();
+            include $template;
             return ob_get_clean();
-        })(...)->call($component, $component);
+        })(...)->call($component);
     }
 }

@@ -1,0 +1,12 @@
+.input {
+  display: inline-flex;
+  flex-direction: column;
+  flex-grow: 1;
+  &__field {
+    flex-grow: 1;
+  }
+
+  &__label {
+
+  }
+}

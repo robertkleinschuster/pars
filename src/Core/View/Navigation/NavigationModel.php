@@ -1,18 +1,17 @@
 <?php
 namespace Pars\Core\View\Navigation;
 
-use Pars\Core\View\ViewModel;
+use Pars\Core\View\Tree\TreeModel;
 
-class NavigationModel extends ViewModel
+class NavigationModel extends TreeModel
 {
     protected string $link = '';
     protected string $active = '';
     protected string $align = 'left';
 
-    public function addEntry(string $name, string $link): static
+    public function addEntry(string $name, string $link = ''): static
     {
         $model = new static();
-        $model->setActive($this->active);
         $model->setValue($name);
         $model->setLink($link);
         $this->push($model);
@@ -85,6 +84,11 @@ class NavigationModel extends ViewModel
             }
         }
         return $active;
+    }
+
+    public function getActive()
+    {
+        return $this->active;
     }
 
     public function getLeft()

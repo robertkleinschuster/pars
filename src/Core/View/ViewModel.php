@@ -17,6 +17,9 @@ class ViewModel implements IteratorAggregate
         return $this;
     }
 
+    /**
+     * @return SplDoublyLinkedList|static[]
+     */
     public function getList(): SplDoublyLinkedList
     {
         if (!isset($this->list)) {

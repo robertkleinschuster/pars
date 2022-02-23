@@ -22,11 +22,45 @@ class OverviewField extends ViewComponent
     {
         parent::onRender($renderer);
         $this->buttons = '';
-        foreach ($this->getMain()->getButtons() as $button) {
-            $button = $button->withModel($this->getParent()->getModel());
-            $this->buttons .= $renderer->setComponent($button)->render();
-        }
+
     }
+
+    /**
+     * @return string
+     */
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key
+     * @return OverviewField
+     */
+    public function setKey(string $key): OverviewField
+    {
+        $this->key = $key;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return OverviewField
+     */
+    public function setName(string $name): OverviewField
+    {
+        $this->name = $name;
+        return $this;
+    }
+
 
 
     public function getContent(): string

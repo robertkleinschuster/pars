@@ -3,4 +3,6 @@ namespace Pars\Core\View;
 
 /* @var $this ViewComponent */ ?>
 
-<<?= $this->tag ?> <?= $this->attr() ?>><?= $this->getContent() ?></<?= $this->tag ?>>
+<<?= $this->tag ?><?= $this->attr() ?>>
+<?= $this->getContent() ?>
+</<?= $this->tag ?>>

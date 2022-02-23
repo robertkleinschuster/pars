@@ -8,11 +8,12 @@ class Input extends ViewComponent
 
     public string $type = 'text';
     public string $key = '';
+    public string $label = '';
 
     public function __construct()
     {
         parent::__construct();
-        $this->tag = 'input';
+        $this->setTemplate(__DIR__ . '/templates/input.phtml');
     }
 
     protected function attr(): string

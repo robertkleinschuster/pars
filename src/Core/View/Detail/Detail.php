@@ -40,10 +40,13 @@ class Detail extends ViewComponent
         return $this->chapter[$name];
     }
 
-    public function addInput(string $key, string $name, string $chapter = null, string $group = null)
+    public function addInput(string $key, string $label, string $chapter = null, string $group = null)
     {
+        /* @var Input $input */
         $input = create(Input::class);
-        $this->push($input);
+        $input->key = $key;
+        $input->label = $label;
+        $this->push($input, $chapter, $group);
         return $input;
     }
 }

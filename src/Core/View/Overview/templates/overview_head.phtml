@@ -4,8 +4,7 @@ use Pars\Core\View\ViewComponent;
 
 /* @var $this ViewComponent */ ?>
 <thead class="overview__head">
-<th></th>
-<?php foreach ($this->children as $child): ?>
-    <th><?= $child->name ?></th>
+<?php foreach ($this->getChildren() as $child): ?>
+    <th><?= $child->getName() ?></th>
 <?php endforeach; ?>
 </thead>

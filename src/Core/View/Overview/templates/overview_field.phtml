@@ -2,13 +2,4 @@
 namespace Pars\Core\View\Overview;
 
 /* @var $this OverviewField */ ?>
-<?php if ($this->isFirstChild()): ?>
-<tr>
-    <td class="overview__buttons">
-        <?= $this->buttons ?>
-    </td>
-    <?php endif; ?>
-    <td class="overview__field" <?= $this->attr() ?>><?= $this->getContent() ?></td>
-    <?php if ($this->isLastChild()): ?>
-</tr>
-<?php endif; ?>
+<td class="overview__field"<?= $this->attr() ?>><?= $this->getContent() ?></td>

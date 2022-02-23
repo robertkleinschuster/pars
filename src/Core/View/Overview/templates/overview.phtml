@@ -3,8 +3,8 @@ namespace Pars\Core\View\Overview;
 
 /* @var $this Overview */ ?>
 <div class="overview component">
-    <h1><?= $this->heading ?></h1>
-    <?= $this->toolbar ?>
+    <h1><?= $this->getHeading() ?></h1>
+    <?= $this->getToolbar() ?>
     <table class="overview__table">
         <?= $this->getContent() ?>
     </table>

@@ -13,6 +13,7 @@ class ViewComponent
     protected ?self $parent = null;
     protected ?self $main = null;
     protected string $content = '';
+
     protected string $tag = 'div';
     protected array $class = [];
 
@@ -32,21 +33,47 @@ class ViewComponent
         return $this->content;
     }
 
+    public function setContent(string $content): ViewComponent
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+
+    public function isList(): bool
+    {
+        return $this->getModel()->isList();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag(): string
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param string $tag
+     * @return ViewComponent
+     */
+    public function setTag(string $tag): ViewComponent
+    {
+        $this->tag = $tag;
+        return $this;
+    }
+
 
     public function getMain(): ?ViewComponent
     {
         return $this->main;
     }
 
-    public function onRender(ViewRenderer $renderer) {
-
-    }
-
-    public function setContent(string $content): ViewComponent
+    public function onRender(ViewRenderer $renderer)
     {
-        $this->content = $content;
-        return $this;
+
     }
+
 
     public function isFirstChild(): bool
     {
@@ -61,7 +88,7 @@ class ViewComponent
     public function getModel(): ViewModel
     {
         if (!isset($this->model)) {
-            $this->model = create(ViewModel::class);
+            $this->model = new ViewModel();
         }
         return $this->model;
     }
@@ -77,6 +104,9 @@ class ViewComponent
         return $this;
     }
 
+    /**
+     * @return SplDoublyLinkedList|static[]
+     */
     public function getChildren(): SplDoublyLinkedList
     {
         if (!isset($this->children)) {
@@ -99,7 +129,6 @@ class ViewComponent
     }
 
 
-
     public function setEvent(?ViewEvent $event): ViewComponent
     {
         $this->event = $event;
@@ -111,14 +140,21 @@ class ViewComponent
         $clone = clone $this;
         $clone->parent = $this;
         $clone->model = $model;
-        if (isset($this->event)) {
-            $clone->event = clone $this->event;
-        }
-        if (isset($this->children)) {
-            $clone->children = clone $this->children;
-        }
         $clone->updateParents();
         return $clone;
+    }
+
+    public function __clone()
+    {
+        if (isset($this->children)) {
+            $this->children = clone $this->children;
+        }
+        if (isset($this->model)) {
+            $this->model = clone $this->model;
+        }
+        if (isset($this->event)) {
+            $this->event = clone $this->event;
+        }
     }
 
     private function updateParents()
@@ -145,7 +181,11 @@ class ViewComponent
             $class = implode(' ', $this->class);
             $result[] = "class='$class'";
         }
-        return implode(' ', $result);
+        if (!empty($result)) {
+            return ' ' . implode(' ', $result);
+        } else {
+            return '';
+        }
     }
 
     public function getValue(string $key)
