@@ -1,6 +1,7 @@
 <?php
 namespace Pars\Core\View\Navigation;
 
+use GuzzleHttp\Psr7\Uri;
 use Pars\Core\View\Tree\TreeModel;
 
 class NavigationModel extends TreeModel
@@ -62,22 +63,12 @@ class NavigationModel extends TreeModel
         return $this;
     }
 
-    /**
-     * @param string $active
-     * @return NavigationModel
-     */
-    public function setActive(string $active): NavigationModel
-    {
-        $this->active = $active;
-        return $this;
-    }
-
     public function isActive(): bool
     {
-        $active = rtrim($this->link, '/') === rtrim($this->active, '/');
-
+        $currentUri = new Uri($_SERVER['REQUEST_URI']);
+        $active = rtrim($this->link, '/') === rtrim($currentUri->getPath(), '/');
         if (!$active) {
-            foreach ($this as $item) {
+            foreach ($this->getList() as $item) {
                 if ($item->isActive()) {
                     return true;
                 }
@@ -86,10 +77,6 @@ class NavigationModel extends TreeModel
         return $active;
     }
 
-    public function getActive()
-    {
-        return $this->active;
-    }
 
     public function getLeft()
     {

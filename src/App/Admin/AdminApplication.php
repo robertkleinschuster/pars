@@ -38,18 +38,17 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
             $this->main = $response->getBody()->getContents();
             $this->language = Locale::getPrimaryLanguage($locale);
             $this->title = __('admin.title');
-            $this->header = $this->renderHeader($request->getUri()->getPath());
+            $this->header = $this->renderHeader();
             return $response->withBody(new ClosureStream($this->renderLayout(...)));
         }
     }
 
 
-    protected function renderHeader(string $activePath): string
+    protected function renderHeader(): string
     {
         $renderer = $this->createViewRenderer();
         $navigation = $this->createNavigationComponent();
 
-        $navigation->getModel()->setActive(url($activePath));
 
         $navigation->addEntry(__('admin.navigation.startpage'), url())
             ->addEntry('startpage subitem', url('/start-subitem'));

@@ -17,12 +17,4 @@ class NavigationItem extends TreeItem
         $this->setTreeClass(Navigation::class);
         $this->model = new NavigationModel();
     }
-    public function onRender(ViewRenderer $renderer)
-    {
-        parent::onRender($renderer);
-        foreach ($this->getModel()->getList() as $item) {
-            $item->setActive($this->getModel()->getActive());
-        }
-    }
-
 }

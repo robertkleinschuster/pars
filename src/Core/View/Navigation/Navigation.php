@@ -24,7 +24,6 @@ class Navigation extends Tree
 
     public function onRender(ViewRenderer $renderer)
     {
-        $this->getItem()->getModel()->setActive($this->getModel()->getActive());
         parent::onRender($renderer);
         if ($this->getParent() instanceof NavigationItem) {
             $this->isParent = true;
