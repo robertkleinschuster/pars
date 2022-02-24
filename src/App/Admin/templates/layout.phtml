@@ -16,6 +16,9 @@
             document.getElementById(id).classList.toggle(cssClass);
         }
     </script>
+    <script id="events" type="application/json">
+        <?= $this->events ?>
+    </script>
     <?php foreach ($this->entrypoints['entrypoints']['admin']['css'] ?? [] as $file): ?>
         <link rel="stylesheet" href="<?= $file ?>"
     <?php endforeach; ?>

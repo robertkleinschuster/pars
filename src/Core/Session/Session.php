@@ -2,6 +2,8 @@
 
 namespace Pars\Core\Session;
 
+use SplDoublyLinkedList;
+
 class Session
 {
     protected string $name = 'sid';
@@ -28,10 +30,14 @@ class Session
         return $this;
     }
 
-
-    public function get(string $key)
+    public function get(string $key, $default = null)
     {
-        return $_SESSION[$this->namespace][$key] ?? null;
+        return $_SESSION[$this->namespace][$key] ?? $default;
+    }
+
+    public function getArray(string $key): array
+    {
+        return $this->get($key, []);
     }
 
 }

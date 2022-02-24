@@ -28,16 +28,30 @@ export default class ViewEventHandler {
 
     public trigger(viewEvent: ViewEvent, eventTarget: HTMLElement = null) {
         const url = new URL(viewEvent.url, document.baseURI);
+        const options: RequestInit = {};
+
+        options.headers = new Headers()
 
         if (viewEvent.handler) {
-            url.searchParams.append('handler', viewEvent.handler);
+            options.headers.set('handler', viewEvent.handler);
         }
 
         if (viewEvent.target) {
-            url.searchParams.append('target', viewEvent.target);
+            options.headers.set('target', viewEvent.target);
         }
 
-        const options: RequestInit = {};
+        if (viewEvent.title) {
+            options.headers.set('title', encodeURIComponent(viewEvent.title));
+        }
+
+        if (viewEvent.url) {
+            options.headers.set('url', viewEvent.url);
+        }
+
+        if (viewEvent.id) {
+            options.headers.set('id', viewEvent.id);
+        }
+
         if (viewEvent.target == 'action') {
             options.method = 'post';
         }

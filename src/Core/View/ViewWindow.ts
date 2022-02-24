@@ -28,6 +28,8 @@ export default class ViewWindow extends WinBox {
     }
 
     onclose = (force: boolean) => {
+        this.viewEvent.target = 'close';
+        this.viewEventHandler.trigger(this.viewEvent);
         if (this.parent) {
             this.parent.reload();
         }

@@ -17,10 +17,11 @@ class ViewEvent
     public string $handler = '';
     public string $target = self::TARGET_SELF;
     public string $title = '';
-
+    public string $id = '';
     public function __construct()
     {
         $this->url = url();
+        $this->id = uniqid();
     }
 
     public function getUrlParams(): array

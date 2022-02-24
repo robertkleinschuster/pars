@@ -4,6 +4,7 @@ export default class {
     public handler: string;
     public target: string;
     public title: string = '';
+    public id: string = '';
 
     constructor(data: object = {}) {
         for (const [key, value] of Object.entries(data)) {
