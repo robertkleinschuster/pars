@@ -29,7 +29,9 @@ class Overview extends ViewComponent
         $this->push($this->thead);
         $this->push($this->tbody);
         $this->tbody->push($this->trow);
-        $this->buttons = $this->addField('');
+        $this->buttons = $this->createField();
+        $this->buttons->setTemplate(__DIR__ . '/templates/overview_buttons.phtml');
+        $this->pushField($this->buttons);
     }
 
     public function onRender(ViewRenderer $renderer)
@@ -42,7 +44,7 @@ class Overview extends ViewComponent
 
     public function addButton(string $name): OverviewButton
     {
-        $button = create(OverviewButton::class);
+        $button = $this->createButton();
         $button->setContent($name);
         $this->buttons->push($button);
         return $button;
@@ -50,19 +52,36 @@ class Overview extends ViewComponent
 
     public function addIconButton(Icon $icon): OverviewButton
     {
-        $button = create(OverviewButton::class);
+        $button = $this->createButton();
         $button->push($icon);
         $this->buttons->push($button);
         return $button;
     }
 
+    protected function createButton(): OverviewButton
+    {
+        return create(OverviewButton::class);
+    }
+
+    protected function createField(): OverviewField
+    {
+        return create(OverviewField::class);
+    }
 
     public function addField(string $key, string $name = ''): OverviewField
     {
-        $field = create(OverviewField::class, $key, $name);
+        $field = $this->createField();
+        $field->setKey($key);
+        $field->setName($name);
+        $this->pushField($field);
+        return $field;
+    }
+
+    protected function pushField(ViewComponent $field): static
+    {
         $this->thead->push($field);
         $this->trow->push($field);
-        return $field;
+        return $this;
     }
 
     public function addEntry(ViewModel $model): static

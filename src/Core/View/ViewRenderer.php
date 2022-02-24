@@ -33,7 +33,9 @@ class ViewRenderer
     {
         $component = clone $component;
         $component->onRender(clone $this);
-        $component->setContent($this->renderChildren($component));
+        if (!$component->getContent()) {
+            $component->setContent($this->renderChildren($component));
+        }
         return trim($this->renderTemplate($component));
     }
 

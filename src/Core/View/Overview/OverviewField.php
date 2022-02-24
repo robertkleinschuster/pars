@@ -1,28 +1,18 @@
 <?php
+
 namespace Pars\Core\View\Overview;
 
 use Pars\Core\View\ViewComponent;
-use Pars\Core\View\ViewRenderer;
 
 class OverviewField extends ViewComponent
 {
-    protected string $buttons = '';
-    protected string $key;
-    protected string $name;
+    protected string $key = '';
+    protected string $name = '';
 
-    public function __construct(string $key, string $name)
+    public function __construct()
     {
         parent::__construct();
-        $this->key = $key;
-        $this->name = $name;
         $this->setTemplate(__DIR__ . '/templates/overview_field.phtml');
-    }
-
-    public function onRender(ViewRenderer $renderer)
-    {
-        parent::onRender($renderer);
-        $this->buttons = '';
-
     }
 
     /**
@@ -62,10 +52,13 @@ class OverviewField extends ViewComponent
     }
 
 
-
     public function getContent(): string
     {
-        return $this->getParent()->getModel()->get($this->key);
+        if ($this->getValue($this->key)) {
+            return $this->getValue($this->key);
+        } else {
+            return parent::getContent();
+        }
     }
 
     public function getValue(string $key)
