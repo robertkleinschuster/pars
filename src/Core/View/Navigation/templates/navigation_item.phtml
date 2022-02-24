@@ -3,7 +3,10 @@
  * @var $this \Pars\Core\View\Navigation\NavigationItem
  */
 ?>
-<li class="navigation__item">
+<li class="navigation__item"
+    onmouseenter="this.classList.add('hover')"
+    onmouseleave="this.classList.remove('hover')"
+>
     <a href="<?= $this->getModel()->getLink() ?>" class="navigation__link <?= $this->getModel()->isActive() ? ' active' : '' ?>">
         <?= $this->getModel()->getValue() ?>
     </a>

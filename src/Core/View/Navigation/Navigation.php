@@ -12,6 +12,8 @@ use Pars\Core\View\ViewRenderer;
  */
 class Navigation extends Tree
 {
+    protected bool $isParent = false;
+
     public function __construct()
     {
         parent::__construct();
@@ -23,10 +25,10 @@ class Navigation extends Tree
     public function onRender(ViewRenderer $renderer)
     {
         $this->getItem()->getModel()->setActive($this->getModel()->getActive());
-        foreach ($this->getItem()->getModel()->getList() as $item) {
-            $item->setActive($this->getModel()->getActive());
-        }
         parent::onRender($renderer);
+        if ($this->getParent() instanceof NavigationItem) {
+            $this->isParent = true;
+        }
     }
 
 

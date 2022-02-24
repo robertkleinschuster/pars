@@ -52,11 +52,12 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         $navigation->getModel()->setActive(url($activePath));
 
         $navigation->addEntry(__('admin.navigation.startpage'), url())
-        ->addEntry('startpage subitem', url('/start-subitem'));
+            ->addEntry('startpage subitem', url('/start-subitem'));
         $navigation->addEntry(__('admin.navigation.content'), url('/content'));
-        $navigation->addEntry(__('admin.navigation.system'), url('/system'))
-            ->addEntry('system subitem', url('/system-subitem'))
-            ->addEntry('system subsubitem', url('/system-subsubitem'));
+        $system = $navigation->addEntry(__('admin.navigation.system'), url('/system'));
+        $system->addEntry('system subitem 1', url('/system-subitem'));
+        $subitem = $system->addEntry('system subitem 2', url('/system-subitem'));
+        $subitem->addEntry('system subsubitem', url('/system-subsubitem'));
         $renderer->setComponent($navigation);
         return $renderer->render();
     }
