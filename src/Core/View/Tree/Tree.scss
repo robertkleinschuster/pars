@@ -69,6 +69,7 @@
   &__value {
     padding: .25rem;
     margin: 0;
+    transition: .1s background-color;
   }
 
   &__value:hover {
