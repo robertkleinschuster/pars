@@ -1,13 +1,14 @@
 <?php
 namespace Pars\Core\View\Overview;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewModel;
 use Pars\Core\View\ViewRenderer;
 use SplDoublyLinkedList;
 
-class Overview extends ViewComponent
+class Overview extends ViewComponent implements EntrypointInterface
 {
     public string $toolbar = '';
     public string $heading = '';
@@ -33,6 +34,12 @@ class Overview extends ViewComponent
         $this->buttons->setTemplate(__DIR__ . '/templates/overview_buttons.phtml');
         $this->pushField($this->buttons);
     }
+
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/OverviewComponent.ts';
+    }
+
 
     public function onRender(ViewRenderer $renderer)
     {

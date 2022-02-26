@@ -2,6 +2,7 @@
 namespace Pars\App\Admin\Overview;
 
 use Pars\Core\Http\ClosureResponse;
+use Pars\Core\Http\HtmlResponse;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
 use Pars\Core\View\Toolbar\Toolbar;
@@ -39,13 +40,13 @@ class OverviewHandler implements RequestHandlerInterface
         } else {
             $this->heading = __('overview');
         }
-        return create(ClosureResponse::class, $this->renderOverview(...));
+        return create(HtmlResponse::class, $this->renderOverview());
     }
 
     public function renderOverview()
     {
         $overview = new Overview();
-        $overview->getModel()->set('heading', $this->heading);
+        $overview->setHeading('my heading');
         foreach ($this->entries as $entry) {
             $model = new ViewModel();
             foreach ($entry as $key => $value) {

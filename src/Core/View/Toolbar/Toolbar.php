@@ -1,10 +1,11 @@
 <?php
 namespace Pars\Core\View\Toolbar;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\ViewComponent;
 
-class Toolbar extends ViewComponent
+class Toolbar extends ViewComponent implements EntrypointInterface
 {
     public function __construct()
     {
@@ -12,6 +13,10 @@ class Toolbar extends ViewComponent
         $this->setTemplate(__DIR__ . '/templates/toolbar.phtml');
     }
 
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/Toolbar.ts';
+    }
 
     public function addButton(string $name): ToolbarButton
     {

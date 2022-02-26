@@ -2,15 +2,22 @@
 
 namespace Pars\Core\View\Icon;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\ViewComponent;
 
-class Icon extends ViewComponent
+class Icon extends ViewComponent implements EntrypointInterface
 {
     public function __construct()
     {
         parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/icon.phtml');
     }
+
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/Icon.ts';
+    }
+
 
     public function setIcon(string $icon)
     {

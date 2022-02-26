@@ -11,6 +11,7 @@ use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
 use Pars\Core\Router\RequestRouter;
 use Pars\Core\Session\SessionMiddleware;
+use Pars\Core\View\Layout\Layout;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -21,16 +22,16 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     protected Container $container;
     protected MiddlewarePipeline $pipeline;
     protected RequestRouter $router;
-    protected array $entrypoints = [];
+    protected Layout $layout;
 
     public function __construct(Container $container = null)
     {
         $this->container = $container ?? new Container();
         $this->router = $this->container->get(RequestRouter::class);
+        $this->layout = $this->container->get(Layout::class);
         $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
         $this->pipeline->pipe($this->container->get(SessionMiddleware::class));
         $this->init();
-        $this->loadEntrypoints();
         $this->pipeline->pipe($this->router);
         $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));
     }
@@ -54,20 +55,8 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         return $this->container->get(NotFoundResponse::class);
     }
 
-    protected function loadEntrypoints()
+    public function renderLayout(): string
     {
-        if (file_exists('public/static/entrypoints.json')) {
-            $entrypoints = json_decode(file_get_contents('public/static/entrypoints.json'), true);
-            if (is_array($entrypoints)) {
-                $this->entrypoints = $entrypoints;
-            }
-        }
-    }
-
-    protected function addEntrypointHeader(ResponseInterface $response, string $entrypoint)
-    {
-        foreach ($this->entrypoints['entrypoints'][$entrypoint]['css'] ?? [] as $cssFile) {
-            $response = $response->withAddedHeader('Link', "<$cssFile>; rel=\"preload\"; as=\"style\"");
-        }
+        return render($this->layout);
     }
 }

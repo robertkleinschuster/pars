@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View\Navigation;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\Tree\Tree;
 use Pars\Core\View\ViewRenderer;
 
@@ -10,7 +11,7 @@ use Pars\Core\View\ViewRenderer;
  * @property NavigationModel $model
  * @method NavigationItem getItem()
  */
-class Navigation extends Tree
+class Navigation extends Tree implements EntrypointInterface
 {
     protected bool $isParent = false;
 
@@ -21,6 +22,12 @@ class Navigation extends Tree
         $this->setItemClass(NavigationItem::class);
         $this->model = create(NavigationModel::class);
     }
+
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/NavigationComponent.ts';
+    }
+
 
     public function onRender(ViewRenderer $renderer)
     {

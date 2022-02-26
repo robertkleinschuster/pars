@@ -1,7 +1,5 @@
 @use "src/Core/View/mixin" as mixin;
 
-
-
 .navigation:not(.sub) > .navigation__item > .sub.navigation {
   left: 0;
   @include mixin.hover{
@@ -23,10 +21,6 @@
   &__item {
     padding: .25rem .5rem;
     position: relative;
-  }
-
-  &__item.toggle {
-    padding-right: 2rem;
   }
 
   &__link {
@@ -57,29 +51,6 @@
   &__link:hover:after {
     opacity: 1;
     bottom: -1px;
-  }
-
-  &__toggle {
-    position: relative;
-  }
-
-  &__toggle:after {
-    content: '';
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    left: 10px;
-    top: 2px;
-    border-bottom: 1px solid #fff;
-    border-right: 1px solid #fff;
-    transform: rotate(45deg);
-    cursor: pointer;
-    transition: .2s ease-in-out;
-  }
-
-  &__toggle.active:after {
-    transform: rotate(-135deg);
-    top: 7px;
   }
 
   @include mixin.hover{

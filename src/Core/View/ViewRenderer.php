@@ -11,6 +11,8 @@ class ViewRenderer
     protected string $value = '';
     protected string $tag = 'div';
 
+    public static array $entrypoints = [];
+
     public function render(): string
     {
         if (!$this->component) {
@@ -31,6 +33,9 @@ class ViewRenderer
 
     protected function renderComponent(ViewComponent $component)
     {
+        if ($component instanceof EntrypointInterface) {
+            self::$entrypoints[] = Entrypoints::buildEntrypointName(Entrypoints::buildEntrypoint($component::getEntrypoint()));
+        }
         $component = clone $component;
         $component->onRender(clone $this);
         if (!$component->getContent()) {

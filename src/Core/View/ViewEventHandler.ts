@@ -1,21 +1,17 @@
 import './ViewEvent.scss';
 import ViewEvent from "./ViewEvent";
 import ViewWindow from "./ViewWindow";
-
+import ViewComponent from "./ViewComponent";
 
 export default class ViewEventHandler {
-    protected url: URL;
-    protected element: HTMLElement;
-    protected window: ViewWindow;
+    protected component: ViewComponent;
 
-    constructor(url: URL, element: HTMLElement, window: ViewWindow = null) {
-        this.url = url;
-        this.element = element;
-        this.window = window;
+    constructor(component: ViewComponent) {
+        this.component = component;
     }
 
     public init() {
-        this.element.querySelectorAll('[data-event]').forEach(this.initEvent.bind(this));
+        this.component.element.querySelectorAll('[data-event]').forEach(this.initEvent.bind(this));
     }
 
     protected initEvent(element: HTMLElement) {
@@ -82,6 +78,9 @@ export default class ViewEventHandler {
                 }
                 if (response.status == 500) {
                     window.location.href = url.toString();
+                } else {
+                    this.injectJs(response);
+                    this.injectCss(response);
                 }
                 return response;
             })
@@ -94,6 +93,7 @@ export default class ViewEventHandler {
             window.location.href = url.toString();
         });
     }
+
 
     protected handleResponse(viewEvent: ViewEvent, html: string) {
         switch (viewEvent.target) {
@@ -115,17 +115,17 @@ export default class ViewEventHandler {
     protected handleTargetAction(viewEvent: ViewEvent, html: string) {
         html = html.trim();
         if (html) {
-            const target = this.element;
+            const target = this.component.element;
             const tmpDiv = document.createElement('div');
             tmpDiv.innerHTML = html;
-            this.element = tmpDiv.firstElementChild as HTMLElement;
-            this.init();
-            target.replaceWith(this.element);
+            this.component.element = tmpDiv.firstElementChild as HTMLElement;
+            target.replaceWith(this.component.element);
+            this.component.init();
         }
     }
 
     protected handleTargetWindow(viewEvent: ViewEvent, html: string) {
-        return new ViewWindow(viewEvent, html, this.window);
+        return new ViewWindow(viewEvent, html, this.component.window);
     }
 
 
@@ -133,4 +133,37 @@ export default class ViewEventHandler {
         history.replaceState({}, '', viewEvent.url);
         this.handleTargetAction(viewEvent, html);
     }
+
+
+    private injectJs(response: Response) {
+        const jsFiles = response.headers.get('inject-js');
+
+        if (jsFiles) {
+            const jsFilesList = jsFiles.split(", ");
+
+            jsFilesList.forEach(file => {
+                if (!document.body.querySelector(`script[src='${file}']`)) {
+                    const script = document.createElement('script');
+                    script.src = file;
+                    document.body.append(script);
+                }
+            });
+        }
+    }
+
+    private injectCss(response: Response) {
+        const cssFiles = response.headers.get('inject-css');
+        if (cssFiles) {
+            const cssFilesList = cssFiles.split(", ");
+            cssFilesList.forEach(file => {
+                if (!document.head.querySelector(`link[href='${file}']`)) {
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = file;
+                    document.head.append(link);
+                }
+            });
+        }
+    }
+
 }

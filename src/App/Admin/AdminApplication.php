@@ -15,7 +15,6 @@ use Pars\Core\Session\SessionTrait;
 use Pars\Core\Stream\ClosureStream;
 use Pars\Core\Translator\Translator;
 use Pars\Core\View\Navigation\Navigation;
-use Pars\Core\View\ViewEvent;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,45 +22,20 @@ use Psr\Http\Message\ServerRequestInterface;
 class AdminApplication extends AbstractApplication implements PathApplicationInterface
 {
     use SessionTrait;
-
-    protected string $main;
-    protected string $header;
-    protected string $language;
-    protected string $title;
-    protected string $events;
-
+    
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $events = $this->getSession()->getArray('events');
         $locale = Locale::acceptFromHttp($request->getHeaderLine('Accept-Language'));
         Locale::setDefault($locale);
         $target = $request->getHeaderLine('target');
-        $id = $request->getHeaderLine('id');
-        if ($target == 'close') {
-            unset($events[$id]);
-            $this->getSession()->set('events', $events);
-            return create(ResponseInterface::class, 200);
-        }
         $response = $this->pipeline->handle($request);
-        $this->addEntrypointHeader($response, 'admin');
-        if ($target) {
-            $title = urldecode($request->getHeaderLine('title'));
-            $url = $request->getHeaderLine('url');
-            if ($target == 'window') {
-                $event = ViewEvent::window($url, $title);
-                if ($id) {
-                    $event->id = $id;
-                }
-                $events[$id] = $event;
-            }
-            $this->getSession()->set('events', $events);
+        if ($target == 'window') {
             return $response;
         } else {
-            $this->main = $response->getBody()->getContents();
-            $this->language = Locale::getPrimaryLanguage($locale);
-            $this->title = __('admin.title');
-            $this->header = $this->renderHeader();
-            $this->events = json_encode($events);
+            $this->layout->setMain($response->getBody()->getContents());
+            $this->layout->setLanguage( Locale::getPrimaryLanguage($locale));
+            $this->layout->setTitle(__('admin.title'));
+            $this->layout->setHeader($this->renderHeader());
             return $response->withBody(new ClosureStream($this->renderLayout(...)));
         }
     }
@@ -99,12 +73,6 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         return get(Translator::class);
     }
 
-    public function renderLayout()
-    {
-        ob_start();
-        include 'templates/layout.phtml';
-        return ob_get_clean();
-    }
 
     public function __get(string $name)
     {

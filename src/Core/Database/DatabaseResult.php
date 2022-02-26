@@ -2,6 +2,7 @@
 namespace Pars\Core\Database;
 
 
+use ReturnTypeWillChange;
 use Traversable;
 
 class DatabaseResult implements \IteratorAggregate
@@ -13,7 +14,7 @@ class DatabaseResult implements \IteratorAggregate
         $this->iterable = $iterable;
     }
 
-    public function getIterator()
+    #[ReturnTypeWillChange] public function getIterator()
     {
         return $this->iterable;
     }

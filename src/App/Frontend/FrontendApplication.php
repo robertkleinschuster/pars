@@ -12,28 +12,14 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class FrontendApplication extends AbstractApplication
 {
-    protected string $body;
-    protected string $language;
-    protected string $title;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->pipeline->handle($request);
-        $this->body = $response->getBody()->getContents();
-        $this->language = 'de';
-        $this->title = 'title';
+        $this->layout->setMain($response->getBody()->getContents());
         return $response->withBody(new ClosureStream($this->renderLayout(...)));
     }
 
-    public function renderLayout()
-    {
-        include 'templates/layout.phtml';
-    }
-
-    public function __get(string $name)
-    {
-        return '';
-    }
 
     protected function init()
     {

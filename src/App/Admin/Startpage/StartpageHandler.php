@@ -1,6 +1,7 @@
 <?php
 namespace Pars\App\Admin\Startpage;
 
+use Pars\Core\Database\DatabaseTrait;
 use Pars\Core\Http\ClosureResponse;
 use Pars\Core\Http\HtmlResponse;
 use Pars\Core\Session\SessionTrait;

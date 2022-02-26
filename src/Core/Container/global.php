@@ -46,3 +46,11 @@ if (!function_exists('render')) {
         return $renderer->render();
     }
 }
+
+if (!function_exists('config')) {
+    function config(string $key) {
+        /* @var $config \Pars\Core\Config\Config */
+        $config = get(\Pars\Core\Config\Config::class);
+        return $config->get($key);
+    }
+}

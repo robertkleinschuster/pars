@@ -2,10 +2,11 @@
 
 namespace Pars\Core\View\Detail;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\Input\Input;
 use Pars\Core\View\ViewComponent;
 
-class Detail extends ViewComponent
+class Detail extends ViewComponent implements EntrypointInterface
 {
     use GroupTrait;
 
@@ -17,9 +18,13 @@ class Detail extends ViewComponent
         $this->setTemplate(__DIR__ . '/templates/detail.phtml');
     }
 
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/Detail.ts';
+    }
+
     public function push(ViewComponent $component, string $chapter = null, string $group = null): static
     {
-        $component->main = $this->main;
         if ($chapter) {
             $this->getChapter($chapter)->push($component, $group);
         } elseif ($group) {

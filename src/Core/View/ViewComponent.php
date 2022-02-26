@@ -11,7 +11,6 @@ class ViewComponent
     protected ?ViewEvent $event = null;
     protected SplDoublyLinkedList $children;
     protected ?self $parent = null;
-    protected ?self $main = null;
     protected string $content = '';
 
     protected string $tag = 'div';
@@ -19,7 +18,7 @@ class ViewComponent
 
     public function __construct()
     {
-        $this->main = $this;
+
     }
 
 
@@ -61,12 +60,6 @@ class ViewComponent
     {
         $this->tag = $tag;
         return $this;
-    }
-
-
-    public function getMain(): ?ViewComponent
-    {
-        return $this->main;
     }
 
     public function onRender(ViewRenderer $renderer)
@@ -118,7 +111,6 @@ class ViewComponent
     public function push(ViewComponent $component): static
     {
         $component->parent = $this;
-        $component->main = $this->main;
         $this->getChildren()->push($component);
         return $this;
     }

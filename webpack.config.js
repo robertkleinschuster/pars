@@ -1,11 +1,11 @@
 const Encore = require('@symfony/webpack-encore');
+const fs = require('fs');
 if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 Encore
     .setOutputPath('public/static/')
     .setPublicPath('/static')
-    .addEntry('admin', './src/App/Admin/AdminApplication.ts')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
@@ -22,4 +22,13 @@ Encore
     .enableTypeScriptLoader()
     .enableIntegrityHashes(Encore.isProduction())
 ;
+
+if (fs.existsSync('entrypoints.json')) {
+    let entrypointsJson = fs.readFileSync('entrypoints.json');
+    let entrypoints = JSON.parse(entrypointsJson);
+    for (const [key, value] of Object.entries(entrypoints)) {
+        Encore.addEntry(key, value);
+    }
+}
+
 module.exports = Encore.getWebpackConfig();

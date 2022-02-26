@@ -37,6 +37,7 @@ class ConsoleApplication extends AbstractApplication
         return [
             Generate\GenerateClass::command() => Generate\GenerateClass::class,
             Development\Development::command() => Development\Development::class,
+            Build\BuildEntrypoints::command() => Build\BuildEntrypoints::class,
         ];
     }
 
@@ -45,6 +46,7 @@ class ConsoleApplication extends AbstractApplication
         return [
             Generate\GenerateClass::command() => Generate\GenerateClass::description(),
             Development\Development::command() => Development\Development::description(),
+            Build\BuildEntrypoints::command() => Build\BuildEntrypoints::description(),
         ];
     }
 

@@ -1,3 +1,6 @@
+<?php
+/** @var \Pars\Core\View\Layout\Layout $this */
+?>
 <!doctype html>
 <html lang="<?= $this->language ?>">
 <head>
@@ -6,13 +9,15 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $this->title ?></title>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-    </style>
+    <?= \Pars\Core\View\Entrypoints::dumpCss(); ?>
 </head>
 <body>
-<?= $this->body ?>
+<header>
+    <?= $this->header?>
+</header>
+<main>
+    <?= $this->main ?>
+</main>
+<?= \Pars\Core\View\Entrypoints::dumpJs(); ?>
 </body>
 </html>

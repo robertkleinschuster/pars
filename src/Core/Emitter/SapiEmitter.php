@@ -3,6 +3,7 @@
 namespace Pars\Core\Emitter;
 
 
+use Pars\Core\View\Entrypoints;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
 
@@ -51,7 +52,7 @@ class SapiEmitter
     protected function emitHeaders(ResponseInterface $response): void
     {
         $statusCode = $response->getStatusCode();
-
+        $response = Entrypoints::injectHeaders($response);
         foreach ($response->getHeaders() as $header => $values) {
             $name = $this->toWordCase($header);
             $first = $name !== 'Set-Cookie';

@@ -36,7 +36,6 @@ class DetailChapter extends ViewComponent
 
     public function push(ViewComponent $component, string $group = null): static
     {
-        $component->main = $this->main;
         if ($group) {
             $this->getGroup($group)->push($component);
         } else {

@@ -8,7 +8,6 @@ declare const WinBox: WinBox.WinBoxConstructor;
 export default class ViewWindow extends WinBox {
     protected parent: ViewWindow;
     protected viewEvent: ViewEvent;
-    protected viewEventHandler: ViewEventHandler;
 
     constructor(viewEvent: ViewEvent, html: string, parent: ViewWindow = null) {
         super({
@@ -17,22 +16,16 @@ export default class ViewWindow extends WinBox {
         this.parent = parent;
         this.viewEvent = new ViewEvent(viewEvent);
         this.viewEvent.target = 'self';
-        this.viewEventHandler = new ViewEventHandler(new URL(viewEvent.url, document.baseURI), this.body.firstElementChild as HTMLElement, this);
-        this.viewEventHandler.init();
 
     }
 
     public reload()
     {
-        this.viewEventHandler.trigger(this.viewEvent);
+
     }
 
     onclose = (force: boolean) => {
-        this.viewEvent.target = 'close';
-        this.viewEventHandler.trigger(this.viewEvent);
-        if (this.parent) {
-            this.parent.reload();
-        }
+
         return false;
     };
 
