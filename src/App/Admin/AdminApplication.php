@@ -29,7 +29,7 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
         Locale::setDefault($locale);
         $target = $request->getHeaderLine('target');
         $response = $this->pipeline->handle($request);
-        if ($target == 'window') {
+        if ($target) {
             return $response;
         } else {
             $this->layout->setMain($response->getBody()->getContents());

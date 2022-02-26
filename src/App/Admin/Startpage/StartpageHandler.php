@@ -24,9 +24,9 @@ class StartpageHandler implements RequestHandlerInterface
 
         $tree = new Tree();
         $tree->setHeading('start');
-        $tree->getItem()->setLink(url('/menu/:code'));
-        $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb');
-        $tree->addEntry('asdf');
+        $tree->getItem()->setLink(url('/:code'))->target = '.component';
+        $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
+        $tree->addEntry('asdf', 'overview');
         $tree->addEntry('asdf');
         $sidebar = new Sidebar($tree);
         $overview = new Overview();

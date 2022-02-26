@@ -8,6 +8,13 @@ export default class ViewEventHandler {
 
     constructor(component: ViewComponent) {
         this.component = component;
+        window.addEventListener('viewEvent', (event: CustomEvent) => {
+            const viewEvent = event.detail.viewEvent as ViewEvent;
+            const html = event.detail.html as string;
+            if (this.component.element.matches(viewEvent.target)) {
+                this.handleTargetAction(viewEvent, html);
+            }
+        });
     }
 
     public init() {
@@ -18,6 +25,7 @@ export default class ViewEventHandler {
         const viewEvent = new ViewEvent(element.dataset);
         element.addEventListener(viewEvent.event, event => {
             event.preventDefault();
+            event.stopImmediatePropagation();
             this.trigger(viewEvent, element);
         });
     }
@@ -88,6 +96,13 @@ export default class ViewEventHandler {
             .then(html => {
                 document.body.classList.remove('overlay');
                 this.handleResponse(viewEvent, html);
+                const event = new CustomEvent('viewEvent', {
+                    detail: {
+                        viewEvent: viewEvent,
+                        html: html
+                    },
+                });
+                window.dispatchEvent(event);
             }).catch((e) => {
             console.error(e);
             window.location.href = url.toString();
