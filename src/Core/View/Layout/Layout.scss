@@ -21,6 +21,7 @@ main {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  flex-grow: 1;
 }
 
 .hidden {

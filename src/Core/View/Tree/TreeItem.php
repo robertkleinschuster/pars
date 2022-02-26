@@ -2,6 +2,7 @@
 namespace Pars\Core\View\Tree;
 
 use Pars\Core\View\ViewComponent;
+use Pars\Core\View\ViewEvent;
 use Pars\Core\View\ViewRenderer;
 
 /**
@@ -49,9 +50,19 @@ class TreeItem extends ViewComponent
         parent::onRender($renderer);
         if ($this->isList()) {
             $this->getTree()->getItem()->model = $this->model;
+            $this->getTree()->getItem()->setEvent($this->getEvent());
             $this->push($this->getTree());
         }
     }
+
+    public function getEvent(): ?ViewEvent
+    {
+        if ($this->getContent()) {
+            return null;
+        }
+        return parent::getEvent();
+    }
+
 
     public function getTree(): Tree {
         if (!isset($this->tree)) {

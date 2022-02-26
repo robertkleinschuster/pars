@@ -1,7 +1,18 @@
 <?php
 /* @var \Pars\Core\View\Tree\TreeItem $this */
 ?>
-<li class="tree__item"<?= $this->attr() ?>>
-    <?= $this->getModel()->getValue() ?>
+<li class="tree__item <?= $this->getContent() ? 'items' : ''?> ">
+    <p class="tree__value" <?= $this->attr() ?>>
+        <?php if ($this->getContent()): ?>
+            <svg class="icon">
+                <use href="/icons.svg#folder"/>
+            </svg>
+        <?php else: ?>
+            <svg class="icon">
+                <use href="/icons.svg#file"/>
+            </svg>
+        <?php endif; ?>
+        <?= $this->getModel()->getValue() ?>
+    </p>
     <?= $this->getContent() ?>
 </li>

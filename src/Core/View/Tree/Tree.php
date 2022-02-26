@@ -2,19 +2,27 @@
 
 namespace Pars\Core\View\Tree;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewRenderer;
 
-class Tree extends ViewComponent
+class Tree extends ViewComponent implements EntrypointInterface
 {
     protected TreeItem $item;
     protected string $itemClass = TreeItem::class;
+    protected string $heading = '';
 
     public function __construct()
     {
         parent::__construct();
         $this->setTemplate(__DIR__ . '/templates/tree.phtml');
     }
+
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/Tree.ts';
+    }
+
 
     /**
      * @return string
@@ -55,4 +63,24 @@ class Tree extends ViewComponent
         }
         return $this->item;
     }
+
+    /**
+     * @return string
+     */
+    public function getHeading(): string
+    {
+        return $this->heading;
+    }
+
+    /**
+     * @param string $heading
+     * @return Tree
+     */
+    public function setHeading(string $heading): Tree
+    {
+        $this->heading = $heading;
+        return $this;
+    }
+
+
 }

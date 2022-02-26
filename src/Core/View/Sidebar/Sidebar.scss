@@ -1,0 +1,13 @@
+.sidebar {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  flex-grow: 1;
+  &__side {
+    flex-shrink: 1;
+    min-width: 250px;
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+}

@@ -1,0 +1,78 @@
+@import "../Icon/Icon";
+
+.tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #eee;
+  border: 1px solid #ddddddee;
+  height: 100%;
+
+  &__heading {
+    font-weight: 600;
+    padding: .5rem;
+  }
+
+  &__heading:empty {
+    padding: 0;
+  }
+
+  .tree {
+    display: none;
+    border: none;
+    padding: 0;
+
+    .tree__item {
+      padding-left: 0;
+    }
+
+    .tree__item.items {
+      padding-left: 1.5rem;
+    }
+  }
+
+  .open > .tree {
+    display: block;
+  }
+
+  &__item {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  > .tree__item {
+    padding-left: 1.5rem;
+  }
+
+  &__item.items {
+    padding-left: 1.5rem;
+  }
+
+  &__item.items:before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    left: 8px;
+    top: 8px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    transform: rotate(45deg);
+    transition: .2s transform ease-in-out;
+  }
+
+  &__item.items.open:before {
+    transform: rotate(135deg);
+  }
+
+  &__value {
+    padding: .25rem;
+    margin: 0;
+  }
+
+  &__value:hover {
+    background: #ddd;
+  }
+
+}

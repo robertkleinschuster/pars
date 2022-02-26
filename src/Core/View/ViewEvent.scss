@@ -16,18 +16,14 @@ body.overlay:after {
 
 [data-event]:not(button, tr, td) {
   cursor: pointer;
-  text-decoration: underline;
-  color: -webkit-link;
-  color: -moz-hyperlinktext;
 }
 
-td[data-event]
-{
+td[data-event] {
   cursor: pointer;
 }
 
 [data-event]:hover {
-  text-decoration: none;
+
 }
 
 [data-title] {
