@@ -4,17 +4,14 @@ namespace Pars\Core\View\Sidebar;
 
 use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\ViewComponent;
-use Pars\Core\View\ViewRenderer;
 
 class Sidebar extends ViewComponent implements EntrypointInterface
 {
-    protected ?ViewComponent $side = null;
     protected string $sideContent = '';
 
-    public function __construct(ViewComponent $side = null)
+    public function __construct()
     {
         parent::__construct();
-        $this->side = $side;
         $this->setTemplate(__DIR__ . '/templates/sidebar.phtml');
     }
 
@@ -28,11 +25,14 @@ class Sidebar extends ViewComponent implements EntrypointInterface
         return $this->sideContent;
     }
 
-    public function onRender(ViewRenderer $renderer)
+    /**
+     * @param string $sideContent
+     * @return Sidebar
+     */
+    public function setSideContent(string $sideContent): Sidebar
     {
-        parent::onRender($renderer);
-        if ($this->side) {
-            $this->sideContent = $renderer->setComponent($this->side)->render();
-        }
+        $this->sideContent = $sideContent;
+        return $this;
     }
+
 }

@@ -19,7 +19,4 @@ export default class Tree extends ViewComponent {
     }
 }
 
-document.querySelectorAll('.tree').forEach(element => {
-    const component = new Tree(new URL(window.location.href, document.baseURI), element as HTMLElement);
-    component.init();
-});
+Tree.attach('.tree');

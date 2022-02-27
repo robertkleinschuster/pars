@@ -1,6 +1,5 @@
 import "winbox";
 import "winbox/dist/css/themes/modern.min.css"
-import ViewEventHandler from "./ViewEventHandler";
 import ViewEvent from "./ViewEvent";
 
 declare const WinBox: WinBox.WinBoxConstructor;
@@ -16,11 +15,15 @@ export default class ViewWindow extends WinBox {
         this.parent = parent;
         this.viewEvent = new ViewEvent(viewEvent);
         this.viewEvent.target = 'self';
-
+        this.body.dispatchEvent(new CustomEvent('init', {
+            bubbles: true,
+            detail: {
+                url: new URL(viewEvent.url, document.baseURI)
+            }
+        }));
     }
 
-    public reload()
-    {
+    public reload() {
 
     }
 

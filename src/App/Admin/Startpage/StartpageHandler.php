@@ -9,6 +9,7 @@ use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Editor\Editor;
 use Pars\Core\View\Overview\Overview;
 use Pars\Core\View\Sidebar\Sidebar;
+use Pars\Core\View\Sidebar\SidebarHandler;
 use Pars\Core\View\Tree\Tree;
 use Pars\Core\View\Tree\TreeItem;
 use Psr\Http\Message\ResponseInterface;
@@ -21,18 +22,8 @@ class StartpageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
-        $tree = new Tree();
-        $tree->setHeading('start');
-        $tree->getItem()->setLink(url('/:code'))->target = '.component';
-        $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
-        $tree->addEntry('asdf', 'overview');
-        $tree->addEntry('asdf');
-        $sidebar = new Sidebar($tree);
-        $overview = new Overview();
-        $overview->setHeading('overview heading');
-        $sidebar->push($overview);
-        return create(HtmlResponse::class, render($sidebar));
+        $sidebar = new SidebarHandler(new StartpageSidebarHandler(), new StartpageContentHandler());
+        return $sidebar->handle($request);
 
     }
 

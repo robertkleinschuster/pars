@@ -18,6 +18,7 @@ class ViewEvent
     public string $target = self::TARGET_SELF;
     public string $title = '';
     public string $id = '';
+
     public function __construct()
     {
         $this->url = url();

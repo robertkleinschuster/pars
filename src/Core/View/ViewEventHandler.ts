@@ -1,6 +1,5 @@
 import './ViewEvent.scss';
 import ViewEvent from "./ViewEvent";
-import ViewWindow from "./ViewWindow";
 import ViewComponent from "./ViewComponent";
 
 export default class ViewEventHandler {
@@ -9,11 +8,7 @@ export default class ViewEventHandler {
     constructor(component: ViewComponent) {
         this.component = component;
         window.addEventListener('viewEvent', (event: CustomEvent) => {
-            const viewEvent = event.detail.viewEvent as ViewEvent;
-            const html = event.detail.html as string;
-            if (this.component.element.matches(viewEvent.target)) {
-                this.handleTargetAction(viewEvent, html);
-            }
+            this.component.handleViewEvent(event.detail.viewEvent, event.detail.source, event.detail.html);
         });
     }
 
@@ -95,11 +90,11 @@ export default class ViewEventHandler {
             .then(r => r.text())
             .then(html => {
                 document.body.classList.remove('overlay');
-                this.handleResponse(viewEvent, html);
                 const event = new CustomEvent('viewEvent', {
                     detail: {
                         viewEvent: viewEvent,
-                        html: html
+                        html: html,
+                        source: this.component
                     },
                 });
                 window.dispatchEvent(event);
@@ -107,46 +102,6 @@ export default class ViewEventHandler {
             console.error(e);
             window.location.href = url.toString();
         });
-    }
-
-
-    protected handleResponse(viewEvent: ViewEvent, html: string) {
-        switch (viewEvent.target) {
-            case 'blank':
-                return this.handleTargetBlank(viewEvent);
-            case 'self':
-                return this.handleTargetSelf(viewEvent, html)
-            case 'action':
-                return this.handleTargetAction(viewEvent, html);
-            case 'window':
-                return this.handleTargetWindow(viewEvent, html);
-        }
-    }
-
-    protected handleTargetBlank(viewEvent: ViewEvent) {
-        window.open(viewEvent.url, '_blank').focus();
-    }
-
-    protected handleTargetAction(viewEvent: ViewEvent, html: string) {
-        html = html.trim();
-        if (html) {
-            const target = this.component.element;
-            const tmpDiv = document.createElement('div');
-            tmpDiv.innerHTML = html;
-            this.component.element = tmpDiv.firstElementChild as HTMLElement;
-            target.replaceWith(this.component.element);
-            this.component.init();
-        }
-    }
-
-    protected handleTargetWindow(viewEvent: ViewEvent, html: string) {
-        return new ViewWindow(viewEvent, html, this.component.window);
-    }
-
-
-    protected handleTargetSelf(viewEvent: ViewEvent, html: string) {
-        history.replaceState({}, '', viewEvent.url);
-        this.handleTargetAction(viewEvent, html);
     }
 
 

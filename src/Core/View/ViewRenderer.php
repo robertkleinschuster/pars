@@ -6,10 +6,7 @@ class ViewRenderer
 {
     protected ?ViewComponent $component = null;
 
-    protected string $attributes = '';
-    protected string $content = '';
-    protected string $value = '';
-    protected string $tag = 'div';
+    protected string $handler = '';
 
     public static array $entrypoints = [];
 
@@ -19,10 +16,14 @@ class ViewRenderer
             throw new \Exception('No component set!');
         }
         if ($this->component->getModel()->isList()) {
-            return $this->renderList($this->component);
+            $result = $this->renderList($this->component);
         } else {
-            return $this->renderComponent($this->component);
+            $result = $this->renderComponent($this->component);
         }
+        if ($this->handler) {
+            $result = "<script data-handler='{$this->handler}'></script>$result";
+        }
+        return $result;
     }
 
     public function setComponent(ViewComponent $component): ViewRenderer
@@ -37,6 +38,9 @@ class ViewRenderer
             self::$entrypoints[] = Entrypoints::buildEntrypointName(Entrypoints::buildEntrypoint($component::getEntrypoint()));
         }
         $component = clone $component;
+        if ($component->getEvent() && !$component->getEvent()->handler) {
+            $component->getEvent()->handler = $this->handler;
+        }
         $component->onRender(clone $this);
         if (!$component->getContent()) {
             $component->setContent($this->renderChildren($component));
@@ -77,4 +81,16 @@ class ViewRenderer
             return ob_get_clean();
         })(...)->call($component);
     }
+
+    /**
+     * @param string $handler
+     * @return ViewRenderer
+     */
+    public function setHandler(string $handler): ViewRenderer
+    {
+        $this->handler = $handler;
+        return $this;
+    }
+
+
 }

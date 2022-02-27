@@ -4,8 +4,6 @@ import ViewComponent from "../ViewComponent";
 export default class OverviewComponent extends ViewComponent {
 
 }
+OverviewComponent.attach('.overview');
 
-document.querySelectorAll('.overview').forEach(element => {
-   const component = new OverviewComponent(new URL(window.location.href, document.baseURI), element as HTMLElement);
-   component.init();
-});
+
