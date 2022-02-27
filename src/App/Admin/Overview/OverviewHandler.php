@@ -20,7 +20,7 @@ class OverviewHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $entity = $request->getAttribute('entity');
-        $this->entity = $request->getAttribute('entity');
+        $this->entity = $request->getAttribute('entity', 'default');
         $this->entries[] = [
             'id' => 'first',
             'code' => 'first code',
@@ -66,7 +66,7 @@ class OverviewHandler implements RequestHandlerInterface
         $overview->toolbar = render($toolbar);
         $button = $overview->addIconButton(Icon::delete());
         $button->setWindow(url('/delete'), __('delete'));
-        return render($overview);
+        return render($overview, $this);
     }
 
 }

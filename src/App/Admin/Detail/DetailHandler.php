@@ -35,7 +35,7 @@ class DetailHandler implements RequestHandlerInterface
         $field->setContent('Field 4');
         $detail->push($field, 'Chapter 2', 'Group 1');
 
-        return render($detail);
+        return render($detail, $this);
     }
 
 }
