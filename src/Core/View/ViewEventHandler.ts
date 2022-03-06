@@ -7,22 +7,36 @@ export default class ViewEventHandler {
 
     constructor(component: ViewComponent) {
         this.component = component;
-        window.addEventListener('viewEvent', (event: CustomEvent) => {
-            this.component.handleViewEvent(event.detail.viewEvent, event.detail.source, event.detail.html);
-        });
+    }
+
+    public initViewEvent() {
+        const handleViewEvent = this.handleViewEvent.bind(this);
+        document.addEventListener('viewEvent', handleViewEvent);
+        const destroyEvent = document.removeEventListener.bind(document, 'viewEvent', handleViewEvent);
+        document.addEventListener('destroy', destroyEvent);
+    }
+
+    public destroyViewEvent() {
+        document.dispatchEvent(new CustomEvent('destroy'));
     }
 
     public init() {
+        this.initViewEvent();
         this.component.element.querySelectorAll('[data-event]').forEach(this.initEvent.bind(this));
     }
 
     protected initEvent(element: HTMLElement) {
         const viewEvent = new ViewEvent(element.dataset);
+        viewEvent.component = this.component;
         element.addEventListener(viewEvent.event, event => {
             event.preventDefault();
             event.stopImmediatePropagation();
             this.trigger(viewEvent, element);
         });
+    }
+
+    public handleViewEvent(event: CustomEvent) {
+        this.component.handleViewEvent(event.detail.viewEvent, event.detail.html);
     }
 
     public trigger(viewEvent: ViewEvent, eventTarget: HTMLElement = null) {
@@ -71,16 +85,15 @@ export default class ViewEventHandler {
     }
 
     protected fetch(viewEvent: ViewEvent, url: URL, options: RequestInit) {
-        document.body.classList.add('overlay');
+        this.showOverlay();
         options.redirect = 'manual';
-
         fetch(url.toString(), options)
             .then(response => {
                 if (response.type == 'opaqueredirect' && viewEvent.target != 'blank') {
-                    window.location.href = viewEvent.url;
+                    this.redirect(viewEvent.url);
                 }
                 if (response.status == 500) {
-                    window.location.href = url.toString();
+                    this.redirect(url);
                 } else {
                     this.injectJs(response);
                     this.injectCss(response);
@@ -89,21 +102,39 @@ export default class ViewEventHandler {
             })
             .then(r => r.text())
             .then(html => {
-                document.body.classList.remove('overlay');
-                const event = new CustomEvent('viewEvent', {
-                    detail: {
-                        viewEvent: viewEvent,
-                        html: html,
-                        source: this.component
-                    },
-                });
-                window.dispatchEvent(event);
+                this.hideOverlay();
+                this.dispatchViewEvent(viewEvent, html);
             }).catch((e) => {
             console.error(e);
-            window.location.href = url.toString();
+            this.redirect(url);
         });
     }
 
+    protected dispatchViewEvent(viewEvent: ViewEvent, html: string) {
+        const event = new CustomEvent('viewEvent', {
+            bubbles: true,
+            detail: {
+                viewEvent: viewEvent,
+                html: html,
+            }
+        });
+        document.dispatchEvent(event);
+    }
+
+    protected showOverlay() {
+        document.body.classList.add('overlay');
+    }
+
+    protected hideOverlay() {
+        document.body.classList.remove('overlay');
+    }
+
+    protected redirect(url: string | URL) {
+        if (url instanceof URL) {
+            url = url.toString();
+        }
+        window.location.href = url;
+    }
 
     private injectJs(response: Response) {
         const jsFiles = response.headers.get('inject-js');

@@ -25,10 +25,7 @@ class StartpageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $componentsHandler = new ViewComponentHandler();
-        $componentsHandler->push(new OverviewHandler());
-        $componentsHandler->push(new DetailHandler());
-        $sidebar = new SidebarHandler(new StartpageSidebarHandler(), $componentsHandler);
+        $sidebar = new SidebarHandler(new StartpageSidebarHandler(), new OverviewHandler());
         return $sidebar->handle($request);
 
     }

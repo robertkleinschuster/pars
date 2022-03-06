@@ -2,6 +2,7 @@
 namespace Pars\Core\View\Sidebar;
 
 use Pars\Core\Http\HtmlResponse;
+use Pars\Core\View\ViewPrefix;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -25,18 +26,22 @@ class SidebarHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($request->getHeaderLine('handler') == $this->contentHandler::class) {
+        $prefixer = new ViewPrefix();
+
+        if ($request->getHeaderLine('handler') === 'content') {
             return $this->contentHandler->handle($request);
         }
 
-        if ($request->getHeaderLine('handler') == $this->sideHandler::class) {
+        if ($request->getHeaderLine('handler') === 'side') {
             return $this->sideHandler->handle($request);
         }
 
         $content = $this->contentHandler->handle($request)->getBody()->getContents();
-        $site = $this->sideHandler->handle($request)->getBody()->getContents();
+        $content = $prefixer->addData($content, ['handler' => 'content']);
+        $side = $this->sideHandler->handle($request)->getBody()->getContents();
+        $side = $prefixer->addData($side, ['handler' => 'side']);
         $this->sidebar->setContent($content);
-        $this->sidebar->setSideContent($site);
+        $this->sidebar->setSideContent($side);
 
         return create(HtmlResponse::class, render($this->sidebar));
     }

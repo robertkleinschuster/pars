@@ -24,7 +24,6 @@ class FrontendApplication extends AbstractApplication
     protected function init()
     {
         $this->container->register(NotFoundMiddleware::class, Error\NotFoundMiddleware::class);
-        $this->pipeline->pipe('/favicon', $this->container->get(FaviconMiddleware::class));
         $this->router->route('/', $this->container->get(StartpageHandler::class));
     }
 }

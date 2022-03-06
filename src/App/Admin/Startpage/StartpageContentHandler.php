@@ -16,7 +16,7 @@ class StartpageContentHandler implements RequestHandlerInterface
         $overview->setHeading('overview heading');
         $components = new ViewComponentHandler();
 
-        return create(HtmlResponse::class, render($overview, $this));
+        return create(HtmlResponse::class, render($overview));
     }
 
 }

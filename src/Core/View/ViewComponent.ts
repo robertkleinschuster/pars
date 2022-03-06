@@ -1,66 +1,47 @@
 import ViewEventHandler from "./ViewEventHandler";
 import ViewWindow from "./ViewWindow";
 import ViewEvent from "./ViewEvent";
+import ViewComponentInitializer from "./ViewComponentInitializer";
+import ViewHtmlHelper from "./ViewHtmlHelper";
 
 export default class ViewComponent {
     public url: URL;
     public element: HTMLElement;
-    public window: ViewWindow;
+    public selectors: string;
     public eventHandler: ViewEventHandler;
     public requestHandler: string;
 
-    constructor(url: URL, element: HTMLElement, window: ViewWindow = null) {
+    constructor(element: HTMLElement, selectors: string, url: URL) {
         this.url = url;
         this.element = element;
-        this.window = window;
+        this.selectors = selectors;
         this.eventHandler = new ViewEventHandler(this);
     }
 
-    public init()
-    {
-        if (this.element.previousElementSibling) {
-            const hasHandler = this.element.previousElementSibling.matches('[data-handler]');
-            if (hasHandler) {
-                this.requestHandler = (this.element.previousElementSibling as HTMLElement).dataset.handler;
-            }
-        }
+    public init() {
         this.eventHandler.init();
     }
 
     public static attach(selectors: string) {
-        document.addEventListener("init", (event: CustomEvent) => {
-            const element = event.target as HTMLElement;
-            if (element.matches && element.matches(selectors)) {
-                const component = new this(event.detail.url, element as HTMLElement);
-                component.init();
-            } else {
-                element.querySelectorAll(selectors).forEach(element => {
-                    const component = new this(event.detail.url, element as HTMLElement);
-                    component.init();
-                });
-            }
-        });
+        ViewComponentInitializer.attachComponent(selectors, this);
     }
 
-    public handleViewEvent(viewEvent: ViewEvent, source: ViewComponent, responseHtml: string) {
-        if (viewEvent.handler) {
-            if (viewEvent.handler == this.requestHandler) {
-                this.handleResponse(viewEvent, responseHtml);
-            }
-        } else if (this == source) {
-             this.handleResponse(viewEvent, responseHtml);
+    public handleViewEvent(viewEvent: ViewEvent, responseHtml: string) {
+        if (this === viewEvent.component
+            || viewEvent.handler && viewEvent.handler === this.requestHandler) {
+            this.handleResponse(viewEvent, responseHtml);
         }
     }
 
     protected handleResponse(viewEvent: ViewEvent, html: string) {
         switch (viewEvent.target) {
-            case 'blank':
+            case ViewEvent.TARGET_BLANK:
                 return this.handleTargetBlank(viewEvent);
-            case 'self':
+            case ViewEvent.TARGET_SELF:
                 return this.handleTargetSelf(viewEvent, html)
-            case 'action':
+            case ViewEvent.TARGET_ACTION:
                 return this.handleTargetAction(viewEvent, html);
-            case 'window':
+            case ViewEvent.TARGET_WINDOW:
                 return this.handleTargetWindow(viewEvent, html);
         }
     }
@@ -72,24 +53,21 @@ export default class ViewComponent {
     protected handleTargetAction(viewEvent: ViewEvent, html: string) {
         html = html.trim();
         if (html) {
-            const target = this.element;
-            const tmpDiv = document.createElement('div');
-            tmpDiv.innerHTML = html;
-            this.element = tmpDiv.firstElementChild as HTMLElement;
-            target.replaceWith(this.element);
-            this.element.dispatchEvent(new CustomEvent('init', {
-                bubbles: true,
-                detail: {
-                    url: new URL(viewEvent.url, document.baseURI)
-                }
-            }));
+            const newElement = ViewHtmlHelper.fromString(html).first();
+            if (newElement) {
+                this.eventHandler.destroyViewEvent();
+                const target = this.element;
+                this.element = newElement;
+                target.replaceWith(this.element);
+                ViewComponentInitializer.dispatchInit(this.element, new URL(viewEvent.url, document.baseURI));
+            }
         }
     }
 
     protected handleTargetWindow(viewEvent: ViewEvent, html: string) {
-        return new ViewWindow(viewEvent, html, this.window);
+        const window = new ViewWindow(viewEvent, html);
+        ViewComponentInitializer.dispatchInit(window.body, new URL(viewEvent.url, document.baseURI));
     }
-
 
     protected handleTargetSelf(viewEvent: ViewEvent, html: string) {
         history.replaceState({}, '', viewEvent.url);

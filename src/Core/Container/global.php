@@ -43,13 +43,10 @@ if (!function_exists('__pl')) {
 }
 
 if (!function_exists('render')) {
-    function render(\Pars\Core\View\ViewComponent $component, \Psr\Http\Server\RequestHandlerInterface $requestHandler = null)
+    function render(\Pars\Core\View\ViewComponent $component)
     {
         $renderer = new \Pars\Core\View\ViewRenderer();
         $renderer->setComponent($component);
-        if ($requestHandler) {
-            $renderer->setHandler($requestHandler::class);
-        }
         return $renderer->render();
     }
 }

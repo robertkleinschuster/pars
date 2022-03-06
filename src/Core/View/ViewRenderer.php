@@ -6,8 +6,6 @@ class ViewRenderer
 {
     protected ?ViewComponent $component = null;
 
-    protected string $handler = '';
-
     public static array $entrypoints = [];
 
     public function render(): string
@@ -19,9 +17,6 @@ class ViewRenderer
             $result = $this->renderList($this->component);
         } else {
             $result = $this->renderComponent($this->component);
-        }
-        if ($this->handler) {
-            $result = "<script data-handler='{$this->handler}'></script>$result";
         }
         return $result;
     }
@@ -38,9 +33,6 @@ class ViewRenderer
             self::$entrypoints[] = Entrypoints::buildEntrypointName(Entrypoints::buildEntrypoint($component::getEntrypoint()));
         }
         $component = clone $component;
-        if ($component->getEvent() && !$component->getEvent()->handler) {
-            $component->getEvent()->handler = $this->handler;
-        }
         $component->onRender(clone $this);
         if (!$component->getContent()) {
             $component->setContent($this->renderChildren($component));
@@ -81,16 +73,4 @@ class ViewRenderer
             return ob_get_clean();
         })(...)->call($component);
     }
-
-    /**
-     * @param string $handler
-     * @return ViewRenderer
-     */
-    public function setHandler(string $handler): ViewRenderer
-    {
-        $this->handler = $handler;
-        return $this;
-    }
-
-
 }

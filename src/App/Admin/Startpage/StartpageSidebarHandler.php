@@ -14,11 +14,11 @@ class StartpageSidebarHandler implements RequestHandlerInterface
     {
         $tree = new Tree();
         $tree->setHeading('start');
-        $tree->getItem()->setLink(url('/:code'))->handler = OverviewHandler::class;
+        $tree->getItem()->setLink(url('/:code'))->handler = 'content';
         $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
         $tree->addEntry('asdf', 'overview');
         $tree->addEntry('asdf');
-        return create(HtmlResponse::class, render($tree, $this));
+        return create(HtmlResponse::class, render($tree));
     }
 
 }

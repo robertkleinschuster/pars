@@ -1,7 +1,6 @@
 body.overlay {
   position: relative;
   pointer-events: none;
-  filter: blur(2px);
 }
 
 body.overlay:after {
@@ -11,7 +10,6 @@ body.overlay:after {
   height: 100%;
   top:0;
   left: 0;
-  background: #00000055;
 }
 
 [data-event]:not(button, tr, td) {
