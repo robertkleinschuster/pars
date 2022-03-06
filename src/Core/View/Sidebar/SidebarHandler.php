@@ -28,18 +28,18 @@ class SidebarHandler implements RequestHandlerInterface
     {
         $prefixer = new ViewPrefix();
 
-        if ($request->getHeaderLine('handler') === 'content') {
+        if ($request->getHeaderLine('handler') === 'sidebar_content') {
             return $this->contentHandler->handle($request);
         }
 
-        if ($request->getHeaderLine('handler') === 'side') {
+        if ($request->getHeaderLine('handler') === 'sidebar_side') {
             return $this->sideHandler->handle($request);
         }
 
         $content = $this->contentHandler->handle($request)->getBody()->getContents();
-        $content = $prefixer->addData($content, ['handler' => 'content']);
+        $content = $prefixer->addData($content, ['handler' => 'sidebar_content']);
         $side = $this->sideHandler->handle($request)->getBody()->getContents();
-        $side = $prefixer->addData($side, ['handler' => 'side']);
+        $side = $prefixer->addData($side, ['handler' => 'sidebar_side']);
         $this->sidebar->setContent($content);
         $this->sidebar->setSideContent($side);
 

@@ -14,7 +14,7 @@ class StartpageSidebarHandler implements RequestHandlerInterface
     {
         $tree = new Tree();
         $tree->setHeading('start');
-        $tree->getItem()->setLink(url('/:code'))->handler = 'content';
+        $tree->getItem()->setLink(url('/:code'))->handler = 'sidebar_content';
         $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
         $tree->addEntry('asdf', 'overview');
         $tree->addEntry('asdf');
