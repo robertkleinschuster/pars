@@ -205,7 +205,7 @@ class ViewComponent
         return $this->getEvent();
     }
 
-    public function setAction(string $uri, string $title): ViewEvent
+    public function setAction(string $uri, string $title = ''): ViewEvent
     {
         $this->setEvent(ViewEvent::action($uri, $title));
         return $this->getEvent();

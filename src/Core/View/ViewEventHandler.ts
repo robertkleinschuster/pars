@@ -13,11 +13,7 @@ export default class ViewEventHandler {
         const handleViewEvent = this.handleViewEvent.bind(this);
         document.addEventListener('viewEvent', handleViewEvent);
         const destroyEvent = document.removeEventListener.bind(document, 'viewEvent', handleViewEvent);
-        document.addEventListener('destroy', destroyEvent);
-    }
-
-    public destroyViewEvent() {
-        document.dispatchEvent(new CustomEvent('destroy'));
+        document.addEventListener('destroy', destroyEvent, {once: true});
     }
 
     public init() {
@@ -27,6 +23,9 @@ export default class ViewEventHandler {
 
     protected initEvent(element: HTMLElement) {
         const viewEvent = new ViewEvent(element.dataset);
+        if (!viewEvent.handler && this.component.requestHandler) {
+            viewEvent.handler = this.component.requestHandler;
+        }
         viewEvent.component = this.component;
         element.addEventListener(viewEvent.event, event => {
             event.preventDefault();

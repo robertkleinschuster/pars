@@ -27,13 +27,10 @@ class SidebarHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $prefixer = new ViewPrefix();
-
-        if ($request->getHeaderLine('handler') === 'sidebar_content') {
-            return $this->contentHandler->handle($request);
-        }
-
         if ($request->getHeaderLine('handler') === 'sidebar_side') {
             return $this->sideHandler->handle($request);
+        } else if ($request->getHeaderLine('handler')) {
+            return $this->contentHandler->handle($request);
         }
 
         $content = $this->contentHandler->handle($request)->getBody()->getContents();

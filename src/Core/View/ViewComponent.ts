@@ -55,7 +55,6 @@ export default class ViewComponent {
         if (html) {
             const newElement = ViewHtmlHelper.fromString(html).first();
             if (newElement) {
-                this.eventHandler.destroyViewEvent();
                 const target = this.element;
                 this.element = newElement;
                 target.replaceWith(this.element);

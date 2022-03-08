@@ -8,6 +8,7 @@ export default class ViewComponentInitializer {
     }
 
     public static dispatchInit(element: HTMLElement, url: URL = null) {
+        document.dispatchEvent(new CustomEvent('destroy'));
         const event = this.createInitEvent(url);
         element.dispatchEvent(event);
     }
@@ -25,9 +26,8 @@ export default class ViewComponentInitializer {
         if (event === null) {
             event = this.createInitEvent();
         }
-
         const url = event.detail.url ?? new URL(document.location.href, document.baseURI);
-        const target = event.target ?? document.documentElement;
+        const target = document.documentElement;
 
         const html = new ViewHtmlHelper(target as HTMLElement);
         html.find(selectors).forEach(this.initComponentElement.bind(this, selectors, componentClass, url));
@@ -35,13 +35,12 @@ export default class ViewComponentInitializer {
 
     protected static initComponentElement(selectors: string, componentClass: typeof ViewComponent, url: URL, element: HTMLElement) {
         const component = new componentClass(element, selectors, url);
-        component.init();
-
         if (element.previousElementSibling) {
             const hasHandler = element.previousElementSibling.matches('[data-handler]');
             if (hasHandler) {
                 component.requestHandler = (element.previousElementSibling as HTMLElement).dataset.handler;
             }
         }
+        component.init();
     }
 }

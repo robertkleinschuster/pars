@@ -1,11 +1,8 @@
 <?php
 namespace Pars\App\Admin\Overview;
 
-use Pars\Core\Http\ClosureResponse;
 use Pars\Core\Http\HtmlResponse;
-use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
-use Pars\Core\View\Toolbar\Toolbar;
 use Pars\Core\View\ViewModel;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,60 +10,21 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class OverviewHandler implements RequestHandlerInterface
 {
-    protected array $entries = [];
-    protected array $fields = [];
-    protected string $heading = '';
-    protected string $entity = '';
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $entity = $request->getAttribute('entity');
-        $this->entity = $request->getAttribute('entity', 'default');
-        $this->entries[] = [
-            'id' => 'first',
-            'code' => 'first code',
-        ];
-        $this->entries[] = [
-            'id' => 'second',
-            'code' => 'second code',
-        ];
-        $this->entries[] = [
-            'id' => 'third',
-            'code' => 'third code',
-        ];
-        $this->fields[] = 'id';
-        $this->fields[] = 'code';
-        if ($entity) {
-            $this->heading = __($entity . '.overview');
-        } else {
-            $this->heading = __('overview');
-        }
-        return create(HtmlResponse::class, $this->renderOverview());
-    }
-
-    public function renderOverview()
-    {
         $overview = new Overview();
-        $overview->setHeading('my heading');
-        foreach ($this->entries as $entry) {
-            $model = new ViewModel();
-            foreach ($entry as $key => $value) {
-                $model->set($key, $value);
-            }
-            $overview->addEntry($model);
-        }
-
-        $overview->addButton('test');
-
-        foreach ($this->fields as $field) {
-            $overview->addField($field, __($field))->setWindow(url("/{$this->entity}/:id"), __('detail'));
-        }
-        $toolbar = new Toolbar();
-        $button = $toolbar->addIconButton(Icon::create());
-        $button->setLink(url('/new'), __('new'))->target = 'blank';
-        $overview->toolbar = render($toolbar);
-        $button = $overview->addIconButton(Icon::delete());
-        $button->setWindow(url('/delete'), __('delete'));
-        return render($overview, $this);
+        $overview->addField('id', 'id');
+        $overview->addButton('action')->setAction(url());
+        $overview->addButton('window')->setWindow(url(), 'window');
+        $model = new ViewModel();
+        $model->set('id', '1');
+        $overview->addEntry($model);
+        $model = new ViewModel();
+        $model->set('id', '2');
+        $overview->addEntry($model);
+        $model = new ViewModel();
+        $model->set('id', '3');
+        $overview->addEntry($model);
+        return create(HtmlResponse::class, render($overview));
     }
-
 }
