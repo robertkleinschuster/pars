@@ -12,5 +12,9 @@ class OverviewButton extends ViewComponent
         $this->tag = 'button';
     }
 
+    public function getValue(string $key)
+    {
+        return $this->getParent()->getParent()->getModel()->get($key);
+    }
 
 }
