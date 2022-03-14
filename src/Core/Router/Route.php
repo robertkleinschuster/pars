@@ -2,13 +2,14 @@
 
 namespace Pars\Core\Router;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class Route
 {
     public RequestHandlerInterface $handler;
     public string $route;
-    public string $pattern;
+    public ?string $method = null;
 
     public static function findKeys(string $route)
     {
@@ -25,8 +26,27 @@ class Route
         $this->route = $route;
     }
 
-    public function match(string $path, ?array &$attributes)
+    public function getHandler(): RequestHandlerInterface
     {
+        return $this->handler;
+    }
+
+    /**
+     * @param string|null $method
+     * @return Route
+     */
+    public function setMethod(?string $method): Route
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    public function match(ServerRequestInterface $request, ?array &$attributes): bool
+    {
+        if ($this->method && $this->method !== $request->getMethod()) {
+            return false;
+        }
+        $path = $request->getUri()->getPath();
         $path = rtrim($path, '/');
 
         if ($path === rtrim($this->route, '/')) {

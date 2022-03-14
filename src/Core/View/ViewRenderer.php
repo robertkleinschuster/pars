@@ -2,16 +2,16 @@
 
 namespace Pars\Core\View;
 
+use Exception;
+
 class ViewRenderer
 {
     protected ?ViewComponent $component = null;
 
-    public static array $entrypoints = [];
-
     public function render(): string
     {
         if (!$this->component) {
-            throw new \Exception('No component set!');
+            throw new Exception('No component set!');
         }
         if ($this->component->getModel()->isList()) {
             $result = $this->renderList($this->component);
@@ -30,7 +30,7 @@ class ViewRenderer
     protected function renderComponent(ViewComponent $component)
     {
         if ($component instanceof EntrypointInterface) {
-            self::$entrypoints[] = Entrypoints::buildEntrypointName(Entrypoints::buildEntrypoint($component::getEntrypoint()));
+            Entrypoints::add($component::getEntrypoint());
         }
         $component = clone $component;
         $component->onRender(clone $this);

@@ -2,7 +2,6 @@
 
 namespace Pars\Core\Router;
 
-use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -29,10 +28,12 @@ class RequestRouter implements MiddlewareInterface
         foreach ($this->routes as $route) {
             $matches = [];
             /* @var $route Route */
-            if ($route->match($request->getUri()->getPath(), $matches)) {
+            if ($route->match($request, $matches)) {
                 foreach ($matches as $key => $value) {
                     $request = $request->withAttribute($key, $value);
                 }
+                $request = $request->withAttribute(RequestRouter::class, $this);
+                $request = $request->withAttribute(Route::class, $route);
                 return $route->handler->handle($request);
             }
         }

@@ -1,7 +1,8 @@
-import "./Sidebar.scss";
+import './OverviewComponent.scss';
 import ViewComponent from "../ViewComponent";
 
-class SidebarElement extends HTMLDivElement {
+class OverviewElement extends HTMLDivElement {
+
     protected component: ViewComponent;
 
     constructor() {
@@ -10,4 +11,5 @@ class SidebarElement extends HTMLDivElement {
     }
 }
 
-customElements.define('core-sidebar', SidebarElement, {extends: 'div'});
+customElements.define('core-overview', OverviewElement, {extends: 'div'});
+

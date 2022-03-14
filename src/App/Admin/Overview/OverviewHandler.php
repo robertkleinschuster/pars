@@ -14,7 +14,7 @@ class OverviewHandler implements RequestHandlerInterface
     {
         $overview = new Overview();
         $overview->addField('id', 'id');
-        $overview->addButton('action')->setAction(url());
+        $overview->addButton('action')->setAction(url('/'));
         $overview->addButton('window')->setWindow(url(), 'window');
         $model = new ViewModel();
         $model->set('id', '1');

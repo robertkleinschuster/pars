@@ -1,8 +1,12 @@
 <?php
 namespace Pars\App\Admin\Startpage;
 
+use Pars\Core\Http\HtmlResponse;
+use Pars\Core\Router\RouteGroupHandler;
 use Pars\Core\Session\SessionTrait;
-use Pars\Core\View\Sidebar\SidebarHandler;
+use Pars\Core\View\Group\ViewGroupHandler;
+use Pars\Core\View\Sidebar\Sidebar;
+use Pars\Core\View\Tree\Tree;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -13,8 +17,21 @@ class StartpageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $sidebar = new SidebarHandler(new StartpageSidebarHandler(), new StartpageContentHandler());
-        return $sidebar->handle($request);
+        $sidebar = new Sidebar();
+
+        $tree = new Tree();
+        $tree->setHeading('start');
+        $tree->getItem()->setLink(url('/:code'));
+        $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
+        $tree->addEntry('asdf', 'overview');
+        $tree->addEntry('asdf');
+
+        $sidebar->setSideContent(render($tree));
+        $routeGroup = new ViewGroupHandler();
+        $routeGroup->push($request->withUri($request->getUri()->withPath('/overview/detail')));
+        $routeGroup->push($request->withUri($request->getUri()->withPath('/overview')));
+        $sidebar->setContent($routeGroup->handle($request)->getBody()->getContents());
+        return create(HtmlResponse::class, render($sidebar));
 
     }
 

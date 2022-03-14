@@ -9,24 +9,20 @@ export default class ViewEventHandler {
         this.component = component;
     }
 
-    public initViewEvent() {
-        const handleViewEvent = this.handleViewEvent.bind(this);
-        document.addEventListener('viewEvent', handleViewEvent);
-        const destroyEvent = document.removeEventListener.bind(document, 'viewEvent', handleViewEvent);
-        document.addEventListener('destroy', destroyEvent, {once: true});
-    }
-
     public init() {
-        this.initViewEvent();
         this.component.element.querySelectorAll('[data-event]').forEach(this.initEvent.bind(this));
+        if (this.component.element.closest('.winbox')) {
+            this.component.element.addEventListener('click', event => {
+                const link = (event.target as HTMLAnchorElement).closest('a');
+                if (link) {
+                    event.preventDefault();
+                }
+            })
+        }
     }
 
     protected initEvent(element: HTMLElement) {
         const viewEvent = new ViewEvent(element.dataset);
-        if (!viewEvent.handler && this.component.requestHandler) {
-            viewEvent.handler = this.component.requestHandler;
-        }
-        viewEvent.component = this.component;
         element.addEventListener(viewEvent.event, event => {
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -34,19 +30,11 @@ export default class ViewEventHandler {
         });
     }
 
-    public handleViewEvent(event: CustomEvent) {
-        this.component.handleViewEvent(event.detail.viewEvent, event.detail.html);
-    }
-
     public trigger(viewEvent: ViewEvent, eventTarget: HTMLElement = null) {
         const url = new URL(viewEvent.url, document.baseURI);
         const options: RequestInit = {};
 
         options.headers = new Headers()
-
-        if (viewEvent.handler) {
-            options.headers.set('handler', viewEvent.handler);
-        }
 
         if (viewEvent.target) {
             options.headers.set('target', viewEvent.target);
@@ -58,10 +46,6 @@ export default class ViewEventHandler {
 
         if (viewEvent.url) {
             options.headers.set('url', viewEvent.url);
-        }
-
-        if (viewEvent.id) {
-            options.headers.set('id', viewEvent.id);
         }
 
         if (viewEvent.target == 'action') {
@@ -102,22 +86,11 @@ export default class ViewEventHandler {
             .then(r => r.text())
             .then(html => {
                 this.hideOverlay();
-                this.dispatchViewEvent(viewEvent, html);
+                this.component.handleViewEvent(viewEvent, html);
             }).catch((e) => {
             console.error(e);
             this.redirect(url);
         });
-    }
-
-    protected dispatchViewEvent(viewEvent: ViewEvent, html: string) {
-        const event = new CustomEvent('viewEvent', {
-            bubbles: true,
-            detail: {
-                viewEvent: viewEvent,
-                html: html,
-            }
-        });
-        document.dispatchEvent(event);
     }
 
     protected showOverlay() {

@@ -2,42 +2,28 @@
 
 namespace Pars\App\Admin;
 
-use Locale;
 use Pars\App\Admin\Detail\DetailHandler;
 use Pars\App\Admin\Login\LoginHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
-use Pars\Core\Application\Base\AbstractApplication;
-use Pars\Core\Application\Base\PathApplicationInterface;
+use Pars\Core\Application\Web\WebApplication;
 use Pars\Core\Middleware\ClearcacheMiddleware;
 use Pars\Core\Middleware\PhpinfoMiddleware;
 use Pars\Core\Session\SessionTrait;
-use Pars\Core\Stream\ClosureStream;
 use Pars\Core\Translator\Translator;
 use Pars\Core\View\Navigation\Navigation;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AdminApplication extends AbstractApplication implements PathApplicationInterface
+class AdminApplication extends WebApplication
 {
     use SessionTrait;
-    
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $locale = Locale::acceptFromHttp($request->getHeaderLine('Accept-Language'));
-        Locale::setDefault($locale);
-        $target = $request->getHeaderLine('target');
-        $response = $this->pipeline->handle($request);
-        if ($target) {
-            return $response;
-        } else {
-            $this->layout->setMain($response->getBody()->getContents());
-            $this->layout->setLanguage( Locale::getPrimaryLanguage($locale));
-            $this->layout->setTitle(__('admin.title'));
-            $this->layout->setHeader($this->renderHeader());
-            return $response->withBody(new ClosureStream($this->renderLayout(...)));
-        }
+        $this->layout->setHeader($this->renderHeader());
+        return parent::handle($request);
     }
 
 
@@ -74,15 +60,6 @@ class AdminApplication extends AbstractApplication implements PathApplicationInt
     }
 
 
-    public function __get(string $name)
-    {
-        return '';
-    }
-
-    public function getPath(): string
-    {
-        return '/admin';
-    }
 
     protected function init()
     {

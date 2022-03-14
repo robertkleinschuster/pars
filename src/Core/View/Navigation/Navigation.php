@@ -25,7 +25,7 @@ class Navigation extends Tree implements EntrypointInterface
 
     public static function getEntrypoint(): string
     {
-        return __DIR__ . '/NavigationComponent.ts';
+        return __DIR__ . '/Navigation.ts';
     }
 
 

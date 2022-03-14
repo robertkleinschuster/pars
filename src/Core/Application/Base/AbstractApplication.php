@@ -3,6 +3,7 @@
 namespace Pars\Core\Application\Base;
 
 use Locale;
+use Pars\Core\Config\Config;
 use Pars\Core\Container\Container;
 use Pars\Core\Emitter\SapiEmitter;
 use Pars\Core\Http\NotFoundResponse;
@@ -22,13 +23,13 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     protected Container $container;
     protected MiddlewarePipeline $pipeline;
     protected RequestRouter $router;
-    protected Layout $layout;
+    protected Config $config;
 
     public function __construct(Container $container = null)
     {
         $this->container = $container ?? new Container();
+        $this->config = $this->container->get(Config::class);
         $this->router = $this->container->get(RequestRouter::class);
-        $this->layout = $this->container->get(Layout::class);
         $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
         $this->pipeline->pipe($this->container->get(SessionMiddleware::class));
         $this->init();
@@ -42,7 +43,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     {
         /* @var $emitter SapiEmitter */
         $emitter = $this->container->get(SapiEmitter::class);
-        $emitter->emit($this->pipeline->handle($this->container->get(ServerRequest::class)));
+        $emitter->emit($this->handle($this->container->get(ServerRequest::class)));
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -52,11 +53,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->container->get(NotFoundResponse::class);
+        return $this->pipeline->handle($request);
     }
 
-    public function renderLayout(): string
-    {
-        return render($this->layout);
-    }
 }

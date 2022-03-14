@@ -4,6 +4,7 @@ namespace Pars\Core\Http;
 
 use GuzzleHttp\Psr7\CachingStream;
 use GuzzleHttp\Psr7\LazyOpenStream;
+use Pars\Core\Router\RequestRouter;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest
@@ -23,5 +24,10 @@ class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest
             ->withQueryParams($_GET)
             ->withParsedBody($_POST)
             ->withUploadedFiles(self::normalizeFiles($_FILES));
+    }
+
+    public function getRequestRouter(): RequestRouter
+    {
+        return $this->getAttribute(RequestRouter::class, create(RequestRouter::class));
     }
 }

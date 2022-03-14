@@ -31,9 +31,9 @@ class Config
         return require $file;
     }
 
-    public function get(string $key)
+    public function get(string $key, $default = null)
     {
-        return $this->getRecursiveValue($this->data, $key);
+        return $this->getRecursiveValue($this->data, $key) ?? $default;
     }
 
     private function getRecursiveValue($data, $keyPath)

@@ -3,7 +3,7 @@
 namespace Pars\Core\Pipeline;
 
 use JetBrains\PhpStorm\Pure;
-use Pars\Core\Middleware\PathMiddleware;
+use Pars\Core\Middleware\BasePathMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -33,7 +33,7 @@ class MiddlewarePipeline implements RequestHandlerInterface
     public function pipe(MiddlewareInterface|string $middlewareOrPath, MiddlewareInterface $middleware = null): static
     {
         if (is_string($middlewareOrPath) && $middleware) {
-            $this->pipeline->push(create(PathMiddleware::class, $middleware, $middlewareOrPath));
+            $this->pipeline->push(create(BasePathMiddleware::class, $middleware, $middlewareOrPath));
         } else {
             $this->pipeline->push($middlewareOrPath);
         }

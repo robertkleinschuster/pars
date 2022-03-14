@@ -1,8 +1,7 @@
 import "./Tree.scss";
 import ViewComponent from "../ViewComponent";
 
-export default class Tree extends ViewComponent {
-
+class TreeComponent extends ViewComponent {
     init() {
         super.init();
         this.element.querySelectorAll('.tree__item').forEach(item => {
@@ -19,4 +18,16 @@ export default class Tree extends ViewComponent {
     }
 }
 
-Tree.attach('.tree');
+
+class TreeElement extends HTMLUListElement {
+    protected component: ViewComponent;
+    constructor() {
+        super();
+        this.component = new TreeComponent(this);
+    }
+}
+
+customElements.define('core-tree', TreeElement, {extends: 'ul'});
+
+
+

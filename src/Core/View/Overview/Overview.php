@@ -37,7 +37,7 @@ class Overview extends ViewComponent implements EntrypointInterface
 
     public static function getEntrypoint(): string
     {
-        return __DIR__ . '/OverviewComponent.ts';
+        return __DIR__ . '/Overview.ts';
     }
 
 

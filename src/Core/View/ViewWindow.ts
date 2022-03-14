@@ -7,17 +7,12 @@ declare const WinBox: WinBox.WinBoxConstructor;
 export default class ViewWindow extends WinBox {
     protected viewEvent: ViewEvent;
 
-    constructor(viewEvent: ViewEvent, html: string) {
+    constructor(viewEvent: ViewEvent, body: HTMLElement) {
         super({
-            title: viewEvent.title, html: html, x: 'center', y: 'center', class: "modern",
+            title: viewEvent.title, mount: body, x: 'center', y: 'center', class: "modern",
         });
         this.viewEvent = new ViewEvent(viewEvent);
         this.viewEvent.target = 'self';
     }
-
-    onclose = (force: boolean) => {
-
-        return false;
-    };
 
 }

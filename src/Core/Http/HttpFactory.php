@@ -116,15 +116,17 @@ class HttpFactory implements
             case ResponseInterface::class:
                 return new Response(...$params);
             case HtmlResponse::class:
-                return new Response(200, [], $params[0]);
+                return new Response(200, [], $params[0] ?? '');
             case RedirectResponse::class:
-                return new Response(302, ['Location' => $params[0]]);
+                return new Response(302, ['Location' => $params[0] ?? url()]);
             case NotFoundResponse::class:
                 return $this->createNotFoundResponse();
             case ClosureResponse::class:
                 return $this->createClosureResponse(...$params);
             case UriInterface::class:
                 return $this->createUri(...$params);
+            case StreamInterface::class:
+                return $this->createStream(...$params);
             case ServerRequest::class:
                 return (new ServerRequestFactory())->create($params, $id);
         }

@@ -12,12 +12,21 @@
     <?= \Pars\Core\View\Entrypoints::dumpCss(); ?>
 </head>
 <body>
-<header>
-    <?= $this->header ?>
-</header>
-<main>
-    <?= $this->main ?>
-</main>
+<?php if (isset($this->header)): ?>
+    <header>
+        <?= $this->header ?>
+    </header>
+<?php endif; ?>
+<?php if (isset($this->main)): ?>
+    <main>
+        <?= $this->main ?>
+    </main>
+<?php endif; ?>
+<?php if (isset($this->footer)): ?>
+    <footer>
+        <?= $this->footer ?>
+    </footer>
+<?php endif; ?>
 <?= \Pars\Core\View\Entrypoints::dumpJs(); ?>
 </body>
 </html>

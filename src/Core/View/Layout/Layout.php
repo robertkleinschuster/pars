@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Layout;
 
 use Pars\Core\View\EntrypointInterface;
@@ -7,8 +8,9 @@ use Pars\Core\View\ViewComponent;
 class Layout extends ViewComponent implements EntrypointInterface
 {
 
-    protected string $main = '';
-    protected string $header = '';
+    protected string $header;
+    protected string $main;
+    protected string $footer;
     protected string $language = '';
     protected string $title = '';
 
@@ -24,11 +26,13 @@ class Layout extends ViewComponent implements EntrypointInterface
     }
 
     /**
-     * @return string
+     * @param string $header
+     * @return Layout
      */
-    public function getMain(): string
+    public function setHeader(string $header): Layout
     {
-        return $this->main;
+        $this->header = $header;
+        return $this;
     }
 
     /**
@@ -42,29 +46,13 @@ class Layout extends ViewComponent implements EntrypointInterface
     }
 
     /**
-     * @return string
-     */
-    public function getHeader(): string
-    {
-        return $this->header;
-    }
-
-    /**
-     * @param string $header
+     * @param string $footer
      * @return Layout
      */
-    public function setHeader(string $header): Layout
+    public function setFooter(string $footer): Layout
     {
-        $this->header = $header;
+        $this->footer = $footer;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguage(): string
-    {
-        return $this->language;
     }
 
     /**
@@ -78,14 +66,6 @@ class Layout extends ViewComponent implements EntrypointInterface
     }
 
     /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
      * @param string $title
      * @return Layout
      */
@@ -94,7 +74,6 @@ class Layout extends ViewComponent implements EntrypointInterface
         $this->title = $title;
         return $this;
     }
-
 
 
 }

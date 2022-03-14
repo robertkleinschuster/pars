@@ -3,6 +3,6 @@
  * @var $this \Pars\Core\View\Navigation\Navigation
  */
 ?>
-<ul class="navigation <?= $this->isParent ? 'sub' : ''?>"<?= $this->attr() ?>>
+<ul is="core-navigation" class="navigation <?= $this->isParent ? 'sub' : ''?>"<?= $this->attr() ?>>
   <?= $this->getContent() ?>
 </ul>

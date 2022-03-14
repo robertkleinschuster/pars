@@ -6,7 +6,28 @@ use Psr\Http\Message\ResponseInterface;
 
 class Entrypoints
 {
-    protected static $entrypoints = [];
+    protected static self $instance;
+
+    private function __construct()
+    {
+        // private singleton
+    }
+
+    public static function getInstance(): static
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new static();
+        }
+        return self::$instance;
+    }
+
+    protected array $entrypointData = [];
+    protected array $entrypointsEnabled = [];
+
+    public static function add(string $entrypoint)
+    {
+        self::getInstance()->entrypointsEnabled[] = self::buildEntrypointName(self::buildEntrypoint($entrypoint));
+    }
 
     public static function buildEntrypoint(string $entrypoint)
     {
@@ -18,30 +39,28 @@ class Entrypoints
         return strtolower(str_replace(['./src/', '/', '.ts'], ['', '_', ''], $entrypoint));
     }
 
-    public static function load()
+    public function load()
     {
-        if (empty(self::$entrypoints)) {
-            self::$entrypoints = json_decode(file_get_contents('public/static/entrypoints.json'), true);
+        if (empty($this->entrypointData)) {
+            $this->entrypointData = json_decode(file_get_contents('public/static/entrypoints.json'), true);
         }
     }
 
-    public static function dumpCss()
+    public function save()
     {
-        $result = '';
-        foreach (self::dumpFiles('css') as $dumpFile) {
-            $result .= "<link rel='stylesheet' href='$dumpFile'>";
+        if (!file_exists('data/cache')) {
+            mkdir('data/cache', 0777, true);
         }
-        return $result;
+        file_put_contents('data/cache/entrypoints.php', '<?php return ' . var_export($this->entrypointData, true) . ';');
     }
 
-    protected static function dumpFiles(string $key)
+    protected function dumpFiles(string $key)
     {
-        self::load();
+        $this->load();
         $result = [];
-        $viewEntrypoints = ViewRenderer::$entrypoints;
-        foreach ($viewEntrypoints as $viewEntrypoint) {
-            if (isset(self::$entrypoints['entrypoints'][$viewEntrypoint][$key])) {
-                $files = self::$entrypoints['entrypoints'][$viewEntrypoint][$key];
+        foreach ($this->entrypointsEnabled as $viewEntrypoint) {
+            if (isset($this->entrypointData['entrypoints'][$viewEntrypoint][$key])) {
+                $files = $this->entrypointData['entrypoints'][$viewEntrypoint][$key];
                 foreach ($files as $file) {
                     $result[$file] = $file;
                 }
@@ -50,11 +69,20 @@ class Entrypoints
         return array_values($result);
     }
 
+
+    public static function dumpCss()
+    {
+        $result = '';
+        foreach (self::getInstance()->dumpFiles('css') as $dumpFile) {
+            $result .= "<link rel='stylesheet' href='$dumpFile'>";
+        }
+        return $result;
+    }
+
     public static function dumpJs()
     {
-        self::load();
         $result = '';
-        foreach (self::dumpFiles('js') as $dumpFile) {
+        foreach (self::getInstance()->dumpFiles('js') as $dumpFile) {
             $result .= "<script defer src='$dumpFile'></script>";
         }
         return $result;
@@ -62,13 +90,13 @@ class Entrypoints
 
     public static function injectHeaders(ResponseInterface $response): ResponseInterface
     {
-        $css = self::dumpFiles('css');
-        $js = self::dumpFiles('js');
+        $css = self::getInstance()->dumpFiles('css');
+        $js = self::getInstance()->dumpFiles('js');
         if (!empty($css)) {
-            $response = $response->withAddedHeader('inject-css', self::dumpFiles('css'));
+            $response = $response->withAddedHeader('inject-css', self::getInstance()->dumpFiles('css'));
         }
         if (!empty($js)) {
-            $response = $response->withAddedHeader('inject-js', self::dumpFiles('js'));
+            $response = $response->withAddedHeader('inject-js', self::getInstance()->dumpFiles('js'));
         }
         return $response;
     }

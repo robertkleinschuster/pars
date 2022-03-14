@@ -1,36 +1,24 @@
 import ViewEventHandler from "./ViewEventHandler";
 import ViewWindow from "./ViewWindow";
 import ViewEvent from "./ViewEvent";
-import ViewComponentInitializer from "./ViewComponentInitializer";
-import ViewHtmlHelper from "./ViewHtmlHelper";
 
 export default class ViewComponent {
-    public url: URL;
     public element: HTMLElement;
     public selectors: string;
     public eventHandler: ViewEventHandler;
-    public requestHandler: string;
 
-    constructor(element: HTMLElement, selectors: string, url: URL) {
-        this.url = url;
+    constructor(element: HTMLElement) {
         this.element = element;
-        this.selectors = selectors;
         this.eventHandler = new ViewEventHandler(this);
+        this.init();
     }
 
-    public init() {
+    protected init() {
         this.eventHandler.init();
     }
 
-    public static attach(selectors: string) {
-        ViewComponentInitializer.attachComponent(selectors, this);
-    }
-
     public handleViewEvent(viewEvent: ViewEvent, responseHtml: string) {
-        if (this === viewEvent.component
-            || viewEvent.handler && viewEvent.handler === this.requestHandler) {
-            this.handleResponse(viewEvent, responseHtml);
-        }
+        this.handleResponse(viewEvent, responseHtml);
     }
 
     protected handleResponse(viewEvent: ViewEvent, html: string) {
@@ -51,25 +39,24 @@ export default class ViewComponent {
     }
 
     protected handleTargetAction(viewEvent: ViewEvent, html: string) {
-        html = html.trim();
-        if (html) {
-            const newElement = ViewHtmlHelper.fromString(html).first();
-            if (newElement) {
-                const target = this.element;
-                this.element = newElement;
-                target.replaceWith(this.element);
-                ViewComponentInitializer.dispatchInit(this.element, new URL(viewEvent.url, document.baseURI));
-            }
-        }
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(html, 'text/html');
+        this.element.closest('main')
+            .replaceWith(dom.body.querySelector('main'));
+
     }
 
     protected handleTargetWindow(viewEvent: ViewEvent, html: string) {
-        const window = new ViewWindow(viewEvent, html);
-        ViewComponentInitializer.dispatchInit(window.body, new URL(viewEvent.url, document.baseURI));
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(html, 'text/html');
+        const main = dom.querySelector('main');
+        const window = new ViewWindow(viewEvent, main);
     }
 
     protected handleTargetSelf(viewEvent: ViewEvent, html: string) {
-        history.replaceState({}, '', viewEvent.url);
+        if (!this.element.closest('.winbox')) {
+            history.replaceState({}, '', viewEvent.url);
+        }
         this.handleTargetAction(viewEvent, html);
     }
 

@@ -7,12 +7,9 @@ export default class {
     public static readonly TARGET_WINDOW = 'window';
 
     public event: string;
-    public url: string;
-    public handler: string;
     public target: string;
+    public url: string;
     public title: string = '';
-    public id: string = '';
-    public component: ViewComponent;
 
     constructor(data: object = {}) {
         for (const [key, value] of Object.entries(data)) {

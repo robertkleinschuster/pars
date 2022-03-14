@@ -1,13 +1,13 @@
-import "./Sidebar.scss";
+import "./NavigationComponent.scss";
 import ViewComponent from "../ViewComponent";
 
-class SidebarElement extends HTMLDivElement {
+class NavigationElement extends HTMLUListElement
+{
     protected component: ViewComponent;
-
     constructor() {
         super();
         this.component = new ViewComponent(this);
     }
 }
 
-customElements.define('core-sidebar', SidebarElement, {extends: 'div'});
+customElements.define('core-navigation', NavigationElement, {extends: 'ul'});

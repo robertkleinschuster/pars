@@ -13,16 +13,13 @@ class ViewEvent
     public const EVENT_CHANGE = 'change';
 
     public string $event = self::EVENT_CLICK;
-    public string $url = '';
-    public string $handler = '';
     public string $target = self::TARGET_SELF;
+    public string $url = '';
     public string $title = '';
-    public string $id = '';
 
     public function __construct()
     {
         $this->url = url();
-        $this->id = uniqid();
     }
 
     public function getUrlParams(): array
