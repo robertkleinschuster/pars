@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  composer:
+    image: composer:2.2.7
+    command: ["composer", "install"]
+    working_dir: /app
+    volumes:
+      - .:/app
+  yarn:
+    image: node:14.19.0-alpine
+    command: [ "sh", "/development.sh" ]
+    working_dir: /app
+    volumes:
+      - ./docker/yarn/development.sh:/development.sh
+      - .:/app
