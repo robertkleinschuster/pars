@@ -29,7 +29,7 @@ class WebApplication extends AbstractApplication
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response = parent::handle($request);
+        $response = parent::handle($request->withAttribute(Layout::class, $this->layout));
         $main = $response->getBody()->getContents();
         $this->layout->setMain($main);
         $html = $this->renderer->render();

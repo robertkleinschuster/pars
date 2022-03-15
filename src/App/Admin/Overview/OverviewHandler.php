@@ -2,6 +2,7 @@
 namespace Pars\App\Admin\Overview;
 
 use Pars\Core\Http\HtmlResponse;
+use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Overview\Overview;
 use Pars\Core\View\ViewModel;
 use Psr\Http\Message\ResponseInterface;

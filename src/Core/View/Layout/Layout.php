@@ -75,5 +75,19 @@ class Layout extends ViewComponent implements EntrypointInterface
         return $this;
     }
 
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function addTitle(string $title): Layout
+    {
+        if ($this->title) {
+            $this->title .= ' - ' . $title;
+        } else {
+            $this->title = $title;
+        }
+        return $this;
+    }
+
 
 }

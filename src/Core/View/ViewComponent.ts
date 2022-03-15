@@ -4,7 +4,6 @@ import ViewEvent from "./ViewEvent";
 
 export default class ViewComponent {
     public element: HTMLElement;
-    public selectors: string;
     public eventHandler: ViewEventHandler;
 
     constructor(element: HTMLElement) {
@@ -39,11 +38,19 @@ export default class ViewComponent {
     }
 
     protected handleTargetAction(viewEvent: ViewEvent, html: string) {
+        const winbox = this.element.closest('.winbox');
         const parser = new DOMParser();
         const dom = parser.parseFromString(html, 'text/html');
         this.element.closest('main')
             .replaceWith(dom.body.querySelector('main'));
-
+        if (winbox) {
+            const winboxTitle = winbox.querySelector('.wb-title') as HTMLElement;
+            if (winboxTitle) {
+                winboxTitle.innerText = dom.title;
+            }
+        } else {
+            document.title = dom.title;
+        }
     }
 
     protected handleTargetWindow(viewEvent: ViewEvent, html: string) {
@@ -51,6 +58,7 @@ export default class ViewComponent {
         const dom = parser.parseFromString(html, 'text/html');
         const main = dom.querySelector('main');
         const window = new ViewWindow(viewEvent, main);
+        window.setTitle(dom.title);
     }
 
     protected handleTargetSelf(viewEvent: ViewEvent, html: string) {

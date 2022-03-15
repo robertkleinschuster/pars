@@ -5,6 +5,7 @@ use Pars\Core\Http\HtmlResponse;
 use Pars\Core\Router\RouteGroupHandler;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\View\Group\ViewGroupHandler;
+use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Sidebar\Sidebar;
 use Pars\Core\View\Tree\Tree;
 use Psr\Http\Message\ResponseInterface;
@@ -17,6 +18,8 @@ class StartpageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $request->getAttribute(Layout::class)->addTitle('startpage');
+
         $sidebar = new Sidebar();
 
         $tree = new Tree();

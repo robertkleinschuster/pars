@@ -23,6 +23,7 @@ class AdminApplication extends WebApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->layout->setHeader($this->renderHeader());
+        $this->layout->setTitle('admin');
         return parent::handle($request);
     }
 
