@@ -11,17 +11,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
       - name: pull-request
         uses: repo-sync/pull-request@v2
         id: cpr
         with:
           destination_branch: "main"
           github_token: ${{ secrets.PAT }}
-          pr_title: ${{ steps.extract_branch.outputs.branch }}
+          pr_title: ${GITHUB_REF#refs/heads/}
           pr_body: ${{ github.event.head_commit.message }}
 
       - name: Enable Pull Request Automerge
