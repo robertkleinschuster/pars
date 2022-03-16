@@ -20,8 +20,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.extract_branch.outputs.branch }}
-          base: main
+          branch: main
           title: "Pulling ${{ github.ref }} into main"
           body: ${{ github.event.head_commit.message }}
 
