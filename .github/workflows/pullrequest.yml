@@ -11,23 +11,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Create Pull Request
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
         id: cpr
-        uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.PAT }}
-          base: main
-          title: "Pulling ${{ github.ref }} into main"
-          body: ${{ github.event.head_commit.message }}
+          destination_branch: "main"
+          github_token: ${{ secrets.PAT }}
+          pr_title: "Pulling ${{ github.ref }} into master"
+          pr_body: ${{ github.event.head_commit.message }}
 
       - name: Enable Pull Request Automerge
-        if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: peter-evans/enable-pull-request-automerge@v1
+        if: ${{ steps.cpr.outputs.pr_number }} > 0
         with:
           token: ${{ secrets.PAT }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          pull-request-number: ${{ steps.cpr.outputs.pr_number }}
           merge-method: squash

@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('create')) {
     function create(string $class, ...$params)
     {

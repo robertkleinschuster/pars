@@ -1,13 +1,14 @@
 <?php
+
 namespace Pars\Core\View\Overview;
 
 use Pars\Core\View\ViewComponent;
 
 class OverviewButton extends ViewComponent
 {
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->class[] = 'overview__button';
         $this->tag = 'button';
     }
@@ -16,5 +17,4 @@ class OverviewButton extends ViewComponent
     {
         return $this->getParent()->getParent()->getModel()->get($key);
     }
-
 }

@@ -13,6 +13,4 @@ jobs:
           php_version: "8.1"
           php_extensions: intl pdo
           version: 2
-      - uses: php-actions/phpstan@v3
-        with:
-          path: src/
+      - run: composer phpstan

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Config;
 
 class Config
@@ -48,5 +49,4 @@ class Config
 
         return $this->getRecursiveValue($data[$key] ?? null, $keyPath);
     }
-
 }

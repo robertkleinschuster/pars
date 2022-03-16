@@ -14,5 +14,4 @@ class FaviconMiddleware implements MiddlewareInterface
     {
         return new Response(200, [], 'favicon');
     }
-
 }

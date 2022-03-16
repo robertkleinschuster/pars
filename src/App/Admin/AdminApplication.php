@@ -72,6 +72,4 @@ class AdminApplication extends WebApplication
         $this->router->route('/:entity/:id', $this->container->get(DetailHandler::class));
         $this->router->route('/login', $this->container->get(LoginHandler::class));
     }
-
-
 }

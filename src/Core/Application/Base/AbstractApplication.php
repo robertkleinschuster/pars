@@ -37,7 +37,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));
     }
 
-    protected abstract function init();
+    abstract protected function init();
 
     public function run()
     {
@@ -55,5 +55,4 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     {
         return $this->pipeline->handle($request);
     }
-
 }

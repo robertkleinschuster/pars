@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\App\Admin\Detail;
 
 use Pars\Core\Http\ClosureResponse;
@@ -37,5 +38,4 @@ class DetailHandler implements RequestHandlerInterface
 
         return render($detail);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'overview' => 'Overview',
     'detail' => 'Detail',

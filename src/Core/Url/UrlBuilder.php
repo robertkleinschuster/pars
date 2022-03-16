@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Url;
 
 use GuzzleHttp\Psr7\Uri;

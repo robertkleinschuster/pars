@@ -8,5 +8,4 @@ interface ConsoleInterface
     public function run(): string;
     public static function description(): string;
     public static function command(): string;
-
 }

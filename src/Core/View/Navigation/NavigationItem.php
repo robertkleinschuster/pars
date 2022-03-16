@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Navigation;
 
 use Pars\Core\View\Tree\TreeItem;
@@ -10,9 +11,9 @@ use Pars\Core\View\ViewRenderer;
  */
 class NavigationItem extends TreeItem
 {
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/navigation_item.phtml');
         $this->setTreeClass(Navigation::class);
         $this->model = new NavigationModel();

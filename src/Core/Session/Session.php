@@ -39,5 +39,4 @@ class Session
     {
         return $this->get($key, []);
     }
-
 }

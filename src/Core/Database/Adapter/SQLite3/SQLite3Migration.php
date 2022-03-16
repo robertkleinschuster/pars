@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Database\Adapter\SQLite3;
 
 interface SQLite3Migration

@@ -2,13 +2,13 @@
 
 namespace Pars\Core\Pipeline;
 
-use JetBrains\PhpStorm\Pure;
 use Pars\Core\Middleware\BasePathMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use SplStack;
+
 use function is_string;
 
 class MiddlewarePipeline implements RequestHandlerInterface
@@ -16,7 +16,7 @@ class MiddlewarePipeline implements RequestHandlerInterface
     protected SplStack $pipeline;
     protected RequestHandlerInterface $handler;
 
-    #[Pure] public function __construct(RequestHandlerInterface $handler)
+    public function __construct(RequestHandlerInterface $handler)
     {
         $this->pipeline = new SplStack();
         $this->handler = $handler;
@@ -39,5 +39,4 @@ class MiddlewarePipeline implements RequestHandlerInterface
         }
         return $this;
     }
-
 }

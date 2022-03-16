@@ -7,16 +7,15 @@ use Pars\Core\View\ViewComponent;
 
 class Layout extends ViewComponent implements EntrypointInterface
 {
-
     protected string $header;
     protected string $main;
     protected string $footer;
     protected string $language = '';
     protected string $title = '';
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/layout.phtml');
     }
 
@@ -88,6 +87,4 @@ class Layout extends ViewComponent implements EntrypointInterface
         }
         return $this;
     }
-
-
 }

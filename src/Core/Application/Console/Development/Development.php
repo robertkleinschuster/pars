@@ -66,6 +66,4 @@ class Development implements ConsoleInterface
     {
         return 'development';
     }
-
-
 }

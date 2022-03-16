@@ -1,7 +1,6 @@
 <?php
 
 namespace Pars\Core\Container;
-require_once "global.php";
 
 use Psr\Container\ContainerInterface;
 use Pars\Core\Http\ClosureResponse;
@@ -43,8 +42,9 @@ class Container implements ContainerInterface
      */
     protected DefaultFactory $defaultFactory;
 
-    public function __construct()
+    final public function __construct()
     {
+        require_once "global.php";
         $this::$instance = $this;
         $this->defaultFactory = new DefaultFactory();
         $this->factories = array_replace_recursive($this->getDefaultFactories(), include "config/factories.php");
@@ -124,5 +124,4 @@ class Container implements ContainerInterface
     {
         return isset($this->factories[$id]) || $this->services[$id];
     }
-
 }

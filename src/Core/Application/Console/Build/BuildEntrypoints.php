@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Application\Console\Build;
 
 use Composer\Autoload\ClassLoader;
@@ -9,7 +10,6 @@ use Pars\Core\View\ViewComponent;
 
 class BuildEntrypoints implements ConsoleInterface
 {
-
     protected array $params = [];
 
     /**
@@ -25,7 +25,7 @@ class BuildEntrypoints implements ConsoleInterface
         ini_set('error_reporting', 0);
         $result = '';
         $iti = new \RecursiveDirectoryIterator(getcwd() . '/src');
-        foreach(new \RecursiveIteratorIterator($iti) as $file){
+        foreach (new \RecursiveIteratorIterator($iti) as $file) {
             if (str_ends_with($file, '.php')) {
                 try {
                     require_once $file;
@@ -57,5 +57,4 @@ class BuildEntrypoints implements ConsoleInterface
     {
         return 'build:entrypoints';
     }
-
 }

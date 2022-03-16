@@ -1,4 +1,5 @@
 <?php
+
 return [
     'admin.title' => 'PARS Admin',
     'admin.navigation.startpage' => 'Startpage',

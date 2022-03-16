@@ -73,7 +73,10 @@ class EmptyClassGenerator extends AbstractGenerator
     {
         $className = str_replace("Pars\\", "", $className);
         $className = str_replace("ParsTest\\", "", $className);
-        return $basePath . DIRECTORY_SEPARATOR . str_replace(self::NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $className) . '.php';
+        return $basePath
+            . DIRECTORY_SEPARATOR
+            . str_replace(self::NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $className)
+            . '.php';
     }
 
     public function buildTestName(string $className): string

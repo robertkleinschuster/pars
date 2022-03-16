@@ -6,7 +6,6 @@ use Pars\Core\Application\Base\AbstractApplication;
 
 class ConsoleApplication extends AbstractApplication
 {
-
     /**
      */
     public function run(array $params = [])
@@ -54,8 +53,5 @@ class ConsoleApplication extends AbstractApplication
 
     protected function init()
     {
-
     }
-
-
 }

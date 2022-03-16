@@ -6,5 +6,4 @@ use Psr\Http\Message\ResponseInterface;
 
 interface NotFoundResponse extends ResponseInterface
 {
-
 }

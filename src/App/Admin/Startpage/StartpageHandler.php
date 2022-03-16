@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\App\Admin\Startpage;
 
 use Pars\Core\Http\HtmlResponse;
@@ -35,7 +36,5 @@ class StartpageHandler implements RequestHandlerInterface
         $routeGroup->push($request->withUri($request->getUri()->withPath('/overview')));
         $sidebar->setContent($routeGroup->handle($request)->getBody()->getContents());
         return create(HtmlResponse::class, render($sidebar));
-
     }
-
 }

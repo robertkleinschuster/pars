@@ -18,5 +18,4 @@ class ClearcacheMiddleware implements MiddlewareInterface
         }
         return create(Response::class, 200, [], 'done');
     }
-
 }

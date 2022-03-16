@@ -13,9 +13,4 @@ jobs:
           php_version: "8.1"
           php_extensions: intl pdo
           version: 2
-      - uses: php-actions/phpunit@v3
-        with:
-          version: 9.5
-          php_version: "8.1"
-          php_extensions: intl pdo
-          configuration: phpunit.xml
+      - run: composer phpunit

@@ -12,11 +12,12 @@ class Detail extends ViewComponent implements EntrypointInterface
 
     protected array $chapter = [];
 
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/detail.phtml');
     }
+
 
     public static function getEntrypoint(): string
     {

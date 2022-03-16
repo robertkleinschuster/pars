@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Group;
 
 use Exception;
@@ -12,5 +13,4 @@ class NoRouteHandler implements RequestHandlerInterface
     {
         throw new Exception("No route {$request->getUri()}");
     }
-
 }

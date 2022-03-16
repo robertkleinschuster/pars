@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Database;
 
 trait DatabaseTrait

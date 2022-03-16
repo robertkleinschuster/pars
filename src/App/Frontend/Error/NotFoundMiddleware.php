@@ -2,7 +2,6 @@
 
 namespace Pars\App\Frontend\Error;
 
-use JetBrains\PhpStorm\Pure;
 use Pars\Core\Container\ContainerFactoryInterface;
 use Pars\Core\Http\ClosureResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -12,12 +11,16 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class NotFoundMiddleware implements MiddlewareInterface, ContainerFactoryInterface
 {
-
     protected string $heading;
 
-    #[Pure] public function create(array $params, string $id): static
+    final public function __construct()
     {
-        return new static;
+    }
+
+
+    public function create(array $params, string $id): static
+    {
+        return new static();
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -38,5 +41,4 @@ class NotFoundMiddleware implements MiddlewareInterface, ContainerFactoryInterfa
         include 'templates/error.phtml';
         return ob_get_clean();
     }
-
 }

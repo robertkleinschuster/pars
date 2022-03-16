@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Navigation;
 
 use GuzzleHttp\Psr7\Uri;
@@ -95,5 +96,4 @@ class NavigationModel extends TreeModel
             }
         }
     }
-
 }

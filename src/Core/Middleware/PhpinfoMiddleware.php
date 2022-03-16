@@ -15,5 +15,4 @@ class PhpinfoMiddleware implements MiddlewareInterface
     {
         return new Response(200, [], new ClosureStream(phpinfo(...)));
     }
-
 }

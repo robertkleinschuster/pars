@@ -9,9 +9,9 @@ class Sidebar extends ViewComponent implements EntrypointInterface
 {
     protected string $sideContent = '';
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/sidebar.phtml');
     }
 
@@ -34,5 +34,4 @@ class Sidebar extends ViewComponent implements EntrypointInterface
         $this->sideContent = $sideContent;
         return $this;
     }
-
 }

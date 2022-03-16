@@ -8,7 +8,7 @@ class Entrypoints
 {
     protected static self $instance;
 
-    private function __construct()
+    final private function __construct()
     {
         // private singleton
     }
@@ -44,14 +44,6 @@ class Entrypoints
         if (empty($this->entrypointData)) {
             $this->entrypointData = json_decode(file_get_contents('public/static/entrypoints.json'), true);
         }
-    }
-
-    public function save()
-    {
-        if (!file_exists('data/cache')) {
-            mkdir('data/cache', 0777, true);
-        }
-        file_put_contents('data/cache/entrypoints.php', '<?php return ' . var_export($this->entrypointData, true) . ';');
     }
 
     protected function dumpFiles(string $key)
@@ -100,5 +92,4 @@ class Entrypoints
         }
         return $response;
     }
-
 }

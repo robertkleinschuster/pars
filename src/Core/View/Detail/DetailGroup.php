@@ -8,11 +8,13 @@ class DetailGroup extends ViewComponent
 {
     protected string $name = '';
 
-    public function __construct()
+
+    protected function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/detail_group.phtml');
     }
+
 
     /**
      * @return string
@@ -31,6 +33,4 @@ class DetailGroup extends ViewComponent
         $this->name = $name;
         return $this;
     }
-
-
 }

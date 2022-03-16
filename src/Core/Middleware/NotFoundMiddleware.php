@@ -14,5 +14,4 @@ class NotFoundMiddleware implements MiddlewareInterface
     {
         return create(NotFoundResponse::class);
     }
-
 }

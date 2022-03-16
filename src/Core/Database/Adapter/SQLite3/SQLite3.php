@@ -2,6 +2,7 @@
 
 namespace Pars\Core\Database\Adapter\SQLite3;
 
+use Pars\Core\Database\Adapter\DbAdapter;
 use Pars\Core\Database\DatabaseResult;
 use SQLite3 as PDOSQLite3;
 
