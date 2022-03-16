@@ -9,9 +9,9 @@ class OverviewField extends ViewComponent
     protected string $key = '';
     protected string $name = '';
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/overview_field.phtml');
     }
 

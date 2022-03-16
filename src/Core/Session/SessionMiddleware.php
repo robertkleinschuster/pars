@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Session;
 
 use Psr\Http\Message\ResponseInterface;
@@ -13,5 +14,4 @@ class SessionMiddleware implements MiddlewareInterface
         get(Session::class);
         return $handler->handle($request);
     }
-
 }

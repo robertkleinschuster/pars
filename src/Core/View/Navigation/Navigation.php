@@ -15,9 +15,9 @@ class Navigation extends Tree implements EntrypointInterface
 {
     protected bool $isParent = false;
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/navigation.phtml');
         $this->setItemClass(NavigationItem::class);
         $this->model = create(NavigationModel::class);
@@ -36,6 +36,4 @@ class Navigation extends Tree implements EntrypointInterface
             $this->isParent = true;
         }
     }
-
-
 }

@@ -25,7 +25,9 @@ use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
+
 use function in_array;
+
 use const UPLOAD_ERR_OK;
 
 class HttpFactory implements
@@ -39,12 +41,11 @@ class HttpFactory implements
 {
     public function createUploadedFile(
         StreamInterface $stream,
-        int             $size = null,
-        int             $error = UPLOAD_ERR_OK,
-        string          $clientFilename = null,
-        string          $clientMediaType = null
-    ): UploadedFileInterface
-    {
+        int $size = null,
+        int $error = UPLOAD_ERR_OK,
+        string $clientFilename = null,
+        string $clientMediaType = null
+    ): UploadedFileInterface {
         if ($size === null) {
             $size = $stream->getSize();
         }
@@ -63,7 +64,11 @@ class HttpFactory implements
             $resource = Utils::tryFopen($file, $mode);
         } catch (RuntimeException $e) {
             if ('' === $mode || false === in_array($mode[0], ['r', 'w', 'a', 'x', 'c'], true)) {
-                throw new InvalidArgumentException(sprintf('Invalid file opening mode "%s"', $mode), 0, $e);
+                throw new InvalidArgumentException(
+                    sprintf('Invalid file opening mode "%s"', $mode),
+                    0,
+                    $e
+                );
             }
 
             throw $e;
@@ -77,8 +82,11 @@ class HttpFactory implements
         return Utils::streamFor($resource);
     }
 
-    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
-    {
+    public function createServerRequest(
+        string $method,
+        $uri,
+        array $serverParams = []
+    ): ServerRequestInterface {
         if (empty($method)) {
             if (!empty($serverParams['REQUEST_METHOD'])) {
                 $method = $serverParams['REQUEST_METHOD'];
@@ -136,8 +144,13 @@ class HttpFactory implements
     public function createNotFoundResponse(): NotFoundResponse
     {
         return new class extends Response implements NotFoundResponse {
-            public function __construct(int $status = 404, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
-            {
+            public function __construct(
+                int $status = 404,
+                array $headers = [],
+                $body = null,
+                string $version = '1.1',
+                string $reason = null
+            ) {
                 parent::__construct($status, $headers, $body, $version, $reason);
             }
         };
@@ -145,7 +158,7 @@ class HttpFactory implements
 
     public function createClosureResponse(Closure $closure, int $status = 200)
     {
-        return new class($status, [], new ClosureStream($closure)) extends Response implements ClosureResponse {
+        return new class ($status, [], new ClosureStream($closure)) extends Response implements ClosureResponse {
         };
     }
 }

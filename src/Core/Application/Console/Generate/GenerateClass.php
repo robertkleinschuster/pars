@@ -7,8 +7,6 @@ use Pars\Core\Generator\EmptyClass\EmptyClassGenerator;
 
 class GenerateClass implements ConsoleInterface
 {
-
-
     protected array $params = [];
 
     /**

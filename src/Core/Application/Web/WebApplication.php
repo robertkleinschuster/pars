@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Application\Web;
 
 use Pars\Core\Application\Base\AbstractApplication;
@@ -24,7 +25,6 @@ class WebApplication extends AbstractApplication
 
     protected function init()
     {
-
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -36,7 +36,4 @@ class WebApplication extends AbstractApplication
         $body = $this->container->create(StreamInterface::class, $html);
         return $response->withBody($body);
     }
-
-
-
 }

@@ -13,7 +13,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class FrontendApplication extends WebApplication
 {
-
     protected function init()
     {
         $this->container->register(NotFoundMiddleware::class, Error\NotFoundMiddleware::class);

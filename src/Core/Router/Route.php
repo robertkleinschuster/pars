@@ -53,7 +53,11 @@ class Route
             return true;
         }
 
-        $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($this->route)) . "$@D";
+        $pattern = "@^" . preg_replace(
+            '/\\\:[a-zA-Z0-9\_\-]+/',
+            '([a-zA-Z0-9\-\_]+)',
+            preg_quote($this->route)
+        ) . "$@D";
 
         preg_match_all('/\:[a-zA-Z0-9\_\-]+/', $this->route, $m);
         array_walk_recursive($m, function ($a) use (&$keys) {

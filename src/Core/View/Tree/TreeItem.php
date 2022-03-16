@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Tree;
 
 use Pars\Core\View\ViewComponent;
@@ -14,9 +15,9 @@ class TreeItem extends ViewComponent
     protected Tree $tree;
     protected string $treeClass = Tree::class;
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/tree_item.phtml');
         $this->model = create(TreeModel::class);
     }
@@ -64,12 +65,11 @@ class TreeItem extends ViewComponent
     }
 
 
-    public function getTree(): Tree {
+    public function getTree(): Tree
+    {
         if (!isset($this->tree)) {
             $this->tree = create($this->getTreeClass());
         }
         return $this->tree;
     }
-
-
 }

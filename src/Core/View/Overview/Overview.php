@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Overview;
 
 use Pars\Core\View\EntrypointInterface;
@@ -17,9 +18,9 @@ class Overview extends ViewComponent implements EntrypointInterface
     protected ViewComponent $tbody;
     protected ViewComponent $trow;
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/overview.phtml');
         $this->thead = create(ViewComponent::class);
         $this->tbody = create(ViewComponent::class);
@@ -132,6 +133,4 @@ class Overview extends ViewComponent implements EntrypointInterface
         $this->heading = $heading;
         return $this;
     }
-
-
 }

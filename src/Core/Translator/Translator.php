@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Translator;
 
 use Locale;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View;
 
 use IteratorAggregate;
@@ -10,6 +11,11 @@ class ViewModel implements IteratorAggregate
     protected string $value = '';
 
     protected SplDoublyLinkedList $list;
+
+    final public function __construct()
+    {
+    }
+
 
     public function push(ViewModel $model)
     {
@@ -65,6 +71,4 @@ class ViewModel implements IteratorAggregate
         $this->value = $value;
         return $this;
     }
-
-
 }

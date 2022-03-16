@@ -39,6 +39,4 @@ class RequestRouter implements MiddlewareInterface
         }
         return $handler->handle($request);
     }
-
 }
-

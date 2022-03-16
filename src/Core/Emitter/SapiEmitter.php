@@ -2,7 +2,6 @@
 
 namespace Pars\Core\Emitter;
 
-
 use Pars\Core\View\Entrypoints;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -26,7 +25,9 @@ class SapiEmitter
         if (headers_sent($file, $line)) {
             throw new RuntimeException(sprintf(
                 'Unable to emit response: Headers already sent in file %s on line %s. '
-                . 'This happens if echo, print, printf, print_r, var_dump, var_export or similar statement that writes to the output buffer are used.',
+                . 'This happens if 
+                echo, print, printf, print_r, var_dump, var_export 
+                or similar statement that writes to the output buffer are used.',
                 $file,
                 (string)$line
             ));
@@ -121,7 +122,12 @@ class SapiEmitter
         $level = count($status);
         $flags = PHP_OUTPUT_HANDLER_REMOVABLE | ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE);
 
-        while ($level-- > $maxBufferLevel && isset($status[$level]) && ($status[$level]['del'] ?? !isset($status[$level]['flags']) || $flags === ($status[$level]['flags'] & $flags))) {
+        while (
+            $level-- > $maxBufferLevel
+            && isset($status[$level])
+            && ($status[$level]['del'] ?? !isset($status[$level]['flags'])
+                || $flags === ($status[$level]['flags'] & $flags))
+        ) {
             if ($flush) {
                 ob_end_flush();
             } else {

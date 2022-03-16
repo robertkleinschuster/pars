@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Tree;
 
 use Pars\Core\View\ViewModel;

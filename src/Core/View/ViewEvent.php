@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View;
 
 use Pars\Core\Router\Route;
@@ -24,13 +25,13 @@ class ViewEvent
 
     public function getUrlParams(): array
     {
-       return Route::findKeys($this->url);
+        return Route::findKeys($this->url);
     }
 
     public function setUrlParam(string $key, string $value): self
     {
-       $this->url = str_replace(":$key", $value, $this->url);
-       return $this;
+        $this->url = str_replace(":$key", $value, $this->url);
+        return $this;
     }
 
     public function toAttributes(): string
@@ -54,7 +55,8 @@ class ViewEvent
         return $event;
     }
 
-    public static function self(string $uri): static {
+    public static function self(string $uri): static
+    {
         /* @var $event ViewEvent */
         $event = create(static::class);
         $event->url = $uri;
@@ -62,7 +64,8 @@ class ViewEvent
         return $event;
     }
 
-    public static function action(string $uri, string $title): static {
+    public static function action(string $uri, string $title): static
+    {
         /* @var $event ViewEvent */
         $event = create(static::class);
         $event->url = $uri;
@@ -71,7 +74,8 @@ class ViewEvent
         return $event;
     }
 
-    public static function blank(string $uri, string $title): static {
+    public static function blank(string $uri, string $title): static
+    {
         /* @var $event ViewEvent */
         $event = create(static::class);
         $event->url = $uri;
@@ -79,5 +83,4 @@ class ViewEvent
         $event->title = $title;
         return $event;
     }
-
 }

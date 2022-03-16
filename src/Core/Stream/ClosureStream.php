@@ -3,6 +3,7 @@
 namespace Pars\Core\Stream;
 
 use Closure;
+use Exception;
 use Psr\Http\Message\StreamInterface;
 
 class ClosureStream implements StreamInterface
@@ -41,7 +42,6 @@ class ClosureStream implements StreamInterface
 
     public function detach()
     {
-
     }
 
     public function getSize()
@@ -51,12 +51,12 @@ class ClosureStream implements StreamInterface
 
     public function tell()
     {
-
+        return 0;
     }
 
     public function eof()
     {
-
+        return false;
     }
 
     public function isSeekable()
@@ -70,7 +70,6 @@ class ClosureStream implements StreamInterface
 
     public function rewind()
     {
-
     }
 
     public function isWritable()
@@ -78,9 +77,14 @@ class ClosureStream implements StreamInterface
         return false;
     }
 
+    /**
+     * @param $string
+     * @return int
+     * @throws Exception
+     */
     public function write($string)
     {
-
+        throw new Exception('no supported');
     }
 
     public function isReadable()
@@ -97,5 +101,4 @@ class ClosureStream implements StreamInterface
     {
         return null;
     }
-
 }

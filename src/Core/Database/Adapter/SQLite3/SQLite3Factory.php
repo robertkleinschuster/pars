@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Database\Adapter\SQLite3;
 
 use Pars\Core\Container\ContainerFactoryInterface;
@@ -13,6 +14,4 @@ class SQLite3Factory implements ContainerFactoryInterface
         }
         return new SQLite3($config['file']);
     }
-
-
 }

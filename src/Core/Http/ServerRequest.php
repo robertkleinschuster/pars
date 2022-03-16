@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\LazyOpenStream;
 use Pars\Core\Router\RequestRouter;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest
+class ServerRequest extends \GuzzleHttp\Psr7\ServerRequest implements ServerRequestConstructorInterface
 {
     public static function fromGlobals(): ServerRequestInterface
     {

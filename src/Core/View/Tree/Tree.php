@@ -12,9 +12,9 @@ class Tree extends ViewComponent implements EntrypointInterface
     protected string $itemClass = TreeItem::class;
     protected string $heading = '';
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/tree.phtml');
     }
 
@@ -81,6 +81,4 @@ class Tree extends ViewComponent implements EntrypointInterface
         $this->heading = $heading;
         return $this;
     }
-
-
 }

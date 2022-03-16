@@ -11,5 +11,4 @@ class ServerRequestFactory implements ContainerFactoryInterface
     {
         return ServerRequest::fromGlobals();
     }
-
 }

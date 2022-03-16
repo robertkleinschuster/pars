@@ -1,6 +1,6 @@
 <?php
-namespace Pars\Core\Database;
 
+namespace Pars\Core\Database;
 
 use ReturnTypeWillChange;
 use Traversable;
@@ -18,5 +18,4 @@ class DatabaseResult implements \IteratorAggregate
     {
         return $this->iterable;
     }
-
 }

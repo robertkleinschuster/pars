@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Toolbar;
 
 use Pars\Core\View\EntrypointInterface;
@@ -7,9 +8,9 @@ use Pars\Core\View\ViewComponent;
 
 class Toolbar extends ViewComponent implements EntrypointInterface
 {
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/toolbar.phtml');
     }
 

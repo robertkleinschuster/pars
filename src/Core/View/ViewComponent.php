@@ -16,9 +16,13 @@ class ViewComponent
     protected string $tag = 'div';
     protected array $class = [];
 
-    public function __construct()
+    final public function __construct()
     {
+        $this->init();
+    }
 
+    protected function init()
+    {
     }
 
 
@@ -64,7 +68,6 @@ class ViewComponent
 
     public function onRender(ViewRenderer $renderer)
     {
-
     }
 
 
@@ -210,6 +213,4 @@ class ViewComponent
         $this->setEvent(ViewEvent::action($uri, $title));
         return $this->getEvent();
     }
-
-
 }

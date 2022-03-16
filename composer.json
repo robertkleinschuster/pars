@@ -39,7 +39,9 @@
   },
   "scripts": {
     "console": "php console.php",
-    "phpcs": "phpcs src",
-    "phpstan": "phpstan analyse src"
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf",
+    "phpstan": "phpstan analyse src",
+    "phpunit": "phpunit"
   }
 }

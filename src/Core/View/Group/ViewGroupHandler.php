@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\View\Group;
 
 use Pars\Core\Http\HtmlResponse;
@@ -11,7 +12,6 @@ use SplQueue;
 
 class ViewGroupHandler implements RequestHandlerInterface
 {
-
     protected SplQueue $requests;
 
     public function __construct()

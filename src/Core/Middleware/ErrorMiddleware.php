@@ -29,7 +29,6 @@ class ErrorMiddleware implements MiddlewareInterface
             } else {
                 return new Response(500, [], new ClosureStream($this->render(...)));
             }
-
         }
         return $response;
     }

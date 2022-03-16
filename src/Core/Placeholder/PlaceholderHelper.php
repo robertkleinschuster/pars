@@ -1,4 +1,5 @@
 <?php
+
 namespace Pars\Core\Placeholder;
 
 class PlaceholderHelper

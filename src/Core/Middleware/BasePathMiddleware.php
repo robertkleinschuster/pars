@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
 use function str_starts_with;
 use function substr_replace;
 use function strlen;
@@ -40,5 +41,4 @@ class BasePathMiddleware implements MiddlewareInterface
         }
         return $handler->handle($request);
     }
-
 }

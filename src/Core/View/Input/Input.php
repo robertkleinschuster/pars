@@ -1,18 +1,18 @@
 <?php
+
 namespace Pars\Core\View\Input;
 
 use Pars\Core\View\ViewComponent;
 
 class Input extends ViewComponent
 {
-
     public string $type = 'text';
     public string $key = '';
     public string $label = '';
 
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/input.phtml');
     }
 
@@ -24,6 +24,4 @@ class Input extends ViewComponent
         $attributes[] = "value='{$this->getValue($this->key)}'";
         return $result . ' ' . implode(' ', $attributes);
     }
-
-
 }

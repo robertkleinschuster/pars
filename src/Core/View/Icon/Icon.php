@@ -7,9 +7,9 @@ use Pars\Core\View\ViewComponent;
 
 class Icon extends ViewComponent implements EntrypointInterface
 {
-    public function __construct()
+    public function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/icon.phtml');
     }
 
@@ -39,7 +39,8 @@ class Icon extends ViewComponent implements EntrypointInterface
         return $icon;
     }
 
-    public static function create() {
+    public static function create()
+    {
         $icon = new static();
         $icon->setIcon('plus-square');
         return $icon;

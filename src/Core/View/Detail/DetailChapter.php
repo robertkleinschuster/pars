@@ -10,11 +10,14 @@ class DetailChapter extends ViewComponent
 
     protected string $name = '';
 
-    public function __construct()
+
+
+    protected function init()
     {
-        parent::__construct();
+        parent::init();
         $this->setTemplate(__DIR__ . '/templates/detail_chapter.phtml');
     }
+
 
     /**
      * @return string
@@ -43,6 +46,4 @@ class DetailChapter extends ViewComponent
         }
         return $this;
     }
-
-
 }
