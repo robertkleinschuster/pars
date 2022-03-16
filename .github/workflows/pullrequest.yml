@@ -22,6 +22,7 @@ jobs:
 
       - name: Enable Pull Request Automerge
         uses: peter-evans/enable-pull-request-automerge@v1
+        if: ${{ steps.cpr.outputs.pr_number }} > 0
         with:
           token: ${{ secrets.PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pr_number }}
