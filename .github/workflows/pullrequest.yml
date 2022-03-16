@@ -25,7 +25,7 @@ jobs:
           pr_body: ${{ github.event.head_commit.message }}
 
       - name: Enable Pull Request Automerge
-        if: ${{ steps.cpr.outputs.pr_number }} > 0
+        if: ${{ steps.cpr.outputs.pr_number > 0 }}
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
           token: ${{ secrets.PAT }}
