@@ -1,6 +1,6 @@
 name: Unit Tests
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   phpunit:
@@ -9,4 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: php-actions/composer@v6
+        with:
+          php_version: "8.1"
+          php_extensions: intl pdo
+          version: 2
       - uses: php-actions/phpunit@v3
