@@ -2,10 +2,19 @@
 repo:
 - '*'
 
-# Add '@domain/core' label to any change within the 'core' package
-@domain/core:
+# Add 'domain/github' label to any change within the github workflows package
+domain/github:
+- .github/*
+- .github/**/*
+
+# Add 'domain/core' label to any change within the 'core' package
+domain/core:
 - src/Core/*
 - src/Core/**/*
+
+domain/app:
+- src/App/*
+- src/App/**/*
 
 # Add 'source' label to any change to src files within the source dir
 php:
