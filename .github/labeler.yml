@@ -12,6 +12,23 @@ domain/app:
   - "src/App/*"
   - "src/App/**/*"
 
+domain/config:
+  - "config/*"
+  - "config/**/*"
+
+domain/docker:
+  - "docker/*"
+  - "docker/**/*"
+  - "docker-compose.*"
+
+domain/docs:
+  - "docs/*"
+  - "docs/**/*"
+
+public:
+  - "public/*"
+  - "public/**/*"
+
 # Add 'php' label to any change to src php files within the source or test dir
 php:
   - "src/**/*.php"
@@ -26,3 +43,12 @@ scss:
   - "src/**/*.scss"
 css:
   - "src/**/*.css"
+yml:
+  - "*.yml"
+  - "**/*.yml"
+xml:
+  - "*.xml"
+  - "**/*.xml"
+json:
+  - "*.json"
+  - "**/*.json"
