@@ -1,7 +1,11 @@
 name: Pull Request
 on:
   push:
-    branches: [ "*", "!main"]
+    branches:
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - '!master'   # excludes master
 
 jobs:
   pull-request:
