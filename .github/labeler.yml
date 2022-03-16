@@ -4,8 +4,8 @@ repo:
 
 # Add 'domain/github' label to any change within the github workflows package
 domain/github:
-- .github/*
-- .github/**/*
+- \.github/*
+- \.github/**/*
 
 # Add 'domain/core' label to any change within the 'core' package
 domain/core:
@@ -18,7 +18,7 @@ domain/app:
 
 # Add 'source' label to any change to src files within the source dir
 php:
-- any: ['src/**/*.php']
+- any: ['src/**/*.php', 'test/**/*.php']
 
 # Add filetype labels to any change
 ts:
