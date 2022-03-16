@@ -9,3 +9,4 @@ if ($argv[0] == 'console.php') {
     array_shift($argv);
 }
 $app->run($argv);
+
