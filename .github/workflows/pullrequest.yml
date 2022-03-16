@@ -7,14 +7,22 @@ on:
 
 jobs:
   pull-request:
-    name: Open PR to main
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-      - uses: repo-sync/pull-request@v2
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
         with:
-          destination_branch: "main"
-          pr_title: "Pulling ${{ github.ref }} into main"
-          pr_body: ${{ github.event.head_commit.message }}
-          pr_label: "automerge"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
+          title: "Pulling ${{ github.ref }} into main"
+          body: ${{ github.event.head_commit.message }}
+
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          token: ${{ secrets.PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
