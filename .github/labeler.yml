@@ -45,7 +45,10 @@ css:
   - "src/**/*.css"
 yml:
   - "*.yml"
+  - "**/*.yml"
 xml:
   - "*.xml"
+  - "**/*.xml"
 json:
   - "*.json"
+  - "**/*.json"
