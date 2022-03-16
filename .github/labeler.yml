@@ -1,0 +1,25 @@
+# Add 'repo' label to any root file changes
+repo:
+- '*'
+
+# Add '@domain/core' label to any change within the 'core' package
+@domain/core:
+- src/Core/*
+- src/Core/**/*
+
+# Add 'source' label to any change to src files within the source dir
+php:
+- any: ['src/**/*.php']
+
+# Add filetype labels to any change
+ts:
+- any: ['src/**/*.ts']
+
+js:
+- any: ['src/**/*.js']
+
+scss:
+- any: ['src/**/*.scss']
+
+css:
+- any: ['src/**/*.css']
