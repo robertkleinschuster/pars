@@ -1,37 +1,45 @@
-## Welcome to GitHub Pages
+## PARS
 
-You can use the [editor on GitHub](https://github.com/robertkleinschuster/pars/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+PARS is a PHP Application Core without Dependencies. It features PSR-15 based approach with nested applications (modules).
+It also features a component based view system with TypeScript and SCSS support by webpack.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Applications
 
-### Markdown
+By extending the WebApplication class it is possible to setup multiple nested applications under different base paths.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Development Mode
 
-```markdown
-Syntax highlighted code block
+Enable using: `php console.php development enable`
 
-# Header 1
-## Header 2
-### Header 3
+### Config
 
-- Bulleted
-- List
+Config files are dynamically loaded from the `config/` directory.
+Suffix your development configs with `*.development.php`.
 
-1. Numbered
-2. List
+Example: config/database.php
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```php
+return [
+  "user" => "pars",
+  "pw" => "pars",
+  "host" => "localhost",  
+  "port" => "3306",
+];
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+Example: config/database.development.php
 
-### Jekyll Themes
+```php
+return [
+  "user" => "dev",
+  "pw" => "dev",
+  "host" => "localhost",  
+  "port" => "3306",
+];
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/robertkleinschuster/pars/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
+### View
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Composed RequestHandler
+
