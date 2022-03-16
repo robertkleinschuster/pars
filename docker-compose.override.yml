@@ -12,7 +12,7 @@ services:
       - 9003
   composer:
     image: composer:2.2.7
-    command: ["composer", "install"]
+    command: ["composer", "update", "--ignore-platform-reqs"]
     working_dir: /app
     volumes:
       - .:/app
