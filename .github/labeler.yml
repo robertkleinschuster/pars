@@ -18,7 +18,7 @@ domain/app:
 
 # Add 'source' label to any change to src files within the source dir
 php:
-- any: ['src/**/*.php']
+- any: ['src/**/*.php', 'test/**/*.php']
 
 # Add filetype labels to any change
 ts:
