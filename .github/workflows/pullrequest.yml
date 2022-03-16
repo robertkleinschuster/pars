@@ -22,7 +22,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ steps.extract_branch.outputs.branch }}
           base: main
-          delete-branch: true
           title: "Pulling ${{ github.ref }} into main"
           body: ${{ github.event.head_commit.message }}
 
