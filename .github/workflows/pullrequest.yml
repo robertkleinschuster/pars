@@ -2,8 +2,8 @@ name: Pull Request
 on:
   push:
     branches:
-      - '*'
-      - '!main'
+      - '**'        # matches every branch
+      - '!main'     # excludes main
 
 jobs:
   pull-request:
