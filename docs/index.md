@@ -1,6 +1,6 @@
 ## PARS: PSR-15 Application Core
 
-PARS is a PHP Application Core without Dependencies. It features PSR-15 based approach with nested applications (modules).
+PARS is a PHP Application Core without dependencies. It features PSR-15 based approach with nested applications (modules).
 It also features a component based view system with TypeScript and SCSS support by webpack.
 
 ### Applications
