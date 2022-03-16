@@ -3,6 +3,6 @@
 
 PHP Wep-App Foundation
 
-Use `docker-compose up` to run.
+Read the [Docs](https://robertkleinschuster.github.io/pars/)
 
-[Docs](https://robertkleinschuster.github.io/pars/)
+Use `docker-compose up` to run.
