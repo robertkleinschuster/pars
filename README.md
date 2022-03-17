@@ -1,6 +1,7 @@
 # PARS frameworkless
 [![Release](https://github.com/robertkleinschuster/pars/actions/workflows/release.yml/badge.svg)](https://github.com/robertkleinschuster/pars/actions/workflows/release.yml)
 [![Lint Code Base](https://github.com/robertkleinschuster/pars/actions/workflows/super-linter.yml/badge.svg)](https://github.com/robertkleinschuster/pars/actions/workflows/super-linter.yml)
+[![CodeQL](https://github.com/robertkleinschuster/pars/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/robertkleinschuster/pars/actions/workflows/codeql-analysis.yml)
 
 PSR-15 PHP Wep-App Foundation
 
