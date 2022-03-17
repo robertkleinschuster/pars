@@ -2,8 +2,6 @@
 
 namespace Pars\Core\Session;
 
-use SplDoublyLinkedList;
-
 class Session
 {
     protected string $name = 'sid';
@@ -12,8 +10,11 @@ class Session
 
     public function __construct()
     {
-        session_name($this->name);
-        session_start();
+        if (php_sapi_name() != 'cli') {
+            session_name($this->name);
+            session_start();
+        }
+
         $this->id = session_id();
         $this->namespace = 'default';
     }

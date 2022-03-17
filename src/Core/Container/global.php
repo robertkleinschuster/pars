@@ -3,7 +3,7 @@
 if (!function_exists('create')) {
     function create(string $class, ...$params)
     {
-        $container = \Pars\Core\Container\Container::$instance;
+        $container = \Pars\Core\Container\Container::getInstance();
         return $container->create($class, ...$params);
     }
 }
@@ -11,7 +11,7 @@ if (!function_exists('create')) {
 if (!function_exists('get')) {
     function get(string $class, ...$params)
     {
-        $container = \Pars\Core\Container\Container::$instance;
+        $container = \Pars\Core\Container\Container::getInstance();
         return $container->get($class, ...$params);
     }
 }

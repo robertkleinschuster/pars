@@ -2,7 +2,6 @@
 
 namespace Pars\Core\Container;
 
-use Psr\Container\ContainerInterface;
 use Pars\Core\Http\ClosureResponse;
 use Pars\Core\Http\HtmlResponse;
 use Pars\Core\Http\HttpFactory;
@@ -10,6 +9,7 @@ use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\RedirectResponse;
 use Pars\Core\Http\ServerRequest;
 use Pars\Core\Http\ServerRequestFactory;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -35,19 +35,26 @@ class Container implements ContainerInterface
     /**
      * @var Container
      */
-    public static Container $instance;
+    private static Container $instance;
 
     /**
      * @var DefaultFactory
      */
     protected DefaultFactory $defaultFactory;
 
-    final public function __construct()
+    final private function __construct()
     {
         require_once "global.php";
-        $this::$instance = $this;
         $this->defaultFactory = new DefaultFactory();
         $this->factories = array_replace_recursive($this->getDefaultFactories(), include "config/factories.php");
+    }
+
+    public static function getInstance(): self
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new static();
+        }
+        return self::$instance;
     }
 
     protected function getDefaultFactories(): array
