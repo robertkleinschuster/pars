@@ -15,6 +15,10 @@ domain/app:
 domain/config:
   - "config/*"
   - "config/**/*"
+  
+domain/github:
+  - ".github/*"
+  - ".github/**/*"
 
 domain/docker:
   - "docker/*"
