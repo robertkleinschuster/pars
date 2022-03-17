@@ -3,8 +3,7 @@ name: Pull Request
 on:
   push:
     branches:
-      - '**'        # matches every branch
-      - '!main'     # excludes main
+      - 'pr/*'
 
 jobs:
   pull-request:
