@@ -2,7 +2,9 @@
   "authors": [
     {
       "name": "robertkleinschuster",
-      "email": "robert@kleinschuster.de"
+      "email": "robert@kleinschuster.de",
+      "homepage": "https://www.kleinschuster.de",
+      "role": "Developer"
     }
   ],
   "autoload": {
