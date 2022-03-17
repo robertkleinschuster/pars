@@ -7,7 +7,7 @@ use ParsTest\Core\Application\Base\MiddlewareOrderTracker;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class MockFirstWebApplication extends WebApplication
+class MockThirdWebApplication extends WebApplication
 {
     public bool $handled = false;
 
@@ -20,6 +20,6 @@ class MockFirstWebApplication extends WebApplication
     protected function init()
     {
         parent::init();
-        $this->pipe(new MiddlewareOrderTracker('first'));
+        $this->pipe(new MiddlewareOrderTracker('third'));
     }
 }

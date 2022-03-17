@@ -41,7 +41,7 @@
     "console": "php console.php",
     "phpcs": "phpcs",
     "phpcbf": "phpcbf",
-    "phpstan": "phpstan analyse src",
+    "phpstan": "phpstan analyse",
     "phpunit": "phpunit"
   }
 }
