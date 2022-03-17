@@ -2,17 +2,14 @@
 
 namespace Pars\Core\Application\Base;
 
-use Locale;
 use Pars\Core\Config\Config;
 use Pars\Core\Container\Container;
 use Pars\Core\Emitter\SapiEmitter;
-use Pars\Core\Http\NotFoundResponse;
 use Pars\Core\Http\ServerRequest;
 use Pars\Core\Middleware\NotFoundMiddleware;
 use Pars\Core\Pipeline\MiddlewarePipeline;
 use Pars\Core\Router\RequestRouter;
 use Pars\Core\Session\SessionMiddleware;
-use Pars\Core\View\Layout\Layout;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
