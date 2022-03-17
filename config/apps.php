@@ -5,5 +5,5 @@ use Pars\App\Frontend\FrontendApplication;
 
 return [
     '/admin' => AdminApplication::class,
-    '/' => FrontendApplication::class
+    '/' => FrontendApplication::class,
 ];

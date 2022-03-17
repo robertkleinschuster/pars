@@ -6,7 +6,7 @@ class Config
 {
     protected array $data;
 
-    public function __construct()
+    final public function __construct()
     {
         $this->load();
     }

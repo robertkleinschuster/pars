@@ -49,6 +49,9 @@ class Container implements ContainerInterface
         $this->factories = array_replace_recursive($this->getDefaultFactories(), include "config/factories.php");
     }
 
+    /**
+     * @return static
+     */
     public static function getInstance(): self
     {
         if (!isset(self::$instance)) {
