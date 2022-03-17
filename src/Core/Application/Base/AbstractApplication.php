@@ -34,7 +34,6 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 
     protected function initPipeline()
     {
-        $this->pipeline->pipe($this->container->get(SessionMiddleware::class));
         $this->init();
         $this->pipeline->pipe($this->router);
         $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));

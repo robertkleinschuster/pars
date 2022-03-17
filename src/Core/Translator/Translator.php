@@ -31,7 +31,7 @@ class Translator
         return PlaceholderHelper::replacePlaceholder($translations[$code] ?? $code, $placeholder);
     }
 
-    protected function loadTranslations(): array
+    public function loadTranslations(): array
     {
         if (empty(static::$files)) {
             foreach (static::$paths as $path) {
