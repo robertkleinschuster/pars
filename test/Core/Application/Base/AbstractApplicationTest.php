@@ -40,29 +40,8 @@ class AbstractApplicationTest extends \PHPUnit\Framework\TestCase
     {
         $application = $this->getMockBuilder(AbstractApplication::class)
             ->getMockForAbstractClass();
-
-        $first = new class implements MiddlewareInterface {
-            public function process(
-                ServerRequestInterface $request,
-                RequestHandlerInterface $handler
-            ): ResponseInterface {
-                MiddlewareOrderTracker::$middlewares[] = 'first';
-                return $handler->handle($request);
-            }
-        };
-
-        $second = new class implements MiddlewareInterface {
-            public function process(
-                ServerRequestInterface $request,
-                RequestHandlerInterface $handler
-            ): ResponseInterface {
-                MiddlewareOrderTracker::$middlewares[] = 'second';
-                return $handler->handle($request);
-            }
-        };
-
-        $application->pipe($first);
-        $application->pipe($second);
+        $application->pipe(new MiddlewareOrderTracker('first'));
+        $application->pipe(new MiddlewareOrderTracker('second'));
         $application->run();
         $this->assertEquals('first', MiddlewareOrderTracker::$middlewares[0]);
         $this->assertEquals('second', MiddlewareOrderTracker::$middlewares[1]);
