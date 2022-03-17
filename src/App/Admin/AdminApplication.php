@@ -22,6 +22,7 @@ class AdminApplication extends WebApplication
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->getTranslator()->addPath(__DIR__ . '/translations');
         $this->layout->setHeader($this->renderHeader());
         $this->layout->setTitle('admin');
         return parent::handle($request);
@@ -64,7 +65,6 @@ class AdminApplication extends WebApplication
 
     protected function init()
     {
-        $this->getTranslator()->addPath(__DIR__ . '/translations');
         $this->pipeline->pipe('/phpinfo', $this->container->get(PhpinfoMiddleware::class));
         $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
         $this->router->route('/', $this->container->get(StartpageHandler::class));

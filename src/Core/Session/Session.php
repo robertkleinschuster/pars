@@ -10,12 +10,17 @@ class Session
 
     public function __construct()
     {
-        if (php_sapi_name() != 'cli') {
+        if (php_sapi_name() != 'cli' && !headers_sent()) {
             session_name($this->name);
             session_start();
         }
 
-        $this->id = session_id();
+        $id = session_id();
+        if ($id) {
+            $this->id = session_id();
+        } else {
+            $this->id = '';
+        }
         $this->namespace = 'default';
     }
 
