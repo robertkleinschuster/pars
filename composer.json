@@ -2,7 +2,7 @@
   "authors": [
     {
       "name": "robertkleinschuster",
-      "email": "email@example.com"
+      "email": "robert@kleinschuster.de"
     }
   ],
   "autoload": {
@@ -15,10 +15,10 @@
       "ParsTest\\": "test"
     }
   },
-  "description": "description",
-  "license": "proprietary",
+  "description": "PSR-15 based Application Core",
+  "license": "MIT",
   "minimum-stability": "stable",
-  "name": "vendor_name/pars",
+  "name": "robertkleinschuster/pars",
   "require": {
     "php": ">=8.1",
     "ext-pdo": "*",

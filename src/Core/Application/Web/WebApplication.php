@@ -2,6 +2,7 @@
 
 namespace Pars\Core\Application\Web;
 
+use Exception;
 use Pars\Core\Application\Base\AbstractApplication;
 use Pars\Core\Container\Container;
 use Pars\Core\View\Layout\Layout;
@@ -27,6 +28,9 @@ class WebApplication extends AbstractApplication
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = parent::handle($request->withAttribute(Layout::class, $this->layout));
