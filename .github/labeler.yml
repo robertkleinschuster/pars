@@ -25,6 +25,12 @@ domain/docs:
   - "docs/*"
   - "docs/**/*"
 
+readme:
+  - "README.md"
+
+license:
+  - "LICENSE"
+
 public:
   - "public/*"
   - "public/**/*"
