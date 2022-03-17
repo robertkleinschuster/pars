@@ -51,6 +51,10 @@ class ConsoleApplication extends AbstractApplication
 
 
 
+    protected function initPipeline()
+    {
+    }
+
     protected function init()
     {
     }
