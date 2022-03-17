@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap = "vendor/autoload.php"
+<phpunit bootstrap = "test/bootstrap.php"
          backupGlobals               = "false"
-         backupStaticAttributes      = "false"
+         backupStaticAttributes      = "true"
          colors                      = "true"
          convertErrorsToExceptions   = "true"
          convertNoticesToExceptions  = "true"

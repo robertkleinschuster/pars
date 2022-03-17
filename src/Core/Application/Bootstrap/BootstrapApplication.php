@@ -7,7 +7,7 @@ use Pars\Core\Middleware\ErrorMiddleware;
 
 class BootstrapApplication extends AbstractApplication
 {
-    protected function init()
+    protected function initPipeline()
     {
         $this->pipeline->pipe($this->container->get(ErrorMiddleware::class));
         foreach ($this->getApps() as $path => $appClass) {
@@ -20,6 +20,11 @@ class BootstrapApplication extends AbstractApplication
             }
         }
     }
+
+    protected function init()
+    {
+    }
+
 
     protected function getApps(): array
     {

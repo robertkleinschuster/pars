@@ -27,17 +27,28 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 
     public function __construct(Container $container = null)
     {
-        $this->container = $container ?? new Container();
+        $this->container = $container ?? Container::getInstance();
         $this->config = $this->container->get(Config::class);
-        $this->router = $this->container->get(RequestRouter::class);
-        $this->pipeline = $this->container->get(MiddlewarePipeline::class, $this);
+        $this->router = $this->container->create(RequestRouter::class);
+        $this->pipeline = $this->container->create(MiddlewarePipeline::class, $this);
+        $this->init();
+    }
+
+    abstract protected function init();
+
+    protected function initPipeline()
+    {
         $this->pipeline->pipe($this->container->get(SessionMiddleware::class));
         $this->init();
         $this->pipeline->pipe($this->router);
         $this->pipeline->pipe($this->container->get(NotFoundMiddleware::class));
     }
 
-    abstract protected function init();
+    public function pipe(MiddlewareInterface|string $middlewareOrPath, MiddlewareInterface $middleware = null): self
+    {
+        $this->pipeline->pipe($middlewareOrPath, $middleware);
+        return $this;
+    }
 
     public function run()
     {
@@ -53,6 +64,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->initPipeline();
         return $this->pipeline->handle($request);
     }
 }
