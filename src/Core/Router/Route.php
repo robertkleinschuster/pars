@@ -50,7 +50,7 @@ class Route
         $path = rtrim($path, '/');
 
         if ($path === rtrim($this->route, '/')) {
-            return true;
+            return $request->withAttribute(Route::class, $this);
         }
 
         $pattern = "@^" . preg_replace(
@@ -79,6 +79,6 @@ class Route
         if ($result) {
             return $request->withAttribute(Route::class, $this);
         }
-        return $result;
+        return false;
     }
 }
