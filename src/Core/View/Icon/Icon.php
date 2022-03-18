@@ -2,8 +2,7 @@
 
 namespace Pars\Core\View\Icon;
 
-use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\ViewComponent;
+use Pars\Core\View\{EntrypointInterface, ViewComponent};
 
 class Icon extends ViewComponent implements EntrypointInterface
 {

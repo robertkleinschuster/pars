@@ -6,10 +6,15 @@ use IteratorAggregate;
 use SplDoublyLinkedList;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<ViewModel>
+ */
 class ViewModel implements IteratorAggregate
 {
     protected string $value = '';
-
+    /**
+     * @var iterable<static>&SplDoublyLinkedList<ViewModel>
+     */
     protected SplDoublyLinkedList $list;
 
     final public function __construct()
@@ -17,14 +22,14 @@ class ViewModel implements IteratorAggregate
     }
 
 
-    public function push(ViewModel $model)
+    public function push(ViewModel $model): ViewModel
     {
         $this->getList()->push($model);
         return $this;
     }
 
     /**
-     * @return SplDoublyLinkedList|static[]
+     * @return iterable<static>&SplDoublyLinkedList<ViewModel>
      */
     public function getList(): SplDoublyLinkedList
     {
@@ -34,6 +39,9 @@ class ViewModel implements IteratorAggregate
         return $this->list;
     }
 
+    /**
+     * @return Traversable<int, ViewModel>
+     */
     public function getIterator(): Traversable
     {
         return $this->getList();

@@ -123,6 +123,16 @@ class ViewComponent
         return $this->event;
     }
 
+    /**
+     * @param ViewEvent $event
+     * @return $this
+     */
+    public function withEvent(ViewEvent $event): self
+    {
+        $clone = clone $this;
+        $clone->event = $event;
+        return $this;
+    }
 
     public function setEvent(?ViewEvent $event): ViewComponent
     {
@@ -196,19 +206,19 @@ class ViewComponent
         return null;
     }
 
-    public function setWindow(string $uri, string $title): ViewEvent
+    public function setEventWindow(string $uri, string $title): ViewEvent
     {
         $this->setEvent(ViewEvent::window($uri, $title));
         return $this->getEvent();
     }
 
-    public function setLink(string $uri): ViewEvent
+    public function setEventLink(string $uri): ViewEvent
     {
         $this->setEvent(ViewEvent::self($uri));
         return $this->getEvent();
     }
 
-    public function setAction(string $uri, string $title = ''): ViewEvent
+    public function setEventAction(string $uri, string $title = ''): ViewEvent
     {
         $this->setEvent(ViewEvent::action($uri, $title));
         return $this->getEvent();

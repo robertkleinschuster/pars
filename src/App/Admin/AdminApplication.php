@@ -20,6 +20,16 @@ class AdminApplication extends WebApplication
 {
     use SessionTrait;
 
+    protected function init()
+    {
+        $this->pipe('/phpinfo', $this->getContainer()->get(PhpinfoMiddleware::class));
+        $this->pipe('/clearcache', $this->getContainer()->get(ClearcacheMiddleware::class));
+        $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/:entity', $this->getContainer()->get(OverviewHandler::class));
+        $this->route('/:entity/:id', $this->getContainer()->get(DetailHandler::class));
+        $this->route('/login', $this->getContainer()->get(LoginHandler::class));
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->getTranslator()->addPath(__DIR__ . '/translations');
@@ -48,28 +58,16 @@ class AdminApplication extends WebApplication
 
     protected function createNavigationComponent(): Navigation
     {
-        return $this->container->create(Navigation::class);
+        return $this->getContainer()->create(Navigation::class);
     }
 
     protected function createViewRenderer(): ViewRenderer
     {
-        return $this->container->create(ViewRenderer::class);
+        return $this->getContainer()->create(ViewRenderer::class);
     }
 
     protected function getTranslator(): Translator
     {
         return get(Translator::class);
-    }
-
-
-
-    protected function init()
-    {
-        $this->pipeline->pipe('/phpinfo', $this->container->get(PhpinfoMiddleware::class));
-        $this->pipeline->pipe('/clearcache', $this->container->get(ClearcacheMiddleware::class));
-        $this->router->route('/', $this->container->get(StartpageHandler::class));
-        $this->router->route('/:entity', $this->container->get(OverviewHandler::class));
-        $this->router->route('/:entity/:id', $this->container->get(DetailHandler::class));
-        $this->router->route('/login', $this->container->get(LoginHandler::class));
     }
 }

@@ -2,9 +2,7 @@
 
 namespace Pars\Core\View\Navigation;
 
-use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\Tree\Tree;
-use Pars\Core\View\ViewRenderer;
+use Pars\Core\View\{EntrypointInterface, Tree\Tree, ViewRenderer};
 
 /**
  * @method NavigationModel getModel()

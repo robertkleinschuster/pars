@@ -23,7 +23,7 @@ class StartpageHandler implements RequestHandlerInterface
 
         $tree = new Tree();
         $tree->setHeading('start');
-        $tree->getItem()->setLink(url('/:code'));
+        $tree->getItem()->setEventLink(url('/:code'));
         $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
         $tree->addEntry('asdf', 'overview');
         $tree->addEntry('asdf');

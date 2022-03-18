@@ -2,12 +2,10 @@
 
 namespace Pars\Core\View\Tree;
 
-use Pars\Core\View\ViewComponent;
-use Pars\Core\View\ViewEvent;
-use Pars\Core\View\ViewRenderer;
+use Pars\Core\View\{ViewComponent, ViewEvent, ViewRenderer};
 
 /**
- * @method TreeModel getModel
+ * @method TreeModel getModel()
  * @property TreeModel $model
  */
 class TreeItem extends ViewComponent
@@ -63,7 +61,6 @@ class TreeItem extends ViewComponent
         }
         return parent::getEvent();
     }
-
 
     public function getTree(): Tree
     {

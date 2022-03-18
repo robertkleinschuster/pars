@@ -2,9 +2,7 @@
 
 namespace Pars\Core\View\Toolbar;
 
-use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\Icon\Icon;
-use Pars\Core\View\ViewComponent;
+use Pars\Core\View\{EntrypointInterface, Icon\Icon, ViewComponent};
 
 class Toolbar extends ViewComponent implements EntrypointInterface
 {

@@ -3,6 +3,7 @@
 namespace ParsTest\Core\Container;
 
 use Pars\Core\Container\Container;
+use Pars\Core\Container\ContainerResolver;
 
 class MockContainer extends Container
 {
@@ -11,4 +12,11 @@ class MockContainer extends Container
         $this->services[$service] = $object;
         return $this;
     }
+
+    protected function getResolver(): ContainerResolver
+    {
+        return new MockContainerResolver();
+    }
+
+
 }

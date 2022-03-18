@@ -23,6 +23,9 @@ class ViewEvent
         $this->url = url();
     }
 
+    /**
+     * @return array<string>
+     */
     public function getUrlParams(): array
     {
         return Route::findKeys($this->url);
@@ -37,7 +40,7 @@ class ViewEvent
     public function toAttributes(): string
     {
         $attributes = [];
-        foreach ($this as $key => $value) {
+        foreach ((array) $this as $key => $value) {
             if ($value) {
                 $attributes[] = "data-$key='$value'";
             }

@@ -22,6 +22,11 @@ class MiddlewarePipeline implements RequestHandlerInterface
         $this->handler = $handler;
     }
 
+    public function __clone()
+    {
+        $this->pipeline = clone $this->pipeline;
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if ($this->pipeline->isEmpty()) {
@@ -30,13 +35,14 @@ class MiddlewarePipeline implements RequestHandlerInterface
         return $this->pipeline->shift()->process($request, $this);
     }
 
-    public function pipe(MiddlewareInterface|string $middlewareOrPath, MiddlewareInterface $middleware = null): static
+    public function with(MiddlewareInterface|string $middlewareOrPath, MiddlewareInterface $middleware = null): static
     {
+        $clone = clone $this;
         if (is_string($middlewareOrPath) && $middleware) {
-            $this->pipeline->push(create(BasePathMiddleware::class, $middleware, $middlewareOrPath));
+            $clone->pipeline->push(create(BasePathMiddleware::class, $middleware, $middlewareOrPath));
         } else {
-            $this->pipeline->push($middlewareOrPath);
+            $clone->pipeline->push($middlewareOrPath);
         }
-        return $this;
+        return $clone;
     }
 }

@@ -10,6 +10,9 @@ use SplStack;
 
 class RequestRouter implements MiddlewareInterface
 {
+    /**
+     * @var iterable<Route>&SplStack<Route>
+     */
     protected SplStack $routes;
 
     public function __construct()
@@ -17,24 +20,24 @@ class RequestRouter implements MiddlewareInterface
         $this->routes = new SplStack();
     }
 
-    public function route(string $route, RequestHandlerInterface $handler)
+    public function __clone()
     {
-        $this->routes->push(create(Route::class, $handler, $route));
+        $this->routes = clone $this->routes;
     }
 
+    public function with(string $route, RequestHandlerInterface $handler): RequestRouter
+    {
+        $clone = clone $this;
+        $clone->routes->push(create(Route::class, $handler, $route));
+        return $clone;
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         foreach ($this->routes as $route) {
-            $matches = [];
-            /* @var $route Route */
-            if ($route->match($request, $matches)) {
-                foreach ($matches as $key => $value) {
-                    $request = $request->withAttribute($key, $value);
-                }
-                $request = $request->withAttribute(RequestRouter::class, $this);
-                $request = $request->withAttribute(Route::class, $route);
-                return $route->handler->handle($request);
+            $matchedRequest = $route->match($request);
+            if ($matchedRequest) {
+                return $route->handler->handle($matchedRequest->withAttribute(RequestRouter::class, $this));
             }
         }
         return $handler->handle($request);

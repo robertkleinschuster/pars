@@ -19,7 +19,7 @@ class ConsoleCommandFactory
 
     /**
      * @param string|null $command
-     * @return mixed
+     * @return AbstractCommand
      * @throws ConsoleException
      */
     public function create(?string $command): AbstractCommand

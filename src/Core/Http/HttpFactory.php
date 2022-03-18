@@ -121,6 +121,9 @@ class HttpFactory implements
     public function create(array $params, string $id): mixed
     {
         switch ($id) {
+            case ResponseFactoryInterface::class:
+            case UriFactoryInterface::class:
+                return $this;
             case ResponseInterface::class:
                 return new Response(...$params);
             case HtmlResponse::class:

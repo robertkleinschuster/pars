@@ -2,7 +2,7 @@
 
 namespace Pars\Core\Middleware;
 
-use Pars\Core\Url\UrlBuilder;
+use Pars\Core\Url\UriBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -29,8 +29,8 @@ class BasePathMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (str_starts_with($request->getUri()->getPath(), $this->path)) {
-            /* @var $urlBuilder UrlBuilder */
-            $urlBuilder = get(UrlBuilder::class);
+            /* @var $urlBuilder UriBuilder */
+            $urlBuilder = get(UriBuilder::class);
             $urlBuilder->addBaseUri(create(UriInterface::class, $this->path));
             if ($this->path === '/') {
                 $path = $request->getUri()->getPath();

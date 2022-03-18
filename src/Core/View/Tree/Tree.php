@@ -2,9 +2,7 @@
 
 namespace Pars\Core\View\Tree;
 
-use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\ViewComponent;
-use Pars\Core\View\ViewRenderer;
+use Pars\Core\View\{EntrypointInterface, ViewComponent, ViewRenderer};
 
 class Tree extends ViewComponent implements EntrypointInterface
 {
