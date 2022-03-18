@@ -21,12 +21,12 @@ class ClosureStream implements StreamInterface
 
     public function __toString()
     {
-        return $this->getContents() ?? '';
+        return $this->getContents();
     }
 
     public function getContents()
     {
-        return $this->call();
+        return $this->call() ?? '';
     }
 
     protected function call()
@@ -42,6 +42,7 @@ class ClosureStream implements StreamInterface
 
     public function detach()
     {
+        return null;
     }
 
     public function getSize()
@@ -78,7 +79,7 @@ class ClosureStream implements StreamInterface
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return int
      * @throws Exception
      */

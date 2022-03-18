@@ -40,7 +40,7 @@ class Console
     public function getInfo(): ConsoleInfo
     {
         if (!isset($this->info)) {
-            $this->info = new ConsoleInfo();
+            $this->info = create(ConsoleInfo::class);
         }
         return $this->info;
     }
@@ -61,7 +61,7 @@ class Console
     public function getColors(): ConsoleColors
     {
         if (!isset($this->colors)) {
-            $this->colors = new ConsoleColors();
+            $this->colors = create(ConsoleColors::class);
         }
         return $this->colors;
     }

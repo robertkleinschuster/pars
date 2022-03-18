@@ -41,7 +41,7 @@ class Route
         return $this;
     }
 
-    public function match(ServerRequestInterface $request, ?array &$attributes): bool
+    public function match(ServerRequestInterface $request): ServerRequestInterface|bool
     {
         if ($this->method && $this->method !== $request->getMethod()) {
             return false;
@@ -63,7 +63,7 @@ class Route
         array_walk_recursive($m, function ($a) use (&$keys) {
             $keys[] = $a;
         });
-
+        $attributes = [];
         $result = preg_match($pattern, $path, $ma);
         array_shift($ma);
         if (is_array($keys)) {
@@ -72,6 +72,12 @@ class Route
                     $attributes[ltrim($key, ':')] = $ma[$index];
                 }
             }
+        }
+        foreach ($attributes as $key => $value) {
+            $request = $request->withAttribute($key, $value);
+        }
+        if ($result) {
+            return $request->withAttribute(Route::class, $this);
         }
         return $result;
     }

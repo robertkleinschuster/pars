@@ -9,14 +9,14 @@ class BootstrapApplication extends AbstractApplication
 {
     protected function initPipeline()
     {
-        $this->pipeline->pipe($this->container->get(ErrorMiddleware::class));
+        $this->pipe($this->getContainer()->get(ErrorMiddleware::class));
         foreach ($this->getApps() as $path => $appClass) {
             /* @var $app AbstractApplication */
-            $app = $this->container->get($appClass);
+            $app = $this->getContainer()->get($appClass);
             if (is_string($path)) {
-                $this->pipeline->pipe($path, $app);
+                $this->pipe($path, $app);
             } else {
-                $this->pipeline->pipe($app);
+                $this->pipe($app);
             }
         }
     }
@@ -28,6 +28,6 @@ class BootstrapApplication extends AbstractApplication
 
     protected function getApps(): array
     {
-        return $this->config->get('apps', []);
+        return $this->getConfig()->get('apps', []);
     }
 }

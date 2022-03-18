@@ -2,8 +2,7 @@
 
 namespace Pars\Core\Console;
 
-use Pars\Core\Console\Command\BuildEntrypointsCommand;
-use Pars\Core\Console\Command\DevelopmentCommand;
+use Pars\Core\Console\Command\{BuildEntrypointsCommand, DevelopmentCommand};
 
 class ConsoleInfo
 {

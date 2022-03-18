@@ -2,9 +2,7 @@
 
 namespace Pars\Core\View\Detail;
 
-use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\Input\Input;
-use Pars\Core\View\ViewComponent;
+use Pars\Core\View\{EntrypointInterface, Input\Input, ViewComponent};
 
 class Detail extends ViewComponent implements EntrypointInterface
 {

@@ -52,7 +52,7 @@ class ViewRenderer
         }
     }
 
-    protected function renderTemplate(ViewComponent $component)
+    protected function renderTemplate(ViewComponent $component): string
     {
         $template = $component->getTemplate();
         return (function () use ($template) {

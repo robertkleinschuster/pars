@@ -19,8 +19,8 @@ class WebApplication extends AbstractApplication
     public function __construct(Container $container = null)
     {
         parent::__construct($container);
-        $this->layout = $this->container->get(Layout::class);
-        $this->renderer = $this->container->get(ViewRenderer::class);
+        $this->layout = $this->getContainer()->get(Layout::class);
+        $this->renderer = $this->getContainer()->get(ViewRenderer::class);
         $this->renderer->setComponent($this->layout);
     }
 
@@ -37,7 +37,7 @@ class WebApplication extends AbstractApplication
         $main = $response->getBody()->getContents();
         $this->layout->setMain($main);
         $html = $this->renderer->render();
-        $body = $this->container->create(StreamInterface::class, $html);
+        $body = $this->getContainer()->create(StreamInterface::class, $html);
         return $response->withBody($body);
     }
 }

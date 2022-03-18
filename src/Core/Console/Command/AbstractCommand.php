@@ -2,9 +2,7 @@
 
 namespace Pars\Core\Console\Command;
 
-use Pars\Core\Console\ConsoleColors;
-use Pars\Core\Console\ConsoleException;
-use Pars\Core\Console\ConsoleParameter;
+use Pars\Core\Console\{ConsoleColors, ConsoleException, ConsoleParameter};
 
 abstract class AbstractCommand
 {

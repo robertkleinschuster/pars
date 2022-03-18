@@ -2,8 +2,7 @@
 
 namespace Pars\Core\View\Layout;
 
-use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\ViewComponent;
+use Pars\Core\View\{EntrypointInterface, ViewComponent};
 
 class Layout extends ViewComponent implements EntrypointInterface
 {

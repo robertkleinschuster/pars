@@ -6,17 +6,17 @@ use Psr\Http\Message\ResponseInterface;
 
 class Entrypoints
 {
-    protected static self $instance;
+    protected static Entrypoints $instance;
 
     final private function __construct()
     {
         // private singleton
     }
 
-    public static function getInstance(): static
+    public static function getInstance(): Entrypoints
     {
         if (!isset(self::$instance)) {
-            self::$instance = new static();
+            self::$instance = new Entrypoints();
         }
         return self::$instance;
     }

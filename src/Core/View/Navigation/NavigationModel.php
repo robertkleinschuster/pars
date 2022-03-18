@@ -77,23 +77,4 @@ class NavigationModel extends TreeModel
         }
         return $active;
     }
-
-
-    public function getLeft()
-    {
-        foreach ($this as $item) {
-            if ($item->getAlign() == 'left') {
-                yield $item;
-            }
-        }
-    }
-
-    public function getRight()
-    {
-        foreach ($this as $item) {
-            if ($item->getAlign() == 'right') {
-                yield $item;
-            }
-        }
-    }
 }

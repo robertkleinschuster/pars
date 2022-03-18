@@ -2,20 +2,18 @@
 
 namespace Pars\Core\View\Group;
 
-use Pars\Core\Http\HtmlResponse;
-use Pars\Core\Http\ServerRequest;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
+use Pars\Core\Http\{HtmlResponse, ServerRequest};
+use Psr\Http\Message\{ResponseFactoryInterface, ResponseInterface, ServerRequestInterface, StreamInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 use SplQueue;
 
 class ViewGroupHandler implements RequestHandlerInterface
 {
     protected SplQueue $requests;
-
+    protected ResponseFactoryInterface $responseFactory;
     public function __construct()
     {
+        $this->responseFactory = create(ResponseFactoryInterface::class);
         $this->requests = new SplQueue();
     }
 
@@ -36,7 +34,7 @@ class ViewGroupHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response =  create(HtmlResponse::class);
+        $response = $this->responseFactory->createResponse();
         if ($request instanceof ServerRequest) {
             $responseBody = '';
             $router = $request->getRequestRouter();
