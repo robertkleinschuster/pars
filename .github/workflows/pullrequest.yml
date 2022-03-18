@@ -19,6 +19,7 @@ jobs:
           github_token: ${{ secrets.PAT }}
           pr_title: ${GITHUB_REF#refs/heads/}
           pr_body: ${{ github.event.head_commit.message }}
+          pr_assignee: ${{ github.event.pusher.name }}
 
       - name: Enable Pull Request Automerge
         if: ${{ steps.cpr.outputs.pr_number > 0 }}
