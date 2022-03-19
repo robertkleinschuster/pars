@@ -27,4 +27,4 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pr_number }}
-          merge-method: rebase
+          merge-method: merge
