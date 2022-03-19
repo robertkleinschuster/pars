@@ -5,22 +5,24 @@ namespace Pars\Core\Config;
 class Config
 {
     protected array $data;
+    protected string $directory;
 
-    final public function __construct()
+    final public function __construct(string $directory = null)
     {
+        $this->directory = $directory ?? getcwd() . '/config';
         $this->load();
     }
 
     protected function load()
     {
-        $files = glob(getcwd() . '/config/*.php');
+        $files = glob($this->directory . '/*.php');
         foreach ($files as $file) {
             $key = basename($file, '.php');
             if (!str_ends_with($key, 'development')) {
                 $this->data[$key] = $this->loadFile($file);
             }
         }
-        $developmentFiles = glob(getcwd() . '/config/*.development.php');
+        $developmentFiles = glob($this->directory . '/*.development.php');
         foreach ($developmentFiles as $file) {
             $key = basename($file, '.development.php');
             $this->data[$key] = array_replace_recursive($this->data[$key], $this->loadFile($file));
