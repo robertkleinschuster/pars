@@ -22,6 +22,11 @@ jobs:
           # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
+      - name: install js dependencies
+        run: yarn install
+      - name: install php dependencies
+        run: composer install
+
       - name: Lint Code Base
         uses: github/super-linter@v4
         env:
