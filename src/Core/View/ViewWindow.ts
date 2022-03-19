@@ -1,8 +1,9 @@
 import 'winbox'
 import 'winbox/dist/css/themes/modern.min.css'
 import ViewEvent from './ViewEvent'
+import { WinBoxConstructor } from 'winbox'
 
-declare const WinBox: WinBox.WinBoxConstructor
+declare const WinBox: WinBoxConstructor
 
 export default class ViewWindow extends WinBox {
   protected viewEvent: ViewEvent

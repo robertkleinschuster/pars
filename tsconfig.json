@@ -3,7 +3,10 @@
     "module": "es6",
     "target": "es6",
     "sourceMap": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "lib": [
+      "dom"
+    ]
   },
   "ts-standard": {
     "noDefaultIgnore": false,
