@@ -1,5 +1,1 @@
-import "./Toolbar.scss";
-
-export default class Toolbar {
-
-}
+import './Toolbar.scss'

@@ -46,7 +46,7 @@ class Container implements ContainerInterface
     protected function getResolver(): ContainerResolver
     {
         if (!isset($this->resolver)) {
-            $this->resolver = new ContainerResolver();
+            $this->resolver = new ContainerResolver($this);
         }
         return $this->resolver;
     }

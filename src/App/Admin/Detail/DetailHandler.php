@@ -2,8 +2,6 @@
 
 namespace Pars\App\Admin\Detail;
 
-use Pars\Core\Http\ClosureResponse;
-use Pars\Core\Http\HtmlResponse;
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\ViewComponent;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +12,7 @@ class DetailHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return create(HtmlResponse::class, $this->renderDetail());
+        return response($this->renderDetail());
     }
 
     public function renderDetail(): string

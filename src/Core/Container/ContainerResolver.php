@@ -10,6 +10,15 @@ class ContainerResolver
     private array $factories = [];
     private ContainerConfig $config;
     private DefaultFactory $defaultFactory;
+    private Container $container;
+
+    /**
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * @return ContainerConfig
@@ -39,7 +48,7 @@ class ContainerResolver
         $factories = $this->getConfig()->getFactories();
         if (isset($factories[$id]) && is_string($factories[$id])) {
             // cache and return factory instance
-            return $this->factories[$id] = new ($factories[$id])();
+            return $this->factories[$id] = new ($factories[$id])($this->container);
         }
         // no factory found
         return $this->getDefaultFactory();

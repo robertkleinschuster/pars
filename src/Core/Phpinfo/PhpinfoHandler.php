@@ -1,15 +1,15 @@
 <?php
 
-namespace Pars\Core\NotFound;
+namespace Pars\Core\Phpinfo;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class NotFoundHandler implements RequestHandlerInterface
+class PhpinfoHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return response('not found', 404);
+        return response(phpinfo(...));
     }
 }

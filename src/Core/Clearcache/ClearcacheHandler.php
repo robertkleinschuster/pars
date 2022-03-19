@@ -1,15 +1,14 @@
 <?php
 
-namespace Pars\Core\Middleware;
+namespace Pars\Core\Clearcache;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class ClearcacheMiddleware implements MiddlewareInterface
+class ClearcacheHandler implements RequestHandlerInterface
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (function_exists('opcache_reset')) {
             opcache_reset();

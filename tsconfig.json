@@ -3,5 +3,14 @@
     "module": "es6",
     "target": "es6",
     "sourceMap": true,
+    "strictNullChecks": true,
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  },
+  "ts-standard": {
+    "noDefaultIgnore": false,
+    "fix": true
   }
 }

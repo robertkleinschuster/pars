@@ -5,13 +5,8 @@ namespace ParsTest\Core\Config;
 use Pars\Core\Config\Config;
 use Pars\Core\Container\ContainerFactoryInterface;
 
-class MockConfig extends Config implements ContainerFactoryInterface
+class MockConfig extends Config
 {
-    public function create(array $params, string $id): MockConfig
-    {
-        return new MockConfig();
-    }
-
     public function set(string $key, $value): self
     {
         if (str_contains($key, '.')) {

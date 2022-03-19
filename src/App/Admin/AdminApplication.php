@@ -7,8 +7,7 @@ use Pars\App\Admin\Login\LoginHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
 use Pars\Core\Application\Web\WebApplication;
-use Pars\Core\Middleware\ClearcacheMiddleware;
-use Pars\Core\Middleware\PhpinfoMiddleware;
+use Pars\Core\Phpinfo\PhpinfoHandler;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\View\Navigation\Navigation;
@@ -22,8 +21,8 @@ class AdminApplication extends WebApplication
 
     protected function init()
     {
-        $this->pipe('/phpinfo', $this->getContainer()->get(PhpinfoMiddleware::class));
-        $this->pipe('/clearcache', $this->getContainer()->get(ClearcacheMiddleware::class));
+        parent::init();
+        $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
         $this->route('/:entity', $this->getContainer()->get(OverviewHandler::class));
         $this->route('/:entity/:id', $this->getContainer()->get(DetailHandler::class));
@@ -33,8 +32,8 @@ class AdminApplication extends WebApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->getTranslator()->addPath(__DIR__ . '/translations');
-        $this->layout->setHeader($this->renderHeader());
-        $this->layout->setTitle('admin');
+        $this->getLayout()->setHeader($this->renderHeader());
+        $this->getLayout()->setTitle('admin');
         return parent::handle($request);
     }
 

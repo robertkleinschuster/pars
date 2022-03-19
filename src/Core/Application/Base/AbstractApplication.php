@@ -5,7 +5,7 @@ namespace Pars\Core\Application\Base;
 use Pars\Core\{Config\Config,
     Container\Container,
     Emitter\SapiEmitter,
-    Http\ServerRequest,
+    Http\HttpFactory,
     NotFound\NotFoundHandler,
     Pipeline\MiddlewarePipeline,
     Router\RequestRouter
@@ -20,6 +20,8 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     private RequestRouter $router;
     private Config $config;
     private RequestHandlerInterface $handler;
+    private HttpFactory $http;
+    private ServerRequestInterface $request;
 
     public function __construct(Container $container = null)
     {
@@ -68,7 +70,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     {
         /* @var $emitter SapiEmitter */
         $emitter = $this->getContainer()->get(SapiEmitter::class);
-        $emitter->emit($this->handle($this->getContainer()->get(ServerRequest::class)));
+        $emitter->emit($this->handle($this->getRequest()));
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -104,7 +106,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     private function getRouter(): RequestRouter
     {
         if (!isset($this->router)) {
-            $this->router = $this->getContainer()->get(RequestRouter::class);
+            $this->router = clone $this->getContainer()->get(RequestRouter::class);
         }
         return $this->router;
     }
@@ -123,6 +125,22 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
             $this->handler = $this->getContainer()->get(NotFoundHandler::class);
         }
         return $this->handler;
+    }
+
+    public function getHttp(): HttpFactory
+    {
+        if (!isset($this->http)) {
+            $this->http = $this->getContainer()->get(HttpFactory::class);
+        }
+        return $this->http;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        if (!isset($this->request)) {
+            $this->request = $this->getHttp()->createServerRequest();
+        }
+        return $this->request;
     }
 
     public function withHandler(RequestHandlerInterface $handler): self

@@ -2,22 +2,20 @@
 
 namespace Pars\Core\Router;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use SplStack;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
+use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
+use SplQueue;
 
 class RequestRouter implements MiddlewareInterface
 {
     /**
-     * @var iterable<Route>&SplStack<Route>
+     * @var iterable<Route>&SplQueue<Route>
      */
-    protected SplStack $routes;
+    protected SplQueue $routes;
 
     public function __construct()
     {
-        $this->routes = new SplStack();
+        $this->routes = new SplQueue();
     }
 
     public function __clone()
