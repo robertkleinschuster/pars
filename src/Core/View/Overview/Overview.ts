@@ -1,15 +1,13 @@
-import './OverviewComponent.scss';
-import ViewComponent from "../ViewComponent";
+import './OverviewComponent.scss'
+import ViewComponent from '../ViewComponent'
 
 class OverviewElement extends HTMLDivElement {
+  protected component: ViewComponent
 
-    protected component: ViewComponent;
-
-    constructor() {
-        super();
-        this.component = new ViewComponent(this);
-    }
+  constructor () {
+    super()
+    this.component = new ViewComponent(this)
+  }
 }
 
-customElements.define('core-overview', OverviewElement, {extends: 'div'});
-
+customElements.define('core-overview', OverviewElement, { extends: 'div' })

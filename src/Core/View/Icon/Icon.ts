@@ -1,5 +1,1 @@
-import "./Icon.scss";
-
-export default class Icon {
-
-}
+import './Icon.scss'

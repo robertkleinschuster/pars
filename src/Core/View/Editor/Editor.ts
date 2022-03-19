@@ -1,5 +1,1 @@
-import './Editor.scss';
-
-export default class Editor {
-
-}
+import './Editor.scss'

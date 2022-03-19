@@ -1,13 +1,12 @@
-import "./NavigationComponent.scss";
-import ViewComponent from "../ViewComponent";
+import './NavigationComponent.scss'
+import ViewComponent from '../ViewComponent'
 
-class NavigationElement extends HTMLUListElement
-{
-    protected component: ViewComponent;
-    constructor() {
-        super();
-        this.component = new ViewComponent(this);
-    }
+class NavigationElement extends HTMLUListElement {
+  protected component: ViewComponent
+  constructor () {
+    super()
+    this.component = new ViewComponent(this)
+  }
 }
 
-customElements.define('core-navigation', NavigationElement, {extends: 'ul'});
+customElements.define('core-navigation', NavigationElement, { extends: 'ul' })
