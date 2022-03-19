@@ -39,6 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           RELEASE_BRANCHES: main
+          DEFAULT_BUMP: patch
 
       - name: Create zip
         uses: vimtor/action-zip@v1
