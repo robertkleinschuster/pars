@@ -8,4 +8,4 @@ PSR-15 PHP Wep-App Foundation
 
 Read the [docs](https://robertkleinschuster.github.io/pars/).
 
-Use `docker-compose up` to run.
+Use `docker-compose up` to run and browse to `localhost:8080`.
