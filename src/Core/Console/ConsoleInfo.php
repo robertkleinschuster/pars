@@ -18,4 +18,5 @@ class ConsoleInfo
     {
         return array_keys($this->getClassMap());
     }
+
 }
