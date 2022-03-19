@@ -40,6 +40,7 @@ jobs:
           WITH_V: true
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: patch
+          TAG_CONTEXT: branch
 
       - name: Create zip
         uses: vimtor/action-zip@v1
