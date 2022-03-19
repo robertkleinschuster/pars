@@ -27,7 +27,7 @@ jobs:
         run: composer install --no-dev && composer dump-autoload -a
 
       - name: Dump entrypoints
-        run: php console.php build:entrypoints
+        run: php console.php build-entrypoints
 
       - name: Build Webpack
         run: yarn install --silent && yarn build
@@ -41,7 +41,7 @@ jobs:
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: patch
           TAG_CONTEXT: branch
-          INITIAL_VERSION: 0.0.96
+          INITIAL_VERSION: 0.0.95
 
       - name: Create zip
         uses: vimtor/action-zip@v1
