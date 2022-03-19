@@ -41,6 +41,7 @@ jobs:
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: patch
           TAG_CONTEXT: branch
+          INITIAL_VERSION: 0.0.96
 
       - name: Create zip
         uses: vimtor/action-zip@v1
