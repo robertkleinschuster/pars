@@ -9,8 +9,8 @@ class Layout extends ViewComponent implements EntrypointInterface
     protected string $header;
     protected string $main;
     protected string $footer;
-    protected string $language = '';
-    protected string $title = '';
+    protected string $language = 'en';
+    protected string $title = 'Default Title';
 
     public function init()
     {

@@ -1,5 +1,6 @@
 <?php
 /** @var \Pars\Core\View\Layout\Layout $this */
+
 ?>
 <!doctype html>
 <html lang="<?= $this->language ?>">
@@ -12,21 +13,27 @@
     <?= \Pars\Core\View\Entrypoints::dumpCss(); ?>
 </head>
 <body>
-<?php if (isset($this->header)): ?>
+<?php
+if (!empty($this->header)): ?>
     <header>
         <?= $this->header ?>
     </header>
-<?php endif; ?>
-<?php if (isset($this->main)): ?>
+<?php
+endif; ?>
+<?php
+if (!empty($this->main)): ?>
     <main>
         <?= $this->main ?>
     </main>
-<?php endif; ?>
-<?php if (isset($this->footer)): ?>
+<?php
+endif; ?>
+<?php
+if (!empty($this->footer)): ?>
     <footer>
         <?= $this->footer ?>
     </footer>
-<?php endif; ?>
+<?php
+endif; ?>
 <?= \Pars\Core\View\Entrypoints::dumpJs(); ?>
 </body>
 </html>
