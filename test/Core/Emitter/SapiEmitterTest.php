@@ -1,7 +1,14 @@
 <?php
+
 namespace ParsTest\Core\Emitter;
 
-class SapiEmitterTest extends \PHPUnit\Framework\TestCase
-{
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
+class SapiEmitterTest extends TestCase
+{
+   /* public function testShouldThrowExceptionWhenHeadersSent()
+    {
+        $this->expectException(RuntimeException::class);
+    }*/
 }
