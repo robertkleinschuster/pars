@@ -24,12 +24,13 @@ class ConsoleCommandFactory
      */
     public function create(?string $command): AbstractCommand
     {
+        $message = new ConsoleMessage();
         if (null === $command) {
-            throw new ConsoleException('No command given.');
+            throw new ConsoleException($message->noCommand());
         }
         $map = $this->info->getClassMap();
         if (!isset($map[$command])) {
-            throw new ConsoleException("Unknown command: $command");
+            throw new ConsoleException($message->unknownCommand($command));
         }
         return create($map[$command]);
     }
