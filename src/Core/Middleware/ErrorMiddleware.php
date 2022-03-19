@@ -2,8 +2,6 @@
 
 namespace Pars\Core\Middleware;
 
-use GuzzleHttp\Psr7\Response;
-use Pars\Core\Stream\ClosureStream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -27,7 +25,7 @@ class ErrorMiddleware implements MiddlewareInterface
                 $this->render();
                 exit;
             } else {
-                return new Response(500, [], new ClosureStream($this->render(...)));
+                return response($this->render(), 500);
             }
         }
         return $response;
@@ -51,6 +49,8 @@ class ErrorMiddleware implements MiddlewareInterface
 
     public function render()
     {
+        ob_start();
         include 'templates/error.phtml';
+        return ob_get_clean();
     }
 }

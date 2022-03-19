@@ -2,8 +2,6 @@
 
 namespace Pars\App\Admin\Overview;
 
-use Pars\Core\Http\HtmlResponse;
-use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Overview\Overview;
 use Pars\Core\View\ViewModel;
 use Psr\Http\Message\ResponseInterface;
@@ -27,6 +25,6 @@ class OverviewHandler implements RequestHandlerInterface
         $model = new ViewModel();
         $model->set('id', '3');
         $overview->addEntry($model);
-        return create(HtmlResponse::class, render($overview));
+        return response(render($overview));
     }
 }

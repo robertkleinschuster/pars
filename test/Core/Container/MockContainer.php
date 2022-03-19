@@ -15,7 +15,7 @@ class MockContainer extends Container
 
     protected function getResolver(): ContainerResolver
     {
-        return new MockContainerResolver();
+        return new MockContainerResolver($this);
     }
 
 

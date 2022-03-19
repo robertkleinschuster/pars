@@ -53,7 +53,9 @@ class SapiEmitter
     protected function emitHeaders(ResponseInterface $response): void
     {
         $statusCode = $response->getStatusCode();
-        $response = Entrypoints::injectHeaders($response);
+        if (isset($_SERVER['HTTP_INJECT']) && $_SERVER['HTTP_INJECT'] === 'true') {
+            $response = Entrypoints::injectHeaders($response);
+        }
         foreach ($response->getHeaders() as $header => $values) {
             $name = $this->toWordCase($header);
             $first = $name !== 'Set-Cookie';

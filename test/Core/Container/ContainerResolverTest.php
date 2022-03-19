@@ -13,13 +13,13 @@ class ContainerResolverTest extends TestCase
 
     public function testShouldReturnDefaultFactoryWhenNoConfig()
     {
-        $resolver = new MockContainerResolver();
+        $resolver = new MockContainerResolver(MockContainer::getInstance());
         $this->assertInstanceOf(DefaultFactory::class, $resolver->resolveFactory('foo'));
     }
 
     public function testShouldReturnCachedFactory()
     {
-        $resolver = new MockContainerResolver();
+        $resolver = new MockContainerResolver(MockContainer::getInstance());
         $factory = $resolver->resolveFactory(SapiEmitter::class);
         $this->assertInstanceOf(MockSapiEmitter::class, $factory);
         $reflection = new \ReflectionClass(ContainerResolver::class);
@@ -30,7 +30,7 @@ class ContainerResolverTest extends TestCase
 
     public function testHasFactory()
     {
-        $resolver = new MockContainerResolver();
+        $resolver = new MockContainerResolver(MockContainer::getInstance());
         $this->assertFalse($resolver->hasFactory('foo'));
         $this->assertTrue($resolver->hasFactory(SapiEmitter::class));
     }

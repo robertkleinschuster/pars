@@ -2,7 +2,6 @@
 
 namespace Pars\App\Frontend\Startpage;
 
-use Pars\Core\Http\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -16,7 +15,7 @@ class StartpageHandler implements RequestHandlerInterface
     {
         $this->heading = 'Startpage';
         $this->teaser = 'lorem ipsum dolor sit amet';
-        return create(HtmlResponse::class, $this->render());
+        return response($this->render());
     }
 
     public function render()

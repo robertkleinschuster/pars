@@ -7,6 +7,12 @@ Encore
     .setOutputPath('public/static/')
     .setPublicPath('/static')
     .splitEntryChunks()
+    .configureSplitChunks(config => {
+        return {
+            chunks: 'all',
+            minSize: 0,
+        };
+    })
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -24,8 +30,8 @@ Encore
 ;
 
 if (fs.existsSync('entrypoints.json')) {
-    let entrypointsJson = fs.readFileSync('entrypoints.json');
-    let entrypoints = JSON.parse(entrypointsJson);
+    const entrypointsJson = fs.readFileSync('entrypoints.json');
+    const entrypoints = JSON.parse(entrypointsJson);
     for (const [key, value] of Object.entries(entrypoints)) {
         Encore.addEntry(key, value);
     }

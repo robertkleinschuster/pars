@@ -1,4 +1,3 @@
-import './ViewEvent.scss';
 import ViewEvent from "./ViewEvent";
 import ViewComponent from "./ViewComponent";
 
@@ -35,6 +34,7 @@ export default class ViewEventHandler {
         const options: RequestInit = {};
 
         options.headers = new Headers()
+        options.headers.set('inject', 'true');
 
         if (viewEvent.target) {
             options.headers.set('target', viewEvent.target);

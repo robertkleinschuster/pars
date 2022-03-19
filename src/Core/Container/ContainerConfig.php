@@ -2,24 +2,21 @@
 
 namespace Pars\Core\Container;
 
-use Pars\Core\Config\Config;
-use Pars\Core\Http\{ClosureResponse,
-    HtmlResponse,
-    HttpFactory,
-    NotFoundResponse,
-    RedirectResponse,
-    ServerRequest,
-    ServerRequestFactory
+use HttpSoft\Message\{RequestFactory,
+    ResponseFactory,
+    ServerRequestFactory,
+    StreamFactory,
+    UploadedFileFactory,
+    UriFactory
 };
+use Pars\Core\Config\Config;
+use Pars\Core\Http\HttpFactory;
 use Psr\Http\Message\{RequestFactoryInterface,
     ResponseFactoryInterface,
-    ResponseInterface,
     ServerRequestFactoryInterface,
     StreamFactoryInterface,
-    StreamInterface,
     UploadedFileFactoryInterface,
     UriFactoryInterface,
-    UriInterface
 };
 
 class ContainerConfig
@@ -38,20 +35,13 @@ class ContainerConfig
     protected function getDefaultFactories(): array
     {
         return [
-            UriFactoryInterface::class => HttpFactory::class,
-            ServerRequestFactoryInterface::class => HttpFactory::class,
             RequestFactoryInterface::class => HttpFactory::class,
             ResponseFactoryInterface::class => HttpFactory::class,
+            ServerRequestFactoryInterface::class => HttpFactory::class,
             StreamFactoryInterface::class => HttpFactory::class,
             UploadedFileFactoryInterface::class => HttpFactory::class,
-            ServerRequest::class => ServerRequestFactory::class,
-            NotFoundResponse::class => HttpFactory::class,
-            ClosureResponse::class => HttpFactory::class,
-            UriInterface::class => HttpFactory::class,
-            HtmlResponse::class => HttpFactory::class,
-            RedirectResponse::class => HttpFactory::class,
-            ResponseInterface::class => HttpFactory::class,
-            StreamInterface::class => HttpFactory::class
+            UriFactoryInterface::class => HttpFactory::class,
+            HttpFactory::class => HttpFactory::class,
         ];
     }
 

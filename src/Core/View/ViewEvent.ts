@@ -1,4 +1,4 @@
-import ViewComponent from "./ViewComponent";
+import './ViewEvent.scss';
 
 export default class {
     public static readonly TARGET_SELF = 'self';

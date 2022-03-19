@@ -4,7 +4,6 @@ namespace ParsTest\Core\Application\Bootstrap;
 
 use Pars\Core\Application\Bootstrap\BootstrapApplication;
 use Pars\Core\Config\Config;
-use Pars\Core\Http\ServerRequest;
 use ParsTest\Core\Application\Base\MiddlewareOrderTracker;
 use ParsTest\Core\Config\MockConfig;
 use ParsTest\Core\Container\MockContainer;
@@ -21,12 +20,10 @@ class BootstrapApplicationTest extends \PHPUnit\Framework\TestCase
             '/second' => MockSecondWebApplication::class,
             '/' => MockThirdWebApplication::class,
         ]);
-        /* @var ServerRequest $request */
-        $request = $container->get(ServerRequest::class);
-        $request = $request->withUri($request->getUri()->withPath('/first'));
-        $container->set(ServerRequest::class, $request);
+        $request = http()->createServerRequest();
+
         $application = new BootstrapApplication();
-        $application->run();
+        $application->handle($request->withUri($request->getUri()->withPath('/first')));
 
         /* @var MockFirstWebApplication $first */
         $first = $container->get(MockFirstWebApplication::class);
