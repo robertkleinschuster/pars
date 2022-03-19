@@ -9,7 +9,7 @@ By extending the WebApplication class it is possible to setup multiple nested ap
 
 ### Development Mode
 
-Enable using: `php console.php development enable`
+Enable using: `./bin/console development enable`
 
 ### Config
 

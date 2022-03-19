@@ -27,7 +27,7 @@ jobs:
         run: composer install --no-dev && composer dump-autoload -a
 
       - name: Dump entrypoints
-        run: php console.php build-entrypoints
+        run: ./bin/console build-entrypoints
 
       - name: Build Webpack
         run: yarn install --silent && yarn build

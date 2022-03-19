@@ -43,7 +43,7 @@
     "ext-tidy": "*"
   },
   "scripts": {
-    "console": "php console.php",
+    "console": "bin/console",
     "phpcs": "phpcs",
     "phpcbf": "phpcbf",
     "phpstan": "phpstan analyse",
