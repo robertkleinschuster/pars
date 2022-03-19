@@ -9,7 +9,7 @@ class DevelopmentCommand extends AbstractCommand
         if ($this->getParameter()->has('enable')) {
             $this->enable();
         } elseif ($this->getParameter()->has('disable')) {
-            $this->enable();
+            $this->disable();
         } else {
             throw new ConsoleCommandException('Missing option: enable|disable');
         }
