@@ -2,8 +2,8 @@
 
 namespace Pars\Core\Container;
 
-use Exception;
+use Pars\Core\Exception\CoreException;
 
-class ContainerException extends Exception
+class ContainerException extends CoreException
 {
 }

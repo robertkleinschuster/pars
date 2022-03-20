@@ -2,8 +2,8 @@
 
 namespace Pars\Core\Http;
 
-use Exception;
+use Pars\Core\Exception\CoreException;
 
-class HttpException extends Exception
+class HttpException extends CoreException
 {
 }
