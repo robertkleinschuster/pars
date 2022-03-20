@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class ContainerResolverTest extends TestCase
 {
-
     public function testShouldReturnDefaultFactoryWhenNoConfig()
     {
         $resolver = new MockContainerResolver(MockContainer::getInstance());
@@ -34,6 +33,4 @@ class ContainerResolverTest extends TestCase
         $this->assertFalse($resolver->hasFactory('foo'));
         $this->assertTrue($resolver->hasFactory(SapiEmitter::class));
     }
-
-
 }

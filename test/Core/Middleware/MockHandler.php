@@ -9,9 +9,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class MockHandler implements RequestHandlerInterface
 {
+    public bool $handled = false;
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->handled = true;
         return (new ResponseFactory())->createResponse();
     }
-
 }

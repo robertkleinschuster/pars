@@ -21,12 +21,9 @@ class MiddlewareOrderTracker implements MiddlewareInterface
         $this->name = $name;
     }
 
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         self::$middlewares[] = $this->name;
         return $handler->handle($request);
     }
-
-
 }
