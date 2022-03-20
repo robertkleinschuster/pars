@@ -1,7 +1,7 @@
 <?php
 namespace ParsTest\Core\Url;
 
-use GuzzleHttp\Psr7\Uri;
+use HttpSoft\Message\Uri;
 use Pars\Core\Url\UriBuilder;
 
 class UrlBuilderTest extends \PHPUnit\Framework\TestCase
@@ -13,7 +13,6 @@ class UrlBuilderTest extends \PHPUnit\Framework\TestCase
         $append = new Uri('/login');
         $this->assertEquals('/admin/login', $builder->merged($base, $append));
     }
-
 
     public function testAppendToUriWithEmptyBase()
     {

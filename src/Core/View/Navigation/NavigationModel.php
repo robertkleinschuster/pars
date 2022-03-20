@@ -2,8 +2,8 @@
 
 namespace Pars\Core\View\Navigation;
 
-use GuzzleHttp\Psr7\Uri;
 use Pars\Core\View\Tree\TreeModel;
+use Psr\Http\Message\UriFactoryInterface;
 
 class NavigationModel extends TreeModel
 {
@@ -66,7 +66,9 @@ class NavigationModel extends TreeModel
 
     public function isActive(): bool
     {
-        $currentUri = new Uri($_SERVER['REQUEST_URI']);
+        /* @var UriFactoryInterface $uriFactory */
+        $uriFactory = get(UriFactoryInterface::class);
+        $currentUri = $uriFactory->createUri($_SERVER['REQUEST_URI']);
         $active = rtrim($this->link, '/') === rtrim($currentUri->getPath(), '/');
         if (!$active) {
             foreach ($this->getList() as $item) {

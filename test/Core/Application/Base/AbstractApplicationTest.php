@@ -2,7 +2,7 @@
 
 namespace ParsTest\Core\Application\Base;
 
-use GuzzleHttp\Psr7\Response;
+use HttpSoft\Message\Response;
 use Pars\Core\Application\Base\AbstractApplication;
 use Pars\Core\Container\Container;
 use Pars\Core\Emitter\SapiEmitter;
