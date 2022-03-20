@@ -36,7 +36,8 @@ class Entrypoints
 
     public static function buildEntrypointName(string $entrypoint)
     {
-        return strtolower(str_replace(['./src/', '/', '.ts'], ['', '_', ''], $entrypoint));
+        $result = strtolower(str_replace(['./src/', '/', '.ts'], ['', '_', ''], $entrypoint));
+        return implode('_', array_unique(explode('_', $result)));
     }
 
     public function load()
