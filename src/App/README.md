@@ -27,11 +27,11 @@ Example:
 // config/apps.php
 
 use Pars\App\Admin\AdminApplication;
-use Pars\App\Frontend\FrontendApplication;
+use Pars\App\Site\SiteApplication;
 
 return [
     '/admin' => AdminApplication::class,
-    '/' => FrontendApplication::class,
+    '/' => SiteApplication::class,
 ]; 
 ```
 

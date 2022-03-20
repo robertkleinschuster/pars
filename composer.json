@@ -46,6 +46,7 @@
     "phpcs": "phpcs",
     "phpcbf": "phpcbf",
     "phpstan": "phpstan analyse",
-    "phpunit": "phpunit"
+    "phpunit": "phpunit",
+    "build": "@console build-entrypoints"
   }
 }
