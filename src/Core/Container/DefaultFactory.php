@@ -8,10 +8,7 @@ use Throwable;
 
 class DefaultFactory implements ContainerFactoryInterface
 {
-    /**
-     * @throws Throwable
-     */
-    public function create(array $params, string $id): mixed
+    public function create(string $id, ...$params)
     {
         return new $id(...$params);
     }

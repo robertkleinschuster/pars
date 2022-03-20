@@ -2,13 +2,7 @@
 
 namespace Pars\Core\Container;
 
-use HttpSoft\Message\{RequestFactory,
-    ResponseFactory,
-    ServerRequestFactory,
-    StreamFactory,
-    UploadedFileFactory,
-    UriFactory
-};
+use Pars\Core\Config\ConfigFactory;
 use Pars\Core\Config\Config;
 use Pars\Core\Http\HttpFactory;
 use Psr\Http\Message\{RequestFactoryInterface,
@@ -42,6 +36,7 @@ class ContainerConfig
             UploadedFileFactoryInterface::class => HttpFactory::class,
             UriFactoryInterface::class => HttpFactory::class,
             HttpFactory::class => HttpFactory::class,
+            Config::class => ConfigFactory::class
         ];
     }
 

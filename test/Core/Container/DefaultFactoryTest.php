@@ -8,9 +8,9 @@ class DefaultFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testShouldCreateByNameAndPassConstructorArgs()
     {
-        $factory = new DefaultFactory(MockContainer::getInstance());
+        $factory = new DefaultFactory();
         /* @var ExampleClass $obj */
-        $obj = $factory->create(['bar'], ExampleClass::class);
+        $obj = $factory->create(ExampleClass::class, 'bar');
         $this->assertEquals('bar', $obj->getFoo());
     }
 }

@@ -6,7 +6,7 @@ use Pars\Core\Container\ContainerFactoryInterface;
 
 class SQLite3Factory implements ContainerFactoryInterface
 {
-    public function create(array $params, string $id): mixed
+    public function create(string $id)
     {
         $config = config('database.sqlite3');
         if (!isset($config['file'])) {

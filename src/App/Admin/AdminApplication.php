@@ -11,7 +11,6 @@ use Pars\Core\Phpinfo\PhpinfoHandler;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\View\Navigation\Navigation;
-use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -37,13 +36,9 @@ class AdminApplication extends WebApplication
         return parent::handle($request);
     }
 
-
     protected function renderHeader(): string
     {
-        $renderer = $this->createViewRenderer();
-        $navigation = $this->createNavigationComponent();
-
-
+        $navigation = new Navigation();
         $navigation->addEntry(__('admin.navigation.startpage'), url())
             ->addEntry('startpage subitem', url('/start-subitem'));
         $navigation->addEntry(__('admin.navigation.content'), url('/content'));
@@ -51,18 +46,7 @@ class AdminApplication extends WebApplication
         $system->addEntry('system subitem 1', url('/system-subitem'));
         $subitem = $system->addEntry('system subitem 2', url('/system-subitem'));
         $subitem->addEntry('system subsubitem', url('/system-subsubitem'));
-        $renderer->setComponent($navigation);
-        return $renderer->render();
-    }
-
-    protected function createNavigationComponent(): Navigation
-    {
-        return $this->getContainer()->create(Navigation::class);
-    }
-
-    protected function createViewRenderer(): ViewRenderer
-    {
-        return $this->getContainer()->create(ViewRenderer::class);
+        return render($navigation);
     }
 
     protected function getTranslator(): Translator

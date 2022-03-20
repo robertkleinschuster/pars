@@ -40,7 +40,7 @@ class Container implements ContainerInterface
     public function create(string $id, ...$params): mixed
     {
         $factory = $this->getResolver()->resolveFactory($id);
-        return $factory->create($params, $id);
+        return $factory->create($id, ...$params);
     }
 
     protected function getResolver(): ContainerResolver

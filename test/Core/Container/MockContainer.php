@@ -17,6 +17,4 @@ class MockContainer extends Container
     {
         return new MockContainerResolver($this);
     }
-
-
 }

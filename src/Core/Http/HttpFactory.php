@@ -22,7 +22,7 @@ use Psr\Http\Message\{RequestFactoryInterface,
 
 class HttpFactory implements ContainerFactoryInterface
 {
-    public function create(array $params, string $id)
+    public function create(string $id)
     {
         return match ($id) {
             RequestFactoryInterface::class => $this->requestFactory(),

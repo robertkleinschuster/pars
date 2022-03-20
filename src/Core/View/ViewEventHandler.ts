@@ -1,6 +1,6 @@
 import ViewEvent from './ViewEvent'
 import ViewComponent from './ViewComponent'
-type RequestInit = globalThis.RequestInit;
+type RequestInit = globalThis.RequestInit
 
 export default class ViewEventHandler {
   protected component: ViewComponent

@@ -23,7 +23,7 @@ class MockSapiEmitter extends SapiEmitter implements ContainerFactoryInterface
         return $this->response;
     }
 
-    public function create(array $params, string $id): MockSapiEmitter
+    public function create(string $id): MockSapiEmitter
     {
         return new MockSapiEmitter();
     }

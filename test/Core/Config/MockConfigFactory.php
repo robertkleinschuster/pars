@@ -6,7 +6,7 @@ use Pars\Core\Container\ContainerFactoryInterface;
 
 class MockConfigFactory implements ContainerFactoryInterface
 {
-    public function create(array $params, string $id): MockConfig
+    public function create(string $id): MockConfig
     {
         return new MockConfig(__DIR__ . '/examples/development');
     }
