@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Middleware;
+namespace Pars\Core\Pipeline\BasePath;
 
 use Pars\Core\Url\UriBuilder;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface, UriFactoryInterface};

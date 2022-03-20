@@ -11,6 +11,7 @@ use HttpSoft\Message\{RequestFactory,
 };
 use HttpSoft\ServerRequest\ServerRequestCreator;
 use Pars\Core\Container\ContainerFactoryInterface;
+use Pars\Core\Http\Header\Accept\AcceptHeader;
 use Psr\Http\Message\{RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
@@ -37,7 +38,8 @@ class HttpFactory implements ContainerFactoryInterface
 
     public function createServerRequest(): ServerRequestInterface
     {
-        return ServerRequestCreator::create();
+        $request = ServerRequestCreator::create();
+        return $request->withAttribute(AcceptHeader::class, new AcceptHeader($request));
     }
 
     public function requestFactory(): RequestFactoryInterface

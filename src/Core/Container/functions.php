@@ -6,6 +6,7 @@ use Pars\Core\Http\HttpFactory;
 use Pars\Core\Stream\ClosureStream;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Url\UriBuilder;
+use Psr\Log\LoggerInterface;
 use Pars\Core\View\{ViewComponent, ViewRenderer};
 use Psr\Http\Message\ResponseInterface;
 
@@ -81,4 +82,17 @@ function response(string|Closure $body, int $status = 200): ResponseInterface
         ->createResponse()
         ->withBody($stream)
         ->withStatus($status);
+}
+
+function logger(): LoggerInterface
+{
+    $container = Container::getInstance();
+    /* @var LoggerInterface $log */
+    $log = $container->get(LoggerInterface::class);
+    return $log;
+}
+
+function error($message): void
+{
+    logger()->error($message);
 }

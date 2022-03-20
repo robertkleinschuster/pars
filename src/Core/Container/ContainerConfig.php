@@ -2,11 +2,13 @@
 
 namespace Pars\Core\Container;
 
-use Pars\Core\Config\ConfigFactory;
-use Pars\Core\Config\Config;
+use Pars\Core\Config\{Config, ConfigFactory};
+use Pars\Core\Error\NotFound\NotFoundHandler;
+use Pars\Core\Error\NotFound\NotFoundHandlerFactory;
 use Pars\Core\Http\HttpFactory;
-use Pars\Core\Middleware\BasePathMiddleware;
-use Pars\Core\Middleware\BasePathMiddlewareFactory;
+use Pars\Core\Log\{Log, LogFactory};
+use Pars\Core\Pipeline\BasePath\{BasePathMiddleware, BasePathMiddlewareFactory};
+use Psr\Log\LoggerInterface;
 use Psr\Http\Message\{RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
@@ -31,6 +33,9 @@ class ContainerConfig
     protected function getDefaultFactories(): array
     {
         return [
+            Log::class => LogFactory::class,
+            LoggerInterface::class => LogFactory::class,
+            Config::class => ConfigFactory::class,
             RequestFactoryInterface::class => HttpFactory::class,
             ResponseFactoryInterface::class => HttpFactory::class,
             ServerRequestFactoryInterface::class => HttpFactory::class,
@@ -38,8 +43,8 @@ class ContainerConfig
             UploadedFileFactoryInterface::class => HttpFactory::class,
             UriFactoryInterface::class => HttpFactory::class,
             HttpFactory::class => HttpFactory::class,
-            Config::class => ConfigFactory::class,
             BasePathMiddleware::class => BasePathMiddlewareFactory::class,
+            NotFoundHandler::class => NotFoundHandlerFactory::class
         ];
     }
 

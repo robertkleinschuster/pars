@@ -3,7 +3,7 @@
 namespace Pars\Core\Application\Bootstrap;
 
 use Pars\Core\Application\Base\AbstractApplication;
-use Pars\Core\Middleware\ErrorMiddleware;
+use Pars\Core\Error\ErrorMiddleware;
 
 class BootstrapApplication extends AbstractApplication
 {

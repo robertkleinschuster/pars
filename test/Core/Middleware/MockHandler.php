@@ -1,15 +1,17 @@
 <?php
 
-namespace Pars\Core\NotFound;
+namespace ParsTest\Core\Middleware;
 
+use HttpSoft\Message\ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class NotFoundHandler implements RequestHandlerInterface
+class MockHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return response('not found', 404);
+        return (new ResponseFactory())->createResponse();
     }
+
 }

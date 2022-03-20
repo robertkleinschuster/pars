@@ -2,14 +2,13 @@
 
 namespace Pars\Core\Application\Base;
 
+use Pars\Core\Error\NotFound\NotFoundHandler;
 use Pars\Core\{Config\Config,
     Container\Container,
     Emitter\SapiEmitter,
     Http\HttpFactory,
-    NotFound\NotFoundHandler,
     Pipeline\MiddlewarePipeline,
-    Router\RequestRouter
-};
+    Router\RequestRouter};
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 

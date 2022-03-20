@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Middleware;
+namespace Pars\Core\Pipeline\BasePath;
 
 use Pars\Core\Container\ContainerFactoryInterface;
 use Pars\Core\Url\UriBuilder;
@@ -11,9 +11,6 @@ class BasePathMiddlewareFactory implements ContainerFactoryInterface
 {
     private ContainerInterface $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;

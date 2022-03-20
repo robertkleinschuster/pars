@@ -21,4 +21,9 @@ return [
     'code' => 'Code',
     'username' => 'Benutzer',
     'password' => 'Passwort',
+    'error.notfound.title' => 'Nicht gefunden',
+    'error.notfound.heading' => 'Seite nicht gefunden',
+    'error.notfound.text' => 'Leider konnte keine Seite unter der angeforderten Adresse gefunden werden. ' .
+        'Bitte überprüfen Sie den Link in der Adressleiste ihres Browser.',
+    'error.notfound.cta' => 'Zur Startseite',
 ];
