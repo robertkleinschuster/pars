@@ -5,6 +5,8 @@ namespace Pars\Core\Container;
 use Pars\Core\Config\ConfigFactory;
 use Pars\Core\Config\Config;
 use Pars\Core\Http\HttpFactory;
+use Pars\Core\Middleware\BasePathMiddleware;
+use Pars\Core\Middleware\BasePathMiddlewareFactory;
 use Psr\Http\Message\{RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
@@ -36,13 +38,17 @@ class ContainerConfig
             UploadedFileFactoryInterface::class => HttpFactory::class,
             UriFactoryInterface::class => HttpFactory::class,
             HttpFactory::class => HttpFactory::class,
-            Config::class => ConfigFactory::class
+            Config::class => ConfigFactory::class,
+            BasePathMiddleware::class => BasePathMiddlewareFactory::class,
         ];
     }
 
     private function loadFactories(): array
     {
-        return array_replace_recursive($this->getDefaultFactories(), $this->getConfig()->get('factories', []));
+        return array_replace_recursive(
+            $this->getDefaultFactories(),
+            $this->getConfig()->get('factories', [])
+        );
     }
 
     private function getConfig(): Config

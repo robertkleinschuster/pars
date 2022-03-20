@@ -2,8 +2,7 @@
 
 namespace Pars\Core\Clearcache;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 class ClearcacheHandler implements RequestHandlerInterface
