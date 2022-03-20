@@ -26,7 +26,7 @@ class Log extends AbstractLogger
             $context['message'] = $exception->getMessage();
             $context['trace'] = $exception->getTraceAsString();
             $context['code'] = $exception->getCode();
-            $message = "$message ({code}: {message})\nTRACE:\n{trace}";
+            $message = "$message ({code})\nTRACE:\n{trace}";
         }
 
         $message = PlaceholderHelper::replacePlaceholder($message, $context);

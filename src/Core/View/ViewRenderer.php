@@ -98,7 +98,9 @@ class ViewRenderer
     {
         $componentClass = $component::class;
         throw new ViewException(
-            "Error in '$componentClass': " . $throwable->getMessage(),
+            "$componentClass:" .
+            " Error in '{$throwable->getFile()}' on line {$throwable->getLine()}: " .
+            $throwable->getMessage(),
             $throwable->getCode(),
             $throwable
         );
