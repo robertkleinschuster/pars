@@ -2,20 +2,20 @@
 
 namespace Pars\Core\Log;
 
-use Exception;
 use Pars\Core\Placeholder\PlaceholderHelper;
 use Psr\Log\AbstractLogger;
 use Stringable;
+use Throwable;
 
 class Log extends AbstractLogger
 {
     public function log($level, Stringable|string $message, array $context = []): void
     {
         $exception = null;
-        if (isset($context['exception']) && $context['exception'] instanceof Exception) {
+        if (isset($context['exception']) && $context['exception'] instanceof Throwable) {
             $exception = $context['exception'];
         }
-        if ($message instanceof Exception) {
+        if ($message instanceof Throwable) {
             $exception = $message;
             $message = $message->getMessage();
         }

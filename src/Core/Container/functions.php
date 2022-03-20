@@ -88,8 +88,7 @@ function logger(): LoggerInterface
 {
     $container = Container::getInstance();
     /* @var LoggerInterface $log */
-    $log = $container->get(LoggerInterface::class);
-    return $log;
+    return $container->get(LoggerInterface::class);
 }
 
 function error($message): void

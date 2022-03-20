@@ -9,7 +9,6 @@ class BootstrapApplication extends AbstractApplication
 {
     protected function initPipeline()
     {
-        $this->pipe($this->getContainer()->get(ErrorMiddleware::class));
         foreach ($this->getApps() as $path => $appClass) {
             /* @var $app AbstractApplication */
             $app = $this->getContainer()->get($appClass);

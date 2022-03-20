@@ -6,6 +6,7 @@ use Pars\Core\Error\NotFound\NotFoundHandler;
 use Pars\Core\{Config\Config,
     Container\Container,
     Emitter\SapiEmitter,
+    Error\ErrorMiddleware,
     Http\HttpFactory,
     Pipeline\MiddlewarePipeline,
     Router\RequestRouter};
@@ -49,6 +50,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 
     protected function initPipeline()
     {
+        $this->pipe($this->getContainer()->get(ErrorMiddleware::class));
         $this->init();
         $this->pipe($this->getRouter());
     }

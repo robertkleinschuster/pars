@@ -8,6 +8,8 @@ use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 
 class WebApplication extends AbstractApplication
 {
@@ -17,6 +19,23 @@ class WebApplication extends AbstractApplication
     protected function init()
     {
         $this->getRenderer()->setComponent($this->getLayout());
+    }
+
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        try {
+            return parent::process($request, $handler);
+        } catch (Throwable $exception) {
+            $this->fatalError($exception);
+            exit;
+        }
+    }
+
+    protected function fatalError(Throwable $exception)
+    {
+        include 'templates/fatal.phtml';
+        error($exception);
+        exit;
     }
 
     /**

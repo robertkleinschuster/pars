@@ -21,6 +21,10 @@ return [
     'code' => 'Code',
     'username' => 'User',
     'password' => 'Password',
+    'error.title' => 'An error occurred',
+    'error.heading' => 'Error',
+    'error.text' => 'There was an error processing your request.',
+    'error.cta' => 'Go to homepage',
     'error.notfound.title' => 'Not found',
     'error.notfound.heading' => 'Page not found',
     'error.notfound.text' => 'The requested page could not be found in our system. ' .

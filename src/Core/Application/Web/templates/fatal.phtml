@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Fatal error</title>
+    <style>
+        body {
+            margin: 1rem;
+            font-family: sans-serif;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a,
+        a:visited {
+            display: inline-block;
+            margin: 0;
+            padding: 1rem;
+            text-decoration: none;
+            color: #fff;
+            background: #000;
+            border: 2px solid #000;
+            transition: background-color .2s, color .2s;
+        }
+
+        a:hover {
+            color: #000;
+            background: #fff;
+        }
+
+        pre {
+            display: block;
+            padding: 1rem;
+            border: 1px solid #444444;
+            background: #eee;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>Fatal error</h1>
+<p>There was an error processing your request.</p>
+<a href="/">Go to homepage</a>
+<hr>
+<p>
+    Message: <?= $exception->getMessage() ?>
+    <br>
+    Code: <?= $exception->getCode() ?>
+</p>
+<pre><?= $exception->getTraceAsString() ?></pre>
+</body>
+</html>

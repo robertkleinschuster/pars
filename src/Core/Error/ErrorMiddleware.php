@@ -2,6 +2,8 @@
 
 namespace Pars\Core\Error;
 
+use Pars\Core\View\Layout\Layout;
+use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -12,47 +14,54 @@ use function response;
 
 class ErrorMiddleware implements MiddlewareInterface
 {
+    private ViewRenderer $renderer;
+
+
     protected string $error = '';
+
+    /**
+     * @param ViewRenderer $renderer
+     */
+    public function __construct(ViewRenderer $renderer)
+    {
+        $this->renderer = $renderer;
+        set_error_handler($this);
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        set_exception_handler([$this, 'exception']);
-        set_error_handler([$this, 'error']);
         try {
             $response = $handler->handle($request);
         } catch (Throwable $exception) {
-            $this->error = $exception->__toString();
-            error_log($this->error);
+            error($exception);
+            $error = new Error();
+            $error->getModel()->set('exception', $exception);
+            $error->getModel()->set('code', $exception->getCode());
+            $error->getModel()->set('message', $exception->getMessage());
+            $error->getModel()->set('trace', $exception->getTraceAsString());
+            $this->renderer->setComponent($error);
+
             if (headers_sent()) {
-                $this->render();
+                echo $this->renderer->render();
                 exit;
             } else {
-                return response($this->render(), 500);
+                return response($this->renderer->render(), 500);
             }
         }
         return $response;
     }
 
-    public function error()
+    public function __invoke($errno, $errstr, $errfile, $errline)
     {
-        $this->error = implode(', ', func_get_args());
-        error_log($this->error);
-        $this->render();
+        $message = "$errno: $errstr ($errfile:$errline)";
+        error($message);
+        $error = new Error();
+        $error->getModel()->set('message', $message);
+        $this->renderer->setComponent($error);
+        $layout = new Layout();
+        $layout->setMain($this->renderer->render());
+        $this->renderer->setComponent($layout);
+        echo $this->renderer->render();
         exit;
-    }
-
-    public function exception(Throwable $throwable)
-    {
-        $this->error = $throwable->__toString();
-        error_log($this->error);
-        $this->render();
-        exit;
-    }
-
-    public function render()
-    {
-        ob_start();
-        include 'templates/error.phtml';
-        return ob_get_clean();
     }
 }

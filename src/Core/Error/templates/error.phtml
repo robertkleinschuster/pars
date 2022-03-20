@@ -1,29 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Error</title>
-    <style>
-        .error {
-            font-family: sans-serif;
-            background: #eee;
-        }
+<?php
 
-        .error__text {
-            background: #fff;
-            padding: 1rem;
-            border-radius: .5rem;
-            box-shadow: 2px 2px 10px #999;
-        }
-    </style>
-</head>
-<body class="error">
-<h1 class="error__heading">Ooops!</h1>
-<p class="error__text">
-    <?= str_replace("\n", "<br>", $this->error ?? 'Error') ?>
-</p>
-</body>
-</html>
+/* @var $this \Pars\Core\Error\Error */ ?>
+<div class="error">
+    <h1><?= __('error.heading') ?></h1>
+    <p><?= __('error.text') ?></p>
+    <a href="<?= url('/') ?>"><?= __('error.cta') ?></a>
+
+    <hr>
+
+    <p>
+        Message: <?= $this->getValue('message') ?>
+        <br>
+        Code: <?= $this->getValue('code') ?>
+    </p>
+    <pre><?= $this->getValue('trace') ?></pre>
+</div>

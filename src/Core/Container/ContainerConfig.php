@@ -3,6 +3,8 @@
 namespace Pars\Core\Container;
 
 use Pars\Core\Config\{Config, ConfigFactory};
+use Pars\Core\Error\ErrorMiddleware;
+use Pars\Core\Error\ErrorMiddlewareFactory;
 use Pars\Core\Error\NotFound\NotFoundHandler;
 use Pars\Core\Error\NotFound\NotFoundHandlerFactory;
 use Pars\Core\Http\HttpFactory;
@@ -44,7 +46,8 @@ class ContainerConfig
             UriFactoryInterface::class => HttpFactory::class,
             HttpFactory::class => HttpFactory::class,
             BasePathMiddleware::class => BasePathMiddlewareFactory::class,
-            NotFoundHandler::class => NotFoundHandlerFactory::class
+            NotFoundHandler::class => NotFoundHandlerFactory::class,
+            ErrorMiddleware::class => ErrorMiddlewareFactory::class
         ];
     }
 
