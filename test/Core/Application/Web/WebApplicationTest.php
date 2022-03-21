@@ -3,9 +3,9 @@
 namespace ParsTest\Core\Application\Web;
 
 use Pars\Core\Application\Web\WebApplication;
-use Pars\Core\Emitter\SapiEmitter;
+use Pars\Core\Http\Emitter\SapiEmitter;
 use ParsTest\Core\Container\MockContainer;
-use ParsTest\Core\Emitter\MockSapiEmitter;
+use ParsTest\Core\Http\Emitter\MockSapiEmitter;
 use PHPUnit\Framework\TestCase;
 
 class WebApplicationTest extends TestCase

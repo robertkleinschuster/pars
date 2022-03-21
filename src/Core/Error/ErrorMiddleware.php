@@ -33,6 +33,7 @@ class ErrorMiddleware implements MiddlewareInterface
         try {
             $response = $handler->handle($request);
         } catch (Throwable $exception) {
+            $hasLayout = $request->getAttribute(Layout::class);
             error($exception);
             $error = new Error();
             $error->getModel()->set('exception', $exception);
@@ -40,6 +41,12 @@ class ErrorMiddleware implements MiddlewareInterface
             $error->getModel()->set('message', $exception->getMessage());
             $error->getModel()->set('trace', $exception->getTraceAsString());
             $this->renderer->setComponent($error);
+
+            if (!$hasLayout) {
+                $layout = new Layout();
+                $layout->setMain($this->renderer->render());
+                $this->renderer->setComponent($layout);
+            }
 
             if (headers_sent()) {
                 echo $this->renderer->render();

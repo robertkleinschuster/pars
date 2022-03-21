@@ -12,10 +12,12 @@ class RequestRouter implements MiddlewareInterface
      * @var iterable<Route>&SplQueue<Route>
      */
     protected SplQueue $routes;
+    protected RouteFactory $routeFactory;
 
-    public function __construct()
+    public function __construct(RouteFactory $routeFactory)
     {
         $this->routes = new SplQueue();
+        $this->routeFactory = $routeFactory;
     }
 
     public function __clone()
@@ -26,7 +28,7 @@ class RequestRouter implements MiddlewareInterface
     public function with(string $route, RequestHandlerInterface $handler): RequestRouter
     {
         $clone = clone $this;
-        $clone->routes->push(create(Route::class, $handler, $route));
+        $clone->routes->push($this->routeFactory->createRoute($handler, $route));
         return $clone;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace ParsTest\Core\Generator\EmptyClass;
 
 use Pars\Core\Generator\EmptyClass\EmptyClassGenerator;
@@ -47,22 +48,28 @@ class EmptyClassGeneratorTest extends TestCase
     {
         $generator = new EmptyClassGenerator();
         $result = $generator->generateContent("Foo\\Bar\\Baz\\Bam", 'class.php.dist');
-        $this->assertEquals("<?php
+        $this->assertEquals(
+            "<?php
 namespace Foo\Bar\Baz;
 
 class Bam
 {
 
-}", $result);
+}",
+            $result
+        );
 
         $generator = new EmptyClassGenerator();
         $result = $generator->generateContent("FooTest\\Bar\\Baz\\BamTest", 'test.php.dist');
-        $this->assertEquals("<?php
+        $this->assertEquals(
+            "<?php
 namespace FooTest\Bar\Baz;
 
 class BamTest extends \PHPUnit\Framework\TestCase
 {
 
-}", $result);
+}",
+            $result
+        );
     }
 }

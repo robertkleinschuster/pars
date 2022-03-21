@@ -4,7 +4,7 @@ namespace ParsTest\Core\Router;
 use HttpSoft\Message\ServerRequest;
 use HttpSoft\Message\Uri;
 use Pars\Core\Router\Route;
-use ParsTest\Core\Middleware\MockHandler;
+use ParsTest\Core\Pipeline\BasePath\MockHandler;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RouteTest extends \PHPUnit\Framework\TestCase

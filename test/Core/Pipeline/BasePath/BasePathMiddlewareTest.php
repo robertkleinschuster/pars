@@ -1,12 +1,12 @@
 <?php
 
-namespace ParsTest\Core\Middleware;
+namespace ParsTest\Core\Pipeline\BasePath;
 
 use HttpSoft\Message\Uri;
 use HttpSoft\Message\UriFactory;
 use HttpSoft\ServerRequest\ServerRequestCreator;
+use Pars\Core\Http\Uri\UriBuilder;
 use Pars\Core\Pipeline\BasePath\BasePathMiddleware;
-use Pars\Core\Url\UriBuilder;
 use PHPUnit\Framework\TestCase;
 
 class BasePathMiddlewareTest extends TestCase

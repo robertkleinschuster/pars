@@ -16,6 +16,9 @@ class Container implements ContainerInterface
         $this->requireFunctions();
     }
 
+    /**
+     * @return static
+     */
     public static function getInstance(): self
     {
         if (!isset(self::$instance)) {

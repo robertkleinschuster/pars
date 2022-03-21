@@ -4,10 +4,9 @@ namespace ParsTest\Core\Container;
 
 use Pars\Core\Config\Config;
 use Pars\Core\Container\ContainerConfig;
-use Pars\Core\Emitter\SapiEmitter;
-use ParsTest\Core\Config\MockConfig;
+use Pars\Core\Http\Emitter\SapiEmitter;
 use ParsTest\Core\Config\MockConfigFactory;
-use ParsTest\Core\Emitter\MockSapiEmitter;
+use ParsTest\Core\Http\Emitter\MockSapiEmitter;
 
 class MockContainerConfig extends ContainerConfig
 {

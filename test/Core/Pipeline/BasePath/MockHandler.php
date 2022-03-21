@@ -1,6 +1,6 @@
 <?php
 
-namespace ParsTest\Core\Middleware;
+namespace ParsTest\Core\Pipeline\BasePath;
 
 use HttpSoft\Message\ResponseFactory;
 use Psr\Http\Message\ResponseInterface;

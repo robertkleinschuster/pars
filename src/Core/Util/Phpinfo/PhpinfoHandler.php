@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Phpinfo;
+namespace Pars\Core\Util\Phpinfo;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

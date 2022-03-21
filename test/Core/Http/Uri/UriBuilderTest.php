@@ -1,10 +1,10 @@
 <?php
-namespace ParsTest\Core\Url;
+namespace ParsTest\Core\Http\Uri;
 
 use HttpSoft\Message\Uri;
-use Pars\Core\Url\UriBuilder;
+use Pars\Core\Http\Uri\UriBuilder;
 
-class UrlBuilderTest extends \PHPUnit\Framework\TestCase
+class UriBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAppendToUri()
     {

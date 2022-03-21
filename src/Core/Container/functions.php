@@ -3,12 +3,12 @@
 use Pars\Core\Config\Config;
 use Pars\Core\Container\Container;
 use Pars\Core\Http\HttpFactory;
-use Pars\Core\Stream\ClosureStream;
+use Pars\Core\Http\Stream\ClosureStream;
+use Pars\Core\Http\Uri\UriBuilder;
 use Pars\Core\Translator\Translator;
-use Pars\Core\Url\UriBuilder;
-use Psr\Log\LoggerInterface;
 use Pars\Core\View\{ViewComponent, ViewRenderer};
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 function create(string $class, ...$params)
 {

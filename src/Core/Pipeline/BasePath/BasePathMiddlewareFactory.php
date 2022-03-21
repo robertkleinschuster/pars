@@ -3,7 +3,7 @@
 namespace Pars\Core\Pipeline\BasePath;
 
 use Pars\Core\Container\ContainerFactoryInterface;
-use Pars\Core\Url\UriBuilder;
+use Pars\Core\Http\Uri\UriBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\UriFactoryInterface;
 

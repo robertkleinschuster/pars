@@ -2,6 +2,8 @@
 
 namespace Pars\Core\Container;
 
+use Pars\Core\Config\Config;
+
 class ContainerResolver
 {
     /**
@@ -12,9 +14,6 @@ class ContainerResolver
     private DefaultFactory $defaultFactory;
     private Container $container;
 
-    /**
-     * @param Container $container
-     */
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -48,10 +47,30 @@ class ContainerResolver
         $factories = $this->getConfig()->getFactories();
         if (isset($factories[$id]) && is_string($factories[$id])) {
             // cache and return factory instance
-            return $this->factories[$id] = new ($factories[$id])($this->container);
+            return $this->factories[$id] = $this->createFactory($factories[$id]);
         }
         // no factory found
         return $this->getDefaultFactory();
+    }
+
+    private function createFactory(string $factoryClass): ContainerFactoryInterface
+    {
+        return new $factoryClass($this->container);
+    }
+
+    public function overrideFactory(string $id, string $factoryClass): ContainerResolver
+    {
+        $this->factories[$id] = $this->createFactory($factoryClass);
+        return $this;
+    }
+
+    public function reloadConfig(): array
+    {
+        $previousServices = $this->config->getServices();
+        $this->config = new ContainerConfig($this->container->create(Config::class));
+        $changedServices = array_diff($this->config->getServices(), $previousServices);
+        $changedServices[] = Config::class;
+        return $changedServices;
     }
 
     protected function getDefaultFactory(): DefaultFactory

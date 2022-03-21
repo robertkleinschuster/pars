@@ -1,9 +1,9 @@
 <?php
 
-namespace ParsTest\Core\Emitter;
+namespace ParsTest\Core\Http\Emitter;
 
 use HttpSoft\Message\Response;
-use Pars\Core\Emitter\SapiEmitter;
+use Pars\Core\Http\Emitter\SapiEmitter;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

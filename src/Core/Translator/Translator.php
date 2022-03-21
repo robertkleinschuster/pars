@@ -3,7 +3,7 @@
 namespace Pars\Core\Translator;
 
 use Locale;
-use Pars\Core\Placeholder\PlaceholderHelper;
+use Pars\Core\Util\Placeholder\PlaceholderHelper;
 
 class Translator
 {

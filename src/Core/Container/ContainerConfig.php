@@ -10,7 +10,8 @@ use Pars\Core\Error\NotFound\NotFoundHandlerFactory;
 use Pars\Core\Http\HttpFactory;
 use Pars\Core\Log\{Log, LogFactory};
 use Pars\Core\Pipeline\BasePath\{BasePathMiddleware, BasePathMiddlewareFactory};
-use Psr\Log\LoggerInterface;
+use Pars\Core\Router\RequestRouter;
+use Pars\Core\Router\RequestRouterFactory;
 use Psr\Http\Message\{RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
@@ -18,11 +19,19 @@ use Psr\Http\Message\{RequestFactoryInterface,
     UploadedFileFactoryInterface,
     UriFactoryInterface,
 };
+use Psr\Log\LoggerInterface;
 
 class ContainerConfig
 {
     private Config $config;
     private array $factories;
+
+    public function __construct(Config $config = null)
+    {
+        if (null !== $config) {
+            $this->config = $config;
+        }
+    }
 
     public function getFactories(): array
     {
@@ -30,6 +39,11 @@ class ContainerConfig
             $this->factories = $this->loadFactories();
         }
         return $this->factories;
+    }
+
+    public function getServices(): array
+    {
+        return array_keys($this->getFactories());
     }
 
     protected function getDefaultFactories(): array
@@ -45,6 +59,7 @@ class ContainerConfig
             UploadedFileFactoryInterface::class => HttpFactory::class,
             UriFactoryInterface::class => HttpFactory::class,
             HttpFactory::class => HttpFactory::class,
+            RequestRouter::class => RequestRouterFactory::class,
             BasePathMiddleware::class => BasePathMiddlewareFactory::class,
             NotFoundHandler::class => NotFoundHandlerFactory::class,
             ErrorMiddleware::class => ErrorMiddlewareFactory::class

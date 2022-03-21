@@ -4,8 +4,8 @@ namespace ParsTest\Core\Pipeline;
 
 use HttpSoft\Message\ServerRequest;
 use Pars\Core\Pipeline\MiddlewarePipeline;
-use ParsTest\Core\Middleware\MockHandler;
-use ParsTest\Core\Middleware\MockMiddleware;
+use ParsTest\Core\Pipeline\BasePath\MockHandler;
+use ParsTest\Core\Pipeline\BasePath\MockMiddleware;
 
 class MiddlewarePipelineTest extends \PHPUnit\Framework\TestCase
 {

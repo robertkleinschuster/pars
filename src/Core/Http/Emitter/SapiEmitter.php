@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Emitter;
+namespace Pars\Core\Http\Emitter;
 
 use Pars\Core\View\Entrypoints;
 use Psr\Http\Message\ResponseInterface;

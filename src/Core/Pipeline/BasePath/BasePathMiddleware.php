@@ -2,7 +2,7 @@
 
 namespace Pars\Core\Pipeline\BasePath;
 
-use Pars\Core\Url\UriBuilder;
+use Pars\Core\Http\Uri\UriBuilder;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface, UriFactoryInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 

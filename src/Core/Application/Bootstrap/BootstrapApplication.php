@@ -3,11 +3,10 @@
 namespace Pars\Core\Application\Bootstrap;
 
 use Pars\Core\Application\Base\AbstractApplication;
-use Pars\Core\Error\ErrorMiddleware;
 
 class BootstrapApplication extends AbstractApplication
 {
-    protected function initPipeline()
+    protected function init()
     {
         foreach ($this->getApps() as $path => $appClass) {
             /* @var $app AbstractApplication */
@@ -19,11 +18,6 @@ class BootstrapApplication extends AbstractApplication
             }
         }
     }
-
-    protected function init()
-    {
-    }
-
 
     protected function getApps(): array
     {

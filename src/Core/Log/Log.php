@@ -2,7 +2,7 @@
 
 namespace Pars\Core\Log;
 
-use Pars\Core\Placeholder\PlaceholderHelper;
+use Pars\Core\Util\Placeholder\PlaceholderHelper;
 use Psr\Log\AbstractLogger;
 use Stringable;
 use Throwable;

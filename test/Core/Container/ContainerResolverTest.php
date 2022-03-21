@@ -4,8 +4,8 @@ namespace ParsTest\Core\Container;
 
 use Pars\Core\Container\ContainerResolver;
 use Pars\Core\Container\DefaultFactory;
-use Pars\Core\Emitter\SapiEmitter;
-use ParsTest\Core\Emitter\MockSapiEmitter;
+use Pars\Core\Http\Emitter\SapiEmitter;
+use ParsTest\Core\Http\Emitter\MockSapiEmitter;
 use PHPUnit\Framework\TestCase;
 
 class ContainerResolverTest extends TestCase

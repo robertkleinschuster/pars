@@ -1,8 +1,8 @@
 <?php
 
-namespace ParsTest\Core\Stream;
+namespace ParsTest\Core\Http\Stream;
 
-use Pars\Core\Stream\ClosureStream;
+use Pars\Core\Http\Stream\ClosureStream;
 
 class ClosureStreamTest extends \PHPUnit\Framework\TestCase
 {

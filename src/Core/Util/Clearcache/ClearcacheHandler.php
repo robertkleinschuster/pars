@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Clearcache;
+namespace Pars\Core\Util\Clearcache;
 
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;

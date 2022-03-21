@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Stream;
+namespace Pars\Core\Http\Stream;
 
 use Closure;
 use Exception;

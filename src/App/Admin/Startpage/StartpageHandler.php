@@ -7,6 +7,7 @@ use Pars\Core\View\Group\ViewGroupHandler;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Sidebar\Sidebar;
 use Pars\Core\View\Tree\Tree;
+use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -15,8 +16,20 @@ class StartpageHandler implements RequestHandlerInterface
 {
     use SessionTrait;
 
+    protected ViewRenderer $renderer;
+
+    /**
+     * @param ViewRenderer $renderer
+     */
+    public function __construct(ViewRenderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        #throw new \Exception('asdf');
+
         $request->getAttribute(Layout::class)->addTitle('startpage');
         $sidebar = new Sidebar();
 

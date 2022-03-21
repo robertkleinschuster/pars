@@ -18,24 +18,6 @@ class WebApplication extends AbstractApplication
 
     protected function init()
     {
-        $this->getRenderer()->setComponent($this->getLayout());
-    }
-
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        try {
-            return parent::process($request, $handler);
-        } catch (Throwable $exception) {
-            $this->fatalError($exception);
-            exit;
-        }
-    }
-
-    protected function fatalError(Throwable $exception)
-    {
-        include 'templates/fatal.phtml';
-        error($exception);
-        exit;
     }
 
     /**
@@ -45,6 +27,7 @@ class WebApplication extends AbstractApplication
     {
         $response = parent::handle($request->withAttribute(Layout::class, $this->getLayout()));
         $this->getLayout()->setMain($response->getBody()->getContents());
+        $this->getRenderer()->setComponent($this->getLayout());
         $html = $this->getRenderer()->render();
         $body = $this->getHttp()->streamFactory()->createStream($html);
         return $response->withBody($body);

@@ -1,9 +1,9 @@
 <?php
 
-namespace ParsTest\Core\Emitter;
+namespace ParsTest\Core\Http\Emitter;
 
 use Pars\Core\Container\ContainerFactoryInterface;
-use Pars\Core\Emitter\SapiEmitter;
+use Pars\Core\Http\Emitter\SapiEmitter;
 use Psr\Http\Message\ResponseInterface;
 
 class MockSapiEmitter extends SapiEmitter implements ContainerFactoryInterface

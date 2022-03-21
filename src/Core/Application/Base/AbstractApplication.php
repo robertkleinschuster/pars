@@ -2,20 +2,21 @@
 
 namespace Pars\Core\Application\Base;
 
-use Pars\Core\Error\NotFound\NotFoundHandler;
-use Pars\Core\{Config\Config,
-    Container\Container,
-    Emitter\SapiEmitter,
+use Pars\Core\{Application\ApplicationContainer,
+    Config\Config,
+    Container\ContainerResolver,
     Error\ErrorMiddleware,
     Http\HttpFactory,
     Pipeline\MiddlewarePipeline,
     Router\RequestRouter};
+use Pars\Core\Error\NotFound\NotFoundHandler;
+use Pars\Core\Http\Emitter\SapiEmitter;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
 abstract class AbstractApplication implements RequestHandlerInterface, MiddlewareInterface
 {
-    private Container $container;
+    private ApplicationContainer $container;
     private MiddlewarePipeline $pipeline;
     private RequestRouter $router;
     private Config $config;
@@ -23,7 +24,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     private HttpFactory $http;
     private ServerRequestInterface $request;
 
-    public function __construct(Container $container = null)
+    public function __construct(ApplicationContainer $container = null)
     {
         if (null !== $container) {
             $this->container = $container;
@@ -47,13 +48,6 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     }
 
     abstract protected function init();
-
-    protected function initPipeline()
-    {
-        $this->pipe($this->getContainer()->get(ErrorMiddleware::class));
-        $this->init();
-        $this->pipe($this->getRouter());
-    }
 
     public function pipe(MiddlewareInterface|string $middlewareOrPath, MiddlewareInterface $middleware = null): self
     {
@@ -81,14 +75,21 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->initPipeline();
+        $this->getContainer()->init($this);
+        $this->pipe($this->getContainer()->get(ErrorMiddleware::class));
+        $this->init();
+        $this->pipe($this->getRouter());
         return $this->getPipeline()->handle($request);
     }
 
-    public function getContainer(): Container
+    public function override(ContainerResolver $resolver)
+    {
+    }
+
+    public function getContainer(): ApplicationContainer
     {
         if (!isset($this->container)) {
-            $this->container = Container::getInstance();
+            $this->container = ApplicationContainer::getInstance();
         }
         return $this->container;
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace ParsTest\Core\Placeholder;
+namespace ParsTest\Core\Util\Placeholder;
 
-use Pars\Core\Placeholder\PlaceholderHelper;
+use Pars\Core\Util\Placeholder\PlaceholderHelper;
 
 class PlaceholderHelperTest extends \PHPUnit\Framework\TestCase
 {

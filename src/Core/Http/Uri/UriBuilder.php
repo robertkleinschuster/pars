@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Core\Url;
+namespace Pars\Core\Http\Uri;
 
 use Psr\Http\Message\{UriFactoryInterface, UriInterface};
 

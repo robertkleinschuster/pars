@@ -7,9 +7,11 @@ use Pars\App\Admin\Login\LoginHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
 use Pars\Core\Application\Web\WebApplication;
-use Pars\Core\Phpinfo\PhpinfoHandler;
+use Pars\Core\Config\Config;
+use Pars\Core\Container\ContainerResolver;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
+use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Navigation\Navigation;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,11 +23,18 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
+        #throw new \Exception('asdf');
         $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
         $this->route('/:entity', $this->getContainer()->get(OverviewHandler::class));
         $this->route('/:entity/:id', $this->getContainer()->get(DetailHandler::class));
         $this->route('/login', $this->getContainer()->get(LoginHandler::class));
+    }
+
+    public function override(ContainerResolver $resolver)
+    {
+        parent::override($resolver);
+        $resolver->overrideFactory(Config::class, AdminConfigFactory::class);
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
