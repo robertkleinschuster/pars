@@ -9,16 +9,13 @@ class Container implements ContainerInterface
     protected array $services = [];
     protected ContainerResolver $resolver;
 
-    private static Container $instance;
+    private static self $instance;
 
     final private function __construct()
     {
         $this->requireFunctions();
     }
 
-    /**
-     * @return static
-     */
     public static function getInstance(): self
     {
         if (!isset(self::$instance)) {

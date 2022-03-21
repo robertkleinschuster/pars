@@ -66,9 +66,9 @@ class ContainerResolver
 
     public function reloadConfig(): array
     {
-        $previousServices = $this->config->getServices();
+        $previousServices = $this->getConfig()->getServices();
         $this->config = new ContainerConfig($this->container->create(Config::class));
-        $changedServices = array_diff($this->config->getServices(), $previousServices);
+        $changedServices = array_diff($this->getConfig()->getServices(), $previousServices);
         $changedServices[] = Config::class;
         return $changedServices;
     }

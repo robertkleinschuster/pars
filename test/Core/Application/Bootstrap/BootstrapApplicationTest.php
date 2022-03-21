@@ -5,21 +5,28 @@ namespace ParsTest\Core\Application\Bootstrap;
 use Pars\Core\Application\Bootstrap\BootstrapApplication;
 use Pars\Core\Config\Config;
 use ParsTest\Core\Application\Base\MiddlewareOrderTracker;
-use ParsTest\Core\Config\MockConfig;
 use ParsTest\Core\Container\MockContainer;
 
 class BootstrapApplicationTest extends \PHPUnit\Framework\TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $container = MockContainer::getInstance();
+        $container->getResolver()->overrideFactory(Config::class, MockConfigFactory::class);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $container = MockContainer::getInstance();
+        $container->getResolver()->overrideFactory(Config::class, \ParsTest\Core\Config\MockConfigFactory::class);
+    }
+
+
     public function testShouldPipeAppsFromConfig()
     {
         $container = MockContainer::getInstance();
-        /* @var MockConfig $config */
-        $config = $container->get(Config::class);
-        $config->set('apps', [
-            '/first' => MockFirstWebApplication::class,
-            '/second' => MockSecondWebApplication::class,
-            '/' => MockThirdWebApplication::class,
-        ]);
         $request = http()->createServerRequest();
 
         $application = new BootstrapApplication();

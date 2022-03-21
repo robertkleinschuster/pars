@@ -2,10 +2,13 @@
 
 namespace ParsTest\Core\Container;
 
-use Pars\Core\Container\Container;
+use Pars\Core\Application\ApplicationContainer;
 use Pars\Core\Container\ContainerResolver;
 
-class MockContainer extends Container
+/**
+ * @method static $this getInstance()
+ */
+class MockContainer extends ApplicationContainer
 {
     public function set(string $service, $object): self
     {
@@ -13,8 +16,8 @@ class MockContainer extends Container
         return $this;
     }
 
-    protected function getResolver(): ContainerResolver
+    public function getResolver(): ContainerResolver
     {
-        return new MockContainerResolver($this);
+        return parent::getResolver();
     }
 }
