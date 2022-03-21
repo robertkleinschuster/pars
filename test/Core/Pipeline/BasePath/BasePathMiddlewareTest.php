@@ -13,8 +13,8 @@ class BasePathMiddlewareTest extends TestCase
 {
     public function testShouldAddBasePathToUriBuilder()
     {
-        $uriBuilder = new UriBuilder();
         $uriFactory = new UriFactory();
+        $uriBuilder = new UriBuilder($uriFactory);
         $mockHandler = new MockHandler();
         $mockMiddleware = new MockMiddleware();
         $request = ServerRequestCreator::create()->withUri(new Uri('/test/foo'));

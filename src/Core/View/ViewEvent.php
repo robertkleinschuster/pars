@@ -18,7 +18,7 @@ class ViewEvent
     public string $url = '';
     public string $title = '';
 
-    public function __construct()
+    final public function __construct()
     {
         $this->url = url();
     }

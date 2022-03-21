@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View\Group;
 
+use Pars\Core\Container\Container;
 use Pars\Core\Router\RequestRouter;
 use Psr\Http\Message\{ResponseFactoryInterface, ResponseInterface, ServerRequestInterface, StreamInterface};
 use Psr\Http\Server\RequestHandlerInterface;
@@ -14,7 +15,7 @@ class ViewGroupHandler implements RequestHandlerInterface
 
     public function __construct()
     {
-        $this->responseFactory = create(ResponseFactoryInterface::class);
+        $this->responseFactory = get(ResponseFactoryInterface::class);
         $this->requests = new SplQueue();
     }
 

@@ -2,13 +2,14 @@
 namespace ParsTest\Core\Http\Uri;
 
 use HttpSoft\Message\Uri;
+use HttpSoft\Message\UriFactory;
 use Pars\Core\Http\Uri\UriBuilder;
 
 class UriBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAppendToUri()
     {
-        $builder = new UriBuilder();
+        $builder = new UriBuilder(new UriFactory());
         $base = new Uri('/admin');
         $append = new Uri('/login');
         $this->assertEquals('/admin/login', $builder->merged($base, $append));
@@ -16,7 +17,7 @@ class UriBuilderTest extends \PHPUnit\Framework\TestCase
 
     public function testAppendToUriWithEmptyBase()
     {
-        $builder = new UriBuilder();
+        $builder = new UriBuilder(new UriFactory());
         $base = new Uri();
         $append = new Uri('/login');
         $this->assertEquals('/login', $builder->merged($base, $append));
@@ -24,7 +25,7 @@ class UriBuilderTest extends \PHPUnit\Framework\TestCase
 
     public function testAppendToUriWithQueryParams()
     {
-        $builder = new UriBuilder();
+        $builder = new UriBuilder(new UriFactory());
         $base = new Uri('/admin');
         $base = $base->withQuery('foo=bar&baz=bam');
         $append = new Uri('/login');
@@ -34,7 +35,7 @@ class UriBuilderTest extends \PHPUnit\Framework\TestCase
 
     public function testAppendToBaseUri()
     {
-        $builder = new UriBuilder();
+        $builder = new UriBuilder(new UriFactory());
         $this->assertEquals('', $builder->__toString());
         $builder->addBaseUri(new Uri('/admin'));
         $this->assertEquals('/admin', $builder->__toString());
@@ -46,7 +47,7 @@ class UriBuilderTest extends \PHPUnit\Framework\TestCase
 
     public function testQueryParamsFromArray()
     {
-        $builder = new UriBuilder();
+        $builder = new UriBuilder(new UriFactory());
         $builder->addBaseUri(new Uri('/admin'));
         $this->assertEquals('/admin/index?a=b', $builder->withPath('/index')->withParams(['a' => 'b'])->__toString());
     }

@@ -2,7 +2,7 @@
 
 namespace Pars\Core\Pipeline;
 
-use Pars\Core\Pipeline\BasePath\BasePathMiddleware;
+use Pars\Core\Pipeline\BasePath\BasePathMiddlewareFactory;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 use SplStack;
@@ -13,11 +13,13 @@ class MiddlewarePipeline implements RequestHandlerInterface
 {
     protected SplStack $pipeline;
     protected RequestHandlerInterface $handler;
+    protected BasePathMiddlewareFactory $basePathFactory;
 
-    public function __construct(RequestHandlerInterface $handler)
+    public function __construct(RequestHandlerInterface $handler, BasePathMiddlewareFactory $basePathFactory)
     {
         $this->pipeline = new SplStack();
         $this->handler = $handler;
+        $this->basePathFactory = $basePathFactory;
     }
 
     public function __clone()
@@ -37,10 +39,9 @@ class MiddlewarePipeline implements RequestHandlerInterface
     {
         $clone = clone $this;
         if (is_string($middlewareOrPath) && $middleware) {
-            $clone->pipeline->push(create(BasePathMiddleware::class, $middleware, $middlewareOrPath));
-        } else {
-            $clone->pipeline->push($middlewareOrPath);
+            $middlewareOrPath = $this->basePathFactory->createBasePathMiddleware($middleware, $middlewareOrPath);
         }
+        $clone->pipeline->push($middlewareOrPath);
         return $clone;
     }
 }

@@ -6,6 +6,7 @@ use Pars\Core\Container\ContainerFactoryInterface;
 use Pars\Core\Http\Uri\UriBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\UriFactoryInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 class BasePathMiddlewareFactory implements ContainerFactoryInterface
 {
@@ -36,5 +37,10 @@ class BasePathMiddlewareFactory implements ContainerFactoryInterface
             $params[0],
             $params[1]
         );
+    }
+
+    public function createBasePathMiddleware(MiddlewareInterface $middleware, string $path): BasePathMiddleware
+    {
+        return $this->create(BasePathMiddleware::class, $middleware, $path);
     }
 }

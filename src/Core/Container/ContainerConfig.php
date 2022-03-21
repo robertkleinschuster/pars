@@ -10,6 +10,10 @@ use Pars\Core\Error\NotFound\NotFoundHandlerFactory;
 use Pars\Core\Http\HttpFactory;
 use Pars\Core\Log\{Log, LogFactory};
 use Pars\Core\Pipeline\BasePath\{BasePathMiddleware, BasePathMiddlewareFactory};
+use Pars\Core\Http\Uri\UriBuilder;
+use Pars\Core\Http\Uri\UriBuilderFactory;
+use Pars\Core\Pipeline\MiddlewarePipeline;
+use Pars\Core\Pipeline\MiddlewarePipelineFactory;
 use Pars\Core\Router\RequestRouter;
 use Pars\Core\Router\RequestRouterFactory;
 use Psr\Http\Message\{RequestFactoryInterface,
@@ -52,6 +56,7 @@ class ContainerConfig
             Log::class => LogFactory::class,
             LoggerInterface::class => LogFactory::class,
             Config::class => ConfigFactory::class,
+            UriBuilder::class => UriBuilderFactory::class,
             RequestFactoryInterface::class => HttpFactory::class,
             ResponseFactoryInterface::class => HttpFactory::class,
             ServerRequestFactoryInterface::class => HttpFactory::class,
@@ -60,6 +65,7 @@ class ContainerConfig
             UriFactoryInterface::class => HttpFactory::class,
             HttpFactory::class => HttpFactory::class,
             RequestRouter::class => RequestRouterFactory::class,
+            MiddlewarePipeline::class => MiddlewarePipelineFactory::class,
             BasePathMiddleware::class => BasePathMiddlewareFactory::class,
             NotFoundHandler::class => NotFoundHandlerFactory::class,
             ErrorMiddleware::class => ErrorMiddlewareFactory::class

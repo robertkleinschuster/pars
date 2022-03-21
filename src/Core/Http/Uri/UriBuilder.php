@@ -10,9 +10,9 @@ class UriBuilder
     private UriInterface $uri;
     private UriFactoryInterface $factory;
 
-    final public function __construct()
+    final public function __construct(UriFactoryInterface $factory)
     {
-        $this->factory = create(UriFactoryInterface::class);
+        $this->factory = $factory;
         $this->baseUri = $this->factory->createUri();
         $this->uri = $this->factory->createUri();
     }
