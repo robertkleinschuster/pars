@@ -2,6 +2,16 @@
 
 namespace Pars\Core\Config;
 
+use function is_array;
+use function in_array;
+use function array_replace_recursive;
+use function array_shift;
+use function end;
+use function count;
+use function explode;
+use function glob;
+use function basename;
+
 class Config
 {
     protected array $data = [];

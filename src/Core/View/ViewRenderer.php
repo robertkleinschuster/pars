@@ -4,6 +4,9 @@ namespace Pars\Core\View;
 
 use Throwable;
 
+use function ob_start;
+use function ob_get_clean;
+
 class ViewRenderer
 {
     protected ?ViewComponent $component = null;
@@ -46,7 +49,7 @@ class ViewRenderer
             if (!$component->getContent()) {
                 $component->setContent($this->renderChildren($component));
             }
-            return trim($this->renderTemplate($component));
+            return $this->renderTemplate($component);
         } catch (Throwable $throwable) {
             $this->throwViewException($component, $throwable);
         }
@@ -69,9 +72,9 @@ class ViewRenderer
 
         foreach ($component->getChildren() as $child) {
             if ($child->isList()) {
-                $result .= trim($this->renderList($child));
+                $result .= $this->renderList($child);
             } else {
-                $result .= trim($this->renderComponent($child));
+                $result .= $this->renderComponent($child);
             }
         }
 
@@ -82,7 +85,7 @@ class ViewRenderer
     {
         $result = '';
         foreach ($component->getModel()->getList() as $model) {
-            $result .= trim($this->renderComponent($component->withModel($model)));
+            $result .= $this->renderComponent($component->withModel($model));
         }
         return $result;
     }

@@ -3,12 +3,17 @@
 namespace Pars\Core\View;
 
 use SplDoublyLinkedList;
+use function implode;
 
 class ViewComponent
 {
     protected ?string $template = __DIR__ . '/templates/default.phtml';
     protected ViewModel $model;
     protected ?ViewEvent $event = null;
+
+    /**
+     * @var iterable<ViewComponent>&SplDoublyLinkedList<ViewComponent>
+     */
     protected SplDoublyLinkedList $children;
     protected ?self $parent = null;
     protected string $content = '';
@@ -101,7 +106,7 @@ class ViewComponent
     }
 
     /**
-     * @return SplDoublyLinkedList|static[]
+     * @return iterable<ViewComponent>&SplDoublyLinkedList<ViewComponent>
      */
     public function getChildren(): SplDoublyLinkedList
     {
@@ -174,23 +179,21 @@ class ViewComponent
 
     protected function attr(): string
     {
-        $result = [];
-        if ($this->getEvent()) {
-            $params = $this->getEvent()->getUrlParams();
+        $result = '';
+        if (null !== $this->getEvent()) {
+            $params = $this->getEvent()->getRouteParams();
             foreach ($params as $param) {
-                $this->getEvent()->setUrlParam($param, $this->getValue($param));
+                $this->getEvent()->setRouteParam($param, $this->getValue($param));
             }
-            $result[] = $this->getEvent()->toAttributes();
+            $result .= ' ' . $this->getEvent()->toAttributes();
         }
-        if (count($this->class)) {
+
+        if (!empty($this->class)) {
             $class = implode(' ', $this->class);
-            $result[] = "class='$class'";
+            $result .= " class='$class'";
         }
-        if (!empty($result)) {
-            return ' ' . implode(' ', $result);
-        } else {
-            return '';
-        }
+
+        return $result;
     }
 
     public function getValue(string $key)

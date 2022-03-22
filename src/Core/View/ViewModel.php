@@ -12,6 +12,7 @@ use Traversable;
 class ViewModel implements IteratorAggregate
 {
     protected string $value = '';
+
     /**
      * @var iterable<static>&SplDoublyLinkedList<ViewModel>
      */
@@ -49,17 +50,16 @@ class ViewModel implements IteratorAggregate
 
     public function isList(): bool
     {
-        return isset($this->list) && $this->list->count() > 0;
-    }
-
-    public function __get(string $name)
-    {
-        return $this->$name ?? '';
+        if (isset($this->list)) {
+            $this->list->rewind();
+            return $this->list->valid();
+        }
+        return false;
     }
 
     public function get(string $name)
     {
-        return $this->__get($name);
+        return $this->$name ?? '';
     }
 
     public function set(string $name, $value)

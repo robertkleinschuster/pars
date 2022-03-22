@@ -4,6 +4,9 @@ namespace Pars\Core\View;
 
 use Pars\Core\Router\Route;
 
+use function url;
+use function str_replace;
+
 class ViewEvent
 {
     public const TARGET_SELF = 'self';
@@ -26,12 +29,12 @@ class ViewEvent
     /**
      * @return array<string>
      */
-    public function getUrlParams(): array
+    public function getRouteParams(): array
     {
         return Route::findKeys($this->url);
     }
 
-    public function setUrlParam(string $key, string $value): self
+    public function setRouteParam(string $key, string $value): self
     {
         $this->url = str_replace(":$key", $value, $this->url);
         return $this;
@@ -39,13 +42,15 @@ class ViewEvent
 
     public function toAttributes(): string
     {
-        $attributes = [];
-        foreach ((array) $this as $key => $value) {
-            if ($value) {
-                $attributes[] = "data-$key='$value'";
-            }
+        $attributes = "data-event='{$this->event}'";
+        $attributes .= "data-target='{$this->target}'";
+        if (!empty($this->url)) {
+            $attributes .= "data-url='{$this->url}'";
         }
-        return implode(' ', $attributes);
+        if (!empty($this->title)) {
+            $attributes .= "data-title='{$this->title}'";
+        }
+        return $attributes;
     }
 
     public static function window(string $uri, string $title): static

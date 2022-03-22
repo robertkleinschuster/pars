@@ -5,6 +5,14 @@ namespace Pars\Core\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use function preg_match_all;
+use function preg_quote;
+use function preg_replace;
+use function array_walk_recursive;
+use function array_shift;
+use function is_array;
+use function rtrim;
+
 class Route
 {
     public RequestHandlerInterface $handler;
