@@ -1,0 +1,33 @@
+.phpinfo {
+  margin: 1rem;
+  h1 {
+    display: inline-block;
+    font-size: 2rem;
+  }
+  table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+
+  th {
+    background: #7f9cf1;
+  }
+
+  tr {
+    transition: .2s ease-in-out;
+  }
+
+  tr:nth-child(2n) {
+    background: #eaeaea;
+  }
+
+  tr:hover {
+    background: #cccccc;
+  }
+
+  td, th {
+    padding: .25rem;
+    border: 1px solid #000;
+  }
+}

@@ -10,6 +10,6 @@ class PhpinfoHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return response(phpinfo(...));
+        return response(render(new Phpinfo()));
     }
 }

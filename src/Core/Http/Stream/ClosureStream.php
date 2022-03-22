@@ -32,7 +32,9 @@ class ClosureStream implements StreamInterface
     protected function call()
     {
         $this->executed = true;
-        return ($this->closure)();
+        ob_start();
+        echo ($this->closure)();
+        return ob_get_clean();
     }
 
     public function close()
