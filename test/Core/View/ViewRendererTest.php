@@ -1,4 +1,5 @@
 <?php
+
 namespace ParsTest\Core\View;
 
 use Pars\Core\View\ViewComponent;
@@ -26,9 +27,12 @@ class ViewRendererTest extends \PHPUnit\Framework\TestCase
 
         $renderer = new ViewRenderer();
         $renderer->setComponent($component);
-        $this->assertEquals("<div>
-</div><div>
-</div><div>
-</div>", $renderer->render());
+        $this->assertEquals("
+<div>
+</div>
+<div>
+</div>
+<div>
+</div>", $renderer->render()->getContents());
     }
 }
