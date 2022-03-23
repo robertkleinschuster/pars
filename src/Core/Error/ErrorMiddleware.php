@@ -35,11 +35,7 @@ class ErrorMiddleware implements MiddlewareInterface
         } catch (Throwable $exception) {
             $hasLayout = $request->getAttribute(Layout::class);
             error($exception);
-            $error = new Error();
-            $error->getModel()->set('exception', $exception);
-            $error->getModel()->set('code', $exception->getCode());
-            $error->getModel()->set('message', $exception->getMessage());
-            $error->getModel()->set('trace', $exception->getTraceAsString());
+            $error = Error::fromException($exception);
             $this->renderer->setComponent($error);
 
             if (!$hasLayout) {

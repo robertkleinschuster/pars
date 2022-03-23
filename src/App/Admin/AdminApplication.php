@@ -12,9 +12,12 @@ use Pars\Core\Container\ContainerResolver;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
+use Pars\Core\View\Entrypoints;
+use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Navigation\Navigation;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 
 class AdminApplication extends WebApplication
 {
@@ -45,7 +48,7 @@ class AdminApplication extends WebApplication
         return parent::handle($request);
     }
 
-    protected function renderHeader(): string
+    protected function renderHeader(): StreamInterface
     {
         $navigation = new Navigation();
         $navigation->addEntry(__('admin.navigation.startpage'), url())

@@ -3,12 +3,13 @@
 namespace Pars\Core\View\Layout;
 
 use Pars\Core\View\{EntrypointInterface, ViewComponent};
+use Psr\Http\Message\StreamInterface;
 
 class Layout extends ViewComponent implements EntrypointInterface
 {
-    protected string $header;
-    protected string $main;
-    protected string $footer;
+    protected StreamInterface $header;
+    protected StreamInterface $main;
+    protected StreamInterface $footer;
     protected string $language = 'en';
     protected string $title = 'Default Title';
 
@@ -24,30 +25,30 @@ class Layout extends ViewComponent implements EntrypointInterface
     }
 
     /**
-     * @param string $header
+     * @param StreamInterface $header
      * @return Layout
      */
-    public function setHeader(string $header): Layout
+    public function setHeader(StreamInterface $header): Layout
     {
         $this->header = $header;
         return $this;
     }
 
     /**
-     * @param string $main
+     * @param StreamInterface $main
      * @return Layout
      */
-    public function setMain(string $main): Layout
+    public function setMain(StreamInterface $main): Layout
     {
         $this->main = $main;
         return $this;
     }
 
     /**
-     * @param string $footer
+     * @param StreamInterface $footer
      * @return Layout
      */
-    public function setFooter(string $footer): Layout
+    public function setFooter(StreamInterface $footer): Layout
     {
         $this->footer = $footer;
         return $this;

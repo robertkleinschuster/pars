@@ -2,10 +2,9 @@
 
 namespace Pars\Core\View;
 
+use Pars\Core\Http\Stream\QueueStream;
+use Psr\Http\Message\StreamInterface;
 use Throwable;
-
-use function ob_start;
-use function ob_get_clean;
 
 class ViewRenderer
 {
@@ -14,12 +13,12 @@ class ViewRenderer
     /**
      * @throws ViewException
      */
-    public function render(): string
+    public function render(): StreamInterface
     {
         if (!$this->component) {
             throw new ViewException('No component set!');
         }
-        if ($this->component->getModel()->isList()) {
+        if ($this->component->isList()) {
             $result = $this->renderList($this->component);
         } else {
             $result = $this->renderComponent($this->component);
@@ -35,10 +34,10 @@ class ViewRenderer
 
     /**
      * @param ViewComponent $component
-     * @return string|void
+     * @return StreamInterface
      * @throws ViewException
      */
-    protected function renderComponent(ViewComponent $component)
+    protected function renderComponent(ViewComponent $component): StreamInterface
     {
         try {
             if ($component instanceof EntrypointInterface) {
@@ -47,65 +46,55 @@ class ViewRenderer
             $component = clone $component;
             $component->onRender(clone $this);
             if (!$component->getContent()) {
-                $component->setContent($this->renderChildren($component));
+                $content = $this->renderChildren($component);
+                if (!$content->isEmpty()) {
+                    $component->setContent($content);
+                }
             }
-            return $this->renderTemplate($component);
+            return new ViewStream($component);
         } catch (Throwable $throwable) {
-            $this->throwViewException($component, $throwable);
+            $componentClass = $component::class;
+            throw new ViewException(
+                "$componentClass:" .
+                " Error in '{$throwable->getFile()}' on line {$throwable->getLine()}: " .
+                $throwable->getMessage(),
+                $throwable->getCode(),
+                $throwable
+            );
         }
     }
-
-    protected function renderTemplate(ViewComponent $component): string
-    {
-        $template = $component->getTemplate();
-        return (function () use ($template) {
-            ob_start();
-            include $template;
-            return ob_get_clean();
-        })(...)->call($component);
-    }
-
-
-    private function renderChildren(ViewComponent $component): string
-    {
-        $result = '';
-
-        foreach ($component->getChildren() as $child) {
-            if ($child->isList()) {
-                $result .= $this->renderList($child);
-            } else {
-                $result .= $this->renderComponent($child);
-            }
-        }
-
-        return $result;
-    }
-
-    private function renderList(ViewComponent $component): string
-    {
-        $result = '';
-        foreach ($component->getModel()->getList() as $model) {
-            $result .= $this->renderComponent($component->withModel($model));
-        }
-        return $result;
-    }
-
 
     /**
      * @param ViewComponent $component
-     * @param Throwable $throwable
-     * @return mixed
+     * @return QueueStream
      * @throws ViewException
      */
-    private function throwViewException(ViewComponent $component, Throwable $throwable)
+    private function renderChildren(ViewComponent $component): QueueStream
     {
-        $componentClass = $component::class;
-        throw new ViewException(
-            "$componentClass:" .
-            " Error in '{$throwable->getFile()}' on line {$throwable->getLine()}: " .
-            $throwable->getMessage(),
-            $throwable->getCode(),
-            $throwable
-        );
+        $queueStream = new QueueStream();
+
+        foreach ($component->getChildren() as $child) {
+            if ($child->isList()) {
+                $queueStream->push($this->renderList($child));
+            } else {
+                $queueStream->push($this->renderComponent($child));
+            }
+        }
+
+        return $queueStream;
+    }
+
+    /**
+     * @param ViewComponent $component
+     * @return QueueStream
+     * @throws ViewException
+     */
+    private function renderList(ViewComponent $component): QueueStream
+    {
+        $queueStream = new QueueStream();
+        foreach ($component->getModel()->getList() as $model) {
+            $queueStream->push($this->renderComponent($component->withModel($model)));
+        }
+        return $queueStream;
     }
 }

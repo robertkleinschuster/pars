@@ -6,6 +6,7 @@ use Pars\Core\{Application\ApplicationContainer,
     Config\Config,
     Container\ContainerResolver,
     Error\ErrorMiddleware,
+    Http\Header\CacheControlMiddleware,
     Http\HttpFactory,
     Pipeline\MiddlewarePipeline,
     Router\RequestRouter};
@@ -78,6 +79,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         $this->getContainer()->init($this);
         $this->pipe($this->getContainer()->get(ErrorMiddleware::class));
         $this->init();
+        $this->pipe($this->getContainer()->get(CacheControlMiddleware::class));
         $this->pipe($this->getRouter());
         return $this->getPipeline()->handle($request);
     }

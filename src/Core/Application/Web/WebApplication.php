@@ -4,6 +4,7 @@ namespace Pars\Core\Application\Web;
 
 use Exception;
 use Pars\Core\Application\Base\AbstractApplication;
+use Pars\Core\View\Entrypoints;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +19,8 @@ class WebApplication extends AbstractApplication
 
     protected function init()
     {
+        Entrypoints::add(Layout::getEntrypoint());
+        $this->getRenderer()->setComponent($this->getLayout());
     }
 
     /**
@@ -26,11 +29,8 @@ class WebApplication extends AbstractApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = parent::handle($request->withAttribute(Layout::class, $this->getLayout()));
-        $this->getLayout()->setMain($response->getBody()->getContents());
-        $this->getRenderer()->setComponent($this->getLayout());
-        $html = $this->getRenderer()->render();
-        $body = $this->getHttp()->streamFactory()->createStream($html);
-        return $response->withBody($body);
+        $this->getLayout()->setMain($response->getBody());
+        return $response->withBody($this->getRenderer()->render());
     }
 
     protected function getRenderer(): ViewRenderer

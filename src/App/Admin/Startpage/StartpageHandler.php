@@ -44,7 +44,7 @@ class StartpageHandler implements RequestHandlerInterface
         $routeGroup = new ViewGroupHandler();
         $routeGroup->push($request->withUri($request->getUri()->withPath('/overview/detail')));
         $routeGroup->push($request->withUri($request->getUri()->withPath('/overview')));
-        $sidebar->setContent($routeGroup->handle($request)->getBody()->getContents());
+        $sidebar->setContent($routeGroup->handle($request)->getBody());
         return response(render($sidebar));
     }
 }

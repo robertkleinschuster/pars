@@ -45,8 +45,7 @@ class NotFoundHandler implements RequestHandlerInterface
                 }
                 $notFound = new NotFound();
                 $this->renderer->setComponent($notFound);
-                $body = $this->streamFactory->createStream($this->renderer->render());
-                $response = $response->withBody($body);
+                $response = $response->withBody($this->renderer->render());
             } elseif ($acceptHeader->isJson()) {
                 $body = $this->streamFactory->createStream(json_encode(['error' => 'not found']));
                 $response = $response

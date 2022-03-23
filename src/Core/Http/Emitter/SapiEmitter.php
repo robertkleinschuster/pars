@@ -12,8 +12,9 @@ class SapiEmitter
     {
         $this->assertNoPreviousOutput();
         $this->injectContentLength($response);
-        $this->emitHeaders($response);
+        $this->emitHeaders($this->injectHeaders($response));
         $this->emitStatusLine($response);
+        $this->flushHeaders();
         $this->emitBody($response);
         $this->closeConnection();
     }
@@ -23,14 +24,16 @@ class SapiEmitter
         $file = $line = null;
 
         if (headers_sent($file, $line)) {
-            throw new RuntimeException(sprintf(
-                'Unable to emit response: Headers already sent in file %s on line %s. '
-                . 'This happens if 
+            throw new RuntimeException(
+                sprintf(
+                    'Unable to emit response: Headers already sent in file %s on line %s. '
+                    . 'This happens if 
                 echo, print, printf, print_r, var_dump, var_export 
                 or similar statement that writes to the output buffer are used.',
-                $file,
-                (string)$line
-            ));
+                    $file,
+                    (string)$line
+                )
+            );
         }
     }
 
@@ -50,12 +53,15 @@ class SapiEmitter
         return $response;
     }
 
+    private function injectHeaders(ResponseInterface $response): ResponseInterface
+    {
+        $inject = isset($_SERVER['HTTP_INJECT']) && $_SERVER['HTTP_INJECT'] === 'true';
+        return Entrypoints::injectHeaders($response, $inject);
+    }
+
     protected function emitHeaders(ResponseInterface $response): void
     {
         $statusCode = $response->getStatusCode();
-        if (isset($_SERVER['HTTP_INJECT']) && $_SERVER['HTTP_INJECT'] === 'true') {
-            $response = Entrypoints::injectHeaders($response);
-        }
         foreach ($response->getHeaders() as $header => $values) {
             $name = $this->toWordCase($header);
             $first = $name !== 'Set-Cookie';
@@ -100,6 +106,13 @@ class SapiEmitter
             true,
             $statusCode
         );
+    }
+
+    private function flushHeaders(): void
+    {
+        echo ob_get_clean();
+        echo ' ';
+        flush();
     }
 
     private function emitBody(ResponseInterface $response): void

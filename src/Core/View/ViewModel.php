@@ -51,8 +51,7 @@ class ViewModel implements IteratorAggregate
     public function isList(): bool
     {
         if (isset($this->list)) {
-            $this->list->rewind();
-            return $this->list->valid();
+            return !$this->list->isEmpty();
         }
         return false;
     }

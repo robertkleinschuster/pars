@@ -3,9 +3,9 @@
 use Pars\Core\Config\Config;
 use Pars\Core\Container\Container;
 use Pars\Core\Http\HttpFactory;
-use Pars\Core\Http\Stream\ClosureStream;
 use Pars\Core\Http\Uri\UriBuilder;
 use Pars\Core\Translator\Translator;
+use Psr\Http\Message\StreamInterface;
 use Pars\Core\View\{ViewComponent, ViewRenderer};
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -46,7 +46,7 @@ function __pl(string $code, int $count, array $placeholder = []): string
     return $translator->translatepl($code, $count, $placeholder);
 }
 
-function render(ViewComponent $component): string
+function render(ViewComponent $component): StreamInterface
 {
     $container = Container::getInstance();
     /* @var ViewRenderer $renderer */
@@ -70,17 +70,15 @@ function http(): HttpFactory
     return $container->get(HttpFactory::class);
 }
 
-function response(string|Closure $body, int $status = 200): ResponseInterface
+function response(string|StreamInterface $body, int $status = 200): ResponseInterface
 {
     if (is_string($body)) {
-        $stream = http()->streamFactory()->createStream($body);
-    } else {
-        $stream = new ClosureStream($body);
+        $body = http()->streamFactory()->createStream($body);
     }
     return http()
         ->responseFactory()
         ->createResponse()
-        ->withBody($stream)
+        ->withBody($body)
         ->withStatus($status);
 }
 

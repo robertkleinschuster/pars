@@ -3,6 +3,7 @@
 namespace Pars\Core\View\Group;
 
 use Pars\Core\Container\Container;
+use Pars\Core\Http\Stream\QueueStream;
 use Pars\Core\Router\RequestRouter;
 use Psr\Http\Message\{ResponseFactoryInterface, ResponseInterface, ServerRequestInterface, StreamInterface};
 use Psr\Http\Server\RequestHandlerInterface;
@@ -36,16 +37,16 @@ class ViewGroupHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $queueStream = new QueueStream();
         $response = $this->responseFactory->createResponse();
-        $responseBody = '';
         $router = $request->getAttribute(RequestRouter::class);
         if ($router instanceof RequestRouter) {
             $noRouteHandler = new NoRouteHandler();
             foreach ($this->requests as $routeRequest) {
                 $routeResponse = $router->process($routeRequest, $noRouteHandler);
-                $responseBody .= $routeResponse->getBody()->getContents();
+                $queueStream->push($routeResponse->getBody());
             }
         }
-        return $response->withBody(http()->streamFactory()->createStream($responseBody));
+        return $response->withBody($queueStream);
     }
 }

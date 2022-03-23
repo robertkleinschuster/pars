@@ -3,6 +3,7 @@
 namespace Pars\Core\View\Overview;
 
 use Pars\Core\View\ViewComponent;
+use Psr\Http\Message\StreamInterface;
 
 class OverviewField extends ViewComponent
 {
@@ -52,7 +53,7 @@ class OverviewField extends ViewComponent
     }
 
 
-    public function getContent(): string
+    public function getContent(): StreamInterface|string
     {
         if ($this->getValue($this->key)) {
             return $this->getValue($this->key);

@@ -81,15 +81,33 @@ class Entrypoints
         return $result;
     }
 
-    public static function injectHeaders(ResponseInterface $response): ResponseInterface
+    public static function injectHeaders(ResponseInterface $response, $inject = false): ResponseInterface
     {
         $css = self::getInstance()->dumpFiles('css');
         $js = self::getInstance()->dumpFiles('js');
         if (!empty($css)) {
-            $response = $response->withAddedHeader('inject-css', self::getInstance()->dumpFiles('css'));
+            if ($inject) {
+                $response = $response->withAddedHeader('inject-css', $css);
+            } else {
+                foreach ($css as $key => $file) {
+                    if ($key > 3) {
+                        break;
+                    }
+                    $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=style;");
+                }
+            }
         }
         if (!empty($js)) {
-            $response = $response->withAddedHeader('inject-js', self::getInstance()->dumpFiles('js'));
+            if ($inject) {
+                $response = $response->withAddedHeader('inject-js', $js);
+            } else {
+                foreach ($js as $key => $file) {
+                    if ($key > 1) {
+                        break;
+                    }
+                    $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=script;");
+                }
+            }
         }
         return $response;
     }

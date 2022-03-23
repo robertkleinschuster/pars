@@ -6,6 +6,7 @@ use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\ViewComponent;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class DetailHandler implements RequestHandlerInterface
@@ -15,7 +16,7 @@ class DetailHandler implements RequestHandlerInterface
         return response($this->renderDetail());
     }
 
-    public function renderDetail(): string
+    public function renderDetail(): StreamInterface
     {
         $detail = new Detail();
         $field = new ViewComponent();

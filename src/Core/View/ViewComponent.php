@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View;
 
+use Psr\Http\Message\StreamInterface;
 use SplDoublyLinkedList;
 use function implode;
 
@@ -16,7 +17,7 @@ class ViewComponent
      */
     protected SplDoublyLinkedList $children;
     protected ?self $parent = null;
-    protected string $content = '';
+    protected StreamInterface|string $content = '';
 
     protected string $tag = 'div';
     protected array $class = [];
@@ -36,12 +37,12 @@ class ViewComponent
         return $this->parent;
     }
 
-    public function getContent(): string
+    public function getContent(): StreamInterface|string
     {
         return $this->content;
     }
 
-    public function setContent(string $content): ViewComponent
+    public function setContent(StreamInterface|string $content): ViewComponent
     {
         $this->content = $content;
         return $this;

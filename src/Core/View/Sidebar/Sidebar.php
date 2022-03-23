@@ -3,10 +3,11 @@
 namespace Pars\Core\View\Sidebar;
 
 use Pars\Core\View\{EntrypointInterface, ViewComponent};
+use Psr\Http\Message\StreamInterface;
 
 class Sidebar extends ViewComponent implements EntrypointInterface
 {
-    protected string $sideContent = '';
+    protected StreamInterface $sideContent;
 
     public function init()
     {
@@ -19,16 +20,16 @@ class Sidebar extends ViewComponent implements EntrypointInterface
         return __DIR__ . '/Sidebar.ts';
     }
 
-    public function getSideContent(): string
+    public function getSideContent(): StreamInterface
     {
         return $this->sideContent;
     }
 
     /**
-     * @param string $sideContent
+     * @param StreamInterface $sideContent
      * @return Sidebar
      */
-    public function setSideContent(string $sideContent): Sidebar
+    public function setSideContent(StreamInterface $sideContent): Sidebar
     {
         $this->sideContent = $sideContent;
         return $this;

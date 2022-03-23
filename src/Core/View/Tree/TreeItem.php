@@ -56,7 +56,7 @@ class TreeItem extends ViewComponent
 
     public function getEvent(): ?ViewEvent
     {
-        if ($this->getContent()) {
+        if ($this->hasItems()) {
             return null;
         }
         return parent::getEvent();
@@ -68,5 +68,10 @@ class TreeItem extends ViewComponent
             $this->tree = create($this->getTreeClass());
         }
         return $this->tree;
+    }
+
+    public function hasItems(): bool
+    {
+        return !empty($this->getContent());
     }
 }

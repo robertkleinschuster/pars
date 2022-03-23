@@ -1,9 +1,9 @@
 <?php
 /* @var \Pars\Core\View\Tree\TreeItem $this */
 ?>
-<li class="tree__item <?= $this->getContent() ? 'items' : ''?> ">
+<li class="tree__item <?= $this->hasItems() ? 'items' : ''?> ">
     <p class="tree__value" <?= $this->attr() ?>>
-        <?php if ($this->getContent()): ?>
+        <?php if ($this->hasItems()): ?>
             <svg class="icon">
                 <use href="/icons.svg#folder"/>
             </svg>

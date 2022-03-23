@@ -2,48 +2,52 @@
 
 namespace Pars\Core\Http\Stream;
 
-use Closure;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
+use SplQueue;
 
 use function headers_sent;
 use function ob_get_clean;
 use function ob_start;
 
-class ClosureStream implements StreamInterface
+class QueueStream implements StreamInterface
 {
-    protected Closure $closure;
-    protected ?object $context;
+    /**
+     * @var iterable<StreamInterface>&SplQueue<StreamInterface>
+     */
+    protected SplQueue $queue;
 
-    public function __construct(Closure $closure, object $context = null)
+    public function __construct()
     {
-        $this->closure = $closure;
-        $this->context = $context;
+        $this->queue = new SplQueue();
+    }
+
+    public function push(StreamInterface $stream): self
+    {
+        $this->queue->push($stream);
+        return $this;
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->queue->isEmpty();
     }
 
     public function __toString()
     {
         if (headers_sent()) {
-            echo $this->closure->call($this->getContext());
-            flush();
+            foreach ($this->queue as $stream) {
+                echo $stream;
+                flush();
+            }
             return '';
         } else {
             ob_start();
-            echo $this->closure->call($this->getContext());
+            foreach ($this->queue as $stream) {
+                echo $stream;
+            }
             return ob_get_clean();
         }
-    }
-
-    private function getContext(): object
-    {
-        return $this->context ?? $this;
-    }
-
-    public function getContents()
-    {
-        ob_start();
-        echo $this->__toString();
-        return ob_get_clean();
     }
 
     public function close()
@@ -62,17 +66,17 @@ class ClosureStream implements StreamInterface
 
     public function tell()
     {
-        return 0;
+        return $this->queue->key();
     }
 
     public function eof()
     {
-        return false;
+        return $this->queue->valid();
     }
 
     public function isSeekable()
     {
-        return false;
+        return true;
     }
 
     public function seek($offset, $whence = SEEK_SET)
@@ -82,7 +86,7 @@ class ClosureStream implements StreamInterface
 
     public function rewind()
     {
-        throw new RuntimeException('Unsupported');
+        $this->seek(0);
     }
 
     public function isWritable()
@@ -103,6 +107,13 @@ class ClosureStream implements StreamInterface
     public function read($length)
     {
         throw new RuntimeException('Not readable');
+    }
+
+    public function getContents()
+    {
+        ob_start();
+        echo $this->__toString();
+        return ob_get_clean();
     }
 
     public function getMetadata($key = null)
