@@ -18,7 +18,7 @@ class WebApplicationTest extends TestCase
         /* @var MockSapiEmitter $emitter */
         $emitter = $container->get(SapiEmitter::class);
         $html = $emitter->getResponse()->getBody()->getContents();
-        $tidy = tidy_parse_string($html);
+        $tidy = tidy_parse_string($html, ['drop-empty-elements'  => 'no']);
         $errors = tidy_error_count($tidy) + tidy_warning_count($tidy);
         $this->assertEquals(0, $errors, $tidy->errorBuffer ?? '');
     }

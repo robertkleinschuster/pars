@@ -21,12 +21,9 @@ if (!empty($this->header)): ?>
 <?php
 endif; ?>
 <?php
-ob_start();
-echo $this->main;
-$main = ob_get_clean();
-if (!empty($main)): ?>
+if (!empty($this->main)): ?>
     <main>
-        <?= $main ?>
+        <?= $this->main; ?>
     </main>
 <?php
 endif; ?>
