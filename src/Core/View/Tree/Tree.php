@@ -2,7 +2,7 @@
 
 namespace Pars\Core\View\Tree;
 
-use Pars\Core\View\{EntrypointInterface, ViewComponent, ViewRenderer};
+use Pars\Core\View\{EntrypointInterface, ViewComponent, ViewModel, ViewRenderer};
 
 class Tree extends ViewComponent implements EntrypointInterface
 {
@@ -52,6 +52,12 @@ class Tree extends ViewComponent implements EntrypointInterface
     public function addEntry(string $value, ...$params): TreeModel
     {
         return $this->getItem()->addEntry($value, ...$params);
+    }
+
+    public function setItemModel(ViewModel $model)
+    {
+        $this->item = $this->getItem()->withModel($model);
+        return $this;
     }
 
     public function getItem(): TreeItem

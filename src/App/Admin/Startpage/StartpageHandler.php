@@ -3,9 +3,11 @@
 namespace Pars\App\Admin\Startpage;
 
 use Pars\Core\Session\SessionTrait;
-use Pars\Core\View\Group\ViewGroupHandler;
+use Pars\Core\View\Detail\Detail;
+use Pars\Core\View\Editor\Editor;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Sidebar\Sidebar;
+use Pars\Core\View\Tree\DirectoryTreeModel;
 use Pars\Core\View\Tree\Tree;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
@@ -28,23 +30,32 @@ class StartpageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        #throw new \Exception('asdf');
-
         $request->getAttribute(Layout::class)->addTitle('startpage');
         $sidebar = new Sidebar();
 
         $tree = new Tree();
+        $dirModel = new DirectoryTreeModel();
+        $dirModel->setDirectory('userdata');
+        $tree = $tree->setItemModel($dirModel);
         $tree->setHeading('start');
-        $tree->getItem()->setEventLink(url('/:code'));
-        $tree->addEntry('asdf')->addEntry('123')->addEntry('321')->addEntry('bbb', 'overview/123');
-        $tree->addEntry('asdf', 'overview');
-        $tree->addEntry('asdf');
 
+        $tree->getItem()->setEventLink(url('/:file'));
         $sidebar->setSideContent(render($tree));
-        $routeGroup = new ViewGroupHandler();
-        $routeGroup->push($request->withUri($request->getUri()->withPath('/overview/detail')));
-        $routeGroup->push($request->withUri($request->getUri()->withPath('/overview')));
-        $sidebar->setContent($routeGroup->handle($request)->getBody());
+
+        $file = $request->getAttribute('file');
+        $file = str_replace('.', '', $file);
+        $dirModel->setCurrent($file);
+        if ($file && file_exists($file)) {
+            if ($request->getMethod() === 'PATCH') {
+                $content = $request->getBody()->getContents();
+                file_put_contents($file, $content);
+            }
+
+            $editor = new Editor();
+            $editor->setContent(file_get_contents($file));
+            $sidebar->setContent(render($editor));
+        }
+
         return response(render($sidebar));
     }
 }

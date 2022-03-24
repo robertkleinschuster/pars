@@ -1,7 +1,7 @@
 <?php
 /* @var \Pars\Core\View\Tree\TreeItem $this */
 ?>
-<li class="tree__item <?= $this->hasItems() ? 'items' : ''?> ">
+<li class="tree__item<?= $this->hasItems() ? ' items' : ''?><?= $this->getModel()->isOpen() ? ' open' : ''?>">
     <p class="tree__value" <?= $this->attr() ?>>
         <?php if ($this->hasItems()): ?>
             <svg class="icon">

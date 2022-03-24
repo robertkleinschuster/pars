@@ -202,14 +202,6 @@ class ViewComponent
         return $this->getModel()->get($key);
     }
 
-    public function __get(string $name)
-    {
-        if ($name === 'attr') {
-            return $this->attr();
-        }
-        return null;
-    }
-
     public function setEventWindow(string $uri, string $title): ViewEvent
     {
         $this->setEvent(ViewEvent::window($uri, $title));

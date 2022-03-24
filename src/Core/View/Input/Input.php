@@ -24,4 +24,34 @@ class Input extends ViewComponent
         $attributes[] = "value='{$this->getValue($this->key)}'";
         return $result . ' ' . implode(' ', $attributes);
     }
+
+    /**
+     * @param string $type
+     * @return Input
+     */
+    public function setType(string $type): Input
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @return Input
+     */
+    public function setKey(string $key): Input
+    {
+        $this->key = $key;
+        return $this;
+    }
+
+    /**
+     * @param string $label
+     * @return Input
+     */
+    public function setLabel(string $label): Input
+    {
+        $this->label = $label;
+        return $this;
+    }
 }

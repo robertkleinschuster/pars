@@ -29,9 +29,7 @@ class AdminApplication extends WebApplication
         #throw new \Exception('asdf');
         $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
-        $this->route('/:entity', $this->getContainer()->get(OverviewHandler::class));
-        $this->route('/:entity/:id', $this->getContainer()->get(DetailHandler::class));
-        $this->route('/login', $this->getContainer()->get(LoginHandler::class));
+        $this->route('/:file+', $this->getContainer()->get(StartpageHandler::class));
     }
 
     public function override(ContainerResolver $resolver)

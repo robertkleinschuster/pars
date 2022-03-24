@@ -61,6 +61,17 @@ class Route
             return $request->withAttribute(Route::class, $this);
         }
 
+        if (str_ends_with($this->route, '+')) {
+            $explodedRoute = explode('/', $this->route);
+            $attributeName = ltrim(rtrim(array_pop($explodedRoute), '+'), ':');
+            $explodedPath = explode('/', $path);
+            foreach ($explodedRoute as $key => $part) {
+                unset($explodedPath[$key]);
+            }
+            $request = $request->withAttribute($attributeName, implode('/', $explodedPath));
+            return $request->withAttribute(Route::class, $this);
+        }
+
         $pattern = "@^" . preg_replace(
             '/\\\:[a-zA-Z0-9\_\-]+/',
             '([a-zA-Z0-9\-\_]+)',

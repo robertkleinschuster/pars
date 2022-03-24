@@ -92,7 +92,7 @@ class ViewRenderer
     private function renderList(ViewComponent $component): QueueStream
     {
         $queueStream = new QueueStream();
-        foreach ($component->getModel()->getList() as $model) {
+        foreach ($component->getModel()->getIterator() as $model) {
             $queueStream->push($this->renderComponent($component->withModel($model)));
         }
         return $queueStream;

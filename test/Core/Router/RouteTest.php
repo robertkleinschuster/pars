@@ -29,4 +29,15 @@ class RouteTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ServerRequestInterface::class, $result);
         $this->assertEquals('asdf', $result->getAttribute('bar'));
     }
+
+    public function testMatchingWithPlaceholdersContinuous()
+    {
+        $mockHandler = new MockHandler();
+        $route = new Route($mockHandler, '/foo/b/:bar+');
+        $request = new ServerRequest();
+        $request = $request->withUri(new Uri('/foo/b/asdf/123/123'));
+        $result = $route->match($request);
+        $this->assertInstanceOf(ServerRequestInterface::class, $result);
+        $this->assertEquals('asdf/123/123', $result->getAttribute('bar'));
+    }
 }
