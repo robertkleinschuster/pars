@@ -6,7 +6,8 @@ use Pars\Core\View\ViewModel;
 
 class TreeModel extends ViewModel
 {
-    protected bool $open = false;
+    private bool $open = false;
+    private bool $active = false;
 
     public function addEntry(string $value, string $code = ''): static
     {
@@ -32,6 +33,24 @@ class TreeModel extends ViewModel
     public function setOpen(bool $open): TreeModel
     {
         $this->open = $open;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     * @return TreeModel
+     */
+    public function setActive(bool $active): TreeModel
+    {
+        $this->active = $active;
         return $this;
     }
 }

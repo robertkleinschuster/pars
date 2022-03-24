@@ -40,12 +40,17 @@ class StartpageHandler implements RequestHandlerInterface
         $tree->setHeading('start');
 
         $tree->getItem()->setEventLink(url('/:file'));
-        $sidebar->setSideContent(render($tree));
+
 
         $file = $request->getAttribute('file');
         $file = str_replace('.', '', $file);
+
         $dirModel->setCurrent($file);
+
+        $sidebar->setSideContent(render($tree));
+
         if ($file && file_exists($file)) {
+
             if ($request->getMethod() === 'PATCH') {
                 $content = $request->getBody()->getContents();
                 file_put_contents($file, $content);

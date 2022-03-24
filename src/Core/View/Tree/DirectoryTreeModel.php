@@ -46,12 +46,13 @@ class DirectoryTreeModel extends TreeModel
         foreach (glob("{$this->directory}/*") as $item) {
             $filename  = basename($item);
             $child = clone $this;
-            #$child->setCurrent($this->current);
             $child->setValue($filename);
             if (is_dir($item)) {
+                $child->setOpen(isset($this->current) && str_starts_with($this->current, "$item/"));
                 $child->setDirectory($item);
             } else {
                 $child->file = $item;
+                $child->setActive(isset($this->current) && $this->current === $item);
                 unset($child->directory);
             }
             yield $child;
@@ -63,12 +64,6 @@ class DirectoryTreeModel extends TreeModel
     {
         return isset($this->directory);
     }
-
-    public function isOpen(): bool
-    {
-        return parent::isOpen();
-    }
-
 
     /**
      * @param string $current

@@ -72,8 +72,8 @@
     transition: .1s background-color;
   }
 
+  &__value.active,
   &__value:hover {
     background: #ddd;
   }
-
 }
