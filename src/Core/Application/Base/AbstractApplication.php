@@ -2,11 +2,11 @@
 
 namespace Pars\Core\Application\Base;
 
+use Pars\Core\Http\Header\CacheControlMiddleware;
 use Pars\Core\{Application\ApplicationContainer,
     Config\Config,
     Container\ContainerResolver,
     Error\ErrorMiddleware,
-    Http\Header\CacheControlMiddleware,
     Http\HttpFactory,
     Pipeline\MiddlewarePipeline,
     Router\RequestRouter};

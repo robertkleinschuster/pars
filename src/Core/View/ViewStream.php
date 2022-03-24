@@ -8,6 +8,9 @@ use Throwable;
 
 class ViewStream extends ClosureStream
 {
+    /**
+     * @param ViewComponent $component
+     */
     public function __construct(ViewComponent $component)
     {
         parent::__construct($this->buildClosure($component), $component);

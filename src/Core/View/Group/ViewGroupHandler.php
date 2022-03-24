@@ -2,10 +2,9 @@
 
 namespace Pars\Core\View\Group;
 
-use Pars\Core\Container\Container;
 use Pars\Core\Http\Stream\QueueStream;
 use Pars\Core\Router\RequestRouter;
-use Psr\Http\Message\{ResponseFactoryInterface, ResponseInterface, ServerRequestInterface, StreamInterface};
+use Psr\Http\Message\{ResponseFactoryInterface, ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 use SplQueue;
 
@@ -23,10 +22,14 @@ class ViewGroupHandler implements RequestHandlerInterface
 
     /**
      * @param ServerRequestInterface $request
+     * @param string|null $path
      * @return $this
      */
-    public function push(ServerRequestInterface $request): self
+    public function push(ServerRequestInterface $request, string $path = null): self
     {
+        if ($path) {
+            $request = $request->withUri($request->getUri()->withPath($path));
+        }
         $this->requests->push($request);
         return $this;
     }

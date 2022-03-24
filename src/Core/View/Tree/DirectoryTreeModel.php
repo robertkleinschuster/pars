@@ -46,7 +46,7 @@ class DirectoryTreeModel extends TreeModel
         foreach (glob("{$this->directory}/*") as $item) {
             $filename  = basename($item);
             $child = clone $this;
-            $child->setValue($filename);
+            $child->setValue(urldecode($filename));
             if (is_dir($item)) {
                 $child->setOpen(isset($this->current) && str_starts_with($this->current, "$item/"));
                 $child->setDirectory($item);

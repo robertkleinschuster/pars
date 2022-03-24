@@ -3,12 +3,15 @@
 namespace Pars\Core\View\Tree;
 
 use Pars\Core\View\{EntrypointInterface, ViewComponent, ViewModel, ViewRenderer};
+use Psr\Http\Message\StreamInterface;
 
 class Tree extends ViewComponent implements EntrypointInterface
 {
     protected TreeItem $item;
     protected string $itemClass = TreeItem::class;
     protected string $heading = '';
+    protected string $baseUri = '';
+    protected ?StreamInterface $toolbar = null;
 
     public function init()
     {
@@ -85,4 +88,47 @@ class Tree extends ViewComponent implements EntrypointInterface
         $this->heading = $heading;
         return $this;
     }
+
+    /**
+     * @param StreamInterface|null $toolbar
+     * @return Tree
+     */
+    public function setToolbar(?StreamInterface $toolbar): Tree
+    {
+        $this->toolbar = $toolbar;
+        return $this;
+    }
+
+    /**
+     * @return StreamInterface|null
+     */
+    public function getToolbar(): ?StreamInterface
+    {
+        return $this->toolbar;
+    }
+
+    public function isRoot(): bool
+    {
+        return !$this->parent instanceof TreeItem;
+    }
+
+    protected function attr(): string
+    {
+        $result = parent::attr();
+        if ($this->baseUri) {
+            $result .= " data-base-uri='{$this->baseUri}'";
+        }
+        return $result;
+    }
+
+    /**
+     * @param string $baseUri
+     * @return Tree
+     */
+    public function setBaseUri(string $baseUri): Tree
+    {
+        $this->baseUri = $baseUri;
+        return $this;
+    }
 }
+

@@ -49,7 +49,7 @@
     padding-left: 1.5rem;
   }
 
-  &__item.items:before {
+  &__item.items > .tree__value:before {
     content: '';
     position: absolute;
     width: 8px;
@@ -62,7 +62,7 @@
     transition: .2s transform ease-in-out;
   }
 
-  &__item.items.open:before {
+  &__item.items.open > .tree__value:before {
     transform: rotate(135deg);
   }
 
@@ -75,5 +75,29 @@
   &__value.active,
   &__value:hover {
     background: #ddd;
+  }
+
+  &__search {
+    display: flex;
+
+    input {
+      flex-grow: 1;
+      padding: .5rem;
+      background: #b0b0b0;
+      outline: none;
+      border: none;
+      border-radius: 0;
+    }
+
+    input:focus {
+      background: #c9c8c8;
+    }
+
+    button {
+      border: 0;
+      background: #444444;
+      color: #fff;
+      padding: 0 1rem;
+    }
   }
 }

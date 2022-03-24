@@ -35,6 +35,8 @@ export default class ViewEventHandler {
     const options: RequestInit = {}
 
     options.headers = new Headers()
+    options.method = viewEvent.method
+
     options.headers.set('inject', 'true')
 
     if (viewEvent.target !== '') {
@@ -47,10 +49,6 @@ export default class ViewEventHandler {
 
     if (viewEvent.url !== '') {
       options.headers.set('url', viewEvent.url)
-    }
-
-    if (viewEvent.target === 'action') {
-      options.method = 'post'
     }
 
     if (eventTarget !== null) {

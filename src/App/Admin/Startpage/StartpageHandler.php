@@ -3,8 +3,7 @@
 namespace Pars\App\Admin\Startpage;
 
 use Pars\Core\Session\SessionTrait;
-use Pars\Core\View\Detail\Detail;
-use Pars\Core\View\Editor\Editor;
+use Pars\Core\View\Group\ViewGroupHandler;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Sidebar\Sidebar;
 use Pars\Core\View\Tree\DirectoryTreeModel;
@@ -34,33 +33,22 @@ class StartpageHandler implements RequestHandlerInterface
         $sidebar = new Sidebar();
 
         $tree = new Tree();
+        $tree->setBaseUri(url('/data/files/'));
         $dirModel = new DirectoryTreeModel();
-        $dirModel->setDirectory('userdata');
+        $dirModel->setDirectory('data/files');
         $tree = $tree->setItemModel($dirModel);
         $tree->setHeading('start');
-
         $tree->getItem()->setEventLink(url('/:file'));
+        $file = $request->getAttribute('file', '');
 
-
-        $file = $request->getAttribute('file');
-        $file = str_replace('.', '', $file);
-
-        $dirModel->setCurrent($file);
-
-        $sidebar->setSideContent(render($tree));
-
-        if ($file && file_exists($file)) {
-
-            if ($request->getMethod() === 'PATCH') {
-                $content = $request->getBody()->getContents();
-                file_put_contents($file, $content);
-            }
-
-            $editor = new Editor();
-            $editor->setContent(file_get_contents($file));
-            $sidebar->setContent(render($editor));
+        if (str_starts_with($file, 'data/files')) {
+            $dirModel->setCurrent($file);
+            $viewGroup = new ViewGroupHandler();
+            $viewGroup->push($request, "/editor/$file");
+            $sidebar->setContent($viewGroup->handle($request)->getBody());
         }
 
+        $sidebar->setSideContent(render($tree));
         return response(render($sidebar));
     }
 }

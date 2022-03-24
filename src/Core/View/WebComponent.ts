@@ -17,10 +17,13 @@ export default class {
 
   public static defineExtended (component: typeof ViewComponent, extend: typeof HTMLElement) {
     const name = component.name.toLowerCase()
-    const tag = extend.name
+    let tag = extend.name
       .replace('HTML', '')
       .replace('Element', '')
       .toLowerCase()
+    if (extend === HTMLUListElement) {
+      tag = 'ul'
+    }
     customElements.define(`core-${name}`, class extends extend {
       constructor () {
         super()

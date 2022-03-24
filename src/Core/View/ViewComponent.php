@@ -4,6 +4,7 @@ namespace Pars\Core\View;
 
 use Psr\Http\Message\StreamInterface;
 use SplDoublyLinkedList;
+
 use function implode;
 
 class ViewComponent

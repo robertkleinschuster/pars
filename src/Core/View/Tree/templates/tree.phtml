@@ -1,7 +1,18 @@
 <?php
-/* @var \Pars\Core\View\Tree\Tree $this */
+/* @var Pars\Core\View\Tree\Tree $this */
+
 ?>
-<ul is="core-tree" class="tree">
-    <li class="tree__heading"><?= $this->getHeading() ?></li>
+<ul is="core-tree" class="tree" <?= $this->attr() ?>>
+    <?php if ($this->getHeading()): ?>
+        <li class="tree__heading"><?= $this->getHeading() ?></li>
+    <?php endif; ?>
+    <?php if ($this->getToolbar()): ?>
+        <li class="tree__toolbar"><?= $this->getToolbar() ?></li>
+    <?php endif; ?>
+    <?php if ($this->isRoot()): ?>
+        <li class="tree__search">
+            <input type="text">
+        </li>
+    <?php endif; ?>
     <?= $this->getContent() ?>
 </ul>

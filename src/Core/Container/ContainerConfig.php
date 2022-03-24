@@ -16,6 +16,8 @@ use Pars\Core\Pipeline\MiddlewarePipeline;
 use Pars\Core\Pipeline\MiddlewarePipelineFactory;
 use Pars\Core\Router\RequestRouter;
 use Pars\Core\Router\RequestRouterFactory;
+use Pars\Core\View\Editor\FileEditorHandler;
+use Pars\Core\View\Editor\FileEditorHandlerFactory;
 use Psr\Http\Message\{RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
@@ -68,7 +70,8 @@ class ContainerConfig
             MiddlewarePipeline::class => MiddlewarePipelineFactory::class,
             BasePathMiddleware::class => BasePathMiddlewareFactory::class,
             NotFoundHandler::class => NotFoundHandlerFactory::class,
-            ErrorMiddleware::class => ErrorMiddlewareFactory::class
+            ErrorMiddleware::class => ErrorMiddlewareFactory::class,
+            FileEditorHandler::class => FileEditorHandlerFactory::class,
         ];
     }
 

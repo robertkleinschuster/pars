@@ -4,3 +4,5 @@ parameters:
         - src
     bootstrapFiles:
         - test/bootstrap.php
+    excludes_analyse:
+        - **/*.phtml

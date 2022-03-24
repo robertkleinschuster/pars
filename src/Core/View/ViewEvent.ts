@@ -10,6 +10,7 @@ export default class {
   public target: string
   public url: string
   public title: string = ''
+  public method: string = 'GET'
 
   constructor (data: object = {}) {
     for (const [key, value] of Object.entries(data)) {

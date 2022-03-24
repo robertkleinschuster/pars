@@ -35,6 +35,9 @@ class RequestRouter implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         foreach ($this->routes as $route) {
+            if ($route->isMatched()) {
+                continue;
+            }
             $matchedRequest = $route->match($request);
             if ($matchedRequest) {
                 return $route->handler->handle($matchedRequest->withAttribute(RequestRouter::class, $this));

@@ -12,6 +12,7 @@ use Pars\Core\Container\ContainerResolver;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
+use Pars\Core\View\Editor\FileEditorHandler;
 use Pars\Core\View\Entrypoints;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Navigation\Navigation;
@@ -26,10 +27,10 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
-        #throw new \Exception('asdf');
-        $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/editor/:file+', $this->getContainer()->get(FileEditorHandler::class));
         $this->route('/:file+', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
     }
 
     public function override(ContainerResolver $resolver)

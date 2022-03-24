@@ -18,6 +18,7 @@ class Route
     public RequestHandlerInterface $handler;
     public string $route;
     public ?string $method = null;
+    private bool $matched = false;
 
     public static function findKeys(string $route)
     {
@@ -49,6 +50,15 @@ class Route
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isMatched(): bool
+    {
+        return $this->matched;
+    }
+
+
     public function match(ServerRequestInterface $request): ServerRequestInterface|bool
     {
         if ($this->method && $this->method !== $request->getMethod()) {
@@ -58,18 +68,22 @@ class Route
         $path = rtrim($path, '/');
 
         if ($path === rtrim($this->route, '/')) {
+            $this->matched = true;
             return $request->withAttribute(Route::class, $this);
         }
 
         if (str_ends_with($this->route, '+')) {
             $explodedRoute = explode('/', $this->route);
             $attributeName = ltrim(rtrim(array_pop($explodedRoute), '+'), ':');
-            $explodedPath = explode('/', $path);
-            foreach ($explodedRoute as $key => $part) {
-                unset($explodedPath[$key]);
+            if (str_starts_with($path, implode('/', $explodedRoute))) {
+                $explodedPath = explode('/', $path);
+                foreach ($explodedRoute as $key => $part) {
+                    unset($explodedPath[$key]);
+                }
+                $request = $request->withAttribute($attributeName, implode('/', $explodedPath));
+                $this->matched = true;
+                return $request->withAttribute(Route::class, $this);
             }
-            $request = $request->withAttribute($attributeName, implode('/', $explodedPath));
-            return $request->withAttribute(Route::class, $this);
         }
 
         $pattern = "@^" . preg_replace(
@@ -96,6 +110,7 @@ class Route
             $request = $request->withAttribute($key, $value);
         }
         if ($result) {
+            $this->matched = true;
             return $request->withAttribute(Route::class, $this);
         }
         return false;
