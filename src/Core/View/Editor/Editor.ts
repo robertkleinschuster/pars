@@ -15,7 +15,7 @@ class Editor extends ViewComponent {
   protected onBlur () {
     fetch(window.location.href, {
       method: 'PATCH',
-      body: this.content.innerHTML
+      body: this.content.innerHTML.trim()
     });
   }
 }
