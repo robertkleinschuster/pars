@@ -76,28 +76,4 @@
   &__value:hover {
     background: #ddd;
   }
-
-  &__search {
-    display: flex;
-
-    input {
-      flex-grow: 1;
-      padding: .5rem;
-      background: #b0b0b0;
-      outline: none;
-      border: none;
-      border-radius: 0;
-    }
-
-    input:focus {
-      background: #c9c8c8;
-    }
-
-    button {
-      border: 0;
-      background: #444444;
-      color: #fff;
-      padding: 0 1rem;
-    }
-  }
 }

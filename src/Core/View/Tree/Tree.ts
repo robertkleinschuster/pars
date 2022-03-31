@@ -1,78 +1,41 @@
 import './Tree.scss'
 import ViewComponent from '../ViewComponent'
-import WebComponent from '../WebComponent'
-import ViewEvent from '../ViewEvent'
+import WebComponent, { ComponentElement } from '../WebComponent'
+import Search from '../Search/Search'
+import { Similar } from '../Search/SearchComparator'
 
 class Tree extends ViewComponent {
-  private search: HTMLInputElement
+  private search: Search
 
   protected init (): void {
     super.init()
-    this.search = this.element.querySelector('.tree__search input') as HTMLInputElement
-    if (null !== this.search) {
-      this.search.addEventListener('keyup', this.onSearch.bind(this))
-      this.search.addEventListener('keydown', this.onSearch.bind(this))
+    const searchElement = this.element.querySelector('.search') as ComponentElement
+
+    if (null !== searchElement) {
+      this.search = searchElement.component as Search
+      this.search.elements = this.element.querySelectorAll('.tree__value')
+      this.search.onSearch = this.onSearch.bind(this)
     }
-    this.element.querySelectorAll('.tree__item').forEach(item => {
-      item.addEventListener('click', event => {
-        const state = (event.currentTarget as HTMLElement).classList.toggle('open')
-        if (!state) {
-          (event.currentTarget as HTMLElement).querySelectorAll('.tree__item').forEach(element => {
-            element.classList.remove('open')
-          })
-        }
-        event.stopImmediatePropagation()
-      })
-    })
+    this.element.onclick = this.onClick.bind(this)
   }
 
-  protected onSearch () {
-    let found = false
-    this.element.querySelectorAll('.tree__value').forEach((item: HTMLElement) => {
-      this.togglePath(item, false)
-      item.classList.remove('hidden')
-      if ('' !== this.search.value.trim()) {
-        if (item.innerText.includes(this.search.value)
-          || undefined !== item.dataset.url && item.dataset.url.includes(this.search.value)) {
-          this.togglePath(item, true)
-          found = true
-        } else {
-          item.classList.add('hidden')
-        }
-      }
-    })
-    if ('' === this.search.value.trim()) {
-      found = true
-      const active = this.element.querySelector('.tree__value.active') as HTMLElement
-      if (null !== active) {
-        this.togglePath(active, true)
-        active.classList.remove('hidden')
-      }
-    }
-    const searchWrap = this.element.querySelector('.tree__search') as HTMLElement
-    if (found) {
-      const createButton = searchWrap.querySelector('button')
-      if (createButton) {
-        createButton.remove()
-      }
-    } else {
-      if (!searchWrap.querySelector('button')) {
-        const createButton = document.createElement('button')
-        createButton.innerText = '+'
-        searchWrap.append(createButton)
-        createButton.addEventListener('click', this.create.bind(this))
+  private onClick (event: Event) {
+    event.stopImmediatePropagation()
+    const target = event.target as HTMLElement
+    if (target.closest('.tree__value')) {
+      const itemElement = target.parentElement as HTMLElement
+      const state = itemElement.classList.toggle('open')
+      if (!state) {
+        this.togglePath(itemElement, false)
       }
     }
   }
 
-  protected create () {
-    if (undefined !== this.element.dataset.baseUri) {
-      const viewEvent = new ViewEvent()
-      viewEvent.url = this.element.dataset.baseUri + this.search.value
-      viewEvent.target = ViewEvent.TARGET_SELF
-      viewEvent.method = 'POST'
-      this.eventHandler.trigger(viewEvent)
-    }
+  private onSearch () {
+    const foundElements = this.search.search(new Similar())
+    foundElements.forEach(this.togglePath.bind(this))
+    this.element.querySelectorAll('.tree__value')
+      .forEach((elem: HTMLElement) => elem.classList.toggle('hidden', !foundElements.includes(elem)))
   }
 
   protected togglePath (element: HTMLElement, force = false) {

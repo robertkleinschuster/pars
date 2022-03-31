@@ -9,10 +9,5 @@
     <?php if ($this->getToolbar()): ?>
         <li class="tree__toolbar"><?= $this->getToolbar() ?></li>
     <?php endif; ?>
-    <?php if ($this->isRoot()): ?>
-        <li class="tree__search">
-            <input type="text">
-        </li>
-    <?php endif; ?>
     <?= $this->getContent() ?>
 </ul>

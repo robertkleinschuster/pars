@@ -24,11 +24,25 @@ export default class {
     if (extend === HTMLUListElement) {
       tag = 'ul'
     }
-    customElements.define(`core-${name}`, class extends extend {
+    customElements.define(`core-${name}`, class extends extend implements ComponentElement{
+      private _component: ViewComponent;
       constructor () {
         super()
-        new component(this)
+        this._component = new component(this)
+      }
+
+      get component (): ViewComponent {
+        return this._component
+      }
+
+      set component (value: ViewComponent) {
+        this._component = value
       }
     }, { extends: tag })
   }
+}
+
+export interface ComponentElement extends HTMLElement
+{
+  get component (): ViewComponent;
 }

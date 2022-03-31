@@ -131,4 +131,3 @@ class Tree extends ViewComponent implements EntrypointInterface
         return $this;
     }
 }
-
