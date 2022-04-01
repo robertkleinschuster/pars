@@ -22,12 +22,16 @@ function get(string $class, ...$params)
     return $container->get($class, ...$params);
 }
 
-function url(string $path = '/', $params = []): UriBuilder
+function url(string $path = null, $params = []): UriBuilder
 {
     $container = Container::getInstance();
     /* @var UriBuilder $builder */
     $builder = $container->get(UriBuilder::class);
-    return $builder->withPath($path)->withParams($params);
+    if ($path) {
+        return $builder->withPath($path)->withParams($params);
+    } else {
+        return $builder->withCurrentUri();
+    }
 }
 
 function __(string $code, array $placeholder = []): string

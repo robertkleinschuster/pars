@@ -1,4 +1,4 @@
-import "./Search.scss"
+import './Search.scss'
 import ViewComponent from '../ViewComponent'
 import WebComponent from '../WebComponent'
 import { SearchComparator } from './SearchComparator'

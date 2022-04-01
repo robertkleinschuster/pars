@@ -45,13 +45,17 @@ class StartpageHandler implements RequestHandlerInterface
         $file = $request->getAttribute('file', '');
         $sidebar = new Sidebar();
 
+        $viewGroup = new ViewGroupHandler();
+
         if (str_starts_with($file, 'data/files')) {
             $dirModel->setCurrent($file);
-            $viewGroup = new ViewGroupHandler();
             $viewGroup->push($request, "/editor/$file");
-            $sidebar->setContent($viewGroup->handle($request)->getBody());
         }
 
+        $viewGroup->push($request, "/overview");
+
+
+        $sidebar->setContent($viewGroup->handle($request)->getBody());
         $sidebar->setSideContent($this->render($tree));
         return response($this->render($sidebar));
     }

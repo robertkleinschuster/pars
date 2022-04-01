@@ -3,6 +3,7 @@
 namespace Pars\Core\Router;
 
 use Pars\Core\Container\ContainerFactoryInterface;
+use Pars\Core\Http\Uri\UriBuilder;
 use Psr\Container\ContainerInterface;
 
 class RequestRouterFactory implements ContainerFactoryInterface
@@ -19,6 +20,9 @@ class RequestRouterFactory implements ContainerFactoryInterface
 
     public function create(string $id): RequestRouter
     {
-        return new RequestRouter($this->container->get(RouteFactory::class));
+        return new RequestRouter(
+            $this->container->get(RouteFactory::class),
+            $this->container->get(UriBuilder::class)
+        );
     }
 }

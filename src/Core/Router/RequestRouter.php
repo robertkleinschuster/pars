@@ -2,6 +2,7 @@
 
 namespace Pars\Core\Router;
 
+use Pars\Core\Http\Uri\UriBuilder;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 use SplQueue;
@@ -13,11 +14,13 @@ class RequestRouter implements MiddlewareInterface
      */
     protected SplQueue $routes;
     protected RouteFactory $routeFactory;
+    private UriBuilder $uriBuilder;
 
-    public function __construct(RouteFactory $routeFactory)
+    public function __construct(RouteFactory $routeFactory, UriBuilder $uriBuilder)
     {
         $this->routes = new SplQueue();
         $this->routeFactory = $routeFactory;
+        $this->uriBuilder = $uriBuilder;
     }
 
     public function __clone()
@@ -40,6 +43,7 @@ class RequestRouter implements MiddlewareInterface
             }
             $matchedRequest = $route->match($request);
             if ($matchedRequest) {
+                $this->uriBuilder->setCurrentUri($matchedRequest->getUri());
                 return $route->handler->handle($matchedRequest->withAttribute(RequestRouter::class, $this));
             }
         }

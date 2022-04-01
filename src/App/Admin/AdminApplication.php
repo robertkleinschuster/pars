@@ -28,6 +28,7 @@ class AdminApplication extends WebApplication
     {
         parent::init();
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/overview', $this->getContainer()->get(OverviewHandler::class));
         $this->route('/editor/:file+', $this->getContainer()->get(FileEditorHandler::class));
         $this->route('/:file+', $this->getContainer()->get(StartpageHandler::class));
         $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
@@ -50,7 +51,7 @@ class AdminApplication extends WebApplication
     protected function renderHeader(): StreamInterface
     {
         $navigation = new Navigation();
-        $navigation->addEntry(__('admin.navigation.startpage'), url())
+        $navigation->addEntry(__('admin.navigation.startpage'), url('/'))
             ->addEntry('startpage subitem', url('/start-subitem'));
         $navigation->addEntry(__('admin.navigation.content'), url('/content'));
         $system = $navigation->addEntry(__('admin.navigation.system'), url('/system'));

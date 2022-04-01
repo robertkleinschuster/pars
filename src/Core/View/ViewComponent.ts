@@ -5,7 +5,7 @@ import ViewEvent from './ViewEvent'
 export default class ViewComponent {
   public element: HTMLElement
   public eventHandler: ViewEventHandler
-
+  private id = '';
   constructor (element: HTMLElement) {
     this.element = element
     this.eventHandler = new ViewEventHandler(this)
@@ -14,6 +14,10 @@ export default class ViewComponent {
 
   protected init (): void {
     this.eventHandler.init()
+    const idElement = this.element.closest('[id]');
+    if (idElement) {
+      this.id = idElement.id;
+    }
   }
 
   public handleViewEvent (viewEvent: ViewEvent, responseHtml: string): void {
@@ -48,6 +52,19 @@ export default class ViewComponent {
     const winbox = this.element.closest('.winbox')
     const parser = new DOMParser()
     const dom = parser.parseFromString(html, 'text/html')
+    if ('' !== this.id) {
+      const main = this.element.closest(`#${this.id}`)
+      const newMain = dom.body.querySelector(`#${this.id}`)
+      if ((main != null) && (newMain != null)) {
+        main.replaceWith(newMain)
+      }
+    } else {
+      const main = this.element.closest('main')
+      const newMain = dom.body.querySelector('main')
+      if ((main != null) && (newMain != null)) {
+        main.replaceWith(newMain)
+      }
+    }
     const main = this.element.closest('main')
     const newMain = dom.body.querySelector('main')
     if ((main != null) && (newMain != null)) {

@@ -1,8 +1,9 @@
 <?php
+
 namespace Pars\Core\View\Overview;
 
 /* @var $this Overview */ ?>
-<div is="core-overview" class="overview">
+<div id="<?= $this->getId() ?>" is="core-overview" class="overview">
     <h1><?= $this->getHeading() ?></h1>
     <?= $this->getToolbar() ?>
     <table class="overview__table">

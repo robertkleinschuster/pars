@@ -8,6 +8,8 @@ class UriBuilder
 {
     private UriInterface $baseUri;
     private UriInterface $uri;
+    private UriInterface $currentUri;
+
     private UriFactoryInterface $factory;
 
     final public function __construct(UriFactoryInterface $factory)
@@ -15,12 +17,24 @@ class UriBuilder
         $this->factory = $factory;
         $this->baseUri = $this->factory->createUri();
         $this->uri = $this->factory->createUri();
+        $this->currentUri = $this->factory->createUri();
     }
 
     public function addBaseUri(UriInterface $uri): UriBuilder
     {
         $this->baseUri = $this->merged($this->baseUri, $uri);
         return $this;
+    }
+
+    public function setCurrentUri(UriInterface $uri): UriBuilder
+    {
+        $this->currentUri = clone $uri;
+        return $this;
+    }
+
+    public function withCurrentUri(): UriBuilder
+    {
+        return $this->withUri($this->currentUri);
     }
 
     public function withUri(UriInterface $uri): UriBuilder

@@ -73,6 +73,17 @@ class ViewComponent
         return $this;
     }
 
+    public function getId(): string
+    {
+        static $id = null;
+        $current = ltrim(str_replace(['/', '.', '?', '&', '#'], '-', url()), '-');
+        if ($id !== $current) {
+            $id = $current;
+            return $current;
+        }
+        return '';
+    }
+
     public function onRender(ViewRenderer $renderer)
     {
     }
@@ -215,9 +226,9 @@ class ViewComponent
         return $this->getEvent();
     }
 
-    public function setEventAction(string $uri, string $title = ''): ViewEvent
+    public function setEventAction(string $title = ''): ViewEvent
     {
-        $this->setEvent(ViewEvent::action($uri, $title));
+        $this->setEvent(ViewEvent::action($title));
         return $this->getEvent();
     }
 }
