@@ -16,7 +16,6 @@ export default class Search extends ViewComponent {
     this.button = this.element.querySelector('button') as HTMLButtonElement
     this.input.addEventListener('keyup', this.onInput.bind(this))
     this.input.addEventListener('keydown', this.onInput.bind(this))
-
   }
 
   set onSearch (value: (search: Search) => void) {
@@ -24,7 +23,7 @@ export default class Search extends ViewComponent {
   }
 
   private onInput () {
-    this._onSearch(this);
+    this._onSearch(this)
   }
 
   public search (comparator: SearchComparator) {

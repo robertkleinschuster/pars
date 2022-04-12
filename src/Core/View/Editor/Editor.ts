@@ -3,8 +3,7 @@ import ViewComponent from '../ViewComponent'
 import WebComponent from '../WebComponent'
 
 class Editor extends ViewComponent {
-
-  protected content: HTMLDivElement;
+  protected content: HTMLDivElement
 
   protected init () {
     super.init()
@@ -16,8 +15,8 @@ class Editor extends ViewComponent {
     fetch(window.location.href, {
       method: 'PUT',
       body: this.content.innerHTML.trim()
-    });
+    })
   }
 }
 
-WebComponent.define(Editor, HTMLDivElement);
+WebComponent.define(Editor, HTMLDivElement)

@@ -2,7 +2,7 @@ import ViewComponent from './ViewComponent'
 
 export default class {
   public static define (component: typeof ViewComponent, extend: typeof HTMLElement | null = null) {
-    if (extend) {
+    if (extend != null) {
       this.defineExtended(component, extend)
     } else {
       const name = component.name.toLowerCase()
@@ -24,8 +24,8 @@ export default class {
     if (extend === HTMLUListElement) {
       tag = 'ul'
     }
-    customElements.define(`core-${name}`, class extends extend implements ComponentElement{
-      private _component: ViewComponent;
+    customElements.define(`core-${name}`, class extends extend implements ComponentElement {
+      private _component: ViewComponent
       constructor () {
         super()
         this._component = new component(this)
@@ -42,7 +42,7 @@ export default class {
   }
 }
 
-export interface ComponentElement extends HTMLElement
-{
+export interface ComponentElement extends HTMLElement {
   get component (): ViewComponent;
+  set component (value: ViewComponent);
 }

@@ -1,5 +1,5 @@
 export interface SearchComparator {
-  compare (value: string, keyword: string): boolean;
+  compare: (value: string, keyword: string) => boolean
 }
 
 export class Includes implements SearchComparator {
@@ -12,12 +12,10 @@ export class Equals implements SearchComparator {
   compare (value: string, keyword: string): boolean {
     return value === keyword
   }
-
 }
 
 export class Similar implements SearchComparator {
   compare (value: string, keyword: string): boolean {
-
     const first = value.replace(/\s+/g, '')
     const second = keyword.replace(/\s+/g, '')
 
@@ -51,6 +49,6 @@ export class Similar implements SearchComparator {
 
     const similarity = (2.0 * intersectionSize) / (first.length + second.length - 2)
 
-    return similarity >= .5
+    return similarity >= 0.5
   }
 }

@@ -11,7 +11,7 @@ class Tree extends ViewComponent {
     super.init()
     const searchElement = this.element.querySelector('.search') as ComponentElement
 
-    if (null !== searchElement) {
+    if (searchElement !== null) {
       this.search = searchElement.component as Search
       this.search.elements = this.element.querySelectorAll('.tree__value')
       this.search.onSearch = this.onSearch.bind(this)
@@ -22,7 +22,7 @@ class Tree extends ViewComponent {
   private onClick (event: Event) {
     event.stopImmediatePropagation()
     const target = event.target as HTMLElement
-    if (target.closest('.tree__value')) {
+    if (target.closest('.tree__value') != null) {
       const itemElement = target.parentElement as HTMLElement
       const state = itemElement.classList.toggle('open')
       if (!state) {
@@ -39,9 +39,9 @@ class Tree extends ViewComponent {
   }
 
   protected togglePath (element: HTMLElement, force = false) {
-    if (element.parentElement) {
+    if (element.parentElement != null) {
       const item = element.parentElement.closest('.tree__item') as HTMLElement
-      if (null !== item) {
+      if (item !== null) {
         item.classList.toggle('open', force)
         this.togglePath(item, force)
       }
@@ -50,4 +50,3 @@ class Tree extends ViewComponent {
 }
 
 WebComponent.defineExtended(Tree, HTMLUListElement)
-
