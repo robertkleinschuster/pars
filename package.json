@@ -20,5 +20,6 @@
     "watch": "encore dev --watch",
     "build": "encore production --progress",
     "lint": "standard && ts-standard"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
