@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1.4-fpm AS pars_php
 
 RUN docker-php-source extract \
     && apt-get update \
@@ -8,7 +8,9 @@ RUN docker-php-source extract \
     && docker-php-ext-configure tidy \
     && docker-php-ext-install intl pdo_mysql tidy \
     && docker-php-ext-enable opcache intl pdo_mysql tidy \
-    && docker-php-source delete \
+    && docker-php-source delete
+
+WORKDIR /var/www
 
 CMD ["php-fpm"]
 

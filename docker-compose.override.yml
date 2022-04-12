@@ -4,18 +4,9 @@ services:
   php-fpm:
     build:
       context: ./docker/php-fpm-dev
-    volumes:
-      - .:/var/www
-      - ./docker/php-fpm-dev/php.ini:/usr/local/etc/php/php.ini
     expose:
       - 9000
       - 9003
-  composer:
-    image: composer:2.2.7
-    command: ["composer", "update", "--ignore-platform-reqs"]
-    working_dir: /app
-    volumes:
-      - .:/app
   yarn:
     image: node:14.19.0-alpine
     command: [ "sh", "/development.sh" ]
