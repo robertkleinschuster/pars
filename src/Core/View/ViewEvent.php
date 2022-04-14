@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View;
 
+use Pars\Core\Http\Uri\UriBuilder;
 use Pars\Core\Router\Route;
 
 use function url;
@@ -18,7 +19,7 @@ class ViewEvent
 
     public string $event = self::EVENT_CLICK;
     public string $target = self::TARGET_SELF;
-    public string $url = '';
+    public UriBuilder|string $url = '';
     public string $title = '';
 
     final public function __construct()
