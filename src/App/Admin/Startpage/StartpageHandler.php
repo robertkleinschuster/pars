@@ -39,7 +39,7 @@ class StartpageHandler implements RequestHandlerInterface
         $desktop->getIcon()->setEventAction();
 
         $toolbar = new Toolbar();
-        $toolbar->addButton('Neu');
+        $toolbar->addButton('Neu')->setEventWindow(url('/browser'), 'browser');
         $toolbar->addButton('Neu');
         $toolbar->addButton('Neu');
         $desktop->setToolbar($this->render($toolbar));
