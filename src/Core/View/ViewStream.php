@@ -22,7 +22,7 @@ class ViewStream extends ClosureStream
             try {
                 include $component->getTemplate();
             } catch (Throwable $exception) {
-                error($exception);
+                log_error($exception);
                 if (ini_get('display_errors')) {
                     echo "<pre 
 style='overflow: auto;margin: 1rem;padding: 1rem;background: #eeeeee;border: 1px solid #000;'>";

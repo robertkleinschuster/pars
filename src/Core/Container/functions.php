@@ -93,7 +93,12 @@ function logger(): LoggerInterface
     return $container->get(LoggerInterface::class);
 }
 
-function error($message): void
+function log_error($message): void
 {
     logger()->error($message);
+}
+
+function log_info($message): void
+{
+    logger()->info($message);
 }

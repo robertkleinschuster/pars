@@ -40,7 +40,7 @@ class AcceptHeader
                 $result = $mime->getCode() === $typeCode;
             }
         } catch (HttpException $exception) {
-            error($exception);
+            log_error($exception);
         }
         return $result;
     }

@@ -43,16 +43,20 @@ class DirectoryTreeModel extends TreeModel
 
     public function getIterator(): Traversable
     {
-        foreach (glob("{$this->directory}/*") as $item) {
+        foreach (glob("{$this->getDirectory()}/*") as $item) {
             $filename  = basename($item);
             $child = clone $this;
             $child->setValue(urldecode($filename));
             if (is_dir($item)) {
                 $child->setOpen(isset($this->current) && str_starts_with($this->current, "$item/"));
                 $child->setDirectory($item);
+                $child->setIcon('folder');
             } else {
                 $child->file = $item;
                 $child->setActive(isset($this->current) && $this->current === $item);
+                if (!$child->getIcon()) {
+                    $child->setIcon('file');
+                }
                 unset($child->directory);
             }
             yield $child;

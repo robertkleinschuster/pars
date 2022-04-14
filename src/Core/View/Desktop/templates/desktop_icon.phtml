@@ -3,5 +3,5 @@
 /* @var $this \Pars\Core\View\Desktop\DesktopIcon */ ?>
 <span class="desktop__icon" <?= $this->attr() ?>>
     <?= $this->getContent() ?>
-    <span class="desktop__icon__label">Label</span>
+    <span class="desktop__icon__label"><?= $this->getModel()->getValue() ?></span>
 </span>

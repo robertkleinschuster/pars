@@ -12,12 +12,14 @@ body {
 body {
   font-family: sans-serif;
   margin: 0;
+  background: #eeeeee;
 }
 
 header {
   background: transparent;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 5px #00000099;
 }
 
 main {

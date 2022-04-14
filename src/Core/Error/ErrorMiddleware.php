@@ -34,7 +34,7 @@ class ErrorMiddleware implements MiddlewareInterface
             $response = $handler->handle($request);
         } catch (Throwable $exception) {
             $hasLayout = $request->getAttribute(Layout::class);
-            error($exception);
+            log_error($exception);
             $error = Error::fromException($exception);
             $this->renderer->setComponent($error);
 
@@ -57,7 +57,7 @@ class ErrorMiddleware implements MiddlewareInterface
     public function __invoke($errno, $errstr, $errfile, $errline)
     {
         $message = "$errno: $errstr ($errfile:$errline)";
-        error($message);
+        log_error($message);
         $error = new Error();
         $error->getModel()->set('message', $message);
         $this->renderer->setComponent($error);

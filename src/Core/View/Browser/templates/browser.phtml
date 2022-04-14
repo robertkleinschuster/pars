@@ -1,0 +1,14 @@
+<?php
+
+/* @var $this \Pars\Core\View\Browser\Browser */ ?>
+<div class="browser" is="core-browser">
+    <div class="browser__content">
+        <?= $this->getContent() ?>
+    </div>
+    <div class="browser__actions">
+        <label for="filename"><?= __('filename') ?></label>
+        <input type="text" id="filename">
+        <button><?= __('cancel') ?></button>
+        <button><?= __('open') ?></button>
+    </div>
+</div>

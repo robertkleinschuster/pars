@@ -21,6 +21,7 @@
     display: none;
     border: none;
     padding: 0;
+    margin: 0;
 
     .tree__item {
       padding-left: 0;
@@ -69,11 +70,12 @@
   &__value {
     padding: .25rem;
     margin: 0;
-    transition: .1s background-color;
+    transition: .1s box-shadow;
+    border-radius: .25rem;
   }
 
   &__value.active,
   &__value:hover {
-    background: #ddd;
+    box-shadow: 0 0 0 1px rgba(70, 70, 70, 0.13), 0 0 2px 1px rgba(70, 70, 70, 0.05);
   }
 }

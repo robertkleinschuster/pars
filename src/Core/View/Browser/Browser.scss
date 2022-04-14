@@ -1,0 +1,70 @@
+.browser {
+  margin: .5rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: .5rem;
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+
+    .tree {
+      flex: 1;
+      padding: .5rem;
+      background: none;
+      border: none;
+      border-right: 1px solid #ddd;
+    }
+
+    .desktop {
+      flex: 4;
+      margin: 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: .5rem;
+    padding: .5rem;
+    border-top: 1px solid #ddd;
+
+    label {
+      margin: auto 0;
+    }
+
+    input {
+      flex: 1;
+      border-radius: .25rem;
+      border: 1px solid #bbb;
+      outline: 0;
+    }
+
+    input:focus {
+      border: 2px solid #5b5b5b;
+    }
+
+    button {
+      border-radius: .25rem;
+      border: none;
+      padding: .5rem 1rem;
+      background: #006ec7;
+      color: #fff;
+      transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+      cursor: pointer;
+      outline-color: #000000;
+    }
+
+    button:focus,
+    button:hover {
+      background: #007ce3;
+      box-shadow: 0 1px 4px 1px rgba(84, 84, 84, 0.53);
+    }
+
+    button:active {
+      background: #008dff;
+    }
+  }
+}

@@ -43,13 +43,14 @@ class ViewEvent
     public function toAttributes(): string
     {
         $attributes = "data-event='{$this->event}'";
-        $attributes .= "data-target='{$this->target}'";
+        $attributes .= " data-target='{$this->target}'";
         if (!empty($this->url)) {
-            $attributes .= "data-url='{$this->url}'";
+            $attributes .= " data-url='{$this->url}'";
         }
         if (!empty($this->title)) {
-            $attributes .= "data-title='{$this->title}'";
+            $attributes .= " data-title='{$this->title}'";
         }
+        $attributes .= " tabindex='0'";
         return $attributes;
     }
 

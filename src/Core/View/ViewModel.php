@@ -12,6 +12,7 @@ use Traversable;
 class ViewModel implements IteratorAggregate
 {
     protected string $value = '';
+    protected string $icon = '';
 
     /**
      * @var iterable<static>&SplDoublyLinkedList<ViewModel>
@@ -76,6 +77,24 @@ class ViewModel implements IteratorAggregate
     public function setValue(string $value): ViewModel
     {
         $this->value = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string $icon
+     * @return ViewModel
+     */
+    public function setIcon(string $icon): ViewModel
+    {
+        $this->icon = $icon;
         return $this;
     }
 }

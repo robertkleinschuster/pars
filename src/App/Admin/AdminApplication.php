@@ -2,8 +2,7 @@
 
 namespace Pars\App\Admin;
 
-use Pars\App\Admin\Detail\DetailHandler;
-use Pars\App\Admin\Login\LoginHandler;
+use Pars\App\Admin\FileExplorer\BrowserHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
 use Pars\Core\Application\Web\WebApplication;
@@ -13,8 +12,6 @@ use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Editor\FileEditorHandler;
-use Pars\Core\View\Entrypoints;
-use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Navigation\Navigation;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,9 +25,9 @@ class AdminApplication extends WebApplication
     {
         parent::init();
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/browser', $this->getContainer()->get(BrowserHandler::class));
         $this->route('/overview', $this->getContainer()->get(OverviewHandler::class));
         $this->route('/editor/:file+', $this->getContainer()->get(FileEditorHandler::class));
-        $this->route('/:file+', $this->getContainer()->get(StartpageHandler::class));
         $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
     }
 
