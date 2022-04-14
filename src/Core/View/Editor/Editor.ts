@@ -11,8 +11,8 @@ class Editor extends ViewComponent {
     this.content.addEventListener('blur', this.onBlur.bind(this))
   }
 
-  protected onBlur () {
-    fetch(window.location.href, {
+  protected async onBlur () {
+    await fetch(window.location.href, {
       method: 'PUT',
       body: this.content.innerHTML.trim()
     })

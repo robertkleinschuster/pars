@@ -22,8 +22,11 @@ class BuildEntrypointsCommand extends AbstractCommand
             }
         }
         $json = json_encode($entrypoints);
+        $filename = 'entrypoints.json';
+        file_put_contents($filename, $json);
 
-        file_put_contents('entrypoints.json', $json);
+        $count = $this->getColors()->format((string) count($entrypoints), 'green');
+        echo "Written $count entrypoints to $filename.";
     }
 
 

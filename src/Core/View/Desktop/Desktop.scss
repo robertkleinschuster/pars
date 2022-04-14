@@ -1,0 +1,25 @@
+.desktop {
+  &__icon {
+    display: inline-flex;
+    flex-direction: column;
+    padding: .125rem;
+    margin: .5rem;
+
+    .icon {
+      margin: 0 auto;
+      width: 40px;
+      height: 40px;
+    }
+
+    &__label {
+      text-align: center;
+      max-width: 60px;
+    }
+  }
+
+  &__icon:hover {
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(70, 70, 70, 0.13), 0 0 2px 1px rgba(70, 70, 70, 0.05);
+    background: linear-gradient(159deg, #D2D2D240 0%, #D2D2D205 40%, #D2D2D205 60%, #D2D2D250 100%);
+  }
+}

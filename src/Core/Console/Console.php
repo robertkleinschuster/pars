@@ -70,9 +70,16 @@ class Console
     public function run(array $params = [])
     {
         try {
-            $command = $this->getFactory()->create(array_shift($params));
+            $commandCode = array_shift($params);
+            $command = $this->getFactory()->create($commandCode);
             $command->setParameter(new ConsoleParameter($params));
+            ob_start();
             $command->execute();
+            $output = ob_get_clean();
+            if ($output) {
+                $commandName = $this->getColors()->format("$commandCode:", 'black', 'light_gray');
+                echo "$commandName\n$output\n";
+            }
         } catch (ConsoleCommandException $exception) {
             echo $this->getColors()->format("Command error:\n", 'light_red', 'red');
             echo $this->getColors()->format($exception->getMessage(), 'red');

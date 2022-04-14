@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View;
 
+use Pars\Core\Util\Option\OptionTrait;
 use Psr\Http\Message\StreamInterface;
 use SplDoublyLinkedList;
 
@@ -9,6 +10,8 @@ use function implode;
 
 class ViewComponent
 {
+    use OptionTrait;
+
     protected ?string $template = __DIR__ . '/templates/default.phtml';
     protected ViewModel $model;
     protected ?ViewEvent $event = null;
@@ -161,33 +164,35 @@ class ViewComponent
     public function withModel(ViewModel $model): static
     {
         $clone = clone $this;
-        $clone->parent = $this;
         $clone->model = $model;
-        $clone->updateParents();
         return $clone;
     }
 
     public function __clone()
     {
-        if (isset($this->children)) {
-            $this->children = clone $this->children;
-        }
         if (isset($this->model)) {
             $this->model = clone $this->model;
         }
+
         if (isset($this->event)) {
             $this->event = clone $this->event;
         }
+
+        if (isset($this->children)) {
+            $children = new SplDoublyLinkedList();
+            foreach ($this->children as $child) {
+                $child = clone $child;
+                $child->parent = $this;
+                $children->push($child);
+            }
+            $this->children = $children;
+        }
     }
 
-    private function updateParents()
+    public function clearChildren(): self
     {
-        if (isset($this->children)) {
-            foreach ($this->children as $child) {
-                $child->parent = $this;
-                $child->updateParents();
-            }
-        }
+        $this->children = new SplDoublyLinkedList();
+        return $this;
     }
 
     protected function attr(): string

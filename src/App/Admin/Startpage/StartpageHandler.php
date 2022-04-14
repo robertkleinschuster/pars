@@ -3,6 +3,7 @@
 namespace Pars\App\Admin\Startpage;
 
 use Pars\Core\Session\SessionTrait;
+use Pars\Core\View\Desktop\Desktop;
 use Pars\Core\View\Group\ViewGroupHandler;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Search\Search;
@@ -10,6 +11,7 @@ use Pars\Core\View\Sidebar\Sidebar;
 use Pars\Core\View\Tree\DirectoryTreeModel;
 use Pars\Core\View\Tree\Tree;
 use Pars\Core\View\ViewComponent;
+use Pars\Core\View\ViewModel;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,32 +34,44 @@ class StartpageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $request->getAttribute(Layout::class)->addTitle('startpage');
-        $search = new Search();
-        $tree = new Tree();
-        $tree->setToolbar($this->render($search));
-        $tree->setBaseUri(url('/data/files/'));
-        $dirModel = new DirectoryTreeModel();
-        $dirModel->setDirectory('data/files');
-        $tree = $tree->setItemModel($dirModel);
-        $tree->setHeading('start');
-        $tree->getItem()->setEventLink(url('/:file'));
-        $file = $request->getAttribute('file', '');
-        $sidebar = new Sidebar();
+        $desktop = new Desktop();
+        $desktop->getIcon()->setEventAction();
 
-        $viewGroup = new ViewGroupHandler();
+        $model = new ViewModel();
+        $model->set('icon', 'file');
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
+        $desktop->getIcon()->getModel()->push($model);
 
-        if (str_starts_with($file, 'data/files')) {
-            $dirModel->setCurrent($file);
-            $viewGroup->push($request, "/editor/$file");
-        }
-
-        $viewGroup->push($request, "/overview");
-
-
-        $sidebar->setContent($viewGroup->handle($request)->getBody());
-        $sidebar->setSideContent($this->render($tree));
-        return response($this->render($sidebar));
+        return response($this->render($desktop));
     }
 
     private function render(ViewComponent $component): StreamInterface

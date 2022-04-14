@@ -42,7 +42,7 @@ class Overview extends ViewComponent implements EntrypointInterface
     {
         parent::onRender($renderer);
         if (!$this->trow->getModel()->isList()) {
-            $this->children = new SplDoublyLinkedList();
+            $this->clearChildren();
         }
     }
 
