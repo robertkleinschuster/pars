@@ -17,4 +17,15 @@ export default class {
       this[key] = value
     }
   }
+
+  public getParams()
+  {
+    const params = new Map();
+    for (const [key, value] of Object.entries(this)) {
+      if (key.startsWith('param')) {
+        params.set(key.substring("param".length).toLowerCase(), value);
+      }
+    }
+    return params;
+  }
 }

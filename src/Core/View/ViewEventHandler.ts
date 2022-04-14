@@ -32,6 +32,11 @@ export default class ViewEventHandler {
 
   public trigger (viewEvent: ViewEvent, eventTarget: HTMLElement|null = null): void {
     const url = new URL(viewEvent.url, document.baseURI)
+
+    viewEvent.getParams().forEach((value, name) => {
+      url.searchParams.set(name, value)
+    })
+
     const options: RequestInit = {}
 
     options.headers = new Headers()

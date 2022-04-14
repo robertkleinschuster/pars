@@ -7,7 +7,7 @@
     </div>
     <div class="browser__actions">
         <label for="filename"><?= __('filename') ?></label>
-        <input type="text" id="filename">
+        <input type="text" id="filename" value="<?= $this->getModel()->getValue() ?>">
         <button><?= __('cancel') ?></button>
         <button><?= __('open') ?></button>
     </div>
