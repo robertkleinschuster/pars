@@ -1,5 +1,6 @@
 import ViewEvent from './ViewEvent'
 import ViewComponent from './ViewComponent'
+
 type RequestInit = globalThis.RequestInit
 
 export default class ViewEventHandler {
@@ -30,7 +31,7 @@ export default class ViewEventHandler {
     })
   }
 
-  public trigger (viewEvent: ViewEvent, eventTarget: HTMLElement|null = null): void {
+  public trigger (viewEvent: ViewEvent, eventTarget: HTMLElement | null = null): void {
     const url = new URL(viewEvent.url, document.baseURI)
 
     viewEvent.getParams().forEach((value, name) => {
@@ -76,25 +77,24 @@ export default class ViewEventHandler {
     options.redirect = 'manual'
     fetch(url.toString(), options)
       .then(response => {
-        if (response.type === 'opaqueredirect' && viewEvent.target !== 'blank') {
-          this.redirect(viewEvent.url)
-        }
-        if (response.status === 500) {
+        if ((response.type === 'opaqueredirect' && viewEvent.target !== 'blank') || response.status === 500) {
           this.redirect(url)
-        } else {
-          this.injectJs(response)
-          this.injectCss(response)
         }
+        this.injectJs(response)
+        this.injectCss(response)
         return response
       })
       .then(async r => await r.text())
       .then(html => {
+        const parser = new DOMParser()
+        const dom = parser.parseFromString(html, 'text/html')
+
         this.hideOverlay()
         this.component.handleViewEvent(viewEvent, html)
       }).catch((e) => {
-        console.error(e)
-        this.redirect(url)
-      })
+      console.error(e)
+      this.redirect(url)
+    })
   }
 
   protected showOverlay (): void {

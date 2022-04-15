@@ -22,7 +22,7 @@ class DevelopmentCommand extends AbstractCommand
             $exp = explode('.', $item);
             if (end($exp) == 'dist') {
                 array_pop($exp);
-                copy($item, implode('.', $exp));
+                link($item, implode('.', $exp));
             }
         }
     }

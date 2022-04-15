@@ -23,6 +23,7 @@
     ]
   },
   "ignorePatterns": [
-    "src/**/*.test.ts"
+    "test/**/*.test.ts",
+    "webpack.config.js"
   ]
 }
