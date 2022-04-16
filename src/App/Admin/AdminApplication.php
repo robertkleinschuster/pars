@@ -25,6 +25,7 @@ class AdminApplication extends WebApplication
     {
         parent::init();
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/testpage', $this->getContainer()->get(StartpageHandler::class));
         $this->route('/browser', $this->getContainer()->get(BrowserHandler::class));
         $this->route('/overview', $this->getContainer()->get(OverviewHandler::class));
         $this->route('/editor/:file+', $this->getContainer()->get(FileEditorHandler::class));
@@ -40,7 +41,9 @@ class AdminApplication extends WebApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->getTranslator()->addPath(__DIR__ . '/translations');
-        $this->getLayout()->setHeader($this->renderHeader());
+        if ($request->getHeaderLine('Sec-Fetch-Dest') === 'document') {
+            $this->getLayout()->setHeader($this->renderHeader());
+        }
         $this->getLayout()->setTitle('admin');
         return parent::handle($request);
     }

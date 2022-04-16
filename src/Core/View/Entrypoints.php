@@ -67,7 +67,7 @@ class Entrypoints
     {
         $result = '';
         foreach (self::getInstance()->dumpFiles('css') as $dumpFile) {
-            $result .= "<link rel='stylesheet' href='$dumpFile'>";
+            $result .= "<link class='css' rel='stylesheet' href='$dumpFile'>";
         }
         return $result;
     }
@@ -76,37 +76,29 @@ class Entrypoints
     {
         $result = '';
         foreach (self::getInstance()->dumpFiles('js') as $dumpFile) {
-            $result .= "<script defer src='$dumpFile'></script>";
+            $result .= "<script class='script' defer src='$dumpFile'></script>";
         }
         return $result;
     }
 
-    public static function injectHeaders(ResponseInterface $response, $inject = false): ResponseInterface
+    public static function injectHeaders(ResponseInterface $response): ResponseInterface
     {
         $css = self::getInstance()->dumpFiles('css');
         $js = self::getInstance()->dumpFiles('js');
         if (!empty($css)) {
-            if ($inject) {
-                $response = $response->withAddedHeader('inject-css', $css);
-            } else {
-                foreach ($css as $key => $file) {
-                    if ($key > 3) {
-                        break;
-                    }
-                    $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=style;");
+            foreach ($css as $key => $file) {
+                if ($key > 3) {
+                    break;
                 }
+                $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=style;");
             }
         }
         if (!empty($js)) {
-            if ($inject) {
-                $response = $response->withAddedHeader('inject-js', $js);
-            } else {
-                foreach ($js as $key => $file) {
-                    if ($key > 1) {
-                        break;
-                    }
-                    $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=script;");
+            foreach ($js as $key => $file) {
+                if ($key > 1) {
+                    break;
                 }
+                $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=script;");
             }
         }
         return $response;

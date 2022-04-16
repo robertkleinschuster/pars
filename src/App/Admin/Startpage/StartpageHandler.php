@@ -12,6 +12,7 @@ use Pars\Core\View\Toolbar\Toolbar;
 use Pars\Core\View\Tree\DirectoryTreeModel;
 use Pars\Core\View\Tree\Tree;
 use Pars\Core\View\ViewComponent;
+use Pars\Core\View\ViewEvent;
 use Pars\Core\View\ViewModel;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
@@ -39,13 +40,17 @@ class StartpageHandler implements RequestHandlerInterface
         $desktop->getIcon()->setEventAction();
 
         $toolbar = new Toolbar();
-        $toolbar->addButton('Neu')->setEventWindow(url('/browser'), 'browser');
-        $toolbar->addButton('Neu');
-        $toolbar->addButton('Neu');
+        $toolbar->addButton('window')->setEventWindow(url('/browser'), 'browser');
+        $toolbar->addButton('link')->setEventLink(url('/'));
+        $toolbar->addButton('link_testpage')->setEventLink(url('/testpage'));
+        $toolbar->addButton('link_blank')->setEventLink(url('/'))->target = ViewEvent::TARGET_BLANK;
+        $toolbar->addButton('action')->setEventAction('action');
+
         $desktop->setToolbar($this->render($toolbar));
 
         $model = new ViewModel();
         $model->set('icon', 'file');
+        $model->setValue($request->getUri()->getPath());
         $desktop->getIcon()->getModel()->push($model);
 
         return response($this->render($desktop));

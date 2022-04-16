@@ -55,8 +55,7 @@ class SapiEmitter
 
     private function injectHeaders(ResponseInterface $response): ResponseInterface
     {
-        $inject = isset($_SERVER['HTTP_INJECT']) && $_SERVER['HTTP_INJECT'] === 'true';
-        return Entrypoints::injectHeaders($response, $inject);
+        return Entrypoints::injectHeaders($response);
     }
 
     protected function emitHeaders(ResponseInterface $response): void
