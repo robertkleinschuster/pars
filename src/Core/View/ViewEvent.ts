@@ -27,13 +27,28 @@ export default abstract class ViewEvent {
   }
 
   public bind () {
-    this.element.addEventListener(this.event, this.trigger.bind(this))
+    this.element.addEventListener(this.event, event => {
+      event.stopImmediatePropagation()
+      this.dispatchEvent(true)
+      this.trigger(event)
+    })
   }
 
   public abstract trigger (event: Event);
 
   public getState (): ViewState {
     return ViewState.createByEvent(this)
+  }
+
+  public getEvent (bubbles = true): CustomEvent {
+    return new CustomEvent('viewEvent', {
+      bubbles: bubbles,
+      detail: this
+    })
+  }
+
+  public dispatchEvent (bubbles = true) {
+    this.element.dispatchEvent(this.getEvent(bubbles))
   }
 
   public getUrl (): URL {

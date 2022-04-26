@@ -1,14 +1,11 @@
 import ViewEvent from './ViewEvent'
+import ViewWindow from './ViewWindow'
 
 export default class ViewEventTargetWindow extends ViewEvent {
   async trigger (event: Event) {
-    event.stopImmediatePropagation();
-    const window = global.window.top;
-    if (window) {
-      window.document.documentElement.dispatchEvent(new CustomEvent('window', {
-        detail: this,
-        bubbles: true
-      }))
+    event.stopImmediatePropagation()
+    if (window.self === window.top) {
+      ViewWindow.open(this, window.top)
     }
   }
 }
