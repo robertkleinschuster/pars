@@ -24,6 +24,7 @@ Encore
     config.targets = 'defaults'
   })
   .enableSassLoader()
+  .enablePostCssLoader()
   .enableTypeScriptLoader()
   .enableIntegrityHashes(Encore.isProduction())
 

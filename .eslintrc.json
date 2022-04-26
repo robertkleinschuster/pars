@@ -24,6 +24,7 @@
   },
   "ignorePatterns": [
     "test/**/*.test.ts",
-    "webpack.config.js"
+    "webpack.config.js",
+    "postcss.config.js"
   ]
 }
