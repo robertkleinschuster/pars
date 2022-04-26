@@ -34,4 +34,4 @@ export default class Search extends ViewComponent {
   }
 }
 
-WebComponent.define(Search, HTMLDivElement)
+WebComponent.define(Search, 'div')

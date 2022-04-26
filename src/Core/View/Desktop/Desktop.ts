@@ -9,4 +9,4 @@ class Desktop extends ViewComponent {
   }
 }
 
-WebComponent.define(Desktop, HTMLDivElement)
+WebComponent.define(Desktop, 'div')

@@ -17,12 +17,11 @@ Encore
   .cleanupOutputBeforeBuild()
   .enableSourceMaps(!Encore.isProduction())
   .enableVersioning(Encore.isProduction())
-  .configureBabel((config) => {
-    config.plugins.push('@babel/plugin-proposal-class-properties')
-  })
   .configureBabelPresetEnv((config) => {
     config.useBuiltIns = 'usage'
-    config.corejs = 3
+    config.shippedProposals = true
+    config.corejs = '3.22'
+    config.targets = 'defaults'
   })
   .enableSassLoader()
   .enableTypeScriptLoader()

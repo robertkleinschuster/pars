@@ -6,4 +6,4 @@ export default class Layout extends ViewComponent {
 
 }
 
-WebComponent.define(Layout, HTMLHtmlElement)
+WebComponent.define(Layout, 'html')

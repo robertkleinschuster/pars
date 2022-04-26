@@ -19,4 +19,4 @@ class Editor extends ViewComponent {
   }
 }
 
-WebComponent.define(Editor, HTMLDivElement)
+WebComponent.define(Editor, 'div')

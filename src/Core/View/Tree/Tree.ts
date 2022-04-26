@@ -49,4 +49,4 @@ class Tree extends ViewComponent {
   }
 }
 
-WebComponent.defineExtended(Tree, HTMLUListElement)
+WebComponent.define(Tree, 'ul')

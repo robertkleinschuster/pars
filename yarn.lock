@@ -1950,6 +1950,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ungap/custom-elements@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@ungap/custom-elements@npm:1.0.2"
+  checksum: e4dc205593563c08b23ce12cc6901cdf7dfb49a9bab908ae79855b2b8d3b37b3e3cb7d9451e1762249b64a46dc864abe5671a790fc18c5f8fbdc5b8dd1042c31
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
   resolution: "@webassemblyjs/ast@npm:1.11.1"
@@ -3065,10 +3072,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:3.21.0":
-  version: 3.21.0
-  resolution: "core-js@npm:3.21.0"
-  checksum: 87df49aa2c5d0a521c52102b6669842dd30b334742e86dd4e0173c51230bc48d610060ab6de0f149766d188325b8c1b84598f901cf455674fe6c03ccc5c8026f
+"core-js@npm:3.22.2":
+  version: 3.22.2
+  resolution: "core-js@npm:3.22.2"
+  checksum: 23efd6148d2f564852f23de426401c86f1d8af410eacccf22ae5dd82b1e9de558f05692cacd4b7e709d47993c670d7bca6f601d0b2ab32cf397a113fc5b7d80c
   languageName: node
   linkType: hard
 
@@ -7368,7 +7375,8 @@ __metadata:
     "@types/winbox": 0.2.1
     "@typescript-eslint/eslint-plugin": 5.19.0
     "@typescript-eslint/parser": 5.19.0
-    core-js: 3.21.0
+    "@ungap/custom-elements": 1.0.2
+    core-js: 3.22.2
     eslint: 8.11.0
     sass: 1.49.7
     sass-loader: 12.4.0
@@ -7376,7 +7384,6 @@ __metadata:
     ts-loader: 9.2.6
     ts-standard: 11.0.0
     typescript: 4.5.5
-    webpack: 5.72.0
     winbox: 0.2.1
   languageName: unknown
   linkType: soft
@@ -8661,43 +8668,6 @@ __metadata:
   version: 3.2.3
   resolution: "webpack-sources@npm:3.2.3"
   checksum: 989e401b9fe3536529e2a99dac8c1bdc50e3a0a2c8669cbafad31271eadd994bc9405f88a3039cd2e29db5e6d9d0926ceb7a1a4e7409ece021fe79c37d9c4607
-  languageName: node
-  linkType: hard
-
-"webpack@npm:5.72.0":
-  version: 5.72.0
-  resolution: "webpack@npm:5.72.0"
-  dependencies:
-    "@types/eslint-scope": ^3.7.3
-    "@types/estree": ^0.0.51
-    "@webassemblyjs/ast": 1.11.1
-    "@webassemblyjs/wasm-edit": 1.11.1
-    "@webassemblyjs/wasm-parser": 1.11.1
-    acorn: ^8.4.1
-    acorn-import-assertions: ^1.7.6
-    browserslist: ^4.14.5
-    chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.9.2
-    es-module-lexer: ^0.9.0
-    eslint-scope: 5.1.1
-    events: ^3.2.0
-    glob-to-regexp: ^0.4.1
-    graceful-fs: ^4.2.9
-    json-parse-better-errors: ^1.0.2
-    loader-runner: ^4.2.0
-    mime-types: ^2.1.27
-    neo-async: ^2.6.2
-    schema-utils: ^3.1.0
-    tapable: ^2.1.1
-    terser-webpack-plugin: ^5.1.3
-    watchpack: ^2.3.1
-    webpack-sources: ^3.2.3
-  peerDependenciesMeta:
-    webpack-cli:
-      optional: true
-  bin:
-    webpack: bin/webpack.js
-  checksum: 8365f1466d0f7adbf80ebc9b780f263a28eeeabcd5fb515249bfd9a56ab7fe8d29ea53df3d9364d0732ab39ae774445eb28abce694ed375b13882a6b2fe93ffc
   languageName: node
   linkType: hard
 

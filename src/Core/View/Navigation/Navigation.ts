@@ -1,12 +1,8 @@
 import './NavigationComponent.scss'
 import ViewComponent from '../ViewComponent'
+import WebComponent from '../WebComponent'
 
-class NavigationElement extends HTMLUListElement {
-  protected component: ViewComponent
-  constructor () {
-    super()
-    this.component = new ViewComponent(this)
-  }
+class Navigation extends ViewComponent {
+
 }
-
-customElements.define('core-navigation', NavigationElement, { extends: 'ul' })
+WebComponent.define(Navigation, 'ul')

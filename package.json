@@ -4,7 +4,8 @@
     "@types/winbox": "0.2.1",
     "@typescript-eslint/eslint-plugin": "5.19.0",
     "@typescript-eslint/parser": "5.19.0",
-    "core-js": "3.21.0",
+    "@ungap/custom-elements": "1.0.2",
+    "core-js": "3.22.2",
     "eslint": "8.11.0",
     "sass": "1.49.7",
     "sass-loader": "12.4.0",
@@ -12,7 +13,6 @@
     "ts-loader": "9.2.6",
     "ts-standard": "11.0.0",
     "typescript": "4.5.5",
-    "webpack": "5.72.0",
     "winbox": "0.2.1"
   },
   "scripts": {

@@ -41,7 +41,7 @@ class AdminApplication extends WebApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->getTranslator()->addPath(__DIR__ . '/translations');
-        if ($request->getHeaderLine('Sec-Fetch-Dest') === 'document') {
+        if (in_array($request->getHeaderLine('Sec-Fetch-Dest'), ['document', ''])) {
             $this->getLayout()->setHeader($this->renderHeader());
         }
         $this->getLayout()->setTitle('admin');

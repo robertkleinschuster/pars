@@ -1,12 +1,13 @@
+import '@ungap/custom-elements';
 import ViewComponent from './ViewComponent'
 
 export default class {
-  public static define (component: typeof ViewComponent, extend: typeof HTMLElement | null = null) {
+  public static define (component: typeof ViewComponent, extend: string | null = null) {
     if (extend != null) {
       this.defineExtended(component, extend)
     } else {
       const name = component.name.toLowerCase()
-      customElements.define(`core-${name}`, class extends HTMLElement {
+      window.customElements.define(`core-${name}`, class extends HTMLElement {
         constructor () {
           super()
           new component(this)
@@ -15,16 +16,11 @@ export default class {
     }
   }
 
-  public static defineExtended (component: typeof ViewComponent, extend: typeof HTMLElement) {
+  public static defineExtended (component: typeof ViewComponent, extend: string) {
     const name = component.name.toLowerCase()
-    let tag = extend.name
-      .replace('HTML', '')
-      .replace('Element', '')
-      .toLowerCase()
-    if (extend === HTMLUListElement) {
-      tag = 'ul'
-    }
-    customElements.define(`core-${name}`, class extends extend implements ComponentElement {
+    const extendClass = this.findExtendClass(extend);
+
+    window.customElements.define(`core-${name}`, class extends extendClass implements ComponentElement {
       private _component: ViewComponent
       constructor () {
         super()
@@ -38,7 +34,28 @@ export default class {
       set component (value: ViewComponent) {
         this._component = value
       }
-    }, { extends: tag })
+    }, { extends: extend })
+  }
+
+  private static findExtendClass(tag: string): typeof HTMLElement {
+    switch (tag) {
+      case 'div':
+        return HTMLDivElement;
+      case 'html':
+        return HTMLHtmlElement;
+      case 'ul':
+        return HTMLUListElement;
+      case 'form':
+        return HTMLFormElement
+      case 'iframe':
+        return HTMLIFrameElement
+      case 'input':
+        return HTMLInputElement
+      case 'button':
+        return HTMLButtonElement
+      default:
+        return HTMLElement
+    }
   }
 }
 
