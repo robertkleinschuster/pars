@@ -81,7 +81,7 @@ class Layout extends ViewComponent implements EntrypointInterface
     public function addTitle(string $title): Layout
     {
         if ($this->title) {
-            $this->title .= ' - ' . $title;
+            $this->title = $title . ' - ' . $this->title;
         } else {
             $this->title = $title;
         }
