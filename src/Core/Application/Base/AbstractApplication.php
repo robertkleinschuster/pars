@@ -49,19 +49,24 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     }
 
     abstract protected function init();
-
-    public function pipe(MiddlewareInterface|string $middlewareOrPath, MiddlewareInterface $middleware = null): self
+    
+    public function pipe($middlewareOrPath, MiddlewareInterface $middleware = null): self
     {
         $this->pipeline = $this->getPipeline()->with($middlewareOrPath, $middleware);
         return $this;
     }
-
-    public function route(string $route, RequestHandlerInterface $handler): self
+    
+    public function route(string $route, RequestHandlerInterface $handler, string $method = 'GET'): self
     {
-        $this->router = $this->getRouter()->with($route, $handler);
+        $this->router = $this->getRouter()->with($route, $handler, $method);
         return $this;
     }
-
+    
+    public function routePost(string $route, RequestHandlerInterface $handler): self
+    {
+        return $this->route($route, $handler, 'POST');
+    }
+    
     public function run()
     {
         /* @var $emitter SapiEmitter */

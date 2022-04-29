@@ -28,10 +28,12 @@ class RequestRouter implements MiddlewareInterface
         $this->routes = clone $this->routes;
     }
 
-    public function with(string $route, RequestHandlerInterface $handler): RequestRouter
+    public function with(string $route, RequestHandlerInterface $handler, string $method = 'GET'): RequestRouter
     {
         $clone = clone $this;
-        $clone->routes->push($this->routeFactory->createRoute($handler, $route));
+        $route = $this->routeFactory->createRoute($handler, $route);
+        $route->setMethod($method);
+        $clone->routes->push($route);
         return $clone;
     }
 
