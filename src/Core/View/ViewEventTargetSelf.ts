@@ -7,5 +7,6 @@ export default class ViewEventTargetSelf extends ViewEvent {
     const response = await this.getResponse()
     this.getElementHelper().replaceClosest(response.document.documentElement, this.selector)
     ViewState.push(this.getState())
+    document.title = response.document.title
   }
 }
