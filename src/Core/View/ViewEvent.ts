@@ -63,9 +63,6 @@ export default abstract class ViewEvent {
 
   public getParams () {
     const params = new Map()
-    params.set('event', this.event)
-    params.set('target', this.target)
-    params.set('selector', this.selector)
 
     for (const [key, value] of Object.entries(this)) {
       if (key.startsWith('param')) {

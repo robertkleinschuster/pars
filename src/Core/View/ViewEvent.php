@@ -41,7 +41,7 @@ class ViewEvent
         return $this;
     }
 
-    public function toAttributes(): string
+    public function toAttributes(ViewComponent $component): string
     {
         $attributes = "data-event='{$this->event}'";
         $attributes .= " data-target='{$this->target}'";

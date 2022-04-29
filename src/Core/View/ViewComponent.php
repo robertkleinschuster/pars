@@ -203,7 +203,7 @@ class ViewComponent
             foreach ($params as $param) {
                 $this->getEvent()->setRouteParam($param, $this->getValue($param));
             }
-            $result .= ' ' . $this->getEvent()->toAttributes();
+            $result .= ' ' . $this->getEvent()->toAttributes($this);
         }
 
         if (!empty($this->class)) {

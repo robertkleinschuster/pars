@@ -8,4 +8,11 @@ export default class ViewEventTargetWindow extends ViewEvent {
       ViewWindow.open(this, window.top)
     }
   }
+
+
+  getParams(): Map<string, string> {
+    const params =  super.getParams();
+    params.set('target', this.target)
+    return params;
+  }
 }
