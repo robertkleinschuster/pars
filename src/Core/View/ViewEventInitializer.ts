@@ -1,10 +1,10 @@
-import ViewComponent from './ViewComponent'
+import ViewHelper from './ViewHelper'
 import ViewEventFactory from './ViewEventFactory'
 
 export default class ViewEventInitializer {
-  protected component: ViewComponent
+  protected component: ViewHelper
 
-  constructor (component: ViewComponent) {
+  constructor (component: ViewHelper) {
     this.component = component
   }
 

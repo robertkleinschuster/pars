@@ -1,9 +1,8 @@
 import './Search.scss'
-import ViewComponent from '../ViewComponent'
-import WebComponent from '../WebComponent'
 import { SearchComparator } from './SearchComparator'
+import ViewDivElement from '../ViewDivElement'
 
-export default class Search extends ViewComponent {
+export default class Search extends ViewDivElement {
   private input: HTMLInputElement
   private button: HTMLButtonElement
   public elements: NodeListOf<HTMLElement>
@@ -11,9 +10,8 @@ export default class Search extends ViewComponent {
   private _onSearch: (search: Search) => void
 
   protected init () {
-    super.init()
-    this.input = this.element.querySelector('input') as HTMLInputElement
-    this.button = this.element.querySelector('button') as HTMLButtonElement
+    this.input = this.querySelector('input') as HTMLInputElement
+    this.button = this.querySelector('button') as HTMLButtonElement
     this.input.addEventListener('keyup', this.onInput.bind(this))
     this.input.addEventListener('keydown', this.onInput.bind(this))
   }
@@ -34,4 +32,4 @@ export default class Search extends ViewComponent {
   }
 }
 
-WebComponent.define(Search, 'div')
+customElements.define('core-search', Search, { extends: 'div' })

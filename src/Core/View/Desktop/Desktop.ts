@@ -1,12 +1,15 @@
 import './Desktop.scss'
-import ViewComponent from '../ViewComponent'
-import WebComponent from '../WebComponent'
+import ViewDivElement from '../ViewDivElement'
 
-class Desktop extends ViewComponent {
+class Desktop extends ViewDivElement {
+  
+  constructor () {
+    super()
+    this.addEventListener('click', () => {
+      this.helper.trigger('desktop click')
 
-  protected init () {
-    super.init();
+    })
   }
 }
 
-WebComponent.define(Desktop, 'div')
+customElements.define('core-desktop', Desktop, { extends: 'div' })

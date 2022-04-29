@@ -41,7 +41,7 @@ export default abstract class ViewEvent {
   }
 
   public getEvent (bubbles = true): CustomEvent {
-    return new CustomEvent('viewEvent', {
+    return new CustomEvent(ViewEvent.name, {
       bubbles: bubbles,
       detail: this
     })

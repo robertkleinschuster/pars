@@ -1,13 +1,8 @@
 import './Sidebar.scss'
-import ViewComponent from '../ViewComponent'
+import ViewDivElement from '../ViewDivElement'
 
-class SidebarElement extends HTMLDivElement {
-  protected component: ViewComponent
+class SidebarElement extends ViewDivElement {
 
-  constructor () {
-    super()
-    this.component = new ViewComponent(this)
-  }
 }
 
 customElements.define('core-sidebar', SidebarElement, { extends: 'div' })

@@ -1,13 +1,16 @@
 import './Editor.scss'
-import ViewComponent from '../ViewComponent'
-import WebComponent from '../WebComponent'
+import ViewDivElement from '../ViewDivElement'
 
-class Editor extends ViewComponent {
+class Editor extends ViewDivElement {
   protected content: HTMLDivElement
 
+  constructor () {
+    super()
+    this.init()
+  }
+
   protected init () {
-    super.init()
-    this.content = this.element.querySelector('.content') as HTMLDivElement
+    this.content = this.querySelector('.content') as HTMLDivElement
     this.content.addEventListener('blur', this.onBlur.bind(this))
   }
 
@@ -18,5 +21,4 @@ class Editor extends ViewComponent {
     })
   }
 }
-
-WebComponent.define(Editor, 'div')
+customElements.define('core-editor', Editor, { extends: 'div' })

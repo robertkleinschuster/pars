@@ -19,7 +19,6 @@ export default class ViewEventResponse {
     viewResponse.status = response.status
     viewResponse.redirect = response.status === 500 || response.type === 'opaqueredirect'
     viewResponse.document = (new DOMParser()).parseFromString(await response.text(), 'text/html')
-
     viewResponse.document.querySelectorAll('link.css').forEach((link: HTMLLinkElement) => {
       if (document.querySelector(`link.css[href='${link.getAttribute('href')}']`) == null) {
         document.head.append(link)

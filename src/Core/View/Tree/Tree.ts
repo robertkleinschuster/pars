@@ -1,22 +1,20 @@
 import './Tree.scss'
-import ViewComponent from '../ViewComponent'
-import WebComponent, { ComponentElement } from '../WebComponent'
 import Search from '../Search/Search'
 import { Similar } from '../Search/SearchComparator'
+import ViewUListElement from '../ViewUListElement'
 
-class Tree extends ViewComponent {
+class Tree extends ViewUListElement {
   private search: Search
 
   protected init (): void {
-    super.init()
-    const searchElement = this.element.querySelector('.search') as ComponentElement
+    const searchElement = this.querySelector('.search') as Search
 
     if (searchElement !== null) {
-      this.search = searchElement.component as Search
-      this.search.elements = this.element.querySelectorAll('.tree__value')
+      this.search = searchElement
+      this.search.elements = this.querySelectorAll('.tree__value')
       this.search.onSearch = this.onSearch.bind(this)
     }
-    this.element.onclick = this.onClick.bind(this)
+    this.onclick = this.onClick.bind(this)
   }
 
   private onClick (event: Event) {
@@ -34,7 +32,7 @@ class Tree extends ViewComponent {
   private onSearch () {
     const foundElements = this.search.search(new Similar())
     foundElements.forEach(this.togglePath.bind(this))
-    this.element.querySelectorAll('.tree__value')
+    this.querySelectorAll('.tree__value')
       .forEach((elem: HTMLElement) => elem.classList.toggle('hidden', !foundElements.includes(elem)))
   }
 
@@ -49,4 +47,4 @@ class Tree extends ViewComponent {
   }
 }
 
-WebComponent.define(Tree, 'ul')
+customElements.define('core-tree', Tree, {extends: 'ul'})

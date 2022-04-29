@@ -1,13 +1,16 @@
 import 'winbox'
 import 'winbox/dist/css/themes/modern.min.css'
 import ViewEvent from './ViewEvent'
+import ViewMessage from './ViewMessage'
 
 export default class ViewWindow extends window.WinBox {
+  private viewEvent: ViewEvent
 
-  constructor (url: string, window: WindowProxy) {
+  constructor (viewEvent: ViewEvent, window: WindowProxy) {
     super({
-      title: 'window', url: url, x: 'center', y: 'center', class: 'modern',
+      title: 'window', url: viewEvent.getUrl().toString(), x: 'center', y: 'center', class: 'modern',
     })
+    this.viewEvent = viewEvent
     const iframe = this.body.querySelector('iframe') as HTMLIFrameElement
     iframe.onload = this.onLoad.bind(this, iframe.contentWindow)
     this.onclose = (): boolean => {
@@ -24,15 +27,21 @@ export default class ViewWindow extends window.WinBox {
 
   protected onLoad (window: WindowProxy) {
     this.setTitle(window.document.title ?? this.title)
-    window.addEventListener('viewEvent', async (event: CustomEvent) => {
+    window.addEventListener(ViewEvent.name, async (event: CustomEvent) => {
       const viewEvent = event.detail as ViewEvent
       if (viewEvent.target === ViewEvent.TARGET_WINDOW) {
         ViewWindow.open(viewEvent, window)
       }
     })
+    window.addEventListener(ViewMessage.name, (event: CustomEvent) => {
+      this.viewEvent.element.dispatchEvent(new CustomEvent(ViewMessage.name, {
+        detail: event.detail,
+        bubbles: true
+      }))
+    })
   }
 
   public static open (viewEvent: ViewEvent, window: WindowProxy) {
-    return new ViewWindow(viewEvent.getUrl().toString(), window)
+    return new ViewWindow(viewEvent, window)
   }
 }
