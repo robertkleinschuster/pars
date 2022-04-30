@@ -28,52 +28,35 @@ class RequestRouter implements MiddlewareInterface
         $this->routes = clone $this->routes;
     }
 
-    /**
-     * @param string|RouteInterface $route
-     * @param RequestHandlerInterface $handler
-     * @param string $method
-     * @return RequestRouter
-     */
-    public function with($route, RequestHandlerInterface $handler, string $method = 'GET'): RequestRouter
-    {
-        $clone = clone $this;
-        if (is_string($route)) {
-            $route = $this->routeFactory->createFromPattern($handler, $route);
-        }
-        $route->setMethod($method);
-        $clone->routes->push($route);
-        return $clone;
-    }
-
-    public function route(RequestHandlerInterface $handler)
+    public function route(RequestHandlerInterface $handler): AggregatedRoute
     {
         $route = new AggregatedRoute($handler);
         $this->routes->push($route);
         return $route;
     }
 
-    public function get(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    public function get(string $pattern, RequestHandlerInterface $handler): AggregatedRoute
     {
         return $this->route($handler)
             ->pattern($pattern)
             ->method('GET');
     }
 
-    public function post(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    public function post(string $pattern, RequestHandlerInterface $handler): AggregatedRoute
     {
         return $this->route($handler)
             ->pattern($pattern)
             ->method('POST');
     }
 
-    public function put(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    public function put(string $pattern, RequestHandlerInterface $handler): AggregatedRoute
     {
         return $this->route($handler)
             ->pattern($pattern)
             ->method('PUT');
     }
 
-    public function patch(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    public function patch(string $pattern, RequestHandlerInterface $handler): AggregatedRoute
     {
         return $this->route($handler)
             ->pattern($pattern)

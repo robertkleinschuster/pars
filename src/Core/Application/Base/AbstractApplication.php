@@ -2,16 +2,18 @@
 
 namespace Pars\Core\Application\Base;
 
-use Pars\Core\Http\Header\CacheControlMiddleware;
 use Pars\Core\{Application\ApplicationContainer,
     Config\Config,
     Container\ContainerResolver,
     Error\ErrorMiddleware,
     Http\HttpFactory,
     Pipeline\MiddlewarePipeline,
-    Router\RequestRouter};
+    Router\AggregatedRoute,
+    Router\RequestRouter
+};
 use Pars\Core\Error\NotFound\NotFoundHandler;
 use Pars\Core\Http\Emitter\SapiEmitter;
+use Pars\Core\Http\Header\CacheControlMiddleware;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
@@ -49,24 +51,25 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
     }
 
     abstract protected function init();
-    
+
     public function pipe($middlewareOrPath, MiddlewareInterface $middleware = null): self
     {
         $this->pipeline = $this->getPipeline()->with($middlewareOrPath, $middleware);
         return $this;
     }
-    
-    public function route(string $route, RequestHandlerInterface $handler, string $method = 'GET'): self
+
+    public function route(string $route, RequestHandlerInterface $handler, string $method = 'GET'): AggregatedRoute
     {
-        $this->router = $this->getRouter()->with($route, $handler, $method);
-        return $this;
+        return $this->getRouter()->route($handler)
+            ->pattern($route)
+            ->method($method);
     }
-    
-    public function routePost(string $route, RequestHandlerInterface $handler): self
+
+    public function routePost(string $route, RequestHandlerInterface $handler): AggregatedRoute
     {
-        return $this->route($route, $handler, 'POST');
+        return $this->getRouter()->post($route, $handler);
     }
-    
+
     public function run()
     {
         /* @var $emitter SapiEmitter */

@@ -39,9 +39,4 @@ class AggregatedRoute implements RouteInterface
         $this->route = $this->factory->createHeader($this->route, $name, $value);
         return $this;
     }
-
-    public function action(RequestHandlerInterface $handler)
-    {
-        //$this->header('x-target', 'action');
-    }
 }

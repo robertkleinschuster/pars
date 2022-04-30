@@ -83,4 +83,13 @@ class PatternRoute implements RouteInterface
         $this->attributes[$name] = $value;
         return $this;
     }
+
+    public static function findKeys(string $route): array
+    {
+        preg_match_all('/\:[a-zA-Z0-9\_\-]+/', $route, $m);
+        array_walk_recursive($m, function ($a) use (&$keys) {
+            $keys[] = ltrim($a, ':');
+        });
+        return $keys ?? [];
+    }
 }

@@ -3,7 +3,7 @@
 namespace Pars\Core\View;
 
 use Pars\Core\Http\Uri\UriBuilder;
-use Pars\Core\Router\Route;
+use Pars\Core\Router\PatternRoute;
 
 use function url;
 use function str_replace;
@@ -32,7 +32,7 @@ class ViewEvent
      */
     public function getRouteParams(): array
     {
-        return Route::findKeys($this->url);
+        return PatternRoute::findKeys($this->url);
     }
 
     public function setRouteParam(string $key, string $value): self

@@ -6,11 +6,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RouteFactory
 {
-    public function createFromPattern(RequestHandlerInterface $handler, string $pattern): Route
-    {
-        return new Route($handler, $pattern);
-    }
-
     public function createAny(RequestHandlerInterface $handler): AnyRoute
     {
         return new AnyRoute($handler);
