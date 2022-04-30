@@ -1,6 +1,7 @@
 import ViewEventInitializer from './ViewEventInitializer'
 import ViewMessage from './ViewMessage'
 import ViewElementInterface from './ViewElementInterface'
+import "@ungap/custom-elements"
 
 export default class ViewHelper {
   public element: ViewElementInterface

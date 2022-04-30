@@ -5,20 +5,23 @@ namespace Pars\Core\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use function array_shift;
+use function array_walk_recursive;
+use function is_array;
 use function preg_match_all;
 use function preg_quote;
 use function preg_replace;
-use function array_walk_recursive;
-use function array_shift;
-use function is_array;
 use function rtrim;
 
-class Route
+class Route implements RouteInterface
 {
-    public RequestHandlerInterface $handler;
-    public string $route;
+    private RequestHandlerInterface $handler;
+    private ServerRequestInterface $matchedRequest;
+
+    public string $pattern;
+
     public ?string $method = null;
-    private bool $matched = false;
+
 
     public static function findKeys(string $route)
     {
@@ -29,10 +32,10 @@ class Route
         return $keys ?? [];
     }
 
-    public function __construct(RequestHandlerInterface $handler, string $route)
+    public function __construct(RequestHandlerInterface $handler, string $pattern)
     {
         $this->handler = $handler;
-        $this->route = $route;
+        $this->pattern = $pattern;
     }
 
     public function getHandler(): RequestHandlerInterface
@@ -40,40 +43,38 @@ class Route
         return $this->handler;
     }
 
-    /**
-     * @param string|null $method
-     * @return Route
-     */
-    public function setMethod(?string $method): Route
-    {
-        $this->method = $method;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
     public function isMatched(): bool
     {
-        return $this->matched;
+        return isset($this->matchedRequest);
     }
 
+    /**
+     * @return ServerRequestInterface
+     * @throws UnmatchedRouteException
+     */
+    public function getMatchedRequest(): ServerRequestInterface
+    {
+        if (!isset($this->matchedRequest)) {
+            throw new UnmatchedRouteException('Route not matched in request');
+        }
+        return $this->matchedRequest;
+    }
 
-    public function match(ServerRequestInterface $request): ServerRequestInterface|bool
+    public function match(ServerRequestInterface $request): void
     {
         if ($this->method && $this->method !== $request->getMethod()) {
-            return false;
+            return;
         }
         $path = $request->getUri()->getPath();
         $path = rtrim($path, '/');
 
-        if ($path === rtrim($this->route, '/')) {
-            $this->matched = true;
-            return $request->withAttribute(Route::class, $this);
+        if ($path === rtrim($this->pattern, '/')) {
+            $this->matchedRequest = $request->withAttribute(Route::class, $this);
+            return;
         }
 
-        if (str_ends_with($this->route, '+')) {
-            $explodedRoute = explode('/', $this->route);
+        if (str_ends_with($this->pattern, '+')) {
+            $explodedRoute = explode('/', $this->pattern);
             $attributeName = ltrim(rtrim(array_pop($explodedRoute), '+'), ':');
             if (str_starts_with($path, implode('/', $explodedRoute))) {
                 $explodedPath = explode('/', $path);
@@ -81,18 +82,18 @@ class Route
                     unset($explodedPath[$key]);
                 }
                 $request = $request->withAttribute($attributeName, implode('/', $explodedPath));
-                $this->matched = true;
-                return $request->withAttribute(Route::class, $this);
+                $this->matchedRequest = $request->withAttribute(Route::class, $this);
+                return;
             }
         }
 
         $pattern = "@^" . preg_replace(
-            '/\\\:[a-zA-Z0-9\_\-]+/',
-            '([a-zA-Z0-9\-\_]+)',
-            preg_quote($this->route)
-        ) . "$@D";
+                '/\\\:[a-zA-Z0-9\_\-]+/',
+                '([a-zA-Z0-9\-\_]+)',
+                preg_quote($this->pattern)
+            ) . "$@D";
 
-        preg_match_all('/\:[a-zA-Z0-9\_\-]+/', $this->route, $m);
+        preg_match_all('/\:[a-zA-Z0-9\_\-]+/', $this->pattern, $m);
         array_walk_recursive($m, function ($a) use (&$keys) {
             $keys[] = $a;
         });
@@ -109,10 +110,19 @@ class Route
         foreach ($attributes as $key => $value) {
             $request = $request->withAttribute($key, $value);
         }
+
         if ($result) {
-            $this->matched = true;
-            return $request->withAttribute(Route::class, $this);
+            $this->matchedRequest = $request->withAttribute(Route::class, $this);
         }
-        return false;
+    }
+
+    /**
+     * @param string|null $method
+     * @return Route
+     */
+    public function setMethod(?string $method): Route
+    {
+        $this->method = $method;
+        return $this;
     }
 }

@@ -73,9 +73,12 @@ export default abstract class ViewEvent {
   }
 
   public getRequest () {
-    const init: RequestInit = {}
+    const headers = new Headers()
+    headers.set('x-target', this.target)
+    const init: RequestInit = {
+      headers: headers
+    }
     init.method = this.method
-
     return new Request(this.getUrl().toString(), init)
   }
 

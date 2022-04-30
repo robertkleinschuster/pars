@@ -6,8 +6,28 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RouteFactory
 {
-    public function createRoute(RequestHandlerInterface $handler, string $route): Route
+    public function createFromPattern(RequestHandlerInterface $handler, string $pattern): Route
     {
-        return new Route($handler, $route);
+        return new Route($handler, $pattern);
+    }
+
+    public function createAny(RequestHandlerInterface $handler): AnyRoute
+    {
+        return new AnyRoute($handler);
+    }
+
+    public function createHeader(RouteInterface $route, string $name, string $value): HeaderRoute
+    {
+        return new HeaderRoute($route, $name, $value);
+    }
+
+    public function createMethod(RouteInterface $route, string $method): MethodRoute
+    {
+        return new MethodRoute($route, $method);
+    }
+
+    public function createPattern(RouteInterface $route, string $pattern): PatternRoute
+    {
+        return new PatternRoute($route, $pattern);
     }
 }

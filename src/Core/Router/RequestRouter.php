@@ -10,7 +10,7 @@ use SplQueue;
 class RequestRouter implements MiddlewareInterface
 {
     /**
-     * @var iterable<Route>&SplQueue<Route>
+     * @var iterable<RouteInterface>&SplQueue<RouteInterface>
      */
     protected SplQueue $routes;
     protected RouteFactory $routeFactory;
@@ -28,25 +28,76 @@ class RequestRouter implements MiddlewareInterface
         $this->routes = clone $this->routes;
     }
 
-    public function with(string $route, RequestHandlerInterface $handler, string $method = 'GET'): RequestRouter
+    /**
+     * @param string|RouteInterface $route
+     * @param RequestHandlerInterface $handler
+     * @param string $method
+     * @return RequestRouter
+     */
+    public function with($route, RequestHandlerInterface $handler, string $method = 'GET'): RequestRouter
     {
         $clone = clone $this;
-        $route = $this->routeFactory->createRoute($handler, $route);
+        if (is_string($route)) {
+            $route = $this->routeFactory->createFromPattern($handler, $route);
+        }
         $route->setMethod($method);
         $clone->routes->push($route);
         return $clone;
     }
 
+    public function route(RequestHandlerInterface $handler)
+    {
+        $route = new AggregatedRoute($handler);
+        $this->routes->push($route);
+        return $route;
+    }
+
+    public function get(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    {
+        return $this->route($handler)
+            ->pattern($pattern)
+            ->method('GET');
+    }
+
+    public function post(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    {
+        return $this->route($handler)
+            ->pattern($pattern)
+            ->method('POST');
+    }
+
+    public function put(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    {
+        return $this->route($handler)
+            ->pattern($pattern)
+            ->method('PUT');
+    }
+
+    public function patch(string $pattern, RequestHandlerInterface $handler): RouteInterface
+    {
+        return $this->route($handler)
+            ->pattern($pattern)
+            ->method('PATCH');
+    }
+
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws UnmatchedRouteException
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         foreach ($this->routes as $route) {
             if ($route->isMatched()) {
                 continue;
             }
-            $matchedRequest = $route->match($request);
-            if ($matchedRequest) {
+            $route->match($request);
+            if ($route->isMatched()) {
+                $matchedRequest = $route->getMatchedRequest();
                 $this->uriBuilder->setCurrentUri($matchedRequest->getUri());
-                return $route->handler->handle($matchedRequest->withAttribute(RequestRouter::class, $this));
+                return $route->getHandler()->handle($matchedRequest->withAttribute(RequestRouter::class, $this));
             }
         }
         return $handler->handle($request);
