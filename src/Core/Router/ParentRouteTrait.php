@@ -23,4 +23,9 @@ trait ParentRouteTrait
     {
         return $this->route->getHandler();
     }
+
+    public function __clone(): void
+    {
+        $this->route = clone $this->route;
+    }
 }

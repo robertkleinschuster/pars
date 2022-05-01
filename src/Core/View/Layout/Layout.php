@@ -87,4 +87,26 @@ class Layout extends ViewComponent implements EntrypointInterface
         }
         return $this;
     }
+
+    public function unsetHeader(): self
+    {
+        unset($this->header);
+        return $this;
+    }
+
+    public function unsetFooter(): self
+    {
+        unset($this->footer);
+        return $this;
+    }
+
+    public function hide(array $hidden)
+    {
+        if (in_array('header', $hidden)) {
+            $this->unsetHeader();
+        }
+        if (in_array('header', $hidden)) {
+            $this->unsetFooter();
+        }
+    }
 }

@@ -9,10 +9,10 @@ export default class ViewEventTargetWindow extends ViewEvent {
     }
   }
 
-
-  getParams(): Map<string, string> {
-    const params =  super.getParams();
-    params.set('target', this.target)
-    return params;
+  getRequest (): Request {
+    const request = super.getRequest()
+    request.headers.append('x-layout-hide', 'header')
+    request.headers.append('x-layout-hide', 'footer')
+    return request
   }
 }

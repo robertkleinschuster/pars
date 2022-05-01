@@ -30,6 +30,8 @@ class WebApplication extends AbstractApplication
     {
         $response = parent::handle($request->withAttribute(Layout::class, $this->getLayout()));
         $this->getLayout()->setMain($response->getBody());
+        $hidden = array_map('trim', explode(',', $request->getHeaderLine('x-layout-hide')));
+        $this->getLayout()->hide($hidden);
         return $response->withBody($this->getRenderer()->render());
     }
 

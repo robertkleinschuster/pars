@@ -1,13 +1,14 @@
 import ElementHelper from './ElementHelper'
 
 export default class ViewEventResponse {
-  public document: Document
+  private _document: Document
   public headers: Headers
+  public text: string;
   public status: number
   public redirect: boolean
 
   constructor () {
-    this.document = document;
+    this._document = document;
     this.headers = new Headers();
     this.status = 200;
     this.redirect = false;
@@ -18,24 +19,20 @@ export default class ViewEventResponse {
     viewResponse.headers = response.headers
     viewResponse.status = response.status
     viewResponse.redirect = response.status === 500 || response.type === 'opaqueredirect'
-    viewResponse.document = (new DOMParser()).parseFromString(await response.text(), 'text/html')
-    viewResponse.document.querySelectorAll('link.css').forEach((link: HTMLLinkElement) => {
-      if (document.querySelector(`link.css[href='${link.getAttribute('href')}']`) == null) {
-        document.head.append(link)
-      }
-    })
-
-    viewResponse.document.querySelectorAll('script.script').forEach((script: HTMLScriptElement) => {
-      if (document.querySelector(`script.script[src='${script.getAttribute('src')}']`) == null) {
-        document.body.append(script)
-      }
-    })
+    viewResponse.text = await response.text();
 
     return viewResponse
   }
 
+  get document (): Document {
+    if (null !== this.text && document === this._document) {
+      this._document = (new DOMParser()).parseFromString(this.text, 'text/html')
+    }
+    return this._document
+  }
+
   public getDocumentHelper(): ElementHelper
   {
-    return new ElementHelper(this.document.documentElement);
+    return new ElementHelper(this._document.documentElement);
   }
 }

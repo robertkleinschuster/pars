@@ -2,38 +2,66 @@ import 'winbox'
 import 'winbox/dist/css/themes/modern.min.css'
 import ViewEvent from './ViewEvent'
 import ViewMessage from './ViewMessage'
+import ViewState from './ViewState'
 
 export default class ViewWindow extends window.WinBox {
   private viewEvent: ViewEvent
 
-  constructor (viewEvent: ViewEvent, window: WindowProxy) {
+  private parentWindow: WindowProxy
+  private contentWindow: WindowProxy
+
+  constructor (viewEvent: ViewEvent, parent: WindowProxy) {
     super({
-      title: 'window', url: viewEvent.getUrl().toString(), x: 'center', y: 'center', class: 'modern',
+      title: 'window', x: 'center', y: 'center', class: 'modern',
     })
     this.viewEvent = viewEvent
-    const iframe = this.body.querySelector('iframe') as HTMLIFrameElement
-    iframe.onload = this.onLoad.bind(this, iframe.contentWindow)
-    this.onclose = (): boolean => {
-      const popStateEvent = new PopStateEvent('popstate', {
-        state: window.history.state
-      })
-      window.dispatchEvent(popStateEvent)
-      if (window.top) {
-        window.top.dispatchEvent(popStateEvent)
-      }
-      return false
-    }
+    this.parentWindow = parent
+    this.load()
   }
 
-  protected onLoad (window: WindowProxy) {
-    this.setTitle(window.document.title ?? this.title)
-    window.addEventListener(ViewEvent.name, async (event: CustomEvent) => {
+  onclose = (): boolean => {
+    const popStateEvent = new PopStateEvent('popstate', {
+      state: this.parentWindow.history.state
+    })
+    this.parentWindow.dispatchEvent(popStateEvent)
+    return false
+  }
+
+  private async load () {
+    const response = await this.viewEvent.getResponse()
+    const objectElement = document.createElement('object')
+    objectElement.type = 'text/html'
+    objectElement.data = 'about:blank'
+
+    objectElement.style.width = '100%'
+
+    this.body.replaceChildren(objectElement)
+
+    if (objectElement.contentWindow) {
+      this.contentWindow = objectElement.contentWindow
+    }
+
+    if (objectElement.contentDocument) {
+      objectElement.contentDocument.write(response.text)
+      objectElement.contentDocument.close()
+    }
+
+    this.onload()
+  }
+
+  private onload () {
+    if (null === this.contentWindow) {
+      return
+    }
+    ViewState.replace(this.viewEvent.getState(), this.contentWindow)
+    this.setTitle(this.contentWindow.document.title ?? this.title)
+    this.contentWindow.addEventListener(ViewEvent.name, async (event: CustomEvent) => {
       const viewEvent = event.detail as ViewEvent
       if (viewEvent.target === ViewEvent.TARGET_WINDOW) {
-        ViewWindow.open(viewEvent, window)
+        ViewWindow.open(viewEvent, this.contentWindow)
       }
     })
-    window.addEventListener(ViewMessage.name, (event: CustomEvent) => {
+    this.contentWindow.addEventListener(ViewMessage.name, (event: CustomEvent) => {
       this.viewEvent.element.dispatchEvent(new CustomEvent(ViewMessage.name, {
         detail: event.detail,
         bubbles: true
@@ -41,7 +69,7 @@ export default class ViewWindow extends window.WinBox {
     })
   }
 
-  public static open (viewEvent: ViewEvent, window: WindowProxy) {
-    return new ViewWindow(viewEvent, window)
+  public static open (viewEvent: ViewEvent, parentWindow: WindowProxy) {
+    return new ViewWindow(viewEvent, parentWindow)
   }
 }

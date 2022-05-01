@@ -9,8 +9,8 @@ use Pars\Core\{Application\ApplicationContainer,
     Http\HttpFactory,
     Pipeline\MiddlewarePipeline,
     Router\AggregatedRoute,
-    Router\RequestRouter
-};
+    Router\RequestRouter,
+    Router\RouteInterface};
 use Pars\Core\Error\NotFound\NotFoundHandler;
 use Pars\Core\Http\Emitter\SapiEmitter;
 use Pars\Core\Http\Header\CacheControlMiddleware;
@@ -115,7 +115,7 @@ abstract class AbstractApplication implements RequestHandlerInterface, Middlewar
         return $this->pipeline;
     }
 
-    private function getRouter(): RequestRouter
+    public function getRouter(): RequestRouter
     {
         if (!isset($this->router)) {
             $this->router = clone $this->getContainer()->get(RequestRouter::class);

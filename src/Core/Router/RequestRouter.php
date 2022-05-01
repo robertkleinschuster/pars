@@ -28,10 +28,16 @@ class RequestRouter implements MiddlewareInterface
         $this->routes = clone $this->routes;
     }
 
+    public function push(RouteInterface $route): self
+    {
+        $this->routes->push($route);
+        return $this;
+    }
+
     public function route(RequestHandlerInterface $handler): AggregatedRoute
     {
         $route = new AggregatedRoute($handler);
-        $this->routes->push($route);
+        $this->push($route);
         return $route;
     }
 

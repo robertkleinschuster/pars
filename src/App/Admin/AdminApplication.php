@@ -3,6 +3,7 @@
 namespace Pars\App\Admin;
 
 use Pars\App\Admin\FileExplorer\BrowserHandler;
+use Pars\App\Admin\Overview\OverviewActionHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
 use Pars\Core\Application\Web\WebApplication;
@@ -25,9 +26,11 @@ class AdminApplication extends WebApplication
     {
         parent::init();
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/overview', new OverviewHandler());
+        $this->routePost('/overview', new OverviewActionHandler());
+
         $this->route('/testpage', $this->getContainer()->get(StartpageHandler::class));
         $this->route('/browser', $this->getContainer()->get(BrowserHandler::class));
-        $this->route('/overview', $this->getContainer()->get(OverviewHandler::class));
         $this->route('/editor/:file+', $this->getContainer()->get(FileEditorHandler::class));
         $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
     }
@@ -41,9 +44,7 @@ class AdminApplication extends WebApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->getTranslator()->addPath(__DIR__ . '/translations');
-        if (($request->getQueryParams()['target'] ?? '') !== 'window') {
-            $this->getLayout()->setHeader($this->renderHeader());
-        }
+        $this->getLayout()->setHeader($this->renderHeader());
         $this->getLayout()->setTitle('admin');
         return parent::handle($request);
     }

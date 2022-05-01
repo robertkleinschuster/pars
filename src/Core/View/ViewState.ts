@@ -29,15 +29,20 @@ export default class ViewState {
     }
   }
 
-  public static replace (state: ViewState) {
+  public static replace (state: ViewState, window?: Window) {
+    window = window ?? global.window.self
     window.history.replaceState(state, '', state.url)
   }
 
   public static push (state: ViewState) {
-    window.history.pushState(state, '', state.url)
+    const window = global.window.self
+    if (window.self === window.top) {
+      window.history.pushState(state, '', state.url)
+    }
   }
 
   public static init () {
+    const window = global.window.self
     window.onpopstate = this.pop
     this.replace(new this)
   }
