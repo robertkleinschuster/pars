@@ -9,8 +9,6 @@ use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\ViewRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Throwable;
 
 class WebApplication extends AbstractApplication
 {
@@ -29,10 +27,15 @@ class WebApplication extends AbstractApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = parent::handle($request->withAttribute(Layout::class, $this->getLayout()));
+        $this->initLayout($request, $response);
+        return $response->withBody($this->getRenderer()->render());
+    }
+
+    protected function initLayout(ServerRequestInterface $request, ResponseInterface $response): void
+    {
         $this->getLayout()->setMain($response->getBody());
         $hidden = array_map('trim', explode(',', $request->getHeaderLine('x-layout-hide')));
         $this->getLayout()->hide($hidden);
-        return $response->withBody($this->getRenderer()->render());
     }
 
     protected function getRenderer(): ViewRenderer
