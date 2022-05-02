@@ -9,7 +9,7 @@ export default class ViewEventInitializer {
   }
 
   public init (): void {
-    this.component.element.querySelectorAll('[data-event]').forEach(this.initEvent.bind(this))
+    this.component.element.querySelectorAll(`[data-event]`).forEach(this.initEvent.bind(this))
   }
 
   protected initEvent (element: HTMLElement): void {

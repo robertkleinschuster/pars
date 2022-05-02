@@ -2,8 +2,7 @@
 
 namespace Pars\Core\View\Overview;
 
-use Pars\Core\View\{EntrypointInterface, Icon\Icon, ViewComponent, ViewModel, ViewRenderer};
-use SplDoublyLinkedList;
+use Pars\Core\View\{EntrypointInterface, Icon\Icon, ViewComponent, ViewEvent, ViewModel, ViewRenderer};
 
 class Overview extends ViewComponent implements EntrypointInterface
 {

@@ -6,6 +6,8 @@ use Pars\App\Admin\FileExplorer\BrowserHandler;
 use Pars\App\Admin\Overview\OverviewActionHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
 use Pars\App\Admin\Startpage\StartpageHandler;
+use Pars\App\Admin\User\UserActionHandler;
+use Pars\App\Admin\User\UserHandler;
 use Pars\Core\Application\Web\WebApplication;
 use Pars\Core\Config\Config;
 use Pars\Core\Container\ContainerResolver;
@@ -26,6 +28,9 @@ class AdminApplication extends WebApplication
     {
         parent::init();
         $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/user', new UserHandler());
+        $this->route('/user/:id', new UserHandler());
+        $this->routePost('/user/:id', new UserActionHandler());
         $this->route('/overview', new OverviewHandler());
         $this->routePost('/overview', new OverviewActionHandler());
 

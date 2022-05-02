@@ -15,6 +15,7 @@ use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewEvent;
 use Pars\Core\View\ViewModel;
 use Pars\Core\View\ViewRenderer;
+use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;

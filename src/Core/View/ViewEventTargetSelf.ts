@@ -8,5 +8,6 @@ export default class ViewEventTargetSelf extends ViewEvent {
     this.getElementHelper().replaceClosest(response.document.documentElement, this.selector)
     ViewState.push(this.getState())
     document.title = response.document.title
+    this.injectDependencies(response)
   }
 }

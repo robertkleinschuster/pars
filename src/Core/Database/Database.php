@@ -8,10 +8,7 @@ class Database
 {
     protected DbAdapter $adapter;
 
-    /**
-     * @return mixed|DbAdapter|object
-     */
-    public function getAdapter()
+    public function getAdapter(): DbAdapter
     {
         if (!isset($this->adapter)) {
             $this->adapter = get(DbAdapter::class);

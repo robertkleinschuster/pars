@@ -7,6 +7,10 @@ services:
     volumes:
       - .:/var/www
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
   nginx:
     build:
       context: ./docker/nginx
@@ -28,4 +32,5 @@ services:
       - MYSQL_PASSWORD=pars
       - MYSQL_ROOT_PASSWORD=pars
     volumes:
+      - ./data/mariadb:/var/lib/mysql
       - ./docker/mariadb/data.sql:/docker-entrypoint-initdb.d/data.sql

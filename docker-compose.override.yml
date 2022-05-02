@@ -14,3 +14,6 @@ services:
     volumes:
       - ./docker/yarn/development.sh:/development.sh
       - .:/app
+  mariadb:
+    ports:
+      - "3306:3306"

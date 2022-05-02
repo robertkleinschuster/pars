@@ -21,6 +21,7 @@ class ViewEvent
     public string $target = self::TARGET_SELF;
     public UriBuilder|string $url = '';
     public string $title = '';
+    public string $method;
 
     final public function __construct()
     {
@@ -50,6 +51,9 @@ class ViewEvent
         }
         if (!empty($this->title)) {
             $attributes .= " data-title='{$this->title}'";
+        }
+        if (!empty($this->method)) {
+            $attributes .= " data-method='{$this->method}'";
         }
         $attributes .= " tabindex='0'";
         return $attributes;

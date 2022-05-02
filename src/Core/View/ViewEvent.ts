@@ -73,12 +73,18 @@ export default abstract class ViewEvent {
   }
 
   public getRequest () {
+
+    return new Request(this.getUrl().toString(), this.getRequestInit())
+  }
+
+  protected getRequestInit()
+  {
     const headers = new Headers()
     const init: RequestInit = {
       headers: headers
     }
     init.method = this.method
-    return new Request(this.getUrl().toString(), init)
+    return init;
   }
 
   public async getResponse (): Promise<ViewEventResponse> {
@@ -87,5 +93,20 @@ export default abstract class ViewEvent {
 
   public getElementHelper () {
     return new ElementHelper(this.element)
+  }
+
+  public injectDependencies(viewResponse: ViewEventResponse)
+  {
+    viewResponse.document.querySelectorAll('link.css').forEach((link: HTMLLinkElement) => {
+      if (document.querySelector(`link.css[href='${link.getAttribute('href')}']`) == null) {
+        document.head.append(link)
+      }
+    })
+
+    viewResponse.document.querySelectorAll('script.script').forEach((script: HTMLScriptElement) => {
+      if (document.querySelector(`script.script[src='${script.getAttribute('src')}']`) == null) {
+        document.body.append(script)
+      }
+    })
   }
 }
