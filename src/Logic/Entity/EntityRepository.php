@@ -14,6 +14,42 @@ class EntityRepository
         $this->pdo = new PDO(config('db.dsn'), config('db.username'), config('db.password'));
     }
 
+    public function findTypes(): array
+    {
+        return $this->findColumn('Entity_Type');
+    }
+
+    public function findStates(): array
+    {
+        return $this->findColumn('Entity_State');
+    }
+
+    public function findContexts(): array
+    {
+        return $this->findColumn('Entity_Context');
+    }
+
+    public function findLanguages(): array
+    {
+        return $this->findColumn('Entity_Language');
+    }
+
+    public function findCountries(): array
+    {
+        return $this->findColumn('Entity_Country');
+    }
+
+    private function findColumn(string $column): array
+    {
+        $result = [];
+        $query = "SELECT DISTINCT $column FROM Entity";
+        $stmt = $this->pdo->prepare($query);
+        if ($stmt->execute()) {
+            $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
+        return $result;
+    }
+
     /**
      * @return Generator
      * @throws EntityException

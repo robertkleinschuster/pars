@@ -2,6 +2,7 @@
 
 namespace Pars\App\Admin\User;
 
+use Pars\Logic\Entity\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
