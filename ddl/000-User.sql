@@ -6,7 +6,7 @@ create table if not exists User
     User_Data     json        not null default '{}',
     User_Created  timestamp   not null default current_timestamp(),
     User_Modified timestamp   not null default current_timestamp() on update current_timestamp(),
-    constraint PK_User_ID
+    constraint PK_User
         primary key (User_ID),
     constraint User_Data
         check (json_valid(User_Data))
