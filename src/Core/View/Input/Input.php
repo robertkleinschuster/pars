@@ -2,9 +2,10 @@
 
 namespace Pars\Core\View\Input;
 
+use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\ViewComponent;
 
-class Input extends ViewComponent
+class Input extends ViewComponent implements EntrypointInterface
 {
     public string $type = 'text';
     public string $key = '';
@@ -14,6 +15,11 @@ class Input extends ViewComponent
     {
         parent::init();
         $this->setTemplate(__DIR__ . '/templates/input.phtml');
+    }
+
+    public static function getEntrypoint(): string
+    {
+        return __DIR__ . '/Input.ts';
     }
 
     protected function attr(): string
