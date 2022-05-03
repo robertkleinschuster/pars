@@ -77,14 +77,13 @@ export default abstract class ViewEvent {
     return new Request(this.getUrl().toString(), this.getRequestInit())
   }
 
-  protected getRequestInit()
-  {
+  protected getRequestInit () {
     const headers = new Headers()
     const init: RequestInit = {
       headers: headers
     }
     init.method = this.method
-    return init;
+    return init
   }
 
   public async getResponse (): Promise<ViewEventResponse> {
@@ -95,16 +94,30 @@ export default abstract class ViewEvent {
     return new ElementHelper(this.element)
   }
 
-  public injectDependencies(viewResponse: ViewEventResponse)
-  {
-    viewResponse.document.querySelectorAll('link.css').forEach((link: HTMLLinkElement) => {
-      if (document.querySelector(`link.css[href='${link.getAttribute('href')}']`) == null) {
+  public injectDependencies (viewResponse: ViewEventResponse) {
+    viewResponse.document.querySelectorAll('link.css').forEach((l: HTMLLinkElement) => {
+      const href = l.getAttribute('href')
+      if (null === href) {
+        return
+      }
+      if (document.querySelector(`link.css[href='${href}']`) == null) {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.classList.add('css')
+        link.href = href
         document.head.append(link)
       }
     })
 
-    viewResponse.document.querySelectorAll('script.script').forEach((script: HTMLScriptElement) => {
-      if (document.querySelector(`script.script[src='${script.getAttribute('src')}']`) == null) {
+    viewResponse.document.querySelectorAll('script.script').forEach((s: HTMLScriptElement) => {
+      const src = s.getAttribute('src')
+      if (null === src) {
+        return
+      }
+      if (document.querySelector(`script.script[src='${src}']`) == null) {
+        const script = document.createElement('script')
+        script.classList.add('script')
+        script.src = src
         document.body.append(script)
       }
     })
