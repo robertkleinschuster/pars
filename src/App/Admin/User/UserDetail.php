@@ -20,6 +20,9 @@ class UserDetail extends Detail
         $input = $this->addInput('name', 'Name');
         $input->model = $this->model;
         $input->setEvent($event);
+        $input = $this->addInput('password', 'Password');
+        $input->model = $this->model;
+        $input->setEvent($event);
     }
 
     public function setId(string $id): self

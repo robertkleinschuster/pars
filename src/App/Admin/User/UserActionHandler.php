@@ -28,7 +28,7 @@ class UserActionHandler implements RequestHandlerInterface
         }
 
         if (isset($data['password'])) {
-            $user->setPassword($data['password']);
+            $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
         }
 
         $repo->save($user);
