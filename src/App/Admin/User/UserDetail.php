@@ -14,12 +14,10 @@ class UserDetail extends Detail
     {
         parent::init();
         $this->model = new UserModel();
-        $input = $this->addInput('Person_Name', 'Name');
-        $input->model = $this->model;
         $event = ViewEvent::action('');
         $event->event = 'change';
         $event->method = 'POST';
-        $input = $this->addInput('User_Name', 'Username');
+        $input = $this->addInput('name', 'Name');
         $input->model = $this->model;
         $input->setEvent($event);
     }

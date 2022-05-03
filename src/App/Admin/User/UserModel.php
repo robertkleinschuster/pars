@@ -3,21 +3,24 @@
 namespace Pars\App\Admin\User;
 
 use Pars\Core\View\ViewModel;
-use PDO;
+use Pars\Logic\User\User;
+use Pars\Logic\User\UserException;
+use Pars\Logic\User\UserRepository;
 use Traversable;
 
 class UserModel extends ViewModel
 {
-    private string $id;
+    protected string $id;
+    protected string $name;
 
+    /**
+     * @throws UserException
+     */
     public function getIterator(): Traversable
     {
-        $pdo = new PDO(config('db.dsn'), config('db.username'), config('db.password'));
-        $query = 'SELECT * FROM User INNER JOIN Person USING (Person_ID);';
-        $stmt = $pdo->prepare($query);
-        $stmt->execute();
-        while ($user = $stmt->fetchObject(static::class)) {
-            yield $user;
+        $repo = new UserRepository();
+        foreach ($repo->findAll() as $user) {
+            yield (new static())->fromUser($user);
         }
     }
 
@@ -35,16 +38,17 @@ class UserModel extends ViewModel
     public function isList(): bool
     {
         if (isset($this->id)) {
-            $pdo = new PDO(config('db.dsn'), config('db.username'), config('db.password'));
-
-            $query = 'SELECT * FROM User INNER JOIN Person USING (Person_ID) WHERE Person_ID = :id;';
-            $stmt = $pdo->prepare($query);
-            $stmt->bindValue('id', $this->id);
-            $stmt->setFetchMode(PDO::FETCH_INTO, $this);
-            $stmt->execute();
-            $stmt->fetch();
+            $repo = new UserRepository();
+            $this->fromUser($repo->findById($this->id));
             return false;
         }
         return true;
+    }
+
+    private function fromUser(User $user): self
+    {
+        $this->set('id', $user->getId());
+        $this->set('name', $user->getName());
+        return $this;
     }
 }
