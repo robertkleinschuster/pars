@@ -2,7 +2,7 @@ FROM php:8.1.4-fpm AS pars_php
 
 RUN docker-php-source extract \
     && apt-get update \
-    && apt-get install -y libicu-dev libtidy-dev \
+    && apt-get install -y libicu-dev libtidy-dev git zlib1g-dev unzip \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure pdo_mysql \
     && docker-php-ext-configure tidy \

@@ -37,6 +37,13 @@ class Icon extends ViewComponent implements EntrypointInterface
         $icon->setIcon('play');
         return $icon;
     }
+    
+    public static function edit()
+    {
+        $icon = new static();
+        $icon->setIcon('edit');
+        return $icon;
+    }
 
     public static function create()
     {

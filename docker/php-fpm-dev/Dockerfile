@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 
 RUN docker-php-source extract \
     && apt-get update \
-    && apt-get install -y libicu-dev libtidy-dev \
-    && pecl install xdebug  \
+    && apt-get install -y libicu-dev libtidy-dev git zlib1g-dev unzip \
+    && pecl install xdebug \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure pdo_mysql \
     && docker-php-ext-configure tidy \

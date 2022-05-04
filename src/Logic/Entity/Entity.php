@@ -6,23 +6,48 @@ use DateTime;
 
 class Entity
 {
+    public const TYPE_DEFAULT = 'default';
+    
+    public const STATE_ACTIVE = 'active';
+    public const STATE_INACTIVE = 'inactive';
+    
+    public const CONTEXT_DEFAULT = 'default';
+    
+    public const LANGUAGE_DE = 'de';
+    public const LANGUAGE_IT = 'it';
+    public const LANGUAGE_FR = 'fr';
+    public const LANGUAGE_EN = 'en';
+    
+    public const COUNTRY_AT = 'at';
+    public const COUNTRY_DE = 'de';
+    public const COUNTRY_CH = 'ch';
+    
     private string $Entity_ID = '';
     private ?string $Entity_ID_Parent = null;
     private ?string $Entity_ID_Template = null;
     private ?string $Entity_ID_Original = null;
 
-    private string $Entity_Type = '';
-    private string $Entity_State = '';
-    private string $Entity_Context = '';
-    private string $Entity_Language = '';
-    private string $Entity_Country = '';
+    private string $Entity_Type = self::TYPE_DEFAULT;
+    private string $Entity_State = self::STATE_ACTIVE;
+    private string $Entity_Context = self::CONTEXT_DEFAULT;
+    private string $Entity_Language = self::LANGUAGE_DE;
+    private string $Entity_Country = self::COUNTRY_AT;
     private string $Entity_Code = '';
     private int $Entity_Order = 0;
     private string $Entity_Name = '';
     private string $Entity_Data = '{}';
     private string $Entity_Created = '';
     private string $Entity_Modified = '';
-
+    
+    final public function __construct()
+    {
+        $this->init();
+    }
+    
+    protected function init()
+    {
+    }
+    
     /**
      * @return string
      */
@@ -30,7 +55,17 @@ class Entity
     {
         return $this->Entity_ID;
     }
-
+    
+    /**
+     * @param string $Entity_ID
+     * @return Entity
+     */
+    public function setId(string $Entity_ID): Entity
+    {
+        $this->Entity_ID = $Entity_ID;
+        return $this;
+    }
+    
     /**
      * @return string
      */

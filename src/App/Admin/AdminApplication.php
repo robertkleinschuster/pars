@@ -2,6 +2,8 @@
 
 namespace Pars\App\Admin;
 
+use Pars\App\Admin\Entity\EntityActionHandler;
+use Pars\App\Admin\Entity\EntityHandler;
 use Pars\App\Admin\FileExplorer\BrowserHandler;
 use Pars\App\Admin\Overview\OverviewActionHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
@@ -27,7 +29,8 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
-        $this->route('/', $this->getContainer()->get(StartpageHandler::class));
+        $this->route('/:id+', new EntityHandler());
+        $this->routePost('/:id+', new EntityActionHandler());
         $this->route('/user', new UserHandler());
         $this->route('/user/:id', new UserHandler());
         $this->routePost('/user/:id', new UserActionHandler());

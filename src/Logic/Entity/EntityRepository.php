@@ -219,14 +219,14 @@ class EntityRepository
     {
         if ($entity->getId()) {
             $query = 'UPDATE Entity
-SET 
+SET
     Entity_Type=:type,
     Entity_State=:state,
     Entity_Context=:context,
     Entity_Language=:language,
     Entity_Country=:country,
     Entity_Code=:code,
-    Entity_Name=:name, 
+    Entity_Name=:name,
     Entity_Data=:data
 WHERE Entity_ID = :id';
             $stmt = $this->pdo->prepare($query);
@@ -258,22 +258,22 @@ WHERE Entity_ID = :id';
     private function insert(Entity $entity): Entity
     {
         $query = 'INSERT INTO Entity (
-                    Entity_Type, 
-                    Entity_State, 
-                    Entity_Context, 
-                    Entity_Language, 
-                    Entity_Country, 
-                    Entity_Code, 
-                    Entity_Name, 
+                    Entity_Type,
+                    Entity_State,
+                    Entity_Context,
+                    Entity_Language,
+                    Entity_Country,
+                    Entity_Code,
+                    Entity_Name,
                     Entity_Data)
 VALUES (
-        :type, 
-        :state, 
-        :context, 
-        :language, 
-        :country, 
-        :code, 
-        :name, 
+        :type,
+        :state,
+        :context,
+        :language,
+        :country,
+        :code,
+        :name,
         :data
         ) RETURNING *';
 

@@ -81,9 +81,16 @@ function response(string|StreamInterface $body, int $status = 200): ResponseInte
     }
     return http()
         ->responseFactory()
-        ->createResponse()
-        ->withBody($body)
-        ->withStatus($status);
+        ->createResponse($status)
+        ->withBody($body);
+}
+
+function redirect_response(string $location): ResponseInterface
+{
+    return http()
+        ->responseFactory()
+        ->createResponse(302)
+        ->withHeader('Location', $location);
 }
 
 function logger(): LoggerInterface
