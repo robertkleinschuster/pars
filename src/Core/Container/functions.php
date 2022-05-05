@@ -85,11 +85,11 @@ function response(string|StreamInterface $body, int $status = 200): ResponseInte
         ->withBody($body);
 }
 
-function redirect_response(string $location): ResponseInterface
+function redirect_response(string $location, int $code = 302): ResponseInterface
 {
     return http()
         ->responseFactory()
-        ->createResponse(302)
+        ->createResponse($code)
         ->withHeader('Location', $location);
 }
 

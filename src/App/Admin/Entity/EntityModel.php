@@ -4,13 +4,14 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\ViewModel;
 use Pars\Logic\Entity\Entity;
+use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
 use Traversable;
 
 class EntityModel extends ViewModel
 {
     protected Entity $entity;
-    
+
     /**
      * @return Entity
      */
@@ -21,7 +22,20 @@ class EntityModel extends ViewModel
         }
         return $this->entity;
     }
-    
+
+    /**
+     * @throws EntityException
+     */
+    public function reloadEntity(): void
+    {
+        if (!empty($this->getId())) {
+            $repo = new EntityRepository();
+            $this->entity = $repo->findById($this->getId());
+        } else {
+            $this->entity = new Entity();
+        }
+    }
+
     /**
      * @param Entity $entity
      * @return EntityModel
@@ -31,7 +45,7 @@ class EntityModel extends ViewModel
         $this->entity = $entity;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -39,17 +53,19 @@ class EntityModel extends ViewModel
     {
         return $this->getEntity()->getId();
     }
-    
+
     /**
      * @param string $id
      * @return EntityModel
+     * @throws EntityException
      */
     public function setId(string $id): EntityModel
     {
         $this->getEntity()->setId($id);
+        $this->reloadEntity();
         return $this;
     }
-    
+
     public function getIterator(): Traversable
     {
         $repo = new EntityRepository();
@@ -57,12 +73,12 @@ class EntityModel extends ViewModel
             yield (new static())->setEntity($entity);
         }
     }
-    
+
     public function isList(): bool
     {
         return empty($this->getId());
     }
-    
+
     public function get(string $name)
     {
         if ($name) {
@@ -70,10 +86,10 @@ class EntityModel extends ViewModel
         }
         return parent::get($name);
     }
-    
+
     public function getEntityValue(string $name)
     {
         return $this->getEntity()->{"get$name"}();
     }
-    
+
 }

@@ -2,8 +2,9 @@
 
 namespace Pars\App\Admin;
 
-use Pars\App\Admin\Entity\EntityActionHandler;
+use Pars\App\Admin\Entity\EntityDeleteHandler;
 use Pars\App\Admin\Entity\EntityHandler;
+use Pars\App\Admin\Entity\EntityPostHandler;
 use Pars\App\Admin\FileExplorer\BrowserHandler;
 use Pars\App\Admin\Overview\OverviewActionHandler;
 use Pars\App\Admin\Overview\OverviewHandler;
@@ -29,8 +30,11 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
+        $this->route('/:id+', new EntityPostHandler(), 'POST');
+        $this->route('/:id+', new EntityDeleteHandler(), 'DELETE');
         $this->route('/:id+', new EntityHandler());
-        $this->routePost('/:id+', new EntityActionHandler());
+
+
         $this->route('/user', new UserHandler());
         $this->route('/user/:id', new UserHandler());
         $this->routePost('/user/:id', new UserActionHandler());

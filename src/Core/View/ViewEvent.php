@@ -29,6 +29,96 @@ class ViewEvent
     }
 
     /**
+     * @return string
+     */
+    public function getEvent(): string
+    {
+        return $this->event;
+    }
+
+    /**
+     * @param string $event
+     * @return ViewEvent
+     */
+    public function setEvent(string $event): ViewEvent
+    {
+        $this->event = $event;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTarget(): string
+    {
+        return $this->target;
+    }
+
+    /**
+     * @param string $target
+     * @return ViewEvent
+     */
+    public function setTarget(string $target): ViewEvent
+    {
+        $this->target = $target;
+        return $this;
+    }
+
+    /**
+     * @return UriBuilder|string
+     */
+    public function getUrl(): UriBuilder|string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param UriBuilder|string $url
+     * @return ViewEvent
+     */
+    public function setUrl(UriBuilder|string $url): ViewEvent
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return ViewEvent
+     */
+    public function setTitle(string $title): ViewEvent
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     * @return ViewEvent
+     */
+    public function setMethod(string $method): ViewEvent
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
      * @return array<string>
      */
     public function getRouteParams(): array
@@ -78,7 +168,7 @@ class ViewEvent
         return $event;
     }
 
-    public static function action(string $title): static
+    public static function action(string $title = ''): static
     {
         /* @var $event ViewEvent */
         $event = create(static::class);

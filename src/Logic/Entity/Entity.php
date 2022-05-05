@@ -7,21 +7,21 @@ use DateTime;
 class Entity
 {
     public const TYPE_DEFAULT = 'default';
-    
+
     public const STATE_ACTIVE = 'active';
     public const STATE_INACTIVE = 'inactive';
-    
+
     public const CONTEXT_DEFAULT = 'default';
-    
+
     public const LANGUAGE_DE = 'de';
     public const LANGUAGE_IT = 'it';
     public const LANGUAGE_FR = 'fr';
     public const LANGUAGE_EN = 'en';
-    
+
     public const COUNTRY_AT = 'at';
     public const COUNTRY_DE = 'de';
     public const COUNTRY_CH = 'ch';
-    
+
     private string $Entity_ID = '';
     private ?string $Entity_ID_Parent = null;
     private ?string $Entity_ID_Template = null;
@@ -38,16 +38,16 @@ class Entity
     private string $Entity_Data = '{}';
     private string $Entity_Created = '';
     private string $Entity_Modified = '';
-    
+
     final public function __construct()
     {
         $this->init();
     }
-    
+
     protected function init()
     {
     }
-    
+
     /**
      * @return string
      */
@@ -55,7 +55,7 @@ class Entity
     {
         return $this->Entity_ID;
     }
-    
+
     /**
      * @param string $Entity_ID
      * @return Entity
@@ -65,7 +65,7 @@ class Entity
         $this->Entity_ID = $Entity_ID;
         return $this;
     }
-    
+
     /**
      * @return string
      */
@@ -308,5 +308,51 @@ class Entity
     public function getModified(): DateTime
     {
         return new DateTime($this->Entity_Modified);
+    }
+
+    public function clear()
+    {
+        $this->setType('');
+        $this->setState('');
+        $this->setContext('');
+        $this->setLanguage('');
+        $this->setCountry('');
+        $this->setCode('');
+        $this->setDataArray([]);
+        $this->setParent('');
+        $this->setTemplate('');
+        $this->setOriginal('');
+    }
+
+    public function from(array $data)
+    {
+        if (isset($data['type'])) {
+            $this->setType($data['type']);
+        }
+
+        if (isset($data['state'])) {
+            $this->setState($data['state']);
+        }
+
+        if (isset($data['context'])) {
+            $this->setContext($data['context']);
+        }
+
+        if (isset($data['language'])) {
+            $this->setLanguage($data['language']);
+        }
+
+        if (isset($data['country'])) {
+            $this->setCountry($data['country']);
+        }
+
+        if (isset($data['code'])) {
+            $this->setCode($data['code']);
+        }
+
+        if (isset($data['name'])) {
+            $this->setName($data['name']);
+        }
+        return $this;
     }
 }

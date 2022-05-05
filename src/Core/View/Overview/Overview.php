@@ -2,7 +2,7 @@
 
 namespace Pars\Core\View\Overview;
 
-use Pars\Core\View\{EntrypointInterface, Icon\Icon, ViewComponent, ViewEvent, ViewModel, ViewRenderer};
+use Pars\Core\View\{EntrypointInterface, Icon\Icon, ViewComponent, ViewModel, ViewRenderer};
 
 class Overview extends ViewComponent implements EntrypointInterface
 {
@@ -36,6 +36,16 @@ class Overview extends ViewComponent implements EntrypointInterface
         return __DIR__ . '/Overview.ts';
     }
 
+    public function setRowModel(ViewModel $model): self
+    {
+        $this->trow->model = $model;
+        return $this;
+    }
+
+    public function getRowModel(): ViewModel
+    {
+        return $this->trow->getModel();
+    }
 
     public function onRender(ViewRenderer $renderer)
     {

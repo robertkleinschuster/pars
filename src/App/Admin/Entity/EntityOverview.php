@@ -4,15 +4,25 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
-use Pars\Core\View\ViewModel;
 
+/**
+ * @method EntityModel getRowModel()
+ */
 class EntityOverview extends Overview
 {
     public function init()
     {
         parent::init();
-        $this->trow->model = new EntityModel();
-        $this->addIconButton(Icon::edit())->setEventLink(url('/:id'));
+        $this->setRowModel(new EntityModel());
+
+        $this->addIconButton(Icon::edit())
+            ->setEventLink(url('/:id'));
+
+        $this->addIconButton(Icon::delete())
+            ->setEventAction()
+            ->setUrl(url('/:id'))
+            ->setMethod('DELETE');
+
         $this->addField('type', 'type');
         $this->addField('state', 'state');
         $this->addField('context', 'context');
@@ -20,12 +30,5 @@ class EntityOverview extends Overview
         $this->addField('country', 'country');
         $this->addField('code', 'code');
         $this->addField('name', 'name');
-    }
-    
-    public function withModel(ViewModel $model): static
-    {
-        $clone = clone $this;
-        $clone->trow->model = $model;
-        return $clone;
     }
 }

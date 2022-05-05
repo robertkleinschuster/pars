@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class EntityActionHandler implements RequestHandlerInterface
+class EntityPostHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -19,24 +19,12 @@ class EntityActionHandler implements RequestHandlerInterface
         } else {
             $entity = new Entity();
         }
-    
+
         $data = $request->getParsedBody();
-    
-        if (isset($data['state'])) {
-            $entity->setState($data['state']);
-        }
-        
-        if (isset($data['name'])) {
-            $entity->setName($data['name']);
-        }
-    
-        if (isset($data['code'])) {
-            $entity->setCode($data['code']);
-        }
-    
+        $entity->from($data);
+
         $repo->save($entity);
-        
-        return redirect_response(url());
+
+        return redirect_response(url(), 303);
     }
-    
 }

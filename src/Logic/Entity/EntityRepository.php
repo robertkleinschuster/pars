@@ -14,6 +14,16 @@ class EntityRepository
         $this->pdo = new PDO(config('db.dsn'), config('db.username'), config('db.password'));
     }
 
+    public function delete(Entity $entity): bool
+    {
+        $query = 'DELETE FROM Entity WHERE 1=1';
+
+        $query = $this->buildCondition($entity, $query);
+
+        $stmt = $this->prepareStmt($entity, $query);
+        return $stmt->execute();
+    }
+
     public function findTypes(): array
     {
         return $this->findColumn('Entity_Type');
@@ -125,67 +135,11 @@ class EntityRepository
     {
         $query = 'SELECT * FROM Entity WHERE 1=1';
 
-        if ($entity->getId()) {
-            $query .= ' AND Entity_ID = :id';
-        }
-
-        if ($entity->getType()) {
-            $query .= ' AND Entity_Type = :type';
-        }
-
-        if ($entity->getState()) {
-            $query .= ' AND Entity_State = :state';
-        }
-
-        if ($entity->getContext()) {
-            $query .= ' AND Entity_Context = :context';
-        }
-
-        if ($entity->getLanguage()) {
-            $query .= ' AND Entity_Language = :language';
-        }
-
-        if ($entity->getCountry()) {
-            $query .= ' AND Entity_Country = :country';
-        }
-
-        if ($entity->getCode()) {
-            $query .= ' AND Entity_Code = :code';
-        }
-
-        if ($entity->getName()) {
-            $query .= ' AND Entity_Name = :name';
-        }
+        $query = $this->buildCondition($entity, $query);
 
         $query .= '  ORDER BY Entity_Order';
 
-        $stmt = $this->pdo->prepare($query);
-
-        if ($entity->getId()) {
-            $stmt->bindValue('id', $entity->getId());
-        }
-
-        if ($entity->getType()) {
-            $stmt->bindValue('type', $entity->getType());
-        }
-        if ($entity->getState()) {
-            $stmt->bindValue('state', $entity->getState());
-        }
-        if ($entity->getContext()) {
-            $stmt->bindValue('context', $entity->getContext());
-        }
-        if ($entity->getLanguage()) {
-            $stmt->bindValue('language', $entity->getLanguage());
-        }
-        if ($entity->getCountry()) {
-            $stmt->bindValue('country', $entity->getCountry());
-        }
-        if ($entity->getCode()) {
-            $stmt->bindValue('code', $entity->getCode());
-        }
-        if ($entity->getName()) {
-            $stmt->bindValue('name', $entity->getName());
-        }
+        $stmt = $this->prepareStmt($entity, $query);
 
         if ($stmt->execute()) {
             while ($entity = $stmt->fetchObject(Entity::class)) {
@@ -293,5 +247,83 @@ VALUES (
         }
 
         throw new EntityException('Unable to save Entity');
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $query
+     * @return string
+     */
+    private function buildCondition(Entity $entity, string $query): string
+    {
+        if ($entity->getId()) {
+            $query .= ' AND Entity_ID = :id';
+        }
+
+        if ($entity->getType()) {
+            $query .= ' AND Entity_Type = :type';
+        }
+
+        if ($entity->getState()) {
+            $query .= ' AND Entity_State = :state';
+        }
+
+        if ($entity->getContext()) {
+            $query .= ' AND Entity_Context = :context';
+        }
+
+        if ($entity->getLanguage()) {
+            $query .= ' AND Entity_Language = :language';
+        }
+
+        if ($entity->getCountry()) {
+            $query .= ' AND Entity_Country = :country';
+        }
+
+        if ($entity->getCode()) {
+            $query .= ' AND Entity_Code = :code';
+        }
+
+        if ($entity->getName()) {
+            $query .= ' AND Entity_Name = :name';
+        }
+        return $query;
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $query
+     * @return false|\PDOStatement
+     */
+    private function prepareStmt(Entity $entity, string $query): \PDOStatement|false
+    {
+        $stmt = $this->pdo->prepare($query);
+
+        if ($entity->getId()) {
+            $stmt->bindValue('id', $entity->getId());
+        }
+
+        if ($entity->getType()) {
+            $stmt->bindValue('type', $entity->getType());
+        }
+        if ($entity->getState()) {
+            $stmt->bindValue('state', $entity->getState());
+        }
+        if ($entity->getContext()) {
+            $stmt->bindValue('context', $entity->getContext());
+        }
+        if ($entity->getLanguage()) {
+            $stmt->bindValue('language', $entity->getLanguage());
+        }
+        if ($entity->getCountry()) {
+            $stmt->bindValue('country', $entity->getCountry());
+        }
+        if ($entity->getCode()) {
+            $stmt->bindValue('code', $entity->getCode());
+        }
+        if ($entity->getName()) {
+            $stmt->bindValue('name', $entity->getName());
+        }
+        return $stmt;
     }
 }
