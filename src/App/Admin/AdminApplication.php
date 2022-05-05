@@ -20,8 +20,9 @@ use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Editor\FileEditorHandler;
-use Pars\Core\View\Group\ViewGroupHandler;
 use Pars\Core\View\Navigation\Navigation;
+use Pars\Logic\Entity\Entity;
+use Pars\Logic\Entity\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -69,13 +70,39 @@ class AdminApplication extends WebApplication
     protected function renderHeader(): StreamInterface
     {
         $navigation = new Navigation();
-        $navigation->addEntry(__('admin.navigation.startpage'), url('/'))
-            ->addEntry('startpage subitem', url('/start-subitem'));
-        $navigation->addEntry(__('admin.navigation.content'), url('/content'));
-        $system = $navigation->addEntry(__('admin.navigation.system'), url('/system'));
-        $system->addEntry('system subitem 1', url('/system-subitem'));
-        $subitem = $system->addEntry('system subitem 2', url('/system-subitem'));
-        $subitem->addEntry('system subsubitem', url('/system-subsubitem'));
+        $repo = new EntityRepository();
+        $types = $navigation->addEntry(
+            __('admin.navigation.entity.definition'),
+            url('/entity', [Entity::TYPE_CONTEXT => Entity::CONTEXT_DEFINITION])
+        );
+        $filterEntity = new Entity();
+        $filterEntity->clear();
+        $filterEntity->setType(Entity::TYPE_TYPE);
+        $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
+        foreach ($repo->find($filterEntity) as $entity) {
+            /** @var Entity $entity */
+            $types->addEntry(
+                __("admin.navigation.entity.type.{$entity->getCode()}"),
+                url('/entity', ['type' => $entity->getCode(), 'context' => $entity->getContext()])
+            );
+        }
+
+        $types = $navigation->addEntry(
+            __('admin.navigation.entity.data'),
+            url('/entity', [Entity::TYPE_CONTEXT => Entity::CONTEXT_DATA])
+        );
+        $filterEntity = new Entity();
+        $filterEntity->clear();
+        $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
+        $filterEntity->setType(Entity::TYPE_DATA);
+        foreach ($repo->find($filterEntity) as $entity) {
+            /** @var Entity $entity */
+            $types->addEntry(
+                __("admin.navigation.entity.data.{$entity->getCode()}"),
+                url('/entity', ['type' => $entity->getCode(), 'context' => Entity::CONTEXT_DATA])
+            );
+        }
+
         return render($navigation);
     }
 

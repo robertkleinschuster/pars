@@ -66,6 +66,7 @@ class NavigationModel extends TreeModel
 
     public function isActive(): bool
     {
+        return false;
         /* @var UriFactoryInterface $uriFactory */
         $uriFactory = get(UriFactoryInterface::class);
         $currentUri = $uriFactory->createUri($_SERVER['REQUEST_URI']);

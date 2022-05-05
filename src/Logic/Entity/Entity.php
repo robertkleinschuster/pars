@@ -8,6 +8,7 @@ use Exception;
 class Entity
 {
     public const TYPE_DEFAULT = 'default';
+    public const TYPE_DATA = 'data';
     public const TYPE_TYPE = 'type';
     public const TYPE_STATE = 'state';
     public const TYPE_CONTEXT = 'context';
@@ -34,11 +35,11 @@ class Entity
     private ?string $Entity_ID_Template = null;
     private ?string $Entity_ID_Original = null;
 
-    private string $Entity_Type = self::TYPE_DEFAULT;
-    private string $Entity_State = self::STATE_ACTIVE;
-    private string $Entity_Context = self::CONTEXT_DATA;
-    private string $Entity_Language = self::LANGUAGE_DE;
-    private string $Entity_Country = self::COUNTRY_AT;
+    private string $Entity_Type = '';
+    private string $Entity_State = '';
+    private string $Entity_Context = '';
+    private string $Entity_Language = '';
+    private string $Entity_Country = '';
     private string $Entity_Code = '';
     private int $Entity_Order = 0;
     private string $Entity_Name = '';

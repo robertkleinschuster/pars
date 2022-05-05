@@ -18,19 +18,24 @@ class EntityPostHandler implements RequestHandlerInterface
         $params = $request->getQueryParams();
         $repo = new EntityRepository();
         $id = $request->getAttribute('id');
-        $hasParent = $params['hasParent'] ?? false;
-        if ($id && !$hasParent) {
+        $mode = $params['mode'] ?? null;
+        if ($id) {
             $entity = $repo->findById($id);
         } else {
             $entity = new Entity();
-            if ($hasParent) {
-                $entity->setParent($id);
-            }
         }
 
+        if ('child' === $mode) {
+            $entity->setId('');
+            $entity->setDataArray([]);
+            $entity->setParent($id);
+            unset($params['mode']);
+        }
+
+        $entity->from($params);
         $entity->from($request->getParsedBody());
         $repo->save($entity);
 
-        return redirect_response(url(), 303);
+        return redirect_response(url()->withParams($params), 303);
     }
 }

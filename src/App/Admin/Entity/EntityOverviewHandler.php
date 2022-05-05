@@ -20,11 +20,16 @@ class EntityOverviewHandler implements RequestHandlerInterface
         $entity->setParent($parent);
         $entity->from($filter);
 
+        $params = $request->getQueryParams();
+        if ($parent) {
+            $params['mode'] = 'child';
+        }
+
         $toolbar = new Toolbar();
         $toolbar->addButton('create')
             ->setEventAction()
             ->setMethod('POST')
-            ->setUrl(url()->withParams(['hasParent' => 1]));
+            ->setUrl(url()->withParams($params));
         $component->setToolbar(render($toolbar));
 
         return response(render($component));
