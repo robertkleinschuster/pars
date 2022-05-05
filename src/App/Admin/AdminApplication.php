@@ -3,7 +3,9 @@
 namespace Pars\App\Admin;
 
 use Pars\App\Admin\Entity\EntityDeleteHandler;
+use Pars\App\Admin\Entity\EntityDetailHandler;
 use Pars\App\Admin\Entity\EntityHandler;
+use Pars\App\Admin\Entity\EntityOverviewHandler;
 use Pars\App\Admin\Entity\EntityPostHandler;
 use Pars\App\Admin\FileExplorer\BrowserHandler;
 use Pars\App\Admin\Overview\OverviewActionHandler;
@@ -18,6 +20,7 @@ use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Editor\FileEditorHandler;
+use Pars\Core\View\Group\ViewGroupHandler;
 use Pars\Core\View\Navigation\Navigation;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -30,9 +33,11 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
-        $this->route('/:id+', new EntityPostHandler(), 'POST');
-        $this->route('/:id+', new EntityDeleteHandler(), 'DELETE');
-        $this->route('/:id+', new EntityHandler());
+
+        $this->route('/entity/:id+', new EntityPostHandler(), 'POST');
+        $this->route('/entity/:id+', new EntityDeleteHandler(), 'DELETE');
+        $this->route('/entity', new EntityOverviewHandler());
+        $this->route('/entity/:id', new EntityDetailHandler());
 
 
         $this->route('/user', new UserHandler());

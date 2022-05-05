@@ -12,17 +12,20 @@ class EntityPostHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $params = $request->getQueryParams();
         $repo = new EntityRepository();
         $id = $request->getAttribute('id');
-        if ($id) {
+        $hasParent = $params['hasParent'] ?? false;
+        if ($id && !$hasParent) {
             $entity = $repo->findById($id);
         } else {
             $entity = new Entity();
+            if ($hasParent) {
+                $entity->setParent($id);
+            }
         }
 
-        $data = $request->getParsedBody();
-        $entity->from($data);
-
+        $entity->from($request->getParsedBody());
         $repo->save($entity);
 
         return redirect_response(url(), 303);

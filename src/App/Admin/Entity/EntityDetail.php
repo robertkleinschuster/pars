@@ -18,23 +18,23 @@ class EntityDetail extends Detail
         $event->setMethod('POST');
         $event->setEvent('change');
 
-        $this->addInput('type', 'type', 'props')
+        $this->addInput('type', 'type', 'props', '')
             ->setEvent($event);
-        $this->addInput('state', 'state', 'props')
+        $this->addInput('state', 'state', 'props', '')
             ->setEvent($event);
-        $this->addInput('context', 'context', 'props')
-            ->setEvent($event);
-
-        $this->addInput('language', 'language', 'locale')
+        $this->addInput('context', 'context', 'props', '')
             ->setEvent($event);
 
-        $this->addInput('country', 'country', 'locale')
-            ->setEvent($event);
-        $this->addInput('code', 'code', 'info')
-            ->setEvent($event);
-        $this->addInput('name', 'name', 'info')
+        $this->addInput('language', 'language', 'locale', '')
             ->setEvent($event);
 
+        $this->addInput('country', 'country', 'locale', '')
+            ->setEvent($event);
+        $this->addInput('code', 'code', 'info', '')
+            ->setEvent($event);
+
+        $this->addInput('name', 'name', 'info', '')
+            ->setEvent($event);
     }
 
     public function addInput(string $key, string $label, string $chapter = null, string $group = null)
@@ -49,4 +49,5 @@ class EntityDetail extends Detail
         $this->getModel()->setId($id);
         return $this;
     }
+
 }

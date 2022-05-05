@@ -69,7 +69,7 @@ class Entity
     /**
      * @return string
      */
-    public function getParent(): string
+    public function getParent(): ?string
     {
         return $this->Entity_ID_Parent;
     }
@@ -78,7 +78,7 @@ class Entity
      * @param string $Entity_ID_Parent
      * @return Entity
      */
-    public function setParent(string $Entity_ID_Parent): Entity
+    public function setParent(?string $Entity_ID_Parent): Entity
     {
         $this->Entity_ID_Parent = $Entity_ID_Parent;
         return $this;
@@ -87,7 +87,7 @@ class Entity
     /**
      * @return string
      */
-    public function getTemplate(): string
+    public function getTemplate(): ?string
     {
         return $this->Entity_ID_Template;
     }
@@ -96,7 +96,7 @@ class Entity
      * @param string $Entity_ID_Template
      * @return Entity
      */
-    public function setTemplate(string $Entity_ID_Template): Entity
+    public function setTemplate(?string $Entity_ID_Template): Entity
     {
         $this->Entity_ID_Template = $Entity_ID_Template;
         return $this;
@@ -105,7 +105,7 @@ class Entity
     /**
      * @return string
      */
-    public function getOriginal(): string
+    public function getOriginal(): ?string
     {
         return $this->Entity_ID_Original;
     }
@@ -114,7 +114,7 @@ class Entity
      * @param string $Entity_ID_Original
      * @return Entity
      */
-    public function setOriginal(string $Entity_ID_Original): Entity
+    public function setOriginal(?string $Entity_ID_Original): Entity
     {
         $this->Entity_ID_Original = $Entity_ID_Original;
         return $this;
@@ -326,6 +326,10 @@ class Entity
 
     public function from(array $data)
     {
+        if (isset($data['parent'])) {
+            $this->setParent($data['parent']);
+        }
+
         if (isset($data['type'])) {
             $this->setType($data['type']);
         }

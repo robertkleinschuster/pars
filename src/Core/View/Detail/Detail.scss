@@ -21,7 +21,7 @@
       padding-left: 1rem;
     }
 
-    &__name:before {
+    &__name:not(:empty):before {
       content: '';
       position: absolute;
       width: 10px;

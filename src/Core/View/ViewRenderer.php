@@ -58,7 +58,7 @@ class ViewRenderer
                 "$componentClass:" .
                 " Error in '{$throwable->getFile()}' on line {$throwable->getLine()}: " .
                 $throwable->getMessage(),
-                $throwable->getCode(),
+                (int) $throwable->getCode(),
                 $throwable
             );
         }

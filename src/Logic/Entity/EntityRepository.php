@@ -212,6 +212,7 @@ WHERE Entity_ID = :id';
     private function insert(Entity $entity): Entity
     {
         $query = 'INSERT INTO Entity (
+                    Entity_ID_Parent,
                     Entity_Type,
                     Entity_State,
                     Entity_Context,
@@ -221,6 +222,7 @@ WHERE Entity_ID = :id';
                     Entity_Name,
                     Entity_Data)
 VALUES (
+        :parent,
         :type,
         :state,
         :context,
@@ -232,6 +234,12 @@ VALUES (
         ) RETURNING *';
 
         $stmt = $this->pdo->prepare($query);
+
+        if ($entity->getParent()) {
+            $stmt->bindValue('parent', $entity->getParent());
+        } else {
+            $stmt->bindValue('parent', null, PDO::PARAM_NULL);
+        }
 
         $stmt->bindValue('type', $entity->getType());
         $stmt->bindValue('state', $entity->getState());
@@ -258,6 +266,12 @@ VALUES (
     {
         if ($entity->getId()) {
             $query .= ' AND Entity_ID = :id';
+        }
+
+        if ($entity->getParent()) {
+            $query .= ' AND Entity_ID_Parent = :parent';
+        } else {
+            $query .= ' AND Entity_ID_Parent IS NULL';
         }
 
         if ($entity->getType()) {
@@ -302,7 +316,9 @@ VALUES (
         if ($entity->getId()) {
             $stmt->bindValue('id', $entity->getId());
         }
-
+        if ($entity->getParent()) {
+            $stmt->bindValue('parent', $entity->getParent());
+        }
         if ($entity->getType()) {
             $stmt->bindValue('type', $entity->getType());
         }

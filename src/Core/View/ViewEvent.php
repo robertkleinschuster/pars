@@ -118,6 +118,12 @@ class ViewEvent
         return $this;
     }
 
+    public function setParam(string $name, string $value)
+    {
+        $this->{"param-$name"} = $value;
+        return $this;
+    }
+
     /**
      * @return array<string>
      */

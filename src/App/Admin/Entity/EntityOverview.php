@@ -16,11 +16,11 @@ class EntityOverview extends Overview
         $this->setRowModel(new EntityModel());
 
         $this->addIconButton(Icon::edit())
-            ->setEventLink(url('/:id'));
+            ->setEventLink(url('/entity/:id'));
 
         $this->addIconButton(Icon::delete())
             ->setEventAction()
-            ->setUrl(url('/:id'))
+            ->setUrl(url('/entity/:id'))
             ->setMethod('DELETE');
 
         $this->addField('type', 'type');

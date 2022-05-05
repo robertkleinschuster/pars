@@ -24,9 +24,9 @@ class Detail extends ViewComponent implements EntrypointInterface
 
     public function push(ViewComponent $component, string $chapter = null, string $group = null): static
     {
-        if ($chapter) {
+        if (null !== $chapter) {
             $this->getChapter($chapter)->push($component, $group);
-        } elseif ($group) {
+        } elseif (null !== $group) {
             $this->getGroup($group)->push($component);
         } else {
             parent::push($component);
