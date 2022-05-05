@@ -5,6 +5,7 @@ namespace Pars\App\Admin;
 use Pars\App\Admin\Entity\EntityDeleteHandler;
 use Pars\App\Admin\Entity\EntityDetailHandler;
 use Pars\App\Admin\Entity\EntityHandler;
+use Pars\App\Admin\Entity\EntityNavigation;
 use Pars\App\Admin\Entity\EntityOverviewHandler;
 use Pars\App\Admin\Entity\EntityPostHandler;
 use Pars\App\Admin\FileExplorer\BrowserHandler;
@@ -69,42 +70,13 @@ class AdminApplication extends WebApplication
 
     protected function renderHeader(): StreamInterface
     {
-        $navigation = new Navigation();
-        $repo = new EntityRepository();
-        $types = $navigation->addEntry(
-            __('admin.navigation.entity.definition'),
-            url('/entity', [Entity::TYPE_CONTEXT => Entity::CONTEXT_DEFINITION])
-        );
-        $filterEntity = new Entity();
-        $filterEntity->clear();
-        $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
-        $filterEntity->setType(Entity::TYPE_TYPE);
-        foreach ($repo->find($filterEntity) as $entity) {
-            /** @var Entity $entity */
-            $types->addEntry(
-                __("admin.navigation.entity.{$entity->getCode()}"),
-                url('/entity', ['type' => $entity->getCode(), 'context' => $entity->getContext()])
-            );
-        }
-
-        $types = $navigation->addEntry(
-            __('admin.navigation.entity.data'),
-            url('/entity', [Entity::TYPE_CONTEXT => Entity::CONTEXT_DATA])
-        );
-        $filterEntity = new Entity();
-        $filterEntity->clear();
-        $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
-        $filterEntity->setType(Entity::TYPE_DATA);
-        foreach ($repo->find($filterEntity) as $entity) {
-            /** @var Entity $entity */
-            $types->addEntry(
-                __("admin.navigation.entity.{$entity->getCode()}"),
-                url('/entity', ['type' => $entity->getCode(), 'context' => Entity::CONTEXT_DATA])
-            );
-        }
-
+        $navigation = new EntityNavigation();
+        $navigation->addType();
+        $navigation->addType(Entity::TYPE_TYPE, Entity::CONTEXT_DEFINITION);
         return render($navigation);
     }
+
+
 
     protected function getTranslator(): Translator
     {
