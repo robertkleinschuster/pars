@@ -77,8 +77,8 @@ class AdminApplication extends WebApplication
         );
         $filterEntity = new Entity();
         $filterEntity->clear();
-        $filterEntity->setType(Entity::TYPE_TYPE);
         $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
+        $filterEntity->setType(Entity::TYPE_TYPE);
         foreach ($repo->find($filterEntity) as $entity) {
             /** @var Entity $entity */
             $types->addEntry(
