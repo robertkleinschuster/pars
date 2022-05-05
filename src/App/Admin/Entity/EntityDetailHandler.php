@@ -3,9 +3,6 @@
 namespace Pars\App\Admin\Entity;
 
 use Pars\Core\Http\Stream\QueueStream;
-use Pars\Core\View\Group\ViewGroupHandler;
-use Pars\Core\View\Toolbar\Toolbar;
-use Pars\Core\View\ViewComponent;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

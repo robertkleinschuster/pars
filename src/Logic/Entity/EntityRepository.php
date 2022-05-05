@@ -131,7 +131,7 @@ class EntityRepository
      * @return Generator
      * @throws EntityException
      */
-    public function findByObject(Entity $entity): Generator
+    public function find(Entity $entity): Generator
     {
         $query = 'SELECT * FROM Entity WHERE 1=1';
 
@@ -145,6 +145,21 @@ class EntityRepository
             while ($entity = $stmt->fetchObject(Entity::class)) {
                 yield $entity;
             }
+        } else {
+            throw new EntityException('Unable to load Entities');
+        }
+    }
+
+    public function exists(Entity $entity): bool
+    {
+        $condition = $this->buildCondition($entity, '');
+
+        $query = "SELECT IF(EXISTS(SELECT Entity_ID FROM Entity WHERE 1=1 $condition), 1, 0)";
+
+        $stmt = $this->prepareStmt($entity, $query);
+
+        if ($stmt->execute()) {
+            return $stmt->fetchColumn();
         } else {
             throw new EntityException('Unable to load Entities');
         }

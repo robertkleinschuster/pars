@@ -3,15 +3,22 @@
 namespace Pars\Logic\Entity;
 
 use DateTime;
+use Exception;
 
 class Entity
 {
     public const TYPE_DEFAULT = 'default';
+    public const TYPE_TYPE = 'type';
+    public const TYPE_STATE = 'state';
+    public const TYPE_CONTEXT = 'context';
+    public const TYPE_LANGUAGE = 'language';
+    public const TYPE_COUNTRY = 'country';
 
     public const STATE_ACTIVE = 'active';
     public const STATE_INACTIVE = 'inactive';
 
-    public const CONTEXT_DEFAULT = 'default';
+    public const CONTEXT_DEFINITION = 'definition';
+    public const CONTEXT_DATA = 'data';
 
     public const LANGUAGE_DE = 'de';
     public const LANGUAGE_IT = 'it';
@@ -29,7 +36,7 @@ class Entity
 
     private string $Entity_Type = self::TYPE_DEFAULT;
     private string $Entity_State = self::STATE_ACTIVE;
-    private string $Entity_Context = self::CONTEXT_DEFAULT;
+    private string $Entity_Context = self::CONTEXT_DATA;
     private string $Entity_Language = self::LANGUAGE_DE;
     private string $Entity_Country = self::COUNTRY_AT;
     private string $Entity_Code = '';
@@ -300,17 +307,23 @@ class Entity
         return $this;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getCreated(): DateTime
     {
         return new DateTime($this->Entity_Created);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getModified(): DateTime
     {
         return new DateTime($this->Entity_Modified);
     }
 
-    public function clear()
+    public function clear(): self
     {
         $this->setType('');
         $this->setState('');
@@ -322,9 +335,10 @@ class Entity
         $this->setParent('');
         $this->setTemplate('');
         $this->setOriginal('');
+        return $this;
     }
 
-    public function from(array $data)
+    public function from(array $data): self
     {
         if (isset($data['parent'])) {
             $this->setParent($data['parent']);

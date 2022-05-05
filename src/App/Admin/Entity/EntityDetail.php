@@ -20,8 +20,10 @@ class EntityDetail extends Detail
 
         $this->addInput('type', 'type', 'props', '')
             ->setEvent($event);
+
         $this->addInput('state', 'state', 'props', '')
             ->setEvent($event);
+
         $this->addInput('context', 'context', 'props', '')
             ->setEvent($event);
 
@@ -30,6 +32,7 @@ class EntityDetail extends Detail
 
         $this->addInput('country', 'country', 'locale', '')
             ->setEvent($event);
+
         $this->addInput('code', 'code', 'info', '')
             ->setEvent($event);
 

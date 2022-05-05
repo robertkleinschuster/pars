@@ -69,7 +69,7 @@ class EntityModel extends ViewModel
     public function getIterator(): Traversable
     {
         $repo = new EntityRepository();
-        foreach ($repo->findByObject($this->getEntity()) as $entity) {
+        foreach ($repo->find($this->getEntity()) as $entity) {
             yield (new static())->setEntity($entity);
         }
     }
