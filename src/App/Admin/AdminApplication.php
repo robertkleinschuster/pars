@@ -82,7 +82,7 @@ class AdminApplication extends WebApplication
         foreach ($repo->find($filterEntity) as $entity) {
             /** @var Entity $entity */
             $types->addEntry(
-                __("admin.navigation.entity.type.{$entity->getCode()}"),
+                __("admin.navigation.entity.{$entity->getCode()}"),
                 url('/entity', ['type' => $entity->getCode(), 'context' => $entity->getContext()])
             );
         }
@@ -98,7 +98,7 @@ class AdminApplication extends WebApplication
         foreach ($repo->find($filterEntity) as $entity) {
             /** @var Entity $entity */
             $types->addEntry(
-                __("admin.navigation.entity.data.{$entity->getCode()}"),
+                __("admin.navigation.entity.{$entity->getCode()}"),
                 url('/entity', ['type' => $entity->getCode(), 'context' => Entity::CONTEXT_DATA])
             );
         }
