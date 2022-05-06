@@ -34,11 +34,7 @@ class EntityDetail extends Detail
             if (empty($field->getCode())) {
                 continue;
             }
-            $name = $field->getName();
-            if (empty($name)) {
-                $name = ucfirst($field->getCode());
-            }
-            $this->addInput($field->getCode(), $name)
+            $this->addInput($field->getCode(), $field->getNameFallback())
                 ->setEvent($event);
         }
         return $this;

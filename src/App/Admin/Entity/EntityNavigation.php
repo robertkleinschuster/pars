@@ -11,8 +11,16 @@ class EntityNavigation extends Navigation
     public function addTypeSubmenu(string $type = Entity::TYPE_TYPE, string $context = Entity::CONTEXT_DEFINITION)
     {
         $repo = new EntityRepository();
+        $filterEntity = new Entity();
+        $filterEntity->clear();
+        $filterEntity->setCode(Entity::CONTEXT_DEFINITION);
+        $filterEntity->setType(Entity::TYPE_CONTEXT);
+        $entity = $repo->find($filterEntity)->current();
+        if (null === $entity) {
+            return;
+        }
         $submenu = $this->addEntry(
-            __("admin.navigation.entity.$type"),
+            $entity->getNameFallback(),
             url('/entity', [Entity::TYPE_CONTEXT => $context])
         );
         $filterEntity = new Entity();
@@ -22,7 +30,7 @@ class EntityNavigation extends Navigation
         foreach ($repo->find($filterEntity) as $entity) {
             /** @var Entity $entity */
             $submenu->addEntry(
-                __("admin.navigation.entity.$type.{$entity->getCode()}"),
+                $entity->getNameFallback(),
                 url('/entity', ['type' => $entity->getCode(), 'context' => $context])
             );
         }
@@ -38,7 +46,7 @@ class EntityNavigation extends Navigation
         foreach ($repo->find($filterEntity) as $entity) {
             /** @var Entity $entity */
             $this->addEntry(
-                __("admin.navigation.entity.$type.{$entity->getCode()}"),
+                $entity->getNameFallback(),
                 url('/entity', ['type' => $entity->getCode(), 'context' => $context])
             );
         }

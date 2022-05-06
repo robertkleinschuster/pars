@@ -211,6 +211,14 @@ class Entity
         return $this->Entity_Name;
     }
 
+    public function getNameFallback(): string
+    {
+        if (empty($this->getName())) {
+            return ucfirst($this->getCode());
+        }
+        return $this->getName();
+    }
+
     /**
      * @param string $name
      * @return Entity
