@@ -13,7 +13,7 @@ class Entity
     public const TYPE_CONTEXT = 'context';
     public const TYPE_LANGUAGE = 'language';
     public const TYPE_COUNTRY = 'country';
-    
+
     public const TYPE_TEXT = 'text';
     public const TYPE_ARTICLE = 'article';
     public const TYPE_SITE = 'site';
@@ -301,6 +301,34 @@ class Entity
         return json_decode($this->Entity_Data, true);
     }
 
+    public function findDataByFormKey(string $name)
+    {
+        $method = "get$name";
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        }
+
+        return $this->flatten($this->getDataArray())[$name]
+            ?? $this->flatten(['data' => $this->getDataArray()])[$name]
+            ?? null;
+    }
+
+    public function flatten(array $array, string $prefix = '', string $suffix = ''): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, $this->flatten($value, $prefix . $key . $suffix . '[', ']'));
+            } else {
+                $result[$prefix . $key . $suffix] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+
     /**
      * @param array $data
      * @return $this
@@ -346,35 +374,60 @@ class Entity
     {
         if (isset($data['parent'])) {
             $this->setParent($data['parent']);
+            unset($data['parent']);
+        }
+
+        if (isset($data['template'])) {
+            $this->setTemplate($data['template']);
+            unset($data['template']);
+        }
+
+        if (isset($data['original'])) {
+            $this->setOriginal($data['original']);
+            unset($data['original']);
         }
 
         if (isset($data['type'])) {
             $this->setType($data['type']);
+            unset($data['type']);
         }
 
         if (isset($data['state'])) {
             $this->setState($data['state']);
+            unset($data['state']);
         }
 
         if (isset($data['context'])) {
             $this->setContext($data['context']);
+            unset($data['context']);
         }
 
         if (isset($data['language'])) {
             $this->setLanguage($data['language']);
+            unset($data['language']);
         }
 
         if (isset($data['country'])) {
             $this->setCountry($data['country']);
+            unset($data['country']);
         }
 
         if (isset($data['code'])) {
             $this->setCode($data['code']);
+            unset($data['code']);
         }
 
         if (isset($data['name'])) {
             $this->setName($data['name']);
+            unset($data['name']);
         }
+
+        if (isset($data['data']) && is_array($data['data'])) {
+            $data = array_replace_recursive($data, $data['data']);
+        }
+
+        $this->setDataArray(array_replace_recursive($this->getDataArray(), $data));
+
         return $this;
     }
 }

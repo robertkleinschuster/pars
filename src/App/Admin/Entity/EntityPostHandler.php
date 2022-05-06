@@ -28,9 +28,6 @@ class EntityPostHandler implements RequestHandlerInterface
 
         if ('child' === $mode) {
             $entity->setId('');
-            if ($entity->getContext() == Entity::CONTEXT_DEFINITION) {
-                #$entity->setType($entity->getCode());
-            }
             $entity->setCode('');
             $entity->setName('');
             $entity->setDataArray([]);

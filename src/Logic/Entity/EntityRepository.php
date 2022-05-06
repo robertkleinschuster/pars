@@ -4,6 +4,7 @@ namespace Pars\Logic\Entity;
 
 use Generator;
 use PDO;
+use PDOStatement;
 
 class EntityRepository
 {
@@ -24,59 +25,6 @@ class EntityRepository
         return $stmt->execute();
     }
 
-    public function findTypes(): array
-    {
-        return $this->findColumn('Entity_Type');
-    }
-
-    public function findStates(): array
-    {
-        return $this->findColumn('Entity_State');
-    }
-
-    public function findContexts(): array
-    {
-        return $this->findColumn('Entity_Context');
-    }
-
-    public function findLanguages(): array
-    {
-        return $this->findColumn('Entity_Language');
-    }
-
-    public function findCountries(): array
-    {
-        return $this->findColumn('Entity_Country');
-    }
-
-    private function findColumn(string $column): array
-    {
-        $result = [];
-        $query = "SELECT DISTINCT $column FROM Entity";
-        $stmt = $this->pdo->prepare($query);
-        if ($stmt->execute()) {
-            $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        }
-        return $result;
-    }
-
-    /**
-     * @return Generator
-     * @throws EntityException
-     */
-    public function findAll(): Generator
-    {
-        $query = 'SELECT * FROM Entity ORDER BY Entity_Order ';
-        $stmt = $this->pdo->prepare($query);
-        if ($stmt->execute()) {
-            while ($entity = $stmt->fetchObject(Entity::class)) {
-                yield $entity;
-            }
-        } else {
-            throw new EntityException('Unable to load Entities');
-        }
-    }
-
     /**
      * @param string $id
      * @return Entity
@@ -95,40 +43,8 @@ class EntityRepository
     }
 
     /**
-     * @param string $code
-     * @return Entity
-     * @throws EntityException
-     */
-    public function findByCode(string $code): Entity
-    {
-        $query = 'SELECT * FROM Entity WHERE Entity_Code = :code';
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue('code', $code);
-        if ($stmt->execute()) {
-            return $stmt->fetchObject(Entity::class);
-        }
-        throw new EntityException('Unable to load Entity');
-    }
-
-    /**
-     * @param string $name
-     * @return Entity
-     * @throws EntityException
-     */
-    public function findByName(string $name): Entity
-    {
-        $query = 'SELECT * FROM Entity WHERE Entity_Name = :name';
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue('name', $name);
-        if ($stmt->execute()) {
-            return $stmt->fetchObject(Entity::class);
-        }
-        throw new EntityException('Unable to load Entity');
-    }
-
-    /**
      * @param Entity $entity
-     * @return Generator
+     * @return Generator&Entity[]
      * @throws EntityException
      */
     public function find(Entity $entity): Generator
@@ -257,7 +173,7 @@ VALUES (
         } else {
             $stmt->bindValue('parent', null, PDO::PARAM_NULL);
         }
-    
+
         if ($entity->getTemplate()) {
             $stmt->bindValue('template', $entity->getTemplate());
         } else {
@@ -296,13 +212,13 @@ VALUES (
         } else {
             $query .= ' AND Entity_ID_Parent IS NULL';
         }
-    
+
         if ($entity->getTemplate()) {
             $query .= ' AND Entity_ID_Template = :template';
         } else {
             $query .= ' AND Entity_ID_Template IS NULL';
         }
-        
+
         if ($entity->getType()) {
             $query .= ' AND Entity_Type = :type';
         }
@@ -330,15 +246,16 @@ VALUES (
         if ($entity->getName()) {
             $query .= ' AND Entity_Name = :name';
         }
+
         return $query;
     }
 
     /**
      * @param Entity $entity
      * @param string $query
-     * @return false|\PDOStatement
+     * @return false|PDOStatement
      */
-    private function prepareStmt(Entity $entity, string $query): \PDOStatement|false
+    private function prepareStmt(Entity $entity, string $query): PDOStatement|false
     {
         $stmt = $this->pdo->prepare($query);
 

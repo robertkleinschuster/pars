@@ -4,7 +4,6 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\ViewEvent;
-use Pars\Core\View\ViewRenderer;
 
 /**
  * @method EntityModel getModel()
@@ -17,8 +16,6 @@ class EntityDetail extends Detail
         $this->model = new EntityModel();
     }
 
-    
-    
     public function addInput(string $key, string $label, string $chapter = null, string $group = null)
     {
         $input = parent::addInput($key, $label, $chapter, $group);
@@ -32,9 +29,16 @@ class EntityDetail extends Detail
         $event = ViewEvent::action();
         $event->setMethod('POST');
         $event->setEvent('change');
-    
+
         foreach ($this->getModel()->getFields() as $field) {
-            $this->addInput($field->getCode(), $field->getName())
+            if (empty($field->getCode())) {
+                continue;
+            }
+            $name = $field->getName();
+            if (empty($name)) {
+                $name = ucfirst($field->getCode());
+            }
+            $this->addInput($field->getCode(), $name)
                 ->setEvent($event);
         }
         return $this;
