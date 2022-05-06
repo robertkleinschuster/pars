@@ -35,6 +35,24 @@ class EntityModel extends ViewModel
             $this->entity = new Entity();
         }
     }
+    
+    public function getFields()
+    {
+        $entity = $this->getEntity();
+        $repo = new EntityRepository();
+      
+        $filterEntity = new Entity();
+        $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
+        #$filterEntity->setType(Entity::TYPE_TYPE);
+        $filterEntity->setCode($entity->getType());
+        
+        $definition = $repo->find($filterEntity)->current();
+        
+        $filterDefinition = new Entity();
+        $filterDefinition->setParent($definition->getId());
+        $filterDefinition->setContext(Entity::CONTEXT_DEFINITION);
+        return $repo->find($filterDefinition);
+    }
 
     /**
      * @param Entity $entity

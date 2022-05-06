@@ -4,6 +4,7 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
+use Pars\Logic\Entity\EntityUpdater;
 
 /**
  * @method EntityModel getRowModel()
@@ -13,6 +14,7 @@ class EntityOverview extends Overview
     public function init()
     {
         parent::init();
+        (new EntityUpdater())->update();
         $this->setRowModel(new EntityModel());
 
         $this->addIconButton(Icon::edit())
