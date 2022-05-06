@@ -24,7 +24,7 @@ class UserDetail extends Detail
         $input->model = $this->model;
         $input->setEvent($event);
     }
-
+    
     public function setId(string $id): self
     {
         $this->getModel()->setId($id);

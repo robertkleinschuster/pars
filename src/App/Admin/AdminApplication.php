@@ -4,7 +4,6 @@ namespace Pars\App\Admin;
 
 use Pars\App\Admin\Entity\EntityDeleteHandler;
 use Pars\App\Admin\Entity\EntityDetailHandler;
-use Pars\App\Admin\Entity\EntityHandler;
 use Pars\App\Admin\Entity\EntityNavigation;
 use Pars\App\Admin\Entity\EntityOverviewHandler;
 use Pars\App\Admin\Entity\EntityPostHandler;
@@ -21,9 +20,6 @@ use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Editor\FileEditorHandler;
-use Pars\Core\View\Navigation\Navigation;
-use Pars\Logic\Entity\Entity;
-use Pars\Logic\Entity\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -72,7 +68,7 @@ class AdminApplication extends WebApplication
     {
         $navigation = new EntityNavigation();
         $navigation->addType();
-        $navigation->addType(Entity::TYPE_TYPE, Entity::CONTEXT_DEFINITION);
+        $navigation->addTypeSubmenu();
         return render($navigation);
     }
 

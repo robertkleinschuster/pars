@@ -15,6 +15,10 @@ class EntityUpdater
         $this->updateDefinition(Entity::TYPE_TYPE, Entity::TYPE_COUNTRY);
         $this->updateDefinition(Entity::TYPE_TYPE, Entity::TYPE_TYPE);
         $this->updateDefinition(Entity::TYPE_TYPE, Entity::TYPE_DATA);
+    
+        $this->updateDefinition(Entity::TYPE_DATA, Entity::TYPE_TEXT);
+        $this->updateDefinition(Entity::TYPE_DATA, Entity::TYPE_ARTICLE);
+        $this->updateDefinition(Entity::TYPE_DATA, Entity::TYPE_SITE);
 
         $this->updateDefinition(Entity::TYPE_STATE, Entity::STATE_ACTIVE);
         $this->updateDefinition(Entity::TYPE_STATE, Entity::STATE_INACTIVE);

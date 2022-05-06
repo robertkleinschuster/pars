@@ -17,10 +17,12 @@ class EntityDetailHandler implements RequestHandlerInterface
         $component = new EntityDetail();
         $component->setId($id);
         $queueStream->push(render($component));
-
+        
+        $params = $request->getQueryParams();
+        $params['mode'] = 'child';
         $overview = new EntityOverviewHandler();
-        $queueStream->push($overview->handle($request)->getBody());
-
+        $queueStream->push($overview->handle($request->withQueryParams($params))->getBody());
+        
         return response($queueStream);
     }
 }

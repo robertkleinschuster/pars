@@ -228,6 +228,7 @@ WHERE Entity_ID = :id';
     {
         $query = 'INSERT INTO Entity (
                     Entity_ID_Parent,
+                    Entity_ID_Template,
                     Entity_Type,
                     Entity_State,
                     Entity_Context,
@@ -238,6 +239,7 @@ WHERE Entity_ID = :id';
                     Entity_Data)
 VALUES (
         :parent,
+        :template,
         :type,
         :state,
         :context,
@@ -254,6 +256,12 @@ VALUES (
             $stmt->bindValue('parent', $entity->getParent());
         } else {
             $stmt->bindValue('parent', null, PDO::PARAM_NULL);
+        }
+    
+        if ($entity->getTemplate()) {
+            $stmt->bindValue('template', $entity->getTemplate());
+        } else {
+            $stmt->bindValue('template', null, PDO::PARAM_NULL);
         }
 
         $stmt->bindValue('type', $entity->getType());
@@ -288,7 +296,13 @@ VALUES (
         } else {
             $query .= ' AND Entity_ID_Parent IS NULL';
         }
-
+    
+        if ($entity->getTemplate()) {
+            $query .= ' AND Entity_ID_Template = :template';
+        } else {
+            $query .= ' AND Entity_ID_Template IS NULL';
+        }
+        
         if ($entity->getType()) {
             $query .= ' AND Entity_Type = :type';
         }
@@ -333,6 +347,9 @@ VALUES (
         }
         if ($entity->getParent()) {
             $stmt->bindValue('parent', $entity->getParent());
+        }
+        if ($entity->getTemplate()) {
+            $stmt->bindValue('template', $entity->getTemplate());
         }
         if ($entity->getType()) {
             $stmt->bindValue('type', $entity->getType());

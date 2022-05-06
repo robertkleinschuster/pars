@@ -22,7 +22,7 @@ class EntityOverviewHandler implements RequestHandlerInterface
 
         $params = $request->getQueryParams();
         if ($parent) {
-            $params['mode'] = 'child';
+            $params['mode'] = $params['mode'] ?? 'child';
         }
 
         $toolbar = new Toolbar();

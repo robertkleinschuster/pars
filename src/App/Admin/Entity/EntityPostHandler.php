@@ -19,6 +19,7 @@ class EntityPostHandler implements RequestHandlerInterface
         $repo = new EntityRepository();
         $id = $request->getAttribute('id');
         $mode = $params['mode'] ?? null;
+        unset($params['mode']);
         if ($id) {
             $entity = $repo->findById($id);
         } else {
@@ -29,9 +30,8 @@ class EntityPostHandler implements RequestHandlerInterface
             $entity->setId('');
             $entity->setDataArray([]);
             $entity->setParent($id);
-            unset($params['mode']);
         }
-
+        
         $entity->from($params);
         $entity->from($request->getParsedBody());
         $repo->save($entity);

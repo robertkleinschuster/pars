@@ -7,13 +7,16 @@ use Exception;
 
 class Entity
 {
-    public const TYPE_DEFAULT = 'default';
     public const TYPE_DATA = 'data';
     public const TYPE_TYPE = 'type';
     public const TYPE_STATE = 'state';
     public const TYPE_CONTEXT = 'context';
     public const TYPE_LANGUAGE = 'language';
     public const TYPE_COUNTRY = 'country';
+    
+    public const TYPE_TEXT = 'text';
+    public const TYPE_ARTICLE = 'article';
+    public const TYPE_SITE = 'site';
 
     public const STATE_ACTIVE = 'active';
     public const STATE_INACTIVE = 'inactive';
