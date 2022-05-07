@@ -7,9 +7,9 @@ use Exception;
 
 class Entity
 {
-    public const TYPE_DATA = 'data';
     public const TYPE_TYPE = 'type';
     public const TYPE_STATE = 'state';
+    public const TYPE_GROUP = 'group';
     public const TYPE_CONTEXT = 'context';
     public const TYPE_LANGUAGE = 'language';
     public const TYPE_COUNTRY = 'country';
@@ -22,7 +22,11 @@ class Entity
     public const STATE_INACTIVE = 'inactive';
 
     public const CONTEXT_DEFINITION = 'definition';
-    public const CONTEXT_DATA = 'data';
+    public const CONTEXT_ENTRY = 'entry';
+
+    public const GROUP_SCHEMA = 'schema';
+    public const GROUP_SYSTEM = 'system';
+    public const GROUP_CONTENT = 'content';
 
     public const LANGUAGE_DE = 'de';
     public const LANGUAGE_IT = 'it';
@@ -39,8 +43,9 @@ class Entity
     private ?string $Entity_ID_Original = null;
 
     private string $Entity_Type = '';
-    private string $Entity_State = '';
     private string $Entity_Context = '';
+    private string $Entity_Group = '';
+    private string $Entity_State = '';
     private string $Entity_Language = '';
     private string $Entity_Country = '';
     private string $Entity_Code = '';
@@ -86,7 +91,7 @@ class Entity
     }
 
     /**
-     * @param string $Entity_ID_Parent
+     * @param string|null $Entity_ID_Parent
      * @return Entity
      */
     public function setParent(?string $Entity_ID_Parent): Entity
@@ -96,7 +101,7 @@ class Entity
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTemplate(): ?string
     {
@@ -104,7 +109,7 @@ class Entity
     }
 
     /**
-     * @param string $Entity_ID_Template
+     * @param string|null $Entity_ID_Template
      * @return Entity
      */
     public function setTemplate(?string $Entity_ID_Template): Entity
@@ -122,7 +127,7 @@ class Entity
     }
 
     /**
-     * @param string $Entity_ID_Original
+     * @param string|null $Entity_ID_Original
      * @return Entity
      */
     public function setOriginal(?string $Entity_ID_Original): Entity
@@ -164,6 +169,24 @@ class Entity
     public function setContext(string $Entity_Context): Entity
     {
         $this->Entity_Context = $Entity_Context;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGroup(): string
+    {
+        return $this->Entity_Group;
+    }
+
+    /**
+     * @param string $Entity_Group
+     * @return Entity
+     */
+    public function setGroup(string $Entity_Group): Entity
+    {
+        $this->Entity_Group = $Entity_Group;
         return $this;
     }
 
@@ -315,7 +338,6 @@ class Entity
         if (method_exists($this, $method)) {
             return $this->{$method}();
         }
-
         return $this->flatten($this->getDataArray())[$name]
             ?? $this->flatten(['data' => $this->getDataArray()])[$name]
             ?? null;
@@ -368,6 +390,7 @@ class Entity
         $this->setType('');
         $this->setState('');
         $this->setContext('');
+        $this->setGroup('');
         $this->setLanguage('');
         $this->setCountry('');
         $this->setCode('');
@@ -408,6 +431,11 @@ class Entity
         if (isset($data['context'])) {
             $this->setContext($data['context']);
             unset($data['context']);
+        }
+
+        if (isset($data['group'])) {
+            $this->setGroup($data['group']);
+            unset($data['group']);
         }
 
         if (isset($data['language'])) {

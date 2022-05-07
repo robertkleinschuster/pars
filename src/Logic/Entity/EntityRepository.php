@@ -108,6 +108,7 @@ SET
     Entity_Type=:type,
     Entity_State=:state,
     Entity_Context=:context,
+    Entity_Group=:group,
     Entity_Language=:language,
     Entity_Country=:country,
     Entity_Code=:code,
@@ -118,6 +119,7 @@ WHERE Entity_ID = :id';
             $stmt->bindValue('type', $entity->getType());
             $stmt->bindValue('state', $entity->getState());
             $stmt->bindValue('context', $entity->getContext());
+            $stmt->bindValue('group', $entity->getGroup());
             $stmt->bindValue('language', $entity->getLanguage());
             $stmt->bindValue('country', $entity->getCountry());
             $stmt->bindValue('code', $entity->getCode());
@@ -148,6 +150,7 @@ WHERE Entity_ID = :id';
                     Entity_Type,
                     Entity_State,
                     Entity_Context,
+                    Entity_Group,
                     Entity_Language,
                     Entity_Country,
                     Entity_Code,
@@ -159,6 +162,7 @@ VALUES (
         :type,
         :state,
         :context,
+        :group,
         :language,
         :country,
         :code,
@@ -183,6 +187,7 @@ VALUES (
         $stmt->bindValue('type', $entity->getType());
         $stmt->bindValue('state', $entity->getState());
         $stmt->bindValue('context', $entity->getContext());
+        $stmt->bindValue('group', $entity->getGroup());
         $stmt->bindValue('language', $entity->getLanguage());
         $stmt->bindValue('country', $entity->getCountry());
         $stmt->bindValue('code', $entity->getCode());
@@ -231,6 +236,10 @@ VALUES (
             $query .= ' AND Entity_Context = :context';
         }
 
+        if ($entity->getGroup()) {
+            $query .= ' AND Entity_Group = :group';
+        }
+
         if ($entity->getLanguage()) {
             $query .= ' AND Entity_Language = :language';
         }
@@ -276,6 +285,9 @@ VALUES (
         }
         if ($entity->getContext()) {
             $stmt->bindValue('context', $entity->getContext());
+        }
+        if ($entity->getGroup()) {
+            $stmt->bindValue('group', $entity->getGroup());
         }
         if ($entity->getLanguage()) {
             $stmt->bindValue('language', $entity->getLanguage());

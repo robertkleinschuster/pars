@@ -20,6 +20,7 @@ use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Editor\FileEditorHandler;
+use Pars\Logic\Entity\Entity;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -67,8 +68,6 @@ class AdminApplication extends WebApplication
     protected function renderHeader(): StreamInterface
     {
         $navigation = new EntityNavigation();
-        $navigation->addType();
-        $navigation->addTypeSubmenu();
         return render($navigation);
     }
 

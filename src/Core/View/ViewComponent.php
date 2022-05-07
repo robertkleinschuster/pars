@@ -219,6 +219,11 @@ class ViewComponent
         return $this->getModel()->get($key);
     }
 
+    public function getParentValue(string $key)
+    {
+        return $this->getParent()->getValue($key);
+    }
+
     public function setEventWindow(string $uri, string $title): ViewEvent
     {
         $this->setEvent(ViewEvent::window($uri, $title));

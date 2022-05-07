@@ -12,7 +12,10 @@ export default class ViewEventTargetAction extends ViewEvent {
     const init = super.getRequestInit();
     if (init.method === 'POST') {
       const formData = new FormData()
-      if (this.element instanceof HTMLInputElement) {
+      if (
+        this.element instanceof HTMLInputElement
+        || this.element instanceof HTMLSelectElement
+      ) {
         formData.set(this.element.name, this.element.value)
       }
       init.body = formData

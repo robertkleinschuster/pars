@@ -1,0 +1,9 @@
+<?php
+/* @var Pars\Core\View\Select\Select $this */ ?>
+<div is="core-select" class="select">
+    <label class="select__label" for="<?= $this->key ?>"><?= $this->label ?></label>
+    <select class="select__select" name="<?= $this->key ?>" id="<?= $this->key ?>" <?= $this->attr() ?>>
+        <?= $this->getContent() ?>
+    </select>
+</div>
+

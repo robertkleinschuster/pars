@@ -48,13 +48,13 @@ class EntityModel extends ViewModel
         $repo = new EntityRepository();
 
         $filterEntity = new Entity();
-        $filterEntity->setContext(Entity::CONTEXT_DEFINITION);
+        $filterEntity->setType(Entity::TYPE_TYPE);
         $filterEntity->setCode($entity->getType());
 
         foreach ($repo->find($filterEntity) as $definition) {
             $filterDefinition = new Entity();
             $filterDefinition->setParent($definition->getId());
-            $filterDefinition->setContext(Entity::CONTEXT_DEFINITION);
+            $filterDefinition->setType(Entity::TYPE_TYPE);
             yield from $repo->find($filterDefinition);
         }
     }

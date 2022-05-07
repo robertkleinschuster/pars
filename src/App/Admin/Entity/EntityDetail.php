@@ -3,7 +3,10 @@
 namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Detail\Detail;
+use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewEvent;
+use Pars\Logic\Entity\Entity;
+use Pars\Logic\Entity\EntityRepository;
 
 /**
  * @method EntityModel getModel()
@@ -26,6 +29,7 @@ class EntityDetail extends Detail
     public function setId(string $id)
     {
         $this->getModel()->setId($id);
+
         $event = ViewEvent::action();
         $event->setMethod('POST');
         $event->setEvent('change');
@@ -34,8 +38,31 @@ class EntityDetail extends Detail
             if (empty($field->getCode())) {
                 continue;
             }
-            $this->addInput($field->getCode(), $field->getNameFallback())
-                ->setEvent($event);
+            $select = $field->getDataArray()['select'] ?? null;
+            if ($select) {
+                $entity = new Entity();
+                $entity->from($select);
+                $repo = new EntityRepository();
+
+                $select = new Select();
+                $select->setEvent($event);
+                $select->setKey($field->getCode());
+                $select->setLabel($field->getNameFallback());
+
+                $value = $this->getValue($field->getCode());
+
+                if ($value) {
+                    $select->getModel()->setValue($value);
+                }
+                $select->addOption('', '- ' . $field->getNameFallback() . ' -');
+                foreach ($repo->find($entity) as $option) {
+                    $select->addOption($option->getCode(), $option->getNameFallback());
+                }
+                $this->push($select);
+            } else {
+                $this->addInput($field->getCode(), $field->getNameFallback())
+                    ->setEvent($event);
+            }
         }
         return $this;
     }

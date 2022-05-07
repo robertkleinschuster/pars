@@ -3,13 +3,11 @@
 namespace Pars\Core\View\Input;
 
 use Pars\Core\View\EntrypointInterface;
-use Pars\Core\View\ViewComponent;
+use Pars\Core\View\FormViewComponent;
 
-class Input extends ViewComponent implements EntrypointInterface
+class Input extends FormViewComponent implements EntrypointInterface
 {
     public string $type = 'text';
-    public string $key = '';
-    public string $label = '';
 
     public function init()
     {
@@ -38,26 +36,6 @@ class Input extends ViewComponent implements EntrypointInterface
     public function setType(string $type): Input
     {
         $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * @param string $key
-     * @return Input
-     */
-    public function setKey(string $key): Input
-    {
-        $this->key = $key;
-        return $this;
-    }
-
-    /**
-     * @param string $label
-     * @return Input
-     */
-    public function setLabel(string $label): Input
-    {
-        $this->label = $label;
         return $this;
     }
 }

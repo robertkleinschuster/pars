@@ -6,8 +6,9 @@ create table if not exists Entity
     Entity_ID_Original uuid,
 
     Entity_Type        varchar(32)  not null default '',
-    Entity_State       varchar(32)  not null default '',
     Entity_Context     varchar(32)  not null default '',
+    Entity_Group       varchar(32)  not null default '',
+    Entity_State       varchar(32)  not null default '',
     Entity_Language    varchar(2)   not null default '',
     Entity_Country     varchar(2)   not null default '',
     Entity_Code        varchar(64)  not null default '',
@@ -39,11 +40,14 @@ create unique index if not exists IDX_Entity_ID
 create index if not exists IDX_Entity_Type
     on Entity (Entity_Type);
 
-create index if not exists IDX_Entity_State
-    on Entity (Entity_State);
-
 create index if not exists IDX_Entity_Context
     on Entity (Entity_Context);
+
+create index if not exists IDX_Entity_Group
+    on Entity (Entity_Group);
+
+create index if not exists IDX_Entity_State
+    on Entity (Entity_State);
 
 create index if not exists IDX_Entity_Language
     on Entity (Entity_Language);
