@@ -54,7 +54,7 @@ class EntityDetail extends Detail
                 if ($value) {
                     $select->getModel()->setValue($value);
                 }
-                $select->addOption('', '- ' . $field->getNameFallback() . ' -');
+                $select->addOption('', ' -');
                 foreach ($repo->find($entity) as $option) {
                     $select->addOption($option->getCode(), $option->getNameFallback());
                 }

@@ -4,6 +4,33 @@ namespace Pars\Logic\Entity;
 
 class EntityUpdater
 {
+    public function addField(Entity $entity, string $code, string $name)
+    {
+        $field = clone $entity;
+        $field->setId('');
+        $field->setParent($entity->getId());
+        $field->setCode($code);
+        $field->setName($name);
+        return $this->save($field);
+    }
+
+    public function addSelectField(Entity $entity, string $code, string $name)
+    {
+        $field = clone $entity;
+        $field->setId('');
+        $field->setParent($entity->getId());
+        $field->setCode($code);
+        $field->setName($name);
+        $field->setDataArray([
+            'select' => [
+                Entity::TYPE_TYPE => $code,
+                Entity::TYPE_CONTEXT => Entity::CONTEXT_ENTRY,
+            ]
+        ]);
+        return $this->save($field);
+    }
+
+
     public function updateType()
     {
         // Type
@@ -16,26 +43,14 @@ class EntityUpdater
         $type->setContext(Entity::CONTEXT_DEFINITION);
 
         $type = $this->save($type);
-
-        $typeField = clone $type;
-        $typeField->setId('');
-        $typeField->setParent($type->getId());
-        $typeField->setCode('code');
-        $typeField->setName('Code');
-        $this->save($typeField);
-
-        $typeField = clone $type;
-        $typeField->setId('');
-        $typeField->setParent($type->getId());
-        $typeField->setCode('name');
-        $typeField->setName('Name');
-        $this->save($typeField);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
 
         $typeField = clone $type;
         $typeField->setId('');
         $typeField->setParent($type->getId());
         $typeField->setCode('select[type]');
-        $typeField->setName('Auswahl');
+        $typeField->setName('Auswahl von');
         $typeField->setDataArray([
             'select' => [
                 Entity::TYPE_TYPE => Entity::TYPE_TYPE,
@@ -52,7 +67,9 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SCHEMA);
         $type->setContext(Entity::CONTEXT_ENTRY);
-        $this->save($type);
+        $type = $this->save($type);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
 
         // Group
         $type = new Entity();
@@ -62,7 +79,9 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SCHEMA);
         $type->setContext(Entity::CONTEXT_ENTRY);
-        $this->save($type);
+        $type = $this->save($type);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
 
         // State
         $type = new Entity();
@@ -72,7 +91,9 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SYSTEM);
         $type->setContext(Entity::CONTEXT_ENTRY);
-        $this->save($type);
+        $type = $this->save($type);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
 
         // Language
         $type = new Entity();
@@ -82,7 +103,9 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SYSTEM);
         $type->setContext(Entity::CONTEXT_ENTRY);
-        $this->save($type);
+        $type = $this->save($type);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
 
         // Country
         $type = new Entity();
@@ -92,7 +115,9 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SYSTEM);
         $type->setContext(Entity::CONTEXT_ENTRY);
-        $this->save($type);
+        $type = $this->save($type);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
 
         // Text
         $type = new Entity();
@@ -102,7 +127,13 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_CONTENT);
         $type->setContext(Entity::CONTEXT_ENTRY);
-        $this->save($type);
+        $type = $this->save($type);
+        $this->addField($type, 'code', 'Code');
+        $this->addField($type, 'name', 'Name');
+        $this->addField($type, 'text', 'Text');
+        $this->addSelectField($type, 'state', 'Status');
+        $this->addSelectField($type, 'language', 'Sprache');
+        $this->addSelectField($type, 'country', 'Land');
     }
 
 
