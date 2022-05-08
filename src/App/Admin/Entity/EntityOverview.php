@@ -44,6 +44,15 @@ class EntityOverview extends Overview
                 $this->setHeading($type->getName());
             }
 
+            $filterEntity = new Entity();
+            $filterEntity->setType(Entity::TYPE_GROUP);
+            $filterEntity->setCode($entity->getGroup());
+            $repo = new EntityRepository();
+            $group = $repo->find($filterEntity)->current();
+            if ($group) {
+                $this->setHeading($group->getName() . ': ' . $this->getHeading());
+            }
+
             foreach ($this->getRowModel()->getFields() as $field) {
                 if ($field->findDataByFormKey(Entity::DATA_OVERVIEW_SHOW)) {
                     $this->addField($field->getCode(), $field->getNameFallback());
