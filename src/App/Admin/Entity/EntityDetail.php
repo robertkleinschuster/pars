@@ -38,8 +38,11 @@ class EntityDetail extends Detail
             if (empty($field->getCode())) {
                 continue;
             }
+            $chapter = $field->getDataArray()['form_chapter'] ?? null;
+            $group = $field->getDataArray()['form_group'] ?? '';
+
             $select = $field->getDataArray()['select'] ?? null;
-            if ($select) {
+            if (!empty($select['type'])) {
                 $entity = new Entity();
                 $entity->from($select);
                 $repo = new EntityRepository();
@@ -54,13 +57,13 @@ class EntityDetail extends Detail
                 if ($value) {
                     $select->getModel()->setValue($value);
                 }
-                $select->addOption('', ' -');
+                $select->addOption('', '-');
                 foreach ($repo->find($entity) as $option) {
                     $select->addOption($option->getCode(), $option->getNameFallback());
                 }
-                $this->push($select);
+                $this->push($select, $chapter, $group);
             } else {
-                $this->addInput($field->getCode(), $field->getNameFallback())
+                $this->addInput($field->getCode(), $field->getNameFallback(), $chapter, $group)
                     ->setEvent($event);
             }
         }

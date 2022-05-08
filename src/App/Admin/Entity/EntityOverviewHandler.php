@@ -32,6 +32,8 @@ class EntityOverviewHandler implements RequestHandlerInterface
             ->setUrl(url()->withParams($params));
         $component->setToolbar(render($toolbar));
 
+        $component->initFields();
+
         return response(render($component));
     }
 }

@@ -21,8 +21,8 @@ class EntityUpdater
         $field->setParent($entity->getId());
         $field->setCode($code);
         $field->setName($name);
-        $field->setDataArray([
-            'select' => [
+        $field->replaceDataArray([
+            Entity::DATA_SELECT => [
                 Entity::TYPE_TYPE => $code,
                 Entity::TYPE_CONTEXT => Entity::CONTEXT_ENTRY,
             ]
@@ -41,21 +41,31 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SCHEMA);
         $type->setContext(Entity::CONTEXT_DEFINITION);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
 
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
 
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Formular']);
+        $this->addField($type, Entity::DATA_FORM_CHAPTER, 'Abschnitt');
+        $this->addField($type, Entity::DATA_FORM_GROUP, 'Gruppe');
+
         $typeField = clone $type;
+        $typeField->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => false]);
+
         $typeField->setId('');
         $typeField->setParent($type->getId());
-        $typeField->setCode('select[type]');
+        $typeField->setCode(Entity::DATA_SELECT . '[type]');
         $typeField->setName('Auswahl von');
-        $typeField->setDataArray([
-            'select' => [
+        $typeField->replaceDataArray([
+            Entity::DATA_SELECT => [
                 Entity::TYPE_TYPE => Entity::TYPE_TYPE,
                 Entity::TYPE_CONTEXT => Entity::CONTEXT_ENTRY,
-            ]
+            ],
         ]);
         $this->save($typeField);
 
@@ -67,7 +77,11 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SCHEMA);
         $type->setContext(Entity::CONTEXT_ENTRY);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->setDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
 
@@ -79,7 +93,11 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SCHEMA);
         $type->setContext(Entity::CONTEXT_ENTRY);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
 
@@ -91,7 +109,11 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SYSTEM);
         $type->setContext(Entity::CONTEXT_ENTRY);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
 
@@ -103,7 +125,11 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SYSTEM);
         $type->setContext(Entity::CONTEXT_ENTRY);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->setDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
 
@@ -115,7 +141,11 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_SYSTEM);
         $type->setContext(Entity::CONTEXT_ENTRY);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->setDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
 
@@ -127,13 +157,20 @@ class EntityUpdater
         $type->setType(Entity::TYPE_TYPE);
         $type->setGroup(Entity::GROUP_CONTENT);
         $type->setContext(Entity::CONTEXT_ENTRY);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => true]);
         $type = $this->save($type);
+        $type->replaceDataArray([Entity::DATA_CHILDREN_SHOW => false]);
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Eigenschaften']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => true]);
         $this->addField($type, 'code', 'Code');
         $this->addField($type, 'name', 'Name');
-        $this->addField($type, 'text', 'Text');
         $this->addSelectField($type, 'state', 'Status');
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Lokalisierung']);
         $this->addSelectField($type, 'language', 'Sprache');
         $this->addSelectField($type, 'country', 'Land');
+        $type->replaceDataArray([Entity::DATA_FORM_CHAPTER => 'Inhalt']);
+        $type->replaceDataArray([Entity::DATA_OVERVIEW_SHOW => false]);
+        $this->addField($type, 'text', 'Text');
     }
 
 

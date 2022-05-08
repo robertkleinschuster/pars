@@ -37,6 +37,12 @@ class Entity
     public const COUNTRY_DE = 'de';
     public const COUNTRY_CH = 'ch';
 
+    public const DATA_FORM_CHAPTER = 'form_chapter';
+    public const DATA_FORM_GROUP = 'form_group';
+    public const DATA_OVERVIEW_SHOW = 'overview_show';
+    public const DATA_CHILDREN_SHOW = 'children_show';
+    public const DATA_SELECT = 'select';
+
     private string $Entity_ID = '';
     private ?string $Entity_ID_Parent = null;
     private ?string $Entity_ID_Template = null;
@@ -367,6 +373,15 @@ class Entity
     {
         $this->Entity_Data = json_encode($data);
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function replaceDataArray(array $data): Entity
+    {
+        return $this->setDataArray(array_replace_recursive($this->getDataArray(), $data));
     }
 
     /**
