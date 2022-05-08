@@ -6,6 +6,7 @@ use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
 use Pars\Core\View\ViewRenderer;
 use Pars\Logic\Entity\Entity;
+use Pars\Logic\Entity\EntityRepository;
 use Pars\Logic\Entity\EntityUpdater;
 
 /**
@@ -34,6 +35,15 @@ class EntityOverview extends Overview
     {
         $entity = $this->getRowModel()->getEntity();
         if ($entity->getType()) {
+            $filterEntity = new Entity();
+            $filterEntity->setType(Entity::TYPE_TYPE);
+            $filterEntity->setCode($entity->getType());
+            $repo = new EntityRepository();
+            $type = $repo->find($filterEntity)->current();
+            if ($type) {
+                $this->setHeading($type->getName());
+            }
+
             foreach ($this->getRowModel()->getFields() as $field) {
                 if ($field->findDataByFormKey(Entity::DATA_OVERVIEW_SHOW)) {
                     $this->addField($field->getCode(), $field->getNameFallback());

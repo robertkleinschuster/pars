@@ -2,6 +2,7 @@
 
 namespace Pars\App\Admin\Entity;
 
+use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Toolbar\Toolbar;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,6 +34,8 @@ class EntityOverviewHandler implements RequestHandlerInterface
         $component->setToolbar(render($toolbar));
 
         $component->initFields();
+
+        $request->getAttribute(Layout::class)->addTitle($component->getHeading());
 
         return response(render($component));
     }
