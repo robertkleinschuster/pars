@@ -14,10 +14,17 @@
     }
   }
 
+  &__group:focus-within {
+    outline: 1px solid #000;
+  }
+
   &__group {
+    padding: .25rem .5rem;
+    margin-bottom: 1rem;
+
     &__name {
       position: relative;
-      margin: .25rem 0;
+      margin: 0 0 .5rem;
       padding-left: 1rem;
     }
 

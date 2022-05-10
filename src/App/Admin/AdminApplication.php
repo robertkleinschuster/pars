@@ -21,6 +21,7 @@ use Pars\Core\Translator\Translator;
 use Pars\Core\Util\Phpinfo\PhpinfoHandler;
 use Pars\Core\View\Editor\FileEditorHandler;
 use Pars\Logic\Entity\Entity;
+use Pars\Logic\Entity\EntityUpdater;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -32,6 +33,7 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
+        (new EntityUpdater())->update();
 
         $this->route('/entity/:id+', new EntityPostHandler(), 'POST');
         $this->route('/entity/:id+', new EntityDeleteHandler(), 'DELETE');

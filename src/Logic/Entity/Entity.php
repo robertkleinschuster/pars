@@ -4,12 +4,16 @@ namespace Pars\Logic\Entity;
 
 use DateTime;
 use Exception;
+use JsonSerializable;
+use Pars\Core\Util\Option\OptionHelper;
 
-class Entity
+class Entity implements JsonSerializable
 {
     public const TYPE_TYPE = 'type';
+    public const TYPE_TEMPLATE = 'template';
     public const TYPE_STATE = 'state';
     public const TYPE_GROUP = 'group';
+    public const TYPE_MENU = 'menu';
     public const TYPE_CONTEXT = 'context';
     public const TYPE_LANGUAGE = 'language';
     public const TYPE_COUNTRY = 'country';
@@ -43,23 +47,24 @@ class Entity
     public const DATA_CHILDREN_SHOW = 'children_show';
     public const DATA_SELECT = 'select';
 
-    private string $Entity_ID = '';
-    private ?string $Entity_ID_Parent = null;
-    private ?string $Entity_ID_Template = null;
-    private ?string $Entity_ID_Original = null;
+    protected string $Entity_ID = '';
+    protected ?string $Entity_ID_Parent = null;
+    protected ?string $Entity_ID_Template = null;
+    protected ?string $Entity_ID_Original = null;
 
-    private string $Entity_Type = '';
-    private string $Entity_Context = '';
-    private string $Entity_Group = '';
-    private string $Entity_State = '';
-    private string $Entity_Language = '';
-    private string $Entity_Country = '';
-    private string $Entity_Code = '';
-    private int $Entity_Order = 0;
-    private string $Entity_Name = '';
-    private string $Entity_Data = '{}';
-    private string $Entity_Created = '';
-    private string $Entity_Modified = '';
+    protected string $Entity_Type = '';
+    protected string $Entity_Context = '';
+    protected string $Entity_Group = '';
+    protected string $Entity_State = '';
+    protected string $Entity_Language = '';
+    protected string $Entity_Country = '';
+    protected string $Entity_Code = '';
+    protected int $Entity_Order = 0;
+    protected string $Entity_Name = '';
+    protected string $Entity_Data = '{}';
+    protected string $Entity_Options = '{}';
+    protected string $Entity_Created = '';
+    protected string $Entity_Modified = '';
 
     final public function __construct()
     {
@@ -89,7 +94,7 @@ class Entity
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getParent(): ?string
     {
@@ -331,6 +336,50 @@ class Entity
     }
 
     /**
+     * @return string
+     */
+    public function getOptions(): string
+    {
+        return $this->Entity_Options;
+    }
+
+    /**
+     * @param string $Entity_Options
+     * @return Entity
+     */
+    public function setOptions(string $Entity_Options): Entity
+    {
+        $this->Entity_Options = $Entity_Options;
+        return $this;
+    }
+
+    public function toggleOption(string $option, bool $value): Entity
+    {
+        $helper = new OptionHelper();
+        $helper->fromJson($this->getOptions());
+        $helper->set($option, $value);
+        $this->setOptions(json_encode($helper));
+        return $this;
+    }
+
+    public function enableOption(string $option): Entity
+    {
+        return $this->toggleOption($option, true);
+    }
+
+    public function disableOption(string $option): Entity
+    {
+        return $this->toggleOption($option, false);
+    }
+
+    public function hasOption(string $option): bool
+    {
+        $helper = new OptionHelper();
+        $helper->fromJson($this->getOptions());
+        return $helper->has($option);
+    }
+
+    /**
      * @return array
      */
     public function getDataArray(): array
@@ -338,15 +387,15 @@ class Entity
         return json_decode($this->Entity_Data, true);
     }
 
-    public function findDataByFormKey(string $name)
+    public function findDataByFormKey(string $name, $default = null)
     {
         $method = "get$name";
         if (method_exists($this, $method)) {
-            return $this->{$method}();
+            return $this->{$method}() ?? $default;
         }
         return $this->flatten($this->getDataArray())[$name]
             ?? $this->flatten(['data' => $this->getDataArray()])[$name]
-            ?? null;
+            ?? $default;
     }
 
     public function flatten(array $array, string $prefix = '', string $suffix = ''): array
@@ -473,6 +522,11 @@ class Entity
             unset($data['name']);
         }
 
+        if (isset($data['options'])) {
+            $this->setOptions($data['options']);
+            unset($data['options']);
+        }
+
         if (isset($data['data']) && is_array($data['data'])) {
             $data = array_replace_recursive($data, $data['data']);
         }
@@ -480,5 +534,41 @@ class Entity
         $this->setDataArray(array_replace_recursive($this->getDataArray(), $data));
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $data = [];
+        if ($this->getType()) {
+            $data['type'] = $this->getType();
+        }
+        if ($this->getContext()) {
+            $data['context'] = $this->getContext();
+        }
+        if ($this->getGroup()) {
+            $data['group'] = $this->getGroup();
+        }
+        if ($this->getState()) {
+            $data['state'] = $this->getState();
+        }
+        if ($this->getLanguage()) {
+            $data['language'] = $this->getLanguage();
+        }
+        if ($this->getCountry()) {
+            $data['country'] = $this->getCountry();
+        }
+        if ($this->getCode()) {
+            $data['code'] = $this->getCode();
+        }
+        if ($this->getName()) {
+            $data['name'] = $this->getName();
+        }
+        if ($this->getData()) {
+            $data['data'] = $this->getData();
+        }
+        if ($this->getOptions()) {
+            $data['options'] = $this->getOptions();
+        }
+        return $data;
     }
 }

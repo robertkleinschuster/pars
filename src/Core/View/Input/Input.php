@@ -8,6 +8,7 @@ use Pars\Core\View\FormViewComponent;
 class Input extends FormViewComponent implements EntrypointInterface
 {
     public string $type = 'text';
+    public bool $disabled = false;
 
     public function init()
     {
@@ -26,6 +27,9 @@ class Input extends FormViewComponent implements EntrypointInterface
         $attributes[] = "type='{$this->type}'";
         $attributes[] = "name='{$this->key}'";
         $attributes[] = "value='{$this->getValue($this->key)}'";
+        if ($this->isDisabled()) {
+            $attributes[] = "disabled";
+        }
         return $result . ' ' . implode(' ', $attributes);
     }
 
@@ -36,6 +40,24 @@ class Input extends FormViewComponent implements EntrypointInterface
     public function setType(string $type): Input
     {
         $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @param bool $disabled
+     * @return Input
+     */
+    public function setDisabled(bool $disabled): Input
+    {
+        $this->disabled = $disabled;
         return $this;
     }
 }

@@ -12,6 +12,7 @@ class EntityDetailHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+
         $queueStream = new QueueStream();
 
         $id = $request->getAttribute('id');
@@ -19,7 +20,7 @@ class EntityDetailHandler implements RequestHandlerInterface
         $component->setId($id);
         $queueStream->push(render($component));
 
-        if ($component->getModel()->getEntity()->findDataByFormKey(Entity::DATA_CHILDREN_SHOW)) {
+        if ($component->getModel()->getEntityType()->isAllowChildren()) {
             $params = $request->getQueryParams();
             $params['mode'] = 'child';
             $overview = new EntityOverviewHandler();

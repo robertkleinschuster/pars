@@ -14,6 +14,7 @@ create table if not exists Entity
     Entity_Code        varchar(64)  not null default '',
     Entity_Name        varchar(255) not null default '',
     Entity_Data        json         not null default '{}',
+    Entity_Options     json         not null default '{}',
 
     Entity_Order       integer,
     Entity_Created     timestamp    not null default current_timestamp(),
@@ -31,7 +32,9 @@ create table if not exists Entity
         foreign key (Entity_ID_Original) references Entity (Entity_ID)
             on update cascade on delete cascade,
     constraint Entity_Data
-        check (json_valid(Entity_Data))
+        check (json_valid(Entity_Data)),
+    constraint Entity_Options
+        check (json_valid(Entity_Options))
 );
 
 create unique index if not exists IDX_Entity_ID

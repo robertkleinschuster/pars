@@ -27,38 +27,90 @@ class EntityRepository
 
     /**
      * @param string $id
+     * @param string $class
      * @return Entity
      * @throws EntityException
      */
-    public function findById(string $id): Entity
+    public function findById(string $id, string $class = Entity::class): Entity
     {
         $exception = new EntityException('Unable to load Entity with id: ' . $id);
         $query = 'SELECT * FROM Entity WHERE Entity_ID = :id';
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue('id', $id);
         if ($stmt->execute()) {
-            return $stmt->fetchObject(Entity::class) ?: throw $exception;
+            return $stmt->fetchObject($class) ?: throw $exception;
         }
         throw $exception;
     }
 
     /**
-     * @param Entity $entity
+     * @param string $class
      * @return Generator&Entity[]
      * @throws EntityException
      */
-    public function find(Entity $entity): Generator
+    public function findByIdList(array $id, string $class = Entity::class): Generator
+    {
+        if (!count($id)) {
+            return;
+        }
+        $in = str_repeat('?,', count($id) - 1) . '?';
+
+        $query = "SELECT * FROM Entity WHERE Entity_ID IN ($in)";
+
+        $stmt = $this->pdo->prepare($query);
+
+        if ($stmt->execute($id)) {
+            while ($entity = $stmt->fetchObject($class)) {
+                yield $entity;
+            }
+        } else {
+            throw new EntityException('Unable to load Entities');
+        }
+    }
+
+    /**
+     * @param string $class
+     * @return Generator&Entity[]
+     * @throws EntityException
+     */
+    public function findByParentIdList(array $id, string $class = Entity::class): Generator
+    {
+        if (!count($id)) {
+            return;
+        }
+        $in = str_repeat('?,', count($id) - 1) . '?';
+
+        $query = "SELECT * FROM Entity WHERE Entity_ID_Parent IN ($in)";
+
+        $stmt = $this->pdo->prepare($query);
+
+        if ($stmt->execute($id)) {
+            while ($entity = $stmt->fetchObject($class)) {
+                yield $entity;
+            }
+        } else {
+            throw new EntityException('Unable to load Entities');
+        }
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $class
+     * @return Generator&Entity[]
+     * @throws EntityException
+     */
+    public function find(Entity $entity, string $class = Entity::class): Generator
     {
         $query = 'SELECT * FROM Entity WHERE 1=1';
 
         $query = $this->buildCondition($entity, $query);
 
-        $query .= '  ORDER BY Entity_Order';
+        $query .= '  ORDER BY Entity_Type, Entity_Order';
 
         $stmt = $this->prepareStmt($entity, $query);
 
         if ($stmt->execute()) {
-            while ($entity = $stmt->fetchObject(Entity::class)) {
+            while ($entity = $stmt->fetchObject($class)) {
                 yield $entity;
             }
         } else {
@@ -113,7 +165,8 @@ SET
     Entity_Country=:country,
     Entity_Code=:code,
     Entity_Name=:name,
-    Entity_Data=:data
+    Entity_Data=:data,
+    Entity_Options=:options
 WHERE Entity_ID = :id';
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue('type', $entity->getType());
@@ -125,9 +178,10 @@ WHERE Entity_ID = :id';
             $stmt->bindValue('code', $entity->getCode());
             $stmt->bindValue('name', $entity->getName());
             $stmt->bindValue('data', $entity->getData());
+            $stmt->bindValue('options', $entity->getOptions());
             $stmt->bindValue('id', $entity->getId());
             if ($stmt->execute()) {
-                return $entity;
+                return $this->findById($entity->getId(), get_class($entity));
             }
         }
 
@@ -155,8 +209,9 @@ WHERE Entity_ID = :id';
                     Entity_Country,
                     Entity_Code,
                     Entity_Name,
-                    Entity_Data)
-VALUES (
+                    Entity_Data,
+                    Entity_Options
+) VALUES (
         :parent,
         :template,
         :type,
@@ -167,7 +222,8 @@ VALUES (
         :country,
         :code,
         :name,
-        :data
+        :data,
+        :options
         ) RETURNING *';
 
         $stmt = $this->pdo->prepare($query);
@@ -193,9 +249,10 @@ VALUES (
         $stmt->bindValue('code', $entity->getCode());
         $stmt->bindValue('name', $entity->getName());
         $stmt->bindValue('data', $entity->getData());
+        $stmt->bindValue('options', $entity->getOptions());
 
         if ($stmt->execute()) {
-            return $stmt->fetchObject(Entity::class);
+            return $stmt->fetchObject(get_class($entity));
         }
 
         throw new EntityException('Unable to save Entity');

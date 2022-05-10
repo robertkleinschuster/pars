@@ -5,8 +5,9 @@ namespace Pars\App\Admin\Entity;
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewEvent;
-use Pars\Logic\Entity\Entity;
-use Pars\Logic\Entity\EntityRepository;
+use Pars\Logic\Entity\Type\Definition\Type;
+use Pars\Logic\Entity\Type\Definition\TypeInfo;
+use Pars\Logic\Entity\Type\Definition\TypeInput;
 
 /**
  * @method EntityModel getModel()
@@ -34,23 +35,18 @@ class EntityDetail extends Detail
         $event->setMethod('POST');
         $event->setEvent('change');
 
+        $entity = $this->getModel()->getEntity();
+
+
         foreach ($this->getModel()->getFields() as $field) {
             if (empty($field->getCode())) {
                 continue;
             }
-            $chapter = $field->getDataArray()['form_chapter'] ?? null;
-            $group = $field->getDataArray()['form_group'] ?? '';
-
-            $select = $field->getDataArray()['select'] ?? null;
-            if (!empty($select['type'])) {
-                $entity = new Entity();
-                $entity->from($select);
-                $repo = new EntityRepository();
-
+            if ($field->getInput()->getType() === TypeInput::TYPE_SELECT) {
                 $select = new Select();
                 $select->setEvent($event);
                 $select->setKey($field->getCode());
-                $select->setLabel($field->getNameFallback());
+                $select->setLabel($field->getName());
 
                 $value = $this->getValue($field->getCode());
 
@@ -58,15 +54,30 @@ class EntityDetail extends Detail
                     $select->getModel()->setValue($value);
                 }
                 $select->addOption('', '-');
-                foreach ($repo->find($entity) as $option) {
+
+                foreach ($field->findReference() as $option) {
                     $select->addOption($option->getCode(), $option->getNameFallback());
                 }
-                $this->push($select, $chapter, $group);
+                $this->push($select, $field->getChapter(), $field->getGroup());
             } else {
-                $this->addInput($field->getCode(), $field->getNameFallback(), $chapter, $group)
-                    ->setEvent($event);
+                $this->addInput($field->getCode(), $field->getName(), $field->getChapter(), $field->getGroup())
+                    ->setEvent($event)
+                    ->setDisabled($field->getInput()->isDisabled());
             }
         }
+
+
+        $info = new TypeInfo();
+        $info->from($entity->getDataArray()[Type::DATA_INFO] ?? []);
+
+        foreach ($info->getFields() as $field) {
+            $this->addInput("info[fields][{$field->getCode()}][code]", 'Code', 'fields', $field->getName())
+                ->setEvent($event);
+
+            $this->addInput("info[fields][{$field->getCode()}][name]", 'Name', 'fields', $field->getName())
+                ->setEvent($event);
+        }
+
         return $this;
     }
 

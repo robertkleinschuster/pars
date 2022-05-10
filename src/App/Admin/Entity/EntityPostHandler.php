@@ -36,6 +36,7 @@ class EntityPostHandler implements RequestHandlerInterface
         
         $entity->from($params);
         $entity->from($request->getParsedBody());
+
         $repo->save($entity);
 
         return redirect_response(url()->withParams($params), 303);

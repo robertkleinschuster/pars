@@ -17,7 +17,6 @@ class EntityOverview extends Overview
     public function init()
     {
         parent::init();
-        (new EntityUpdater())->update();
         $this->setRowModel(new EntityModel());
 
         $this->addIconButton(Icon::edit())
@@ -34,35 +33,16 @@ class EntityOverview extends Overview
     public function initFields()
     {
         $entity = $this->getRowModel()->getEntity();
+
+        $this->addField('context', 'context');
+        $this->addField('type', 'type');
+        $this->addField('code', 'code');
+        $this->addField('name', 'name');
+
         if ($entity->getType()) {
-            $filterEntity = new Entity();
-            $filterEntity->setType(Entity::TYPE_TYPE);
-            $filterEntity->setCode($entity->getType());
-            $repo = new EntityRepository();
-            $type = $repo->find($filterEntity)->current();
-            if ($type) {
-                $this->setHeading($type->getName());
-            }
 
-            $filterEntity = new Entity();
-            $filterEntity->setType(Entity::TYPE_GROUP);
-            $filterEntity->setCode($entity->getGroup());
-            $repo = new EntityRepository();
-            $group = $repo->find($filterEntity)->current();
-            if ($group) {
-                $this->setHeading($group->getName() . ': ' . $this->getHeading());
-            }
-
-            foreach ($this->getRowModel()->getFields() as $field) {
-                if ($field->findDataByFormKey(Entity::DATA_OVERVIEW_SHOW)) {
-                    $this->addField($field->getCode(), $field->getNameFallback());
-                }
-            }
         } else {
-            $this->addField('type', 'type');
-            $this->addField('code', 'code');
-            $this->addField('name', 'name');
-            $this->addField('context', 'context');
+
         }
     }
 }

@@ -11,16 +11,20 @@ class OptionHelper implements JsonSerializable
         return isset($this->$option) && true === $this->$option;
     }
 
+    public function set(string $option, bool $value): self
+    {
+        $this->$option = $value;
+        return $this;
+    }
+
     public function enable(string $option): self
     {
-        $this->$option = true;
-        return $this;
+        return $this->set($option, true);
     }
 
     public function disable(string $option): self
     {
-        $this->$option = false;
-        return $this;
+        return $this->set($option, false);
     }
 
     public function all(bool $state = null): array
@@ -43,6 +47,18 @@ class OptionHelper implements JsonSerializable
     public function disabled(): array
     {
         return $this->all(false);
+    }
+
+    public function fromJson(string $json)
+    {
+        $data = json_decode($json, true);
+        foreach ($data['enabled'] ?? [] as $option) {
+            $this->enable($option);
+        }
+
+        foreach ($data['disabled'] ?? [] as $option) {
+            $this->disable($option);
+        }
     }
 
     /**

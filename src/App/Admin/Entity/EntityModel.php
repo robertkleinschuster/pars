@@ -2,12 +2,12 @@
 
 namespace Pars\App\Admin\Entity;
 
-use Generator;
 use Pars\Core\View\ViewModel;
 use Pars\Logic\Entity\Entity;
 use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
-use Psr\Http\Message\UploadedFileInterface;
+use Pars\Logic\Entity\Type\Definition\Type;
+use Pars\Logic\Entity\Type\Definition\TypeField;
 use Traversable;
 
 class EntityModel extends ViewModel
@@ -39,10 +39,14 @@ class EntityModel extends ViewModel
     }
 
     /**
-     * @return Generator&Entity[]
-     * @throws EntityException
+     * @return TypeField[]
      */
-    public function getFields(): Generator
+    public function getFields(): array
+    {
+        return $this->getEntityType()->getInfo()->getFields();
+    }
+
+    public function getEntityType(): Type
     {
         $entity = $this->getEntity();
         $repo = new EntityRepository();
@@ -50,13 +54,7 @@ class EntityModel extends ViewModel
         $filterEntity = new Entity();
         $filterEntity->setType(Entity::TYPE_TYPE);
         $filterEntity->setCode($entity->getType());
-
-        foreach ($repo->find($filterEntity) as $definition) {
-            $filterDefinition = new Entity();
-            $filterDefinition->setParent($definition->getId());
-            $filterDefinition->setType(Entity::TYPE_TYPE);
-            yield from $repo->find($filterDefinition);
-        }
+        return $repo->find($filterEntity, Type::class)->current();
     }
 
     /**
