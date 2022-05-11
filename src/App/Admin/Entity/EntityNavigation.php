@@ -13,7 +13,7 @@ class EntityNavigation extends Navigation
         parent::init();
         $repo = new EntityRepository();
         $rootMenus = [];
-        foreach ($repo->find(new Menu(), Menu::class) as $menu) {
+        foreach ($repo->find(new Menu()) as $menu) {
             $rootMenus[$menu->getId()] = $this->addEntry(
                 $menu->getNameFallback(),
                 url('/entity', $menu->getDataParams())

@@ -527,11 +527,19 @@ class Entity implements JsonSerializable
             unset($data['options']);
         }
 
-        if (isset($data['data']) && is_array($data['data'])) {
-            $data = array_replace_recursive($data, $data['data']);
+        if (isset($data['data'])) {
+            if (is_string($data['data'])) {
+                $data['data'] = json_decode($data['data'], true);
+            }
+            if (!empty($data['data'])) {
+                $this->replaceDataArray($data['data']);
+            }
+            unset($data['data']);
         }
 
-        $this->setDataArray(array_replace_recursive($this->getDataArray(), $data));
+        if (!empty($data)) {
+            $this->replaceDataArray($data);
+        }
 
         return $this;
     }
@@ -563,10 +571,10 @@ class Entity implements JsonSerializable
         if ($this->getName()) {
             $data['name'] = $this->getName();
         }
-        if ($this->getData()) {
+        if ($this->getData() && $this->getData() != '{}' && !empty($this->getDataArray())) {
             $data['data'] = $this->getData();
         }
-        if ($this->getOptions()) {
+        if ($this->getOptions() && $this->getOptions() != '{}') {
             $data['options'] = $this->getOptions();
         }
         return $data;

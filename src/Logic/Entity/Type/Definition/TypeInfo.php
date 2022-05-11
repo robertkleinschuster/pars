@@ -13,12 +13,19 @@ class TypeInfo implements JsonSerializable
 
     public function addField(TypeField $field)
     {
-        $this->fields[$field->getCode()] = $field;
+        if ($field->getCode()) {
+            $this->fields[$field->getNormalizedCode()] = $field;
+        }
+    }
+
+    public function getField(string $code): ?TypeField
+    {
+        return $this->fields[TypeField::normalizeCode($code)] ?? null;
     }
 
     public function addTextField(string $code, string $name = null)
     {
-        $field = new TypeField();
+        $field = $this->getField($code) ?? new TypeField();
 
         $field->setCode($code);
         if (!empty($name)) {
@@ -38,8 +45,7 @@ class TypeInfo implements JsonSerializable
 
     public function addSelectField(string $code, string $name = null, string $referenceType = null)
     {
-        $field = new TypeField();
-
+        $field = $this->getField($code) ?? new TypeField();
         $field->setCode($code);
         if (!empty($name)) {
             $field->setName($name);

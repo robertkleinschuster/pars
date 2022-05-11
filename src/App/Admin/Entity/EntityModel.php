@@ -8,6 +8,8 @@ use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
 use Pars\Logic\Entity\Type\Definition\Type;
 use Pars\Logic\Entity\Type\Definition\TypeField;
+use Pars\Logic\Entity\Type\Definition\TypeInfo;
+use Pars\Logic\Entity\Type\Definition\TypeInput;
 use Traversable;
 
 class EntityModel extends ViewModel
@@ -43,7 +45,53 @@ class EntityModel extends ViewModel
      */
     public function getFields(): array
     {
-        return $this->getEntityType()->getInfo()->getFields();
+        $fields = $this->getEntityType()->getInfo()->getFields();
+
+        if ($this->getEntityType()->isAllowEditFields()) {
+            $info = new TypeInfo();
+            $info->from($this->getEntity()->getDataArray()[Type::DATA_INFO] ?? []);
+            foreach ($info->getFields() as $typeField) {
+                $code = $typeField->getNormalizedCode();
+                $field = new TypeField();
+                $field->setCode("info[fields][$code][code]");
+                $field->setName('Code');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
+                $field->setCode("info[fields][$code][name]");
+                $field->setName('Name');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
+                $field->setCode("info[fields][$code][chapter]");
+                $field->setName('Chapter');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
+                $field->setCode("info[fields][$code][reference][type]");
+                $field->setName('Reference Type');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $field->getInput()->setType(TypeInput::TYPE_SELECT);
+                $field->getReference()->setType(Entity::TYPE_TYPE);
+                $fields[$field->getNormalizedCode()] = $field;
+            }
+
+            $field = new TypeField();
+            $field->setCode('info[fields][][code]');
+            $field->setName('Code');
+            $field->setChapter('Add field');
+
+            $fields[$field->getNormalizedCode()] = $field;
+        }
+
+        return $fields;
     }
 
     public function getEntityType(): Type

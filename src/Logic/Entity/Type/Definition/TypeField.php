@@ -32,6 +32,16 @@ class TypeField implements JsonSerializable
         return $this->code;
     }
 
+    public function getNormalizedCode(): string
+    {
+        return self::normalizeCode($this->getCode());
+    }
+
+    public static function normalizeCode(string $code): string
+    {
+        return str_replace(['[', ']'], '_', $code);
+    }
+
     /**
      * @param string $code
      * @return TypeField
@@ -141,7 +151,7 @@ class TypeField implements JsonSerializable
     public function getInput(): TypeInput
     {
         if (!isset($this->input)) {
-            $this->input = new TypeInput();
+            $this->input = new TypeInput($this);
         }
         return $this->input;
     }
@@ -173,7 +183,7 @@ class TypeField implements JsonSerializable
      */
     public function findReference(): Generator
     {
-        return (new EntityRepository())->find($this->getReference(), get_class($this->getReference()));
+        return (new EntityRepository())->find($this->getReference());
     }
 
     /**
@@ -185,7 +195,6 @@ class TypeField implements JsonSerializable
         $this->reference = $reference;
         return $this;
     }
-
 
     public function jsonSerialize(): array
     {
@@ -208,10 +217,10 @@ class TypeField implements JsonSerializable
         if (null !== $this->getGroup()) {
             $data['group'] = $this->getGroup();
         }
-        if ($this->getInput()) {
+        if (isset($this->input)) {
             $data['input'] = $this->getInput();
         }
-        if ($this->getReference()) {
+        if (isset($this->reference)) {
             $data['reference'] = $this->getReference();
         }
         return $data;

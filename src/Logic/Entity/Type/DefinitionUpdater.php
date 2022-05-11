@@ -22,17 +22,10 @@ class DefinitionUpdater
         $name = $entity->getName();
         $entity->setName('');
 
-        if ($repo->exists($entity)) {
-            $data = $entity->getData();
-            $options = $entity->getOptions();
-            $entity = $repo->find($entity, get_class($entity))->current();
-            $entity->setData($data);
-            $entity->setOptions($options);
-        } else {
+        if (!$repo->exists($entity)) {
             $entity->setName($name);
+            $repo->save($entity);
         }
-
-        return $repo->save($entity);
     }
 
 }

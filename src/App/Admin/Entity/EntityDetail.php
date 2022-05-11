@@ -35,9 +35,6 @@ class EntityDetail extends Detail
         $event->setMethod('POST');
         $event->setEvent('change');
 
-        $entity = $this->getModel()->getEntity();
-
-
         foreach ($this->getModel()->getFields() as $field) {
             if (empty($field->getCode())) {
                 continue;
@@ -64,18 +61,6 @@ class EntityDetail extends Detail
                     ->setEvent($event)
                     ->setDisabled($field->getInput()->isDisabled());
             }
-        }
-
-
-        $info = new TypeInfo();
-        $info->from($entity->getDataArray()[Type::DATA_INFO] ?? []);
-
-        foreach ($info->getFields() as $field) {
-            $this->addInput("info[fields][{$field->getCode()}][code]", 'Code', 'fields', $field->getName())
-                ->setEvent($event);
-
-            $this->addInput("info[fields][{$field->getCode()}][name]", 'Name', 'fields', $field->getName())
-                ->setEvent($event);
         }
 
         return $this;

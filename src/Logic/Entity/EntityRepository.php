@@ -95,12 +95,15 @@ class EntityRepository
 
     /**
      * @param Entity $entity
-     * @param string $class
+     * @param string|null $class
      * @return Generator&Entity[]
      * @throws EntityException
      */
-    public function find(Entity $entity, string $class = Entity::class): Generator
+    public function find(Entity $entity, string $class = null): Generator
     {
+        if (null === $class) {
+            $class = get_class($entity);
+        }
         $query = 'SELECT * FROM Entity WHERE 1=1';
 
         $query = $this->buildCondition($entity, $query);

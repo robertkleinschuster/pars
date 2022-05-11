@@ -52,16 +52,13 @@ class EntryUpdater
         $entity->setName('');
 
         if ($repo->exists($entity)) {
-            $data = $entity->getData();
-            $options = $entity->getOptions();
-            $entity = $repo->find($entity, get_class($entity))->current();
-            $entity->setData($data);
-            $entity->setOptions($options);
+            $entity = $repo->find($entity)->current();
         } else {
             $entity->setName($name);
+            $repo->save($entity);
         }
 
-        return $repo->save($entity);
+        return $entity;
     }
 
 }

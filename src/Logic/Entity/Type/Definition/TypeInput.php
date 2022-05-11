@@ -9,8 +9,26 @@ class TypeInput implements JsonSerializable
     public const TYPE_TEXT = 'text';
     public const TYPE_SELECT = 'select';
 
+    private TypeField $field;
+
     private string $type = self::TYPE_TEXT;
     private bool $disabled = false;
+
+    /**
+     * @param TypeField $field
+     */
+    public function __construct(TypeField $field)
+    {
+        $this->field = $field;
+    }
+
+    /**
+     * @return TypeField
+     */
+    public function getField(): TypeField
+    {
+        return $this->field;
+    }
 
     /**
      * @return string

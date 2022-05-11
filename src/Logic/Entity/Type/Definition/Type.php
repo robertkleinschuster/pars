@@ -7,6 +7,7 @@ use Pars\Logic\Entity\Entity;
 class Type extends Entity
 {
     public const OPTION_ALLOW_CHILDREN = 'allow_children';
+    public const OPTION_ALLOW_EDIT_FIELDS = 'allow_fields';
     public const DATA_INFO = 'info';
 
     private TypeInfo $info;
@@ -20,13 +21,17 @@ class Type extends Entity
 
     public function initDefaults()
     {
+        $this->setAllowEditFields(self::TYPE_TYPE === $this->getCode());
         $this->getInfo()->addTextField('code');
         $this->getInfo()->addTextField('name');
     }
 
     public function getCode(): string
     {
-        return self::TYPE_TYPE;
+        if (empty($this->Entity_Code)) {
+            return self::TYPE_TYPE;
+        }
+        return parent::getCode();
     }
 
     final public function getType(): string
@@ -52,6 +57,17 @@ class Type extends Entity
     final public function setAllowChildren(bool $state): self
     {
         $this->toggleOption(self::OPTION_ALLOW_CHILDREN, $state);
+        return $this;
+    }
+
+    final public function isAllowEditFields(): bool
+    {
+        return $this->hasOption(self::OPTION_ALLOW_EDIT_FIELDS);
+    }
+
+    final public function setAllowEditFields(bool $state): self
+    {
+        $this->toggleOption(self::OPTION_ALLOW_EDIT_FIELDS, $state);
         return $this;
     }
 
