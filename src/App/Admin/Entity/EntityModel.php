@@ -52,6 +52,7 @@ class EntityModel extends ViewModel
             $info->from($this->getEntity()->getDataArray()[Type::DATA_INFO] ?? []);
             foreach ($info->getFields() as $typeField) {
                 $code = $typeField->getNormalizedCode();
+
                 $field = new TypeField();
                 $field->setCode("info[fields][$code][code]");
                 $field->setName('Code');
@@ -80,6 +81,13 @@ class EntityModel extends ViewModel
                 $field->setChapter($typeField->getChapter());
                 $field->getInput()->setType(TypeInput::TYPE_SELECT);
                 $field->getReference()->setType(Entity::TYPE_TYPE);
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
+                $field->setCode("info[fields][$code][order]");
+                $field->setName('Order');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
                 $fields[$field->getNormalizedCode()] = $field;
             }
 

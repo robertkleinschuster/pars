@@ -62,6 +62,9 @@ class TypeInfo implements JsonSerializable
      */
     public function getFields(): array
     {
+        uasort($this->fields, function (TypeField $a, TypeField $b) {
+            return $a->getOrder() - $b->getOrder();
+        });
         return $this->fields;
     }
 

@@ -14,6 +14,7 @@ class TypeField implements JsonSerializable
 
     private string $code = '';
     private string $name = '';
+    private int $order = 0;
     private string $dataType = self::DATATYPE_STRING;
     private string $defaultValue = '';
     private ?string $chapter = null;
@@ -70,6 +71,24 @@ class TypeField implements JsonSerializable
     public function setName(string $name): TypeField
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder(): int
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     * @return TypeField
+     */
+    public function setOrder(int $order): TypeField
+    {
+        $this->order = $order;
         return $this;
     }
 
@@ -205,6 +224,9 @@ class TypeField implements JsonSerializable
         if ($this->getName()) {
             $data['name'] = $this->getName();
         }
+        if ($this->getOrder()) {
+            $data['order'] = $this->getOrder();
+        }
         if ($this->getDataType()) {
             $data['dataType'] = $this->getDataType();
         }
@@ -230,6 +252,7 @@ class TypeField implements JsonSerializable
     {
         $this->setCode($data['code'] ?? $this->getCode());
         $this->setName($data['name'] ?? $this->getName());
+        $this->setOrder((int) ($data['order'] ?? $this->getOrder()));
         $this->setDataType($data['dataType'] ?? $this->getDataType());
         $this->setDefaultValue($data['defaultValue'] ?? $this->getDefaultValue());
         $this->setChapter($data['chapter'] ?? $this->getChapter());
