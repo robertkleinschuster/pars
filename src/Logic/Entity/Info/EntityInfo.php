@@ -3,6 +3,7 @@
 namespace Pars\Logic\Entity\Info;
 
 use JsonSerializable;
+use Pars\Logic\Entity\Entity;
 
 class EntityInfo implements JsonSerializable
 {
@@ -68,6 +69,88 @@ class EntityInfo implements JsonSerializable
             return $a->getOrder() - $b->getOrder();
         });
         return $this->fields;
+    }
+
+    public function getEditFields(): array
+    {
+        $fields = [];
+        foreach ($this->getFields() as $typeField) {
+            $code = $typeField->getNormalizedCode();
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][code]");
+            $field->setName('Code');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][name]");
+            $field->setName('Name');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][group]");
+            $field->setName('Group');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][chapter]");
+            $field->setName('Chapter');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][reference][type]");
+            $field->setName('Reference Type');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
+            $field->getReference()->setType(Entity::TYPE_TYPE);
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][input][type]");
+            $field->setName('Input Type');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
+            $field->setOptions([
+                'text' => 'Text',
+                'select' => 'Select',
+                'editor' => 'Editor',
+            ]);
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][viewOptions][overview]");
+            $field->setName('Show in overview');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $field->getInput()->setType(EntityFieldInput::TYPE_CHECKBOX);
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][order]");
+            $field->setName('Order');
+            $field->setGroup($typeField->getName());
+            $field->setChapter($typeField->getChapter());
+            $fields[$field->getNormalizedCode()] = $field;
+        }
+
+        $field = new EntityField();
+        $field->setCode('info[fields][][code]');
+        $field->setName('Code');
+        $field->setChapter('Add field');
+
+        $fields[$field->getNormalizedCode()] = $field;
+
+        return $fields;
     }
 
     public function from(array $data)
