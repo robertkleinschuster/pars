@@ -3,10 +3,9 @@
 namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Detail\Detail;
+use Pars\Core\View\Editor\Editor;
 use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewEvent;
-use Pars\Logic\Entity\Type\Definition\Type;
-use Pars\Logic\Entity\Type\Definition\TypeInfo;
 use Pars\Logic\Entity\Type\Definition\TypeInput;
 
 /**
@@ -52,10 +51,20 @@ class EntityDetail extends Detail
                 }
                 $select->addOption('', '-');
 
-                foreach ($field->findReference() as $option) {
-                    $select->addOption($option->getCode(), $option->getNameFallback());
+                foreach ($field->getOptions() as $key => $value) {
+                    $select->addOption($key, $value);
                 }
                 $this->push($select, $field->getChapter(), $field->getGroup());
+            } elseif ($field->getInput()->getType() === TypeInput::TYPE_EDITOR) {
+                $editor = new Editor();
+                $editor->setEvent($event);
+                $editor->setKey($field->getCode());
+                $editor->setLabel($field->getName());
+                $value = $this->getValue($field->getCode());
+                if ($value) {
+                    $editor->getModel()->setValue($value);
+                }
+                $this->push($editor, $field->getChapter(), $field->getGroup());
             } else {
                 $this->addInput($field->getCode(), $field->getName(), $field->getChapter(), $field->getGroup())
                     ->setEvent($event)

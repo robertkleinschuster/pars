@@ -3,6 +3,7 @@
     "target": "esnext",
     "sourceMap": true,
     "strictNullChecks": true,
+    "moduleResolution": "Node"
   },
   "ts-standard": {
     "noDefaultIgnore": false,

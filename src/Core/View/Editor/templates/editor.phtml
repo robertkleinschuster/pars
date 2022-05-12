@@ -4,7 +4,7 @@ namespace Pars\Core\View\Editor;
 /* @var \Pars\Core\View\Editor\Editor $this */
 ?>
 <div class="editor" is="core-editor">
-    <div class="content" contenteditable="true">
+    <div class="content" contenteditable="true" data-name="<?= $this->key ?>" <?= $this->attr() ?>>
         <?= $this->getContent() ?>
     </div>
 </div>

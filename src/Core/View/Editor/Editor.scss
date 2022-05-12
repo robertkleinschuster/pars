@@ -1,8 +1,12 @@
 .editor {
   margin: 1rem;
+  background: #fff;
   .content {
     padding: .5rem;
     border: 1px solid #bbb;
     outline: none;
+  }
+  .content:focus {
+    outline: 1px solid #000;
   }
 }

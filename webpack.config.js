@@ -32,7 +32,11 @@ if (fs.existsSync('entrypoints.json')) {
   const entrypointsJson = fs.readFileSync('entrypoints.json')
   const entrypoints = JSON.parse(entrypointsJson)
   for (const [key, value] of Object.entries(entrypoints)) {
-    Encore.addEntry(key, value)
+    if (fs.existsSync(value)) {
+      Encore.addEntry(key, value)
+    } else {
+      console.error(`Missing ${value}`);
+    }
   }
 }
 

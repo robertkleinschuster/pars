@@ -21,6 +21,7 @@ class TypeField implements JsonSerializable
     private ?string $group = null;
 
     private ?Entity $reference = null;
+    private array $options = [];
 
     private TypeInput $input;
 
@@ -197,6 +198,29 @@ class TypeField implements JsonSerializable
     }
 
     /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        if (empty($this->options)) {
+            foreach ($this->findReference() as $item) {
+                $this->options[$item->getCode()] = $item->getNameFallback();
+            }
+        }
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return TypeField
+     */
+    public function setOptions(array $options): TypeField
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
      * @return Generator&Entity[]
      * @throws EntityException
      */
@@ -252,7 +276,7 @@ class TypeField implements JsonSerializable
     {
         $this->setCode($data['code'] ?? $this->getCode());
         $this->setName($data['name'] ?? $this->getName());
-        $this->setOrder((int) ($data['order'] ?? $this->getOrder()));
+        $this->setOrder((int)($data['order'] ?? $this->getOrder()));
         $this->setDataType($data['dataType'] ?? $this->getDataType());
         $this->setDefaultValue($data['defaultValue'] ?? $this->getDefaultValue());
         $this->setChapter($data['chapter'] ?? $this->getChapter());

@@ -7,6 +7,7 @@ use JsonSerializable;
 class TypeInput implements JsonSerializable
 {
     public const TYPE_TEXT = 'text';
+    public const TYPE_EDITOR = 'editor';
     public const TYPE_SELECT = 'select';
 
     private TypeField $field;

@@ -68,6 +68,13 @@ class EntityModel extends ViewModel
                 $fields[$field->getNormalizedCode()] = $field;
 
                 $field = new TypeField();
+                $field->setCode("info[fields][$code][group]");
+                $field->setName('Group');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
                 $field->setCode("info[fields][$code][chapter]");
                 $field->setName('Chapter');
                 $field->setGroup($typeField->getName());
@@ -81,6 +88,19 @@ class EntityModel extends ViewModel
                 $field->setChapter($typeField->getChapter());
                 $field->getInput()->setType(TypeInput::TYPE_SELECT);
                 $field->getReference()->setType(Entity::TYPE_TYPE);
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
+                $field->setCode("info[fields][$code][input][type]");
+                $field->setName('Input Type');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $field->getInput()->setType(TypeInput::TYPE_SELECT);
+                $field->setOptions([
+                    'text' => 'Text',
+                    'select' => 'Select',
+                    'editor' => 'Editor',
+                ]);
                 $fields[$field->getNormalizedCode()] = $field;
 
                 $field = new TypeField();
