@@ -3,7 +3,6 @@
 namespace Pars\App\Admin\Entity;
 
 use Pars\Core\Http\Stream\QueueStream;
-use Pars\Logic\Entity\Entity;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -25,7 +24,6 @@ class EntityDetailHandler implements RequestHandlerInterface
             $params['mode'] = 'child';
             $overview = new EntityOverviewHandler();
             $queueStream->push($overview->handle($request->withQueryParams($params))->getBody());
-
         }
 
         return response($queueStream);

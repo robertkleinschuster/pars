@@ -26,9 +26,16 @@ class Input extends FormViewComponent implements EntrypointInterface
         $result = parent::attr();
         $attributes[] = "type='{$this->type}'";
         $attributes[] = "name='{$this->key}'";
-        $attributes[] = "value='{$this->getValue($this->key)}'";
         if ($this->isDisabled()) {
             $attributes[] = "disabled";
+        }
+        if ($this->type == 'checkbox') {
+            $attributes[] = "value='1'";
+            if ($this->getValue($this->key)) {
+                $attributes[] = 'checked';
+            }
+        } else {
+            $attributes[] = "value='{$this->getValue($this->key)}'";
         }
         return $result . ' ' . implode(' ', $attributes);
     }

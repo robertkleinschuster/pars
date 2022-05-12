@@ -13,7 +13,11 @@ export default class ViewEventTargetAction extends ViewEvent {
     if (init.method === 'POST') {
       const formData = new FormData()
       if (this.element instanceof HTMLInputElement || this.element instanceof HTMLSelectElement) {
-        formData.set(this.element.name, this.element.value)
+        if (this.element.type == 'checkbox' && 'checked' in this.element) {
+            formData.set(this.element.name, this.element.checked ? '1' : '0')
+        } else {
+          formData.set(this.element.name, this.element.value)
+        }
       } else if (this.element.isContentEditable && undefined !== this.element.dataset.name) {
         formData.set(this.element.dataset.name, this.element.innerHTML.trim())
       }

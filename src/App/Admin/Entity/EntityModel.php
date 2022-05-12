@@ -104,6 +104,14 @@ class EntityModel extends ViewModel
                 $fields[$field->getNormalizedCode()] = $field;
 
                 $field = new TypeField();
+                $field->setCode("info[fields][$code][viewOptions][overview]");
+                $field->setName('Show in overview');
+                $field->setGroup($typeField->getName());
+                $field->setChapter($typeField->getChapter());
+                $field->getInput()->setType(TypeInput::TYPE_CHECKBOX);
+                $fields[$field->getNormalizedCode()] = $field;
+
+                $field = new TypeField();
                 $field->setCode("info[fields][$code][order]");
                 $field->setName('Order');
                 $field->setGroup($typeField->getName());

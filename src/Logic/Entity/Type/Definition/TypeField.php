@@ -4,6 +4,7 @@ namespace Pars\Logic\Entity\Type\Definition;
 
 use Generator;
 use JsonSerializable;
+use Pars\Core\Util\Option\OptionHelper;
 use Pars\Logic\Entity\Entity;
 use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
@@ -11,6 +12,8 @@ use Pars\Logic\Entity\EntityRepository;
 class TypeField implements JsonSerializable
 {
     public const DATATYPE_STRING = 'string';
+    public const VIEW_OPTION_OVERVIEW = 'overview';
+    public const VIEW_OPTION_DETAIL = 'detail';
 
     private string $code = '';
     private string $name = '';
@@ -25,6 +28,7 @@ class TypeField implements JsonSerializable
 
     private TypeInput $input;
 
+    private OptionHelper $viewOptions;
 
     /**
      * @return string
@@ -239,6 +243,27 @@ class TypeField implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return OptionHelper
+     */
+    public function getViewOptions(): OptionHelper
+    {
+        if (!isset($this->viewOptions)) {
+            $this->viewOptions = new OptionHelper();
+        }
+        return $this->viewOptions;
+    }
+
+    /**
+     * @param OptionHelper $viewOptions
+     * @return TypeField
+     */
+    public function setViewOptions(OptionHelper $viewOptions): TypeField
+    {
+        $this->viewOptions = $viewOptions;
+        return $this;
+    }
+
     public function jsonSerialize(): array
     {
         $data = [];
@@ -269,6 +294,9 @@ class TypeField implements JsonSerializable
         if (isset($this->reference)) {
             $data['reference'] = $this->getReference();
         }
+        if (isset($this->viewOptions)) {
+            $data['viewOptions'] = $this->getViewOptions();
+        }
         return $data;
     }
 
@@ -282,6 +310,11 @@ class TypeField implements JsonSerializable
         $this->setChapter($data['chapter'] ?? $this->getChapter());
         $this->setGroup($data['group'] ?? $this->getGroup());
         $this->getInput()->from($data['input'] ?? []);
+
+        if (isset($data['viewOptions'])) {
+
+            $this->getViewOptions()->from($data['viewOptions']);
+        }
         if (isset($data['reference'])) {
             $this->getReference()->from($data['reference']);
         }

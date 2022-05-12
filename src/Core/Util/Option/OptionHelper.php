@@ -52,12 +52,17 @@ class OptionHelper implements JsonSerializable
     public function fromJson(string $json)
     {
         $data = json_decode($json, true);
-        foreach ($data['enabled'] ?? [] as $option) {
-            $this->enable($option);
+        if (is_array($data)) {
+            $this->from($data);
         }
+    }
 
-        foreach ($data['disabled'] ?? [] as $option) {
-            $this->disable($option);
+    public function from(array $data)
+    {
+        foreach ($data as $option => $state) {
+            if (is_string($option)) {
+                $this->set($option, (bool)$state);
+            }
         }
     }
 
@@ -66,9 +71,6 @@ class OptionHelper implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return [
-            'enabled' => $this->enabled(),
-            'disabled' => $this->disabled()
-        ];
+        return (array) $this;
     }
 }

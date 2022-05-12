@@ -4,10 +4,7 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
-use Pars\Core\View\ViewRenderer;
-use Pars\Logic\Entity\Entity;
-use Pars\Logic\Entity\EntityRepository;
-use Pars\Logic\Entity\EntityUpdater;
+use Pars\Logic\Entity\Type\Definition\TypeField;
 
 /**
  * @method EntityModel getRowModel()
@@ -26,23 +23,23 @@ class EntityOverview extends Overview
             ->setEventAction()
             ->setUrl(url('/entity/:id'))
             ->setMethod('DELETE');
-
-
     }
 
     public function initFields()
     {
-        $entity = $this->getRowModel()->getEntity();
+        if ($this->getRowModel()->getEntity()->getType()) {
+            $type = $this->getRowModel()->getEntityType();
 
-        $this->addField('context', 'context');
-        $this->addField('type', 'type');
-        $this->addField('code', 'code');
-        $this->addField('name', 'name');
-
-        if ($entity->getType()) {
-
+            foreach ($type->getInfo()->getFields() as $field) {
+                if ($field->getViewOptions()->has(TypeField::VIEW_OPTION_OVERVIEW)) {
+                    $this->addField($field->getCode(), $field->getName());
+                }
+            }
         } else {
-
+            $this->addField('context', 'context');
+            $this->addField('type', 'type');
+            $this->addField('code', 'code');
+            $this->addField('name', 'name');
         }
     }
 }

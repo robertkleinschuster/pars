@@ -22,8 +22,10 @@ class Type extends Entity
     public function initDefaults()
     {
         $this->setAllowEditFields(self::TYPE_TYPE === $this->getCode());
-        $this->getInfo()->addTextField('code');
-        $this->getInfo()->addTextField('name');
+        $this->getInfo()->addTextField('code')
+            ->getViewOptions()->enable(TypeField::VIEW_OPTION_OVERVIEW);
+        $this->getInfo()->addTextField('name')
+            ->getViewOptions()->enable(TypeField::VIEW_OPTION_OVERVIEW);
     }
 
     public function getCode(): string

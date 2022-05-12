@@ -6,6 +6,7 @@ use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Editor\Editor;
 use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewEvent;
+use Pars\Logic\Entity\Type\Definition\TypeField;
 use Pars\Logic\Entity\Type\Definition\TypeInput;
 
 /**
@@ -35,7 +36,7 @@ class EntityDetail extends Detail
         $event->setEvent('change');
 
         foreach ($this->getModel()->getFields() as $field) {
-            if (empty($field->getCode())) {
+            if (empty($field->getCode()) && !$field->getViewOptions()->has(TypeField::VIEW_OPTION_DETAIL)) {
                 continue;
             }
             if ($field->getInput()->getType() === TypeInput::TYPE_SELECT) {
@@ -66,9 +67,10 @@ class EntityDetail extends Detail
                 }
                 $this->push($editor, $field->getChapter(), $field->getGroup());
             } else {
-                $this->addInput($field->getCode(), $field->getName(), $field->getChapter(), $field->getGroup())
+                $input = $this->addInput($field->getCode(), $field->getName(), $field->getChapter(), $field->getGroup())
                     ->setEvent($event)
-                    ->setDisabled($field->getInput()->isDisabled());
+                    ->setDisabled($field->getInput()->isDisabled())
+                    ->setType($field->getInput()->getType());
             }
         }
 

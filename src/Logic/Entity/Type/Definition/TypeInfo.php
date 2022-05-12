@@ -31,6 +31,7 @@ class TypeInfo implements JsonSerializable
         if (!empty($name)) {
             $field->setName($name);
         }
+        $field->getViewOptions()->enable(TypeField::VIEW_OPTION_DETAIL);
         $this->addField($field);
 
         return $field;
@@ -52,6 +53,7 @@ class TypeInfo implements JsonSerializable
         }
         $field->getReference()->setType($referenceType ?? $code);
         $field->getInput()->setType(TypeInput::TYPE_SELECT);
+        $field->getViewOptions()->enable(TypeField::VIEW_OPTION_DETAIL);
         $this->addField($field);
 
         return $field;
