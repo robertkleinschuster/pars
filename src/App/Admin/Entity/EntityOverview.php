@@ -4,7 +4,7 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
-use Pars\Logic\Entity\Type\Definition\TypeField;
+use Pars\Logic\Entity\Info\EntityField;
 
 /**
  * @method EntityModel getRowModel()
@@ -31,7 +31,7 @@ class EntityOverview extends Overview
             $type = $this->getRowModel()->getEntityType();
 
             foreach ($type->getInfo()->getFields() as $field) {
-                if ($field->getViewOptions()->has(TypeField::VIEW_OPTION_OVERVIEW)) {
+                if ($field->getViewOptions()->has(EntityField::VIEW_OPTION_OVERVIEW)) {
                     $this->addField($field->getCode(), $field->getName());
                 }
             }

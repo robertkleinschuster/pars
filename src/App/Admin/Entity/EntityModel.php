@@ -6,10 +6,10 @@ use Pars\Core\View\ViewModel;
 use Pars\Logic\Entity\Entity;
 use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
+use Pars\Logic\Entity\Info\EntityField;
+use Pars\Logic\Entity\Info\EntityInfo;
+use Pars\Logic\Entity\Info\EntityFieldInput;
 use Pars\Logic\Entity\Type\Definition\Type;
-use Pars\Logic\Entity\Type\Definition\TypeField;
-use Pars\Logic\Entity\Type\Definition\TypeInfo;
-use Pars\Logic\Entity\Type\Definition\TypeInput;
 use Traversable;
 
 class EntityModel extends ViewModel
@@ -41,61 +41,61 @@ class EntityModel extends ViewModel
     }
 
     /**
-     * @return TypeField[]
+     * @return EntityField[]
      */
     public function getFields(): array
     {
         $fields = $this->getEntityType()->getInfo()->getFields();
 
         if ($this->getEntityType()->isAllowEditFields()) {
-            $info = new TypeInfo();
+            $info = new EntityInfo();
             $info->from($this->getEntity()->getDataArray()[Type::DATA_INFO] ?? []);
             foreach ($info->getFields() as $typeField) {
                 $code = $typeField->getNormalizedCode();
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][code]");
                 $field->setName('Code');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][name]");
                 $field->setName('Name');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][group]");
                 $field->setName('Group');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][chapter]");
                 $field->setName('Chapter');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][reference][type]");
                 $field->setName('Reference Type');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
-                $field->getInput()->setType(TypeInput::TYPE_SELECT);
+                $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
                 $field->getReference()->setType(Entity::TYPE_TYPE);
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][input][type]");
                 $field->setName('Input Type');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
-                $field->getInput()->setType(TypeInput::TYPE_SELECT);
+                $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
                 $field->setOptions([
                     'text' => 'Text',
                     'select' => 'Select',
@@ -103,15 +103,15 @@ class EntityModel extends ViewModel
                 ]);
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][viewOptions][overview]");
                 $field->setName('Show in overview');
                 $field->setGroup($typeField->getName());
                 $field->setChapter($typeField->getChapter());
-                $field->getInput()->setType(TypeInput::TYPE_CHECKBOX);
+                $field->getInput()->setType(EntityFieldInput::TYPE_CHECKBOX);
                 $fields[$field->getNormalizedCode()] = $field;
 
-                $field = new TypeField();
+                $field = new EntityField();
                 $field->setCode("info[fields][$code][order]");
                 $field->setName('Order');
                 $field->setGroup($typeField->getName());
@@ -119,7 +119,7 @@ class EntityModel extends ViewModel
                 $fields[$field->getNormalizedCode()] = $field;
             }
 
-            $field = new TypeField();
+            $field = new EntityField();
             $field->setCode('info[fields][][code]');
             $field->setName('Code');
             $field->setChapter('Add field');

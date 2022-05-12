@@ -6,8 +6,8 @@ use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Editor\Editor;
 use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewEvent;
-use Pars\Logic\Entity\Type\Definition\TypeField;
-use Pars\Logic\Entity\Type\Definition\TypeInput;
+use Pars\Logic\Entity\Info\EntityField;
+use Pars\Logic\Entity\Info\EntityFieldInput;
 
 /**
  * @method EntityModel getModel()
@@ -36,10 +36,10 @@ class EntityDetail extends Detail
         $event->setEvent('change');
 
         foreach ($this->getModel()->getFields() as $field) {
-            if (empty($field->getCode()) && !$field->getViewOptions()->has(TypeField::VIEW_OPTION_DETAIL)) {
+            if (empty($field->getCode()) && !$field->getViewOptions()->has(EntityField::VIEW_OPTION_DETAIL)) {
                 continue;
             }
-            if ($field->getInput()->getType() === TypeInput::TYPE_SELECT) {
+            if ($field->getInput()->getType() === EntityFieldInput::TYPE_SELECT) {
                 $select = new Select();
                 $select->setEvent($event);
                 $select->setKey($field->getCode());
@@ -56,7 +56,7 @@ class EntityDetail extends Detail
                     $select->addOption($key, $value);
                 }
                 $this->push($select, $field->getChapter(), $field->getGroup());
-            } elseif ($field->getInput()->getType() === TypeInput::TYPE_EDITOR) {
+            } elseif ($field->getInput()->getType() === EntityFieldInput::TYPE_EDITOR) {
                 $editor = new Editor();
                 $editor->setEvent($event);
                 $editor->setKey($field->getCode());

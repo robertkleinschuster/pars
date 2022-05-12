@@ -1,37 +1,37 @@
 <?php
 
-namespace Pars\Logic\Entity\Type\Definition;
+namespace Pars\Logic\Entity\Info;
 
 use JsonSerializable;
 
-class TypeInfo implements JsonSerializable
+class EntityInfo implements JsonSerializable
 {
     /**
-     * @var TypeField[]
+     * @var EntityField[]
      */
     private array $fields = [];
 
-    public function addField(TypeField $field)
+    public function addField(EntityField $field)
     {
         if ($field->getCode()) {
             $this->fields[$field->getNormalizedCode()] = $field;
         }
     }
 
-    public function getField(string $code): ?TypeField
+    public function getField(string $code): ?EntityField
     {
-        return $this->fields[TypeField::normalizeCode($code)] ?? null;
+        return $this->fields[EntityField::normalizeCode($code)] ?? null;
     }
 
     public function addTextField(string $code, string $name = null)
     {
-        $field = $this->getField($code) ?? new TypeField();
+        $field = $this->getField($code) ?? new EntityField();
 
         $field->setCode($code);
         if (!empty($name)) {
             $field->setName($name);
         }
-        $field->getViewOptions()->enable(TypeField::VIEW_OPTION_DETAIL);
+        $field->getViewOptions()->enable(EntityField::VIEW_OPTION_DETAIL);
         $this->addField($field);
 
         return $field;
@@ -46,25 +46,25 @@ class TypeInfo implements JsonSerializable
 
     public function addSelectField(string $code, string $name = null, string $referenceType = null)
     {
-        $field = $this->getField($code) ?? new TypeField();
+        $field = $this->getField($code) ?? new EntityField();
         $field->setCode($code);
         if (!empty($name)) {
             $field->setName($name);
         }
         $field->getReference()->setType($referenceType ?? $code);
-        $field->getInput()->setType(TypeInput::TYPE_SELECT);
-        $field->getViewOptions()->enable(TypeField::VIEW_OPTION_DETAIL);
+        $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
+        $field->getViewOptions()->enable(EntityField::VIEW_OPTION_DETAIL);
         $this->addField($field);
 
         return $field;
     }
 
     /**
-     * @return TypeField[]
+     * @return EntityField[]
      */
     public function getFields(): array
     {
-        uasort($this->fields, function (TypeField $a, TypeField $b) {
+        uasort($this->fields, function (EntityField $a, EntityField $b) {
             return $a->getOrder() - $b->getOrder();
         });
         return $this->fields;
@@ -73,7 +73,7 @@ class TypeInfo implements JsonSerializable
     public function from(array $data)
     {
         foreach ($data['fields'] ?? [] as $fieldData) {
-            $field = new TypeField();
+            $field = new EntityField();
             if (is_array($fieldData)) {
                 $this->addField($field->from($fieldData));
             }

@@ -3,14 +3,13 @@
 namespace Pars\Logic\Entity\Type\Definition;
 
 use Pars\Logic\Entity\Entity;
+use Pars\Logic\Entity\Info\EntityField;
 
 class Type extends Entity
 {
     public const OPTION_ALLOW_CHILDREN = 'allow_children';
     public const OPTION_ALLOW_EDIT_FIELDS = 'allow_fields';
-    public const DATA_INFO = 'info';
 
-    private TypeInfo $info;
 
     protected function init()
     {
@@ -23,9 +22,9 @@ class Type extends Entity
     {
         $this->setAllowEditFields(self::TYPE_TYPE === $this->getCode());
         $this->getInfo()->addTextField('code')
-            ->getViewOptions()->enable(TypeField::VIEW_OPTION_OVERVIEW);
+            ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
         $this->getInfo()->addTextField('name')
-            ->getViewOptions()->enable(TypeField::VIEW_OPTION_OVERVIEW);
+            ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
     }
 
     public function getCode(): string
@@ -73,18 +72,4 @@ class Type extends Entity
         return $this;
     }
 
-    final public function getInfo(): TypeInfo
-    {
-        if (!isset($this->info)) {
-            $this->info = new TypeInfo();
-            $this->info->from($this->getDataArray()[self::DATA_INFO] ?? []);
-        }
-        return $this->info;
-    }
-
-    final public function changeInfo(): self
-    {
-        $this->replaceDataArray([self::DATA_INFO => $this->getInfo()]);
-        return $this;
-    }
 }

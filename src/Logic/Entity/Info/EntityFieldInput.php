@@ -1,33 +1,33 @@
 <?php
 
-namespace Pars\Logic\Entity\Type\Definition;
+namespace Pars\Logic\Entity\Info;
 
 use JsonSerializable;
 
-class TypeInput implements JsonSerializable
+class EntityFieldInput implements JsonSerializable
 {
     public const TYPE_TEXT = 'text';
     public const TYPE_EDITOR = 'editor';
     public const TYPE_SELECT = 'select';
     public const TYPE_CHECKBOX = 'checkbox';
 
-    private TypeField $field;
+    private EntityField $field;
 
     private string $type = self::TYPE_TEXT;
     private bool $disabled = false;
 
     /**
-     * @param TypeField $field
+     * @param EntityField $field
      */
-    public function __construct(TypeField $field)
+    public function __construct(EntityField $field)
     {
         $this->field = $field;
     }
 
     /**
-     * @return TypeField
+     * @return EntityField
      */
-    public function getField(): TypeField
+    public function getField(): EntityField
     {
         return $this->field;
     }
@@ -42,9 +42,9 @@ class TypeInput implements JsonSerializable
 
     /**
      * @param string $type
-     * @return TypeInput
+     * @return EntityFieldInput
      */
-    public function setType(string $type): TypeInput
+    public function setType(string $type): EntityFieldInput
     {
         $this->type = $type;
         return $this;
@@ -60,9 +60,9 @@ class TypeInput implements JsonSerializable
 
     /**
      * @param bool $disabled
-     * @return TypeInput
+     * @return EntityFieldInput
      */
-    public function setDisabled(bool $disabled): TypeInput
+    public function setDisabled(bool $disabled): EntityFieldInput
     {
         $this->disabled = $disabled;
         return $this;

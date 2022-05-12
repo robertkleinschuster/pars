@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use JsonSerializable;
 use Pars\Core\Util\Option\OptionHelper;
+use Pars\Logic\Entity\Info\EntityInfo;
 
 class Entity implements JsonSerializable
 {
@@ -41,11 +42,7 @@ class Entity implements JsonSerializable
     public const COUNTRY_DE = 'de';
     public const COUNTRY_CH = 'ch';
 
-    public const DATA_FORM_CHAPTER = 'form_chapter';
-    public const DATA_FORM_GROUP = 'form_group';
-    public const DATA_OVERVIEW_SHOW = 'overview_show';
-    public const DATA_CHILDREN_SHOW = 'children_show';
-    public const DATA_SELECT = 'select';
+    public const DATA_INFO = 'info';
 
     protected string $Entity_ID = '';
     protected ?string $Entity_ID_Parent = null;
@@ -65,6 +62,8 @@ class Entity implements JsonSerializable
     protected string $Entity_Options = '{}';
     protected string $Entity_Created = '';
     protected string $Entity_Modified = '';
+
+    private EntityInfo $info;
 
     final public function __construct()
     {
@@ -433,6 +432,21 @@ class Entity implements JsonSerializable
         return $this->setDataArray(array_replace_recursive($this->getDataArray(), $data));
     }
 
+    final public function getInfo(): EntityInfo
+    {
+        if (!isset($this->info)) {
+            $this->info = new EntityInfo();
+            $this->info->from($this->getDataArray()[self::DATA_INFO] ?? []);
+        }
+        return $this->info;
+    }
+
+    final public function changeInfo(): self
+    {
+        $this->replaceDataArray([self::DATA_INFO => $this->getInfo()]);
+        return $this;
+    }
+
     /**
      * @throws Exception
      */
@@ -459,6 +473,7 @@ class Entity implements JsonSerializable
         $this->setCountry('');
         $this->setCode('');
         $this->setDataArray([]);
+        $this->setOptions('{}');
         $this->setParent('');
         $this->setTemplate('');
         $this->setOriginal('');

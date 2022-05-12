@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Logic\Entity\Type\Definition;
+namespace Pars\Logic\Entity\Info;
 
 use Generator;
 use JsonSerializable;
@@ -9,7 +9,7 @@ use Pars\Logic\Entity\Entity;
 use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
 
-class TypeField implements JsonSerializable
+class EntityField implements JsonSerializable
 {
     public const DATATYPE_STRING = 'string';
     public const VIEW_OPTION_OVERVIEW = 'overview';
@@ -26,7 +26,7 @@ class TypeField implements JsonSerializable
     private ?Entity $reference = null;
     private array $options = [];
 
-    private TypeInput $input;
+    private EntityFieldInput $input;
 
     private OptionHelper $viewOptions;
 
@@ -50,9 +50,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param string $code
-     * @return TypeField
+     * @return EntityField
      */
-    public function setCode(string $code): TypeField
+    public function setCode(string $code): EntityField
     {
         $this->code = $code;
         return $this;
@@ -71,9 +71,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param string $name
-     * @return TypeField
+     * @return EntityField
      */
-    public function setName(string $name): TypeField
+    public function setName(string $name): EntityField
     {
         $this->name = $name;
         return $this;
@@ -89,9 +89,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param int $order
-     * @return TypeField
+     * @return EntityField
      */
-    public function setOrder(int $order): TypeField
+    public function setOrder(int $order): EntityField
     {
         $this->order = $order;
         return $this;
@@ -107,9 +107,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param string|null $chapter
-     * @return TypeField
+     * @return EntityField
      */
-    public function setChapter(?string $chapter): TypeField
+    public function setChapter(?string $chapter): EntityField
     {
         $this->chapter = $chapter;
         return $this;
@@ -125,9 +125,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param string|null $group
-     * @return TypeField
+     * @return EntityField
      */
-    public function setGroup(?string $group): TypeField
+    public function setGroup(?string $group): EntityField
     {
         $this->group = $group;
         return $this;
@@ -143,9 +143,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param string $defaultValue
-     * @return TypeField
+     * @return EntityField
      */
-    public function setDefaultValue(string $defaultValue): TypeField
+    public function setDefaultValue(string $defaultValue): EntityField
     {
         $this->defaultValue = $defaultValue;
         return $this;
@@ -161,30 +161,30 @@ class TypeField implements JsonSerializable
 
     /**
      * @param string $dataType
-     * @return TypeField
+     * @return EntityField
      */
-    public function setDataType(string $dataType): TypeField
+    public function setDataType(string $dataType): EntityField
     {
         $this->dataType = $dataType;
         return $this;
     }
 
     /**
-     * @return TypeInput
+     * @return EntityFieldInput
      */
-    public function getInput(): TypeInput
+    public function getInput(): EntityFieldInput
     {
         if (!isset($this->input)) {
-            $this->input = new TypeInput($this);
+            $this->input = new EntityFieldInput($this);
         }
         return $this->input;
     }
 
     /**
-     * @param TypeInput $input
-     * @return TypeField
+     * @param EntityFieldInput $input
+     * @return EntityField
      */
-    public function setInput(TypeInput $input): TypeField
+    public function setInput(EntityFieldInput $input): EntityField
     {
         $this->input = $input;
         return $this;
@@ -216,9 +216,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param array $options
-     * @return TypeField
+     * @return EntityField
      */
-    public function setOptions(array $options): TypeField
+    public function setOptions(array $options): EntityField
     {
         $this->options = $options;
         return $this;
@@ -235,9 +235,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param Entity|null $reference
-     * @return TypeField
+     * @return EntityField
      */
-    public function setReference(?Entity $reference): TypeField
+    public function setReference(?Entity $reference): EntityField
     {
         $this->reference = $reference;
         return $this;
@@ -256,9 +256,9 @@ class TypeField implements JsonSerializable
 
     /**
      * @param OptionHelper $viewOptions
-     * @return TypeField
+     * @return EntityField
      */
-    public function setViewOptions(OptionHelper $viewOptions): TypeField
+    public function setViewOptions(OptionHelper $viewOptions): EntityField
     {
         $this->viewOptions = $viewOptions;
         return $this;
