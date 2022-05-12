@@ -392,8 +392,10 @@ class Entity implements JsonSerializable
         if (method_exists($this, $method)) {
             return $this->{$method}() ?? $default;
         }
+
         return $this->flatten($this->getDataArray())[$name]
             ?? $this->flatten(['data' => $this->getDataArray()])[$name]
+            ?? $this->flatten(['options' => json_decode($this->getOptions(), true)])[$name]
             ?? $default;
     }
 
@@ -538,7 +540,11 @@ class Entity implements JsonSerializable
         }
 
         if (isset($data['options'])) {
-            $this->setOptions($data['options']);
+            if (is_string($data['options'])) {
+                $this->setOptions($data['options']);
+            } elseif (is_array($data['options'])) {
+                $this->setOptions(json_encode($data['options']));
+            }
             unset($data['options']);
         }
 

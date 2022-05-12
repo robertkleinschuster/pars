@@ -38,6 +38,21 @@ class EntityInfo implements JsonSerializable
         return $field;
     }
 
+    public function addCheckboxField(string $code, string $name = null)
+    {
+        $field = $this->getField($code) ?? new EntityField();
+
+        $field->setCode($code);
+        if (!empty($name)) {
+            $field->setName($name);
+        }
+        $field->getInput()->setType(EntityFieldInput::TYPE_CHECKBOX);
+        $field->getViewOptions()->enable(EntityField::VIEW_OPTION_DETAIL);
+        $this->addField($field);
+
+        return $field;
+    }
+
     public function addDisabledField(string $code, string $name = null)
     {
         $field = $this->addTextField($code, $name);

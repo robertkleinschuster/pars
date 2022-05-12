@@ -20,11 +20,15 @@ class Type extends Entity
 
     public function initDefaults()
     {
-        $this->setAllowEditFields(self::TYPE_TYPE === $this->getCode());
         $this->getInfo()->addTextField('code')
             ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
         $this->getInfo()->addTextField('name')
             ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
+
+        if (self::TYPE_TYPE === $this->getCode()) {
+            $this->setAllowEditFields(true);
+            $this->getInfo()->addCheckboxField('options[allow_fields]', 'Custom fields');
+        }
     }
 
     public function getCode(): string
