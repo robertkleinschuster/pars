@@ -34,23 +34,12 @@ class AdminApplication extends WebApplication
     {
         parent::init();
         (new EntityUpdater())->update();
+        $this->getTranslator()->addPath(__DIR__ . '/translations');
 
-        $this->route('/entity/:id+', new EntityPostHandler(), 'POST');
-        $this->route('/entity/:id+', new EntityDeleteHandler(), 'DELETE');
-        $this->route('/entity', new EntityOverviewHandler());
-        $this->route('/entity/:id', new EntityDetailHandler());
-
-
-        $this->route('/user', new UserHandler());
-        $this->route('/user/:id', new UserHandler());
-        $this->routePost('/user/:id', new UserActionHandler());
-        $this->route('/overview', new OverviewHandler());
-        $this->routePost('/overview', new OverviewActionHandler());
-
-        $this->route('/testpage', $this->getContainer()->get(StartpageHandler::class));
-        $this->route('/browser', $this->getContainer()->get(BrowserHandler::class));
-        $this->route('/editor/:file+', $this->getContainer()->get(FileEditorHandler::class));
-        $this->route('/phpinfo', $this->getContainer()->get(PhpinfoHandler::class));
+        $this->route('/:id+', new EntityPostHandler(), 'POST');
+        $this->route('/:id+', new EntityDeleteHandler(), 'DELETE');
+        $this->route('/', new EntityOverviewHandler());
+        $this->route('/:id+', new EntityDetailHandler());
     }
 
     public function override(ContainerResolver $resolver)
@@ -59,12 +48,11 @@ class AdminApplication extends WebApplication
         $resolver->overrideFactory(Config::class, AdminConfigFactory::class);
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    protected function initLayout(ServerRequestInterface $request, ResponseInterface $response): void
     {
-        $this->getTranslator()->addPath(__DIR__ . '/translations');
+        parent::initLayout($request, $response);
         $this->getLayout()->setHeader($this->renderHeader());
         $this->getLayout()->setTitle('admin');
-        return parent::handle($request);
     }
 
     protected function renderHeader(): StreamInterface

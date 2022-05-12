@@ -12,7 +12,9 @@ class EntityDeleteHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $repo = new EntityRepository();
-        $repo->delete($repo->findById($request->getAttribute('id', '')));
+        $id = explode('/', $request->getAttribute('id', ''));
+
+        $repo->delete($repo->findById(array_pop($id)));
         return redirect_response($request->getHeaderLine('Referer'), 303);
     }
 

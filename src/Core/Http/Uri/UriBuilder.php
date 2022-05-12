@@ -58,6 +58,11 @@ class UriBuilder
         return $clone;
     }
 
+    public function withAppendedPath(string $path): UriBuilder
+    {
+        return $this->withPath($this->uri->getPath() . $path);
+    }
+
     public function __clone()
     {
         $this->baseUri = clone $this->baseUri;

@@ -17,7 +17,8 @@ class EntityPostHandler implements RequestHandlerInterface
 
         $params = $request->getQueryParams();
         $repo = new EntityRepository();
-        $id = $request->getAttribute('id');
+        $id = explode('/', $request->getAttribute('id'));
+        $id = array_pop($id);
         $mode = $params['mode'] ?? null;
         unset($params['mode']);
         if ($id) {

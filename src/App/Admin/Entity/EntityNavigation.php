@@ -16,14 +16,14 @@ class EntityNavigation extends Navigation
         foreach ($repo->find(new Menu()) as $menu) {
             $rootMenus[$menu->getId()] = $this->addEntry(
                 $menu->getNameFallback(),
-                url('/entity', $menu->getDataParams())
+                url('/', $menu->getDataParams())
             );
         }
 
         foreach ($repo->findByParentIdList(array_keys($rootMenus), Menu::class) as $menu) {
             $rootMenus[$menu->getParent()]->addEntry(
                 $menu->getNameFallback(),
-                url('/entity', $menu->getDataParams())
+                url('/', $menu->getDataParams())
             );
         }
     }

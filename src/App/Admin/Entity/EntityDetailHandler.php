@@ -14,9 +14,9 @@ class EntityDetailHandler implements RequestHandlerInterface
 
         $queueStream = new QueueStream();
 
-        $id = $request->getAttribute('id');
+        $id = explode('/', $request->getAttribute('id'));
         $component = new EntityDetail();
-        $component->setId($id);
+        $component->setId(array_pop($id));
         $queueStream->push(render($component));
 
         if ($component->getModel()->getEntityType()->isAllowChildren()) {

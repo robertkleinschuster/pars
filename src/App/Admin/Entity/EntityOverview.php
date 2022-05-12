@@ -15,13 +15,14 @@ class EntityOverview extends Overview
     {
         parent::init();
         $this->setRowModel(new EntityModel());
+        $link = url('/')->withAppendedPath('/:id');
 
         $this->addIconButton(Icon::edit())
-            ->setEventLink(url('/entity/:id'));
+            ->setEventLink($link);
 
         $this->addIconButton(Icon::delete())
             ->setEventAction()
-            ->setUrl(url('/entity/:id'))
+            ->setUrl($link)
             ->setMethod('DELETE');
     }
 
