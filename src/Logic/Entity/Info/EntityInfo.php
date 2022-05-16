@@ -2,15 +2,25 @@
 
 namespace Pars\Logic\Entity\Info;
 
-use JsonSerializable;
+use ArrayIterator;
+use Pars\Core\Util\Json\JsonObject;
 use Pars\Logic\Entity\Entity;
 
-class EntityInfo implements JsonSerializable
+class EntityInfo extends JsonObject
 {
     /**
      * @var EntityField[]
      */
-    private array $fields = [];
+    public array $fields = [];
+
+    public function __construct($array = [], int $flags = 0, string $iteratorClass = ArrayIterator::class)
+    {
+        parent::__construct($array, $flags, $iteratorClass);
+        foreach ($this->fields as $key => $field) {
+            $this->fields[$key] = new EntityField($field);
+        }
+    }
+
 
     public function addField(EntityField $field)
     {
@@ -166,22 +176,5 @@ class EntityInfo implements JsonSerializable
         $fields[$field->getNormalizedCode()] = $field;
 
         return $fields;
-    }
-
-    public function from(array $data)
-    {
-        foreach ($data['fields'] ?? [] as $fieldData) {
-            $field = new EntityField();
-            if (is_array($fieldData)) {
-                $this->addField($field->from($fieldData));
-            }
-        }
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'fields' => $this->getFields()
-        ];
     }
 }

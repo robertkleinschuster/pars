@@ -14,8 +14,7 @@ class Type extends Entity
     protected function init()
     {
         parent::init();
-        $this->initDefaults();
-        $this->changeInfo();
+        #$this->initDefaults();
     }
 
     public function initDefaults()
@@ -56,23 +55,23 @@ class Type extends Entity
 
     final public function isAllowChildren(): bool
     {
-        return $this->hasOption(self::OPTION_ALLOW_CHILDREN);
+        return $this->getOptionsObject()->has(self::OPTION_ALLOW_CHILDREN);
     }
 
     final public function setAllowChildren(bool $state): self
     {
-        $this->toggleOption(self::OPTION_ALLOW_CHILDREN, $state);
+        $this->getOptionsObject()->set(self::OPTION_ALLOW_CHILDREN, $state);
         return $this;
     }
 
     final public function isAllowEditFields(): bool
     {
-        return $this->hasOption(self::OPTION_ALLOW_EDIT_FIELDS);
+        return $this->getOptionsObject()->has(self::OPTION_ALLOW_EDIT_FIELDS);
     }
 
     final public function setAllowEditFields(bool $state): self
     {
-        $this->toggleOption(self::OPTION_ALLOW_EDIT_FIELDS, $state);
+        $this->getOptionsObject()->set(self::OPTION_ALLOW_EDIT_FIELDS, $state);
         return $this;
     }
 

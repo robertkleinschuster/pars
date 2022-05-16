@@ -2,33 +2,43 @@
 
 namespace Pars\Logic\Entity\Info;
 
+use ArrayIterator;
 use Generator;
-use JsonSerializable;
-use Pars\Core\Util\Option\OptionHelper;
+use Pars\Core\Util\Json\JsonObject;
+use Pars\Core\Util\Option\OptionsObject;
 use Pars\Logic\Entity\Entity;
 use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\EntityRepository;
 
-class EntityField implements JsonSerializable
+class EntityField extends JsonObject
 {
     public const DATATYPE_STRING = 'string';
     public const VIEW_OPTION_OVERVIEW = 'overview';
     public const VIEW_OPTION_DETAIL = 'detail';
 
-    private string $code = '';
-    private string $name = '';
-    private int $order = 0;
-    private string $dataType = self::DATATYPE_STRING;
-    private string $defaultValue = '';
-    private ?string $chapter = null;
-    private ?string $group = null;
+    public string $code = '';
+    public string $name = '';
+    public int $order = 0;
+    public string $dataType = self::DATATYPE_STRING;
+    public string $defaultValue = '';
+    public ?string $chapter = null;
+    public ?string $group = null;
 
-    private ?Entity $reference = null;
-    private array $options = [];
+    public ?Entity $reference = null;
+    public array $options = [];
 
-    private EntityFieldInput $input;
+    public EntityFieldInput $input;
 
-    private OptionHelper $viewOptions;
+    public OptionsObject $viewOptions;
+
+    public function __construct($array = [], int $flags = 0, string $iteratorClass = ArrayIterator::class)
+    {
+        if (isset($array['reference'])) {
+            $array['reference'] = (new Entity())->from($array['reference']);
+        }
+        parent::__construct($array, $flags, $iteratorClass);
+    }
+
 
     /**
      * @return string
@@ -175,19 +185,9 @@ class EntityField implements JsonSerializable
     public function getInput(): EntityFieldInput
     {
         if (!isset($this->input)) {
-            $this->input = new EntityFieldInput($this);
+            $this->input = new EntityFieldInput($this['input'] ?? []);
         }
         return $this->input;
-    }
-
-    /**
-     * @param EntityFieldInput $input
-     * @return EntityField
-     */
-    public function setInput(EntityFieldInput $input): EntityField
-    {
-        $this->input = $input;
-        return $this;
     }
 
     /**
@@ -234,90 +234,13 @@ class EntityField implements JsonSerializable
     }
 
     /**
-     * @param Entity|null $reference
-     * @return EntityField
+     * @return OptionsObject
      */
-    public function setReference(?Entity $reference): EntityField
-    {
-        $this->reference = $reference;
-        return $this;
-    }
-
-    /**
-     * @return OptionHelper
-     */
-    public function getViewOptions(): OptionHelper
+    public function getViewOptions(): OptionsObject
     {
         if (!isset($this->viewOptions)) {
-            $this->viewOptions = new OptionHelper();
+            $this->viewOptions = new OptionsObject($this['viewOptions'] ?? []);
         }
         return $this->viewOptions;
-    }
-
-    /**
-     * @param OptionHelper $viewOptions
-     * @return EntityField
-     */
-    public function setViewOptions(OptionHelper $viewOptions): EntityField
-    {
-        $this->viewOptions = $viewOptions;
-        return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        $data = [];
-        if ($this->getCode()) {
-            $data['code'] = $this->getCode();
-        }
-        if ($this->getName()) {
-            $data['name'] = $this->getName();
-        }
-        if ($this->getOrder()) {
-            $data['order'] = $this->getOrder();
-        }
-        if ($this->getDataType()) {
-            $data['dataType'] = $this->getDataType();
-        }
-        if ($this->getDefaultValue()) {
-            $data['defaultValue'] = $this->getDefaultValue();
-        }
-        if (null !== $this->getChapter()) {
-            $data['chapter'] = $this->getChapter();
-        }
-        if (null !== $this->getGroup()) {
-            $data['group'] = $this->getGroup();
-        }
-        if (isset($this->input)) {
-            $data['input'] = $this->getInput();
-        }
-        if (isset($this->reference)) {
-            $data['reference'] = $this->getReference();
-        }
-        if (isset($this->viewOptions)) {
-            $data['viewOptions'] = $this->getViewOptions();
-        }
-        return $data;
-    }
-
-    public function from(array $data): self
-    {
-        $this->setCode($data['code'] ?? $this->getCode());
-        $this->setName($data['name'] ?? $this->getName());
-        $this->setOrder((int)($data['order'] ?? $this->getOrder()));
-        $this->setDataType($data['dataType'] ?? $this->getDataType());
-        $this->setDefaultValue($data['defaultValue'] ?? $this->getDefaultValue());
-        $this->setChapter($data['chapter'] ?? $this->getChapter());
-        $this->setGroup($data['group'] ?? $this->getGroup());
-        $this->getInput()->from($data['input'] ?? []);
-
-        if (isset($data['viewOptions'])) {
-
-            $this->getViewOptions()->from($data['viewOptions']);
-        }
-        if (isset($data['reference'])) {
-            $this->getReference()->from($data['reference']);
-        }
-        return $this;
     }
 }

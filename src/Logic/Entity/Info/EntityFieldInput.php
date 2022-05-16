@@ -2,35 +2,17 @@
 
 namespace Pars\Logic\Entity\Info;
 
-use JsonSerializable;
+use Pars\Core\Util\Json\JsonObject;
 
-class EntityFieldInput implements JsonSerializable
+class EntityFieldInput extends JsonObject
 {
     public const TYPE_TEXT = 'text';
     public const TYPE_EDITOR = 'editor';
     public const TYPE_SELECT = 'select';
     public const TYPE_CHECKBOX = 'checkbox';
 
-    private EntityField $field;
-
-    private string $type = self::TYPE_TEXT;
-    private bool $disabled = false;
-
-    /**
-     * @param EntityField $field
-     */
-    public function __construct(EntityField $field)
-    {
-        $this->field = $field;
-    }
-
-    /**
-     * @return EntityField
-     */
-    public function getField(): EntityField
-    {
-        return $this->field;
-    }
+    public string $type = self::TYPE_TEXT;
+    public bool $disabled = false;
 
     /**
      * @return string
@@ -65,23 +47,6 @@ class EntityFieldInput implements JsonSerializable
     public function setDisabled(bool $disabled): EntityFieldInput
     {
         $this->disabled = $disabled;
-        return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'type' => $this->getType(),
-            'disabled' => $this->isDisabled(),
-        ];
-    }
-
-    public function from(array $data): self
-    {
-        if (isset($data['type'])) {
-            $this->setType($data['type']);
-        }
-        $this->setDisabled($data['disabled'] ?? $this->isDisabled());
         return $this;
     }
 }

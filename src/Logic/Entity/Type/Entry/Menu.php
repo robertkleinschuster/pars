@@ -6,7 +6,7 @@ use Pars\Logic\Entity\Entity;
 
 class Menu extends Entity
 {
-    public const DATA_PARAMS = 'params';
+    public const DATA_PARAMETER = 'params';
 
     public function getGroup(): string
     {
@@ -23,14 +23,14 @@ class Menu extends Entity
         return self::CONTEXT_ENTRY;
     }
 
-    public function getDataParams(): array
+    public function getParameter()
     {
-        return $this->getDataArray()[self::DATA_PARAMS] ?? [];
+        return $this->getDataObject()->find(self::DATA_PARAMETER, []);
     }
 
-    public function setDataParams(array $params): self
+    public function setParameter(array $parameter): self
     {
-        $this->replaceDataArray([self::DATA_PARAMS => $params]);
+        $this->getDataObject()->fromArray([self::DATA_PARAMETER => $parameter]);
         return $this;
     }
 }

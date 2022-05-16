@@ -20,7 +20,7 @@ class EntryUpdater
 
         $systemMenu = new Entry\Menu();
         $systemMenu->setCode('system');
-        $systemMenu->setDataParams([
+        $systemMenu->setParameter([
             'type' => 'menu',
             'context' => 'entry',
             'group' => 'system'
@@ -30,18 +30,18 @@ class EntryUpdater
         $menuMenu = new Entry\Menu();
         $menuMenu->setParent($systemMenu->getId());
         $menuMenu->setCode('menu');
-        $menuMenu->setDataParams($systemMenu->getDataParams());
-        $menuMenu = $this->save($menuMenu);
+        $menuMenu->setParameter($systemMenu->getParameter());
+        $this->save($menuMenu);
 
         $schemaMenu = new Entry\Menu();
         $schemaMenu->setParent($systemMenu->getId());
         $schemaMenu->setCode('schema');
-        $schemaMenu->setDataParams([
+        $schemaMenu->setParameter([
             'type' => 'type',
             'context' => 'definition',
             'group' => 'schema'
         ]);
-        $schemaMenu = $this->save($schemaMenu);
+        $this->save($schemaMenu);
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace Pars\Core\Http\Uri;
 
+use Iterator;
 use Psr\Http\Message\{UriFactoryInterface, UriInterface};
 
 class UriBuilder
@@ -44,7 +45,7 @@ class UriBuilder
         return $clone;
     }
 
-    public function withParams(array $params): UriBuilder
+    public function withParams($params): UriBuilder
     {
         $clone = clone $this;
         $clone->uri = $clone->uri->withQuery(http_build_query($params));

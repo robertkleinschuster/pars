@@ -2,21 +2,20 @@
 
 namespace ParsTest\Core\Util\Option;
 
-use Pars\Core\Util\Option\OptionHelper;
+use Pars\Core\Util\Option\OptionsObject;
 use PHPUnit\Framework\TestCase;
 
 class OptionHelperTest extends TestCase
 {
     public function testOptionsCanBeEnabledOrDisabled()
     {
-        $helper = new OptionHelper();
+        $helper = new OptionsObject();
         $helper->enable('foo');
         $helper->enable('bar');
         $helper->disable('bar');
 
-        $this->assertContains('foo', $helper->enabled());
-        $this->assertNotContains('foo', $helper->disabled());
-        $this->assertContains('bar', $helper->disabled());
-        $this->assertNotContains('bar', $helper->enabled());
+        $this->assertTrue($helper->has('foo'));
+        $this->assertFalse($helper->has('bar'));
+        $this->assertFalse($helper->offsetGet('bar'));
     }
 }

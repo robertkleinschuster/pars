@@ -15,13 +15,13 @@ class Menu extends Type
     {
         parent::initDefaults();
         $this->setAllowChildren(true);
-        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMS . '[type]', 'Type', 'type')
+        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMETER . '[type]', 'Type', 'type')
             ->setChapter('Parameter')
             ->setGroup('');
-        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMS . '[context]', 'Context', 'context')
+        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMETER . '[context]', 'Context', 'context')
             ->setChapter('Parameter')
             ->setGroup('');
-        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMS . '[group]', 'Group', 'group')
+        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMETER . '[group]', 'Group', 'group')
             ->setChapter('Parameter')
             ->setGroup('');
     }

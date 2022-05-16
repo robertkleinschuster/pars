@@ -31,7 +31,8 @@ class EntityPostHandler implements RequestHandlerInterface
             $entity->setId('');
             $entity->setCode('');
             $entity->setName('');
-            $entity->setDataArray([]);
+            $entity->getDataObject()->clear();
+            $entity->getOptionsObject()->clear();
             $entity->setParent($id);
         }
         

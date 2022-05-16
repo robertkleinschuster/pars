@@ -4,15 +4,15 @@ namespace Pars\Core\Util\Option;
 
 trait OptionTrait
 {
-    private OptionHelper $options;
+    private OptionsObject $options;
 
     /**
-     * @return OptionHelper
+     * @return OptionsObject
      */
-    public function getOptions(): OptionHelper
+    public function getOptions(): OptionsObject
     {
         if (!isset($this->options)) {
-            $this->options = new OptionHelper();
+            $this->options = new OptionsObject();
         }
         return $this->options;
     }

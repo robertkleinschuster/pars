@@ -5,7 +5,8 @@ namespace Pars\Logic\Entity;
 use DateTime;
 use Exception;
 use JsonSerializable;
-use Pars\Core\Util\Option\OptionHelper;
+use Pars\Core\Util\Json\JsonObject;
+use Pars\Core\Util\Option\OptionsObject;
 use Pars\Logic\Entity\Info\EntityInfo;
 
 class Entity implements JsonSerializable
@@ -62,6 +63,9 @@ class Entity implements JsonSerializable
     protected string $Entity_Options = '{}';
     protected string $Entity_Created = '';
     protected string $Entity_Modified = '';
+
+    private JsonObject $dataHelper;
+    private OptionsObject $optionsHelper;
 
     private EntityInfo $info;
 
@@ -244,14 +248,6 @@ class Entity implements JsonSerializable
         return $this->Entity_Name;
     }
 
-    public function getNameFallback(): string
-    {
-        if (empty($this->getName())) {
-            return ucfirst($this->getCode());
-        }
-        return $this->getName();
-    }
-
     /**
      * @param string $name
      * @return Entity
@@ -321,17 +317,7 @@ class Entity implements JsonSerializable
      */
     public function getData(): string
     {
-        return $this->Entity_Data;
-    }
-
-    /**
-     * @param string $data
-     * @return Entity
-     */
-    public function setData(string $data): Entity
-    {
-        $this->Entity_Data = $data;
-        return $this;
+        return $this->getDataObject();
     }
 
     /**
@@ -339,114 +325,29 @@ class Entity implements JsonSerializable
      */
     public function getOptions(): string
     {
-        return $this->Entity_Options;
+        return $this->getOptionsObject();
     }
 
     /**
-     * @param string $Entity_Options
-     * @return Entity
+     * @return JsonObject
      */
-    public function setOptions(string $Entity_Options): Entity
+    public function getDataObject(): JsonObject
     {
-        $this->Entity_Options = $Entity_Options;
-        return $this;
-    }
-
-    public function toggleOption(string $option, bool $value): Entity
-    {
-        $helper = new OptionHelper();
-        $helper->fromJson($this->getOptions());
-        $helper->set($option, $value);
-        $this->setOptions(json_encode($helper));
-        return $this;
-    }
-
-    public function enableOption(string $option): Entity
-    {
-        return $this->toggleOption($option, true);
-    }
-
-    public function disableOption(string $option): Entity
-    {
-        return $this->toggleOption($option, false);
-    }
-
-    public function hasOption(string $option): bool
-    {
-        $helper = new OptionHelper();
-        $helper->fromJson($this->getOptions());
-        return $helper->has($option);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataArray(): array
-    {
-        return json_decode($this->Entity_Data, true);
-    }
-
-    public function findDataByFormKey(string $name, $default = null)
-    {
-        $method = "get$name";
-        if (method_exists($this, $method)) {
-            return $this->{$method}() ?? $default;
+        if (!isset($this->dataHelper)) {
+            $this->dataHelper = new JsonObject($this->Entity_Data);
         }
-
-        return $this->flatten($this->getDataArray())[$name]
-            ?? $this->flatten(['data' => $this->getDataArray()])[$name]
-            ?? $this->flatten(['options' => json_decode($this->getOptions(), true)])[$name]
-            ?? $default;
-    }
-
-    public function flatten(array $array, string $prefix = '', string $suffix = ''): array
-    {
-        $result = [];
-
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $result = array_merge($result, $this->flatten($value, $prefix . $key . $suffix . '[', ']'));
-            } else {
-                $result[$prefix . $key . $suffix] = $value;
-            }
-        }
-
-        return $result;
-    }
-
-
-    /**
-     * @param array $data
-     * @return $this
-     */
-    public function setDataArray(array $data): Entity
-    {
-        $this->Entity_Data = json_encode($data);
-        return $this;
+        return $this->dataHelper;
     }
 
     /**
-     * @param array $data
-     * @return $this
+     * @return OptionsObject
      */
-    public function replaceDataArray(array $data): Entity
+    public function getOptionsObject(): OptionsObject
     {
-        return $this->setDataArray(array_replace_recursive($this->getDataArray(), $data));
-    }
-
-    final public function getInfo(): EntityInfo
-    {
-        if (!isset($this->info)) {
-            $this->info = new EntityInfo();
-            $this->info->from($this->getDataArray()[self::DATA_INFO] ?? []);
+        if (!isset($this->optionsHelper)) {
+            $this->optionsHelper = new OptionsObject($this->Entity_Options);
         }
-        return $this->info;
-    }
-
-    final public function changeInfo(): self
-    {
-        $this->replaceDataArray([self::DATA_INFO => $this->getInfo()]);
-        return $this;
+        return $this->optionsHelper;
     }
 
     /**
@@ -465,20 +366,55 @@ class Entity implements JsonSerializable
         return new DateTime($this->Entity_Modified);
     }
 
+    public function getNameFallback(): string
+    {
+        if (empty($this->getName())) {
+            return ucfirst($this->getCode());
+        }
+        return $this->getName();
+    }
+
+    public function find(string $name, $default = null)
+    {
+        $method = 'get' . ucfirst($name);
+        if (method_exists($this, $method)) {
+            return $this->{$method}() ?? $default;
+        }
+
+        return $this->getOptionsObject()->find($name, null, 'options')
+            ?? $this->getDataObject()->find($name, null, 'data')
+            ?? $default;
+    }
+
+    final public function getInfo(): EntityInfo
+    {
+        $data = $this->getDataObject()[self::DATA_INFO] ?? new EntityInfo();
+
+        if (is_array($data)) {
+            $data = new EntityInfo($data);
+        }
+        $this->getDataObject()->offsetSet(self::DATA_INFO, $data);
+        return $data;
+    }
+
     public function clear(): self
     {
-        $this->setType('');
-        $this->setState('');
-        $this->setContext('');
-        $this->setGroup('');
-        $this->setLanguage('');
-        $this->setCountry('');
-        $this->setCode('');
-        $this->setDataArray([]);
-        $this->setOptions('{}');
         $this->setParent('');
         $this->setTemplate('');
         $this->setOriginal('');
+        $this->setType('');
+        $this->setContext('');
+        $this->setGroup('');
+        $this->setState('');
+        $this->setLanguage('');
+        $this->setCountry('');
+        $this->setCode('');
+        $this->setName('');
+        $this->setOrder(0);
+        $this->getDataObject()->clear();
+        $this->getOptionsObject()->clear();
+        $this->Entity_Created = '';
+        $this->Entity_Modified = '';
         return $this;
     }
 
@@ -540,26 +476,17 @@ class Entity implements JsonSerializable
         }
 
         if (isset($data['options'])) {
-            if (is_string($data['options'])) {
-                $this->setOptions($data['options']);
-            } elseif (is_array($data['options'])) {
-                $this->setOptions(json_encode($data['options']));
-            }
+            $this->getOptionsObject()->from($data['options']);
             unset($data['options']);
         }
 
         if (isset($data['data'])) {
-            if (is_string($data['data'])) {
-                $data['data'] = json_decode($data['data'], true);
-            }
-            if (!empty($data['data'])) {
-                $this->replaceDataArray($data['data']);
-            }
+            $this->getDataObject()->from($data['data']);
             unset($data['data']);
         }
 
         if (!empty($data)) {
-            $this->replaceDataArray($data);
+            $this->getDataObject()->fromArray($data);
         }
 
         return $this;
@@ -592,11 +519,11 @@ class Entity implements JsonSerializable
         if ($this->getName()) {
             $data['name'] = $this->getName();
         }
-        if ($this->getData() && $this->getData() != '{}' && !empty($this->getDataArray())) {
-            $data['data'] = $this->getData();
+        if (!$this->getDataObject()->isEmpty()) {
+            $data['data'] = $this->getDataObject();
         }
-        if ($this->getOptions() && $this->getOptions() != '{}') {
-            $data['options'] = $this->getOptions();
+        if (!$this->getOptionsObject()->isEmpty()) {
+            $data['options'] = $this->getOptionsObject();
         }
         return $data;
     }

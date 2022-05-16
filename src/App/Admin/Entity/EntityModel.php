@@ -44,7 +44,7 @@ class EntityModel extends ViewModel
     public function getFields(): array
     {
         $fields = $this->getEntityType()->getInfo()->getFields();
-
+     
         if ($this->getEntityType()->isAllowEditFields()) {
             $fields = array_merge($fields, $this->getEntity()->getInfo()->getEditFields());
         }
@@ -116,7 +116,7 @@ class EntityModel extends ViewModel
 
     public function getEntityValue(string $name)
     {
-        return $this->getEntity()->findDataByFormKey($name);
+        return $this->getEntity()->find($name);
     }
 
 
