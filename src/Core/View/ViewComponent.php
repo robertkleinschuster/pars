@@ -14,6 +14,7 @@ class ViewComponent
 
     protected ?string $template = __DIR__ . '/templates/default.phtml';
     protected ViewModel $model;
+    protected ViewFormatter $formatter;
     protected ?ViewEvent $event = null;
 
     /**
@@ -28,6 +29,7 @@ class ViewComponent
 
     final public function __construct()
     {
+        $this->formatter = new ViewFormatter($this);
         $this->init();
     }
 
@@ -216,7 +218,7 @@ class ViewComponent
 
     public function getValue(string $key)
     {
-        return $this->getModel()->get($key);
+        return $this->formatter->format($key, $this->getModel());
     }
 
     public function getParentValue(string $key)

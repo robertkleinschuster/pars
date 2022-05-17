@@ -29,7 +29,7 @@ class EntityOverview extends Overview
     public function initFields()
     {
         if ($this->getRowModel()->getEntity()->getType()) {
-            $type = $this->getRowModel()->getEntityType();
+            $type = $this->getRowModel()->getType();
 
             foreach ($type->getInfo()->getFields() as $field) {
                 if ($field->getViewOptions()->has(EntityField::VIEW_OPTION_OVERVIEW)) {

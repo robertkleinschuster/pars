@@ -13,6 +13,7 @@ use Traversable;
 class EntityModel extends ViewModel
 {
     protected Entity $entity;
+    protected Type $type;
 
     /**
      * @return Entity
@@ -43,24 +44,29 @@ class EntityModel extends ViewModel
      */
     public function getFields(): array
     {
-        $fields = $this->getEntityType()->getInfo()->getFields();
-     
-        if ($this->getEntityType()->isAllowEditFields()) {
+        $fields = $this->getType()->getInfo()->getFields();
+
+        if ($this->getType()->isAllowEditFields()) {
             $fields = array_merge($fields, $this->getEntity()->getInfo()->getEditFields());
         }
 
         return $fields;
     }
 
-    public function getEntityType(): Type
+    public function getType(): Type
     {
-        $entity = $this->getEntity();
-        $repo = new EntityRepository();
-
-        $filterEntity = new Entity();
-        $filterEntity->setType(Entity::TYPE_TYPE);
-        $filterEntity->setCode($entity->getType());
-        return $repo->find($filterEntity, Type::class)->current();
+        if (!isset($this->type)) {
+            if ($this->getEntity()->getType()) {
+                $filterEntity = new Entity();
+                $filterEntity->setType(Entity::TYPE_TYPE);
+                $filterEntity->setCode($this->getEntity()->getType());
+                $repo = new EntityRepository();
+                $this->type = $repo->find($filterEntity, Type::class)->current() ?? new Type();
+            } else {
+                $this->type = new Type();
+            }
+        }
+        return $this->type;
     }
 
     /**
@@ -108,6 +114,9 @@ class EntityModel extends ViewModel
 
     public function get(string $name)
     {
+        if (strpos($name, 'type:') === 0) {
+            return $this->getType()->find(substr($name, 5));
+        }
         if ($name) {
             return $this->getEntityValue($name);
         }

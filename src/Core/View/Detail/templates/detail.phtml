@@ -1,7 +1,9 @@
 <?php
+
 namespace Pars\Core\View\Detail;
 
 /* @var $this Detail */ ?>
 <div is="core-detail" class="detail">
+    <h1><?= $this->getValue($this->getHeadingKey()) ?></h1>
     <?= $this->getContent() ?>
 </div>

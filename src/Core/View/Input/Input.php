@@ -4,15 +4,27 @@ namespace Pars\Core\View\Input;
 
 use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\FormViewComponent;
+use Pars\Core\View\Input\Type\Checkbox;
+use Pars\Core\View\Input\Type\InputType;
+use Pars\Core\View\Input\Type\Number;
+use Pars\Core\View\Input\Type\Text;
+use Pars\Core\View\ViewException;
 
 class Input extends FormViewComponent implements EntrypointInterface
 {
-    public string $type = 'text';
+    public InputType $type;
     public bool $disabled = false;
+
+    private static array $types = [
+        'text' => Text::class,
+        'checkbox' => Checkbox::class,
+        'number' => Number::class
+    ];
 
     public function init()
     {
         parent::init();
+        $this->setType('text');
         $this->setTemplate(__DIR__ . '/templates/input.phtml');
     }
 
@@ -29,23 +41,23 @@ class Input extends FormViewComponent implements EntrypointInterface
         if ($this->isDisabled()) {
             $attributes[] = "disabled";
         }
-        if ($this->type == 'checkbox') {
-            $attributes[] = "value='1'";
-            if ($this->getValue($this->key)) {
-                $attributes[] = 'checked';
-            }
-        } else {
-            $attributes[] = "value='{$this->getValue($this->key)}'";
-        }
+        $attributes = $this->type->attributes($this, $attributes);
         return $result . ' ' . implode(' ', $attributes);
     }
 
     /**
-     * @param string $type
+     * @param string|InputType $type
      * @return Input
+     * @throws ViewException
      */
-    public function setType(string $type): Input
+    public function setType($type): Input
     {
+        if (is_string($type)) {
+            if (!isset(self::$types[$type])) {
+                throw new ViewException("Invalid input type: $type");
+            }
+            $type = new (self::$types[$type])();
+        }
         $this->type = $type;
         return $this;
     }

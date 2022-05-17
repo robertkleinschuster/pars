@@ -11,10 +11,9 @@ class OptionsObject extends JsonObject
     {
         parent::__construct($array, $flags, $iteratorClass);
         foreach ($this as &$option) {
-            $option = (bool) $option;
+            $option = (bool)$option;
         }
     }
-
 
     public function has(string $option): bool
     {
@@ -39,6 +38,6 @@ class OptionsObject extends JsonObject
 
     public function offsetSet(mixed $key, mixed $value): void
     {
-        parent::offsetSet($key, (bool) $value);
+        parent::offsetSet($key, (bool)$value);
     }
 }

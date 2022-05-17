@@ -8,6 +8,7 @@ class Detail extends ViewComponent implements EntrypointInterface
 {
     use GroupTrait;
 
+    protected string $headingKey = 'heading';
     protected array $chapter = [];
 
     protected function init()
@@ -20,6 +21,24 @@ class Detail extends ViewComponent implements EntrypointInterface
     public static function getEntrypoint(): string
     {
         return __DIR__ . '/Detail.ts';
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeadingKey(): string
+    {
+        return $this->headingKey;
+    }
+
+    /**
+     * @param string $headingKey
+     * @return Detail
+     */
+    public function setHeadingKey(string $headingKey): Detail
+    {
+        $this->headingKey = $headingKey;
+        return $this;
     }
 
     public function push(ViewComponent $component, string $chapter = null, string $group = null): static

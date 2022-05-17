@@ -5,7 +5,6 @@ namespace Pars\App\Admin\Entity;
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Editor\Editor;
 use Pars\Core\View\Select\Select;
-use Pars\Core\View\ViewComponent;
 use Pars\Core\View\ViewEvent;
 use Pars\Logic\Entity\Info\EntityField;
 use Pars\Logic\Entity\Info\EntityFieldInput;
@@ -19,6 +18,7 @@ class EntityDetail extends Detail
     {
         parent::init();
         $this->model = new EntityModel();
+        $this->setHeadingKey('{type:nameFallback}: {nameFallback}');
     }
 
     public function addInput(string $key, string $label, string $chapter = null, string $group = null)
@@ -31,12 +31,6 @@ class EntityDetail extends Detail
     public function setId(string $id)
     {
         $this->getModel()->setId($id);
-
-        $heading = new ViewComponent();
-        $heading->setTag('h1');
-        $name = $this->getModel()->getEntity()->getNameFallback();
-        $heading->setContent($name);
-        $this->push($heading);
 
         $event = ViewEvent::action();
         $event->setMethod('POST');
@@ -74,10 +68,15 @@ class EntityDetail extends Detail
                 }
                 $this->push($editor, $field->getChapter(), $field->getGroup());
             } else {
-                $input = $this->addInput($field->getCode(), $field->getName(), $field->getChapter(), $field->getGroup())
-                    ->setEvent($event)
+                $this->addInput(
+                    $field->getCode(),
+                    $field->getName(),
+                    $field->getChapter(),
+                    $field->getGroup()
+                )
+                    ->setType($field->getInput()->getType())
                     ->setDisabled($field->getInput()->isDisabled())
-                    ->setType($field->getInput()->getType());
+                    ->setEvent($event);
             }
         }
 

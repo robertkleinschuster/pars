@@ -165,6 +165,7 @@ class EntityInfo extends JsonObject
             $field->setName('Order');
             $field->setGroup($typeField->getName());
             $field->setChapter($typeField->getChapter());
+            $field->getInput()->setType(EntityFieldInput::TYPE_NUMBER);
             $fields[$field->getNormalizedCode()] = $field;
         }
 
