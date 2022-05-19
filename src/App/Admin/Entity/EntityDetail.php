@@ -4,8 +4,11 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Editor\Editor;
+use Pars\Core\View\Input\Input;
 use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewEvent;
+use Pars\Core\View\ViewException;
+use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\Info\EntityField;
 use Pars\Logic\Entity\Info\EntityFieldInput;
 
@@ -21,14 +24,18 @@ class EntityDetail extends Detail
         $this->setHeadingKey('{type:nameFallback}: {nameFallback}');
     }
 
-    public function addInput(string $key, string $label, string $chapter = null, string $group = null)
+    public function addInput(string $key, string $label, string $chapter = null, string $group = null): Input
     {
         $input = parent::addInput($key, $label, $chapter, $group);
         $input->model = $this->model;
         return $input;
     }
 
-    public function setId(string $id)
+    /**
+     * @throws ViewException
+     * @throws EntityException
+     */
+    public function setId(string $id): static
     {
         $this->getModel()->setId($id);
 
@@ -87,5 +94,4 @@ class EntityDetail extends Detail
 
         return $this;
     }
-
 }

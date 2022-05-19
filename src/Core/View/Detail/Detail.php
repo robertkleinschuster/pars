@@ -63,7 +63,7 @@ class Detail extends ViewComponent implements EntrypointInterface
         return $this->chapter[$name];
     }
 
-    public function addInput(string $key, string $label, string $chapter = null, string $group = null)
+    public function addInput(string $key, string $label, string $chapter = null, string $group = null): Input
     {
         /* @var Input $input */
         $input = create(Input::class);
