@@ -185,7 +185,7 @@ class EntityField extends JsonObject
     public function getInput(): EntityFieldInput
     {
         if (!isset($this->input)) {
-            $this->input = new EntityFieldInput($this['input'] ?? []);
+            $this->input = $this['input'] = new EntityFieldInput($this['input'] ?? []);
         }
         return $this->input;
     }
@@ -196,7 +196,7 @@ class EntityField extends JsonObject
     public function getReference(): ?Entity
     {
         if (!isset($this->reference)) {
-            $this->reference = new Entity();
+            $this->reference = $this['reference'] = new Entity();
         }
         return $this->reference;
     }

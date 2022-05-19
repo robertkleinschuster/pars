@@ -8,8 +8,6 @@ use JsonSerializable;
 
 class JsonObject extends ArrayObject implements JsonSerializable
 {
-    private array $jsonPropertyClasses = [];
-
     public function __construct(
         $array = [],
         int $flags = 0,
@@ -23,19 +21,14 @@ class JsonObject extends ArrayObject implements JsonSerializable
 
         foreach (get_object_vars($this) as $key => $value) {
             if (isset($this[$key])) {
-                if (isset($this->jsonPropertyClasses[$key]) && class_exists($this->jsonPropertyClasses[$key])) {
-                    $this[$key] = new ($this->jsonPropertyClasses[$key])($this[$key]);
-                }
+                $this->{$key} = &$this[$key];
+            } elseif (isset($this->{$key})) {
+                $this[$key] = $this->{$key};
                 $this->{$key} = &$this[$key];
             }
         }
     }
 
-    public function setPropertyClass(string $property, string $class): self
-    {
-        $this->jsonPropertyClasses[$property] = $class;
-        return $this;
-    }
 
     public function find(string $key, $default = null, string $prefix = null)
     {
@@ -55,7 +48,7 @@ class JsonObject extends ArrayObject implements JsonSerializable
             $mode = 'form';
         }
 
-        return $this->flatten($this, $mode)[$key] ?? $default;
+        return $this->flatten($this->getArrayCopy(), $mode)[$key] ?? $default;
     }
 
     public function fromJson(string $json): self
@@ -104,7 +97,7 @@ class JsonObject extends ArrayObject implements JsonSerializable
         return json_encode($this->jsonSerialize());
     }
 
-    private function flatten(iterable $array, string $mode = '', string $prefix = '', string $suffix = ''): array
+    private function flatten(array $array, string $mode = '', string $prefix = '', string $suffix = ''): array
     {
         $initialPrefix = '.';
         $initialSuffix = '';
@@ -117,7 +110,12 @@ class JsonObject extends ArrayObject implements JsonSerializable
         $result = [];
 
         foreach ($array as $key => $value) {
-            if (is_iterable($value)) {
+            if ($value instanceof ArrayObject) {
+                $value = $value->getArrayCopy();
+            } elseif ($value instanceof JsonSerializable) {
+                $value = $value->jsonSerialize();
+            }
+            if (is_array($value)) {
                 $result = array_merge(
                     $result,
                     $this->flatten($value, $mode, $prefix . $key . $suffix . $initialPrefix, $initialSuffix)

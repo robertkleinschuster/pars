@@ -19,6 +19,9 @@ class EntityInfo extends JsonObject
         foreach ($this->fields as $key => $field) {
             $this->fields[$key] = new EntityField($field);
         }
+        if (!isset($this['fields'])) {
+            $this['fields'] = &$this->fields;
+        }
     }
 
 

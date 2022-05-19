@@ -21,6 +21,9 @@ class Input extends FormViewComponent implements EntrypointInterface
         'number' => Number::class
     ];
 
+    /**
+     * @throws ViewException
+     */
     public function init()
     {
         parent::init();
@@ -36,8 +39,8 @@ class Input extends FormViewComponent implements EntrypointInterface
     protected function attr(): string
     {
         $result = parent::attr();
-        $attributes[] = "type='{$this->type}'";
-        $attributes[] = "name='{$this->key}'";
+        $attributes[] = "type='$this->type'";
+        $attributes[] = "name='$this->key'";
         if ($this->isDisabled()) {
             $attributes[] = "disabled";
         }
