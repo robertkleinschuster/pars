@@ -33,6 +33,7 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
+        sleep(1);
         (new EntityUpdater())->update();
         $this->getTranslator()->addPath(__DIR__ . '/translations');
 

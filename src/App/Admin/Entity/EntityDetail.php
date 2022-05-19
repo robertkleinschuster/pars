@@ -32,17 +32,20 @@ class EntityDetail extends Detail
     {
         $this->getModel()->setId($id);
 
-        $event = ViewEvent::action();
-        $event->setMethod('POST');
-        $event->setEvent('change');
+
 
         foreach ($this->getModel()->getFields() as $field) {
             if (empty($field->getCode()) && !$field->getViewOptions()->has(EntityField::VIEW_OPTION_DETAIL)) {
                 continue;
             }
+            $event = ViewEvent::action();
+            $event->setMethod('POST');
+            $event->setEvent('change');
+            $event->setSelector("#{$field->getNormalizedCode()}");
             if ($field->getInput()->getType() === EntityFieldInput::TYPE_SELECT) {
                 $select = new Select();
                 $select->setEvent($event);
+                $select->setId($field->getNormalizedCode());
                 $select->setKey($field->getCode());
                 $select->setLabel($field->getName());
 
@@ -60,6 +63,7 @@ class EntityDetail extends Detail
             } elseif ($field->getInput()->getType() === EntityFieldInput::TYPE_EDITOR) {
                 $editor = new Editor();
                 $editor->setEvent($event);
+                $editor->setId($field->getNormalizedCode());
                 $editor->setKey($field->getCode());
                 $editor->setLabel($field->getName());
                 $value = $this->getValue($field->getCode());
@@ -74,6 +78,7 @@ class EntityDetail extends Detail
                     $field->getChapter(),
                     $field->getGroup()
                 )
+                    ->setId($field->getNormalizedCode())
                     ->setType($field->getInput()->getType())
                     ->setDisabled($field->getInput()->isDisabled())
                     ->setEvent($event);

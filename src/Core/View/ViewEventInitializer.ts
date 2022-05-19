@@ -13,7 +13,9 @@ export default class ViewEventInitializer {
   }
 
   protected initEvent (element: HTMLElement): void {
-    this.createViewEvent(element).bind()
+    if (element.closest('[is]') === this.component.element) {
+      this.createViewEvent(element).bind()
+    }
   }
 
   protected createViewEvent (element: HTMLElement) {

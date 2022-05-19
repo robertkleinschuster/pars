@@ -20,6 +20,9 @@ class EntityFieldInput extends JsonObject
      */
     public function getType(): string
     {
+        if (empty($this->type)) {
+            $this->type = self::TYPE_TEXT;
+        }
         return $this->type;
     }
 

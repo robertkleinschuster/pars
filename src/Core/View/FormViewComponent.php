@@ -7,6 +7,7 @@ use Pars\Core\View\Input\Input;
 class FormViewComponent extends ViewComponent
 {
     public string $key = '';
+    public ?string $id = null;
     public string $label = '';
 
     /**
@@ -26,6 +27,12 @@ class FormViewComponent extends ViewComponent
     public function setLabel(string $label): self
     {
         $this->label = $label;
+        return $this;
+    }
+
+    public function setId(string $id)
+    {
+        $this->id = $id;
         return $this;
     }
 }

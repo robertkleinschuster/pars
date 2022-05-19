@@ -22,6 +22,7 @@ class ViewEvent
     public UriBuilder|string $url = '';
     public string $title = '';
     public string $method;
+    public string $selector;
 
     final public function __construct()
     {
@@ -118,6 +119,12 @@ class ViewEvent
         return $this;
     }
 
+    public function setSelector(string $string)
+    {
+        $this->selector = $string;
+        return $this;
+    }
+
     public function setParam(string $name, string $value)
     {
         $this->{"param-$name"} = $value;
@@ -150,6 +157,9 @@ class ViewEvent
         }
         if (!empty($this->method)) {
             $attributes .= " data-method='{$this->method}'";
+        }
+        if (!empty($this->selector)) {
+            $attributes .= " data-selector='{$this->selector}'";
         }
         $attributes .= " tabindex='0'";
         return $attributes;

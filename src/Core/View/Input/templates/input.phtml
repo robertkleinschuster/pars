@@ -1,8 +1,9 @@
 <?php
 /* @var \Pars\Core\View\Input\Input $this */
+
 ?>
-<div is="core-input" class="input">
-    <label class="input__label" for="<?= $this->key ?>"><?= $this->label ?></label>
-    <input class="input__field" id="<?= $this->key ?>" <?= $this->attr() ?>/>
+<div is="core-input" class="input" id="<?= $this->id ?>">
+    <label class="input__label" for="input_<?= $this->key ?>"><?= $this->label ?></label>
+    <input class="input__field" id="input_<?= $this->key ?>" <?= $this->attr() ?>/>
 </div>
 
