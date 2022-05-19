@@ -1406,6 +1406,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hotwired/turbo@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "@hotwired/turbo@npm:7.1.0"
+  checksum: 4f71ebf2ff6a396d4031d048fa4d4dba6039aed9ad68436e6df4527e975acd8427c7d2f9b3e7f61f3e9c1af987193adf4e2b640c4033d4afd3e1f914ed05ba9f
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.5.0":
   version: 0.5.0
   resolution: "@humanwhocodes/config-array@npm:0.5.0"
@@ -8022,6 +8029,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@hotwired/turbo": ^7.1.0
     "@symfony/webpack-encore": 1.8.2
     "@types/winbox": 0.2.1
     "@typescript-eslint/eslint-plugin": 5.19.0
