@@ -3,7 +3,7 @@ namespace Pars\Core\View\Detail;
 
 /* @var $this DetailChapter */ ?>
 <div class="detail__chapter">
-    <p class="detail__chapter__name"><?= $this->getName() ?></p>
+    <p class="detail__chapter__name"><?= trim($this->getName()) ?></p>
     <div class="detail__chapter__content">
         <?= $this->getContent() ?>
     </div>

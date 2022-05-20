@@ -8,8 +8,8 @@
     height: 2rem;
     padding: .25rem;
     font-size: 1.1rem;
-    border: none;
-    border-bottom: 1px solid #444444;
+    border: 1px solid rgba(145, 145, 145, 0.51);
+    border-radius: 5px;
   }
 
   &__select:focus {

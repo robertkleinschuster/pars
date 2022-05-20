@@ -2,14 +2,29 @@
   display: inline-flex;
   flex-direction: column;
   flex-grow: 1;
+  margin-bottom: .5rem;
+
+  &.checkbox {
+    flex-direction: row;
+    .input__label {
+      margin: auto 0;
+      flex-grow: 0;
+      cursor: pointer;
+    }
+    .input__field {
+      margin: auto .25rem;
+      height: auto;
+      flex-grow: 0;
+    }
+  }
 
   &__field {
     flex-grow: 1;
     height: 2rem;
     padding: .25rem;
     font-size: 1.1rem;
-    border: none;
-    border-bottom: 1px solid #444444;
+    border: 1px solid rgba(145, 145, 145, 0.51);
+    border-radius: 5px;
   }
 
   &__field:focus {

@@ -2,7 +2,7 @@
 /* @var \Pars\Core\View\Input\Input $this */
 
 ?>
-<div is="core-input" class="input" id="<?= $this->id ?>">
+<div is="core-input" class="input <?= $this->type ?>" id="<?= $this->id ?>">
     <label class="input__label" for="input_<?= $this->key ?>"><?= $this->label ?></label>
     <input class="input__field" id="input_<?= $this->key ?>" <?= $this->attr() ?>/>
 </div>
