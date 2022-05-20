@@ -18,11 +18,5 @@ class Menu extends Type
         $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMETER . '[type]', 'Type', 'type')
             ->setChapter('Parameter')
             ->setGroup('');
-        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMETER . '[context]', 'Context', 'context')
-            ->setChapter('Parameter')
-            ->setGroup('');
-        $this->getInfo()->addSelectField(MenuEntry::DATA_PARAMETER . '[group]', 'Group', 'group')
-            ->setChapter('Parameter')
-            ->setGroup('');
     }
 }

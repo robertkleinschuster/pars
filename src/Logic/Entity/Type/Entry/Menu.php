@@ -8,19 +8,9 @@ class Menu extends Entity
 {
     public const DATA_PARAMETER = 'params';
 
-    public function getGroup(): string
-    {
-        return self::GROUP_SYSTEM;
-    }
-
     public function getType(): string
     {
         return self::TYPE_MENU;
-    }
-
-    public function getContext(): string
-    {
-        return self::CONTEXT_ENTRY;
     }
 
     public function getParameter()

@@ -11,8 +11,6 @@ class DefinitionUpdater
     {
         $this->save(new Definition\Type());
         $this->save(new Definition\State());
-        $this->save(new Definition\Group());
-        $this->save(new Definition\Context());
         $this->save(new Definition\Menu());
     }
 

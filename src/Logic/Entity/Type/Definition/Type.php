@@ -14,7 +14,7 @@ class Type extends Entity
     protected function init()
     {
         parent::init();
-        #$this->initDefaults();
+        $this->initDefaults();
     }
 
     public function initDefaults()
@@ -41,16 +41,6 @@ class Type extends Entity
     final public function getType(): string
     {
         return self::TYPE_TYPE;
-    }
-
-    final public function getContext(): string
-    {
-        return self::CONTEXT_DEFINITION;
-    }
-
-    public function getGroup(): string
-    {
-        return self::GROUP_SCHEMA;
     }
 
     final public function isAllowChildren(): bool

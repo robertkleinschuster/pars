@@ -20,12 +20,10 @@ class JsonObject extends ArrayObject implements JsonSerializable
         parent::__construct($array, $flags, $iteratorClass);
 
         foreach (get_object_vars($this) as $key => $value) {
-            if (isset($this[$key])) {
-                $this->{$key} = &$this[$key];
-            } elseif (isset($this->{$key})) {
-                $this[$key] = $this->{$key};
-                $this->{$key} = &$this[$key];
+            if (!isset($this[$key])) {
+                $this[$key] = $this->{$key} ?? null;
             }
+            $this->{$key} = &$this[$key];
         }
     }
 

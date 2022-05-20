@@ -10,20 +10,13 @@ class EntryUpdater
 
     public function update()
     {
-        $this->save((new Entry\Context())->setCode(Entity::CONTEXT_DEFINITION));
-        $this->save((new Entry\Context())->setCode(Entity::CONTEXT_ENTRY));
         $this->save((new Entry\State())->setCode(Entity::STATE_ACTIVE));
         $this->save((new Entry\State())->setCode(Entity::STATE_INACTIVE));
-        $this->save((new Entry\Group())->setCode(Entity::GROUP_SCHEMA));
-        $this->save((new Entry\Group())->setCode(Entity::GROUP_SYSTEM));
-        $this->save((new Entry\Group())->setCode(Entity::GROUP_CONTENT));
 
         $systemMenu = new Entry\Menu();
         $systemMenu->setCode('system');
         $systemMenu->setParameter([
             'type' => 'menu',
-            'context' => 'entry',
-            'group' => 'system'
         ]);
         $systemMenu = $this->save($systemMenu);
 
@@ -38,8 +31,6 @@ class EntryUpdater
         $schemaMenu->setCode('schema');
         $schemaMenu->setParameter([
             'type' => 'type',
-            'context' => 'definition',
-            'group' => 'schema'
         ]);
         $this->save($schemaMenu);
     }

@@ -27,13 +27,6 @@ class Entity implements JsonSerializable
     public const STATE_ACTIVE = 'active';
     public const STATE_INACTIVE = 'inactive';
 
-    public const CONTEXT_DEFINITION = 'definition';
-    public const CONTEXT_ENTRY = 'entry';
-
-    public const GROUP_SCHEMA = 'schema';
-    public const GROUP_SYSTEM = 'system';
-    public const GROUP_CONTENT = 'content';
-
     public const LANGUAGE_DE = 'de';
     public const LANGUAGE_IT = 'it';
     public const LANGUAGE_FR = 'fr';

@@ -37,7 +37,6 @@ class EntityOverview extends Overview
                 }
             }
         } else {
-            $this->addField('context', 'context');
             $this->addField('type', 'type');
             $this->addField('code', 'code');
             $this->addField('name', 'name');
