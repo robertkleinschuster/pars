@@ -2,6 +2,8 @@
 
 namespace Pars\Core\View;
 
+use Closure;
+use Pars\Core\Http\Stream\ClosureStream;
 use Pars\Core\Http\Stream\QueueStream;
 use Psr\Http\Message\StreamInterface;
 use Throwable;
@@ -58,7 +60,7 @@ class ViewRenderer
                 "$componentClass:" .
                 " Error in '{$throwable->getFile()}' on line {$throwable->getLine()}: " .
                 $throwable->getMessage(),
-                (int) $throwable->getCode(),
+                (int)$throwable->getCode(),
                 $throwable
             );
         }
@@ -86,15 +88,15 @@ class ViewRenderer
 
     /**
      * @param ViewComponent $component
-     * @return QueueStream
-     * @throws ViewException
+     * @return StreamInterface
      */
-    private function renderList(ViewComponent $component): QueueStream
+    private function renderList(ViewComponent $component): StreamInterface
     {
-        $queueStream = new QueueStream();
-        foreach ($component->getModel()->getIterator() as $model) {
-            $queueStream->push($this->renderComponent($component->withModel($model)));
-        }
-        return $queueStream;
+        $function = function () use ($component) {
+            foreach ($component->getModel()->getIterator() as $model) {
+                echo $this->renderComponent($component->withModel($model));
+            }
+        };
+        return new ClosureStream(Closure::fromCallable($function), $this);
     }
 }

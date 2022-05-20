@@ -24,7 +24,7 @@ class AdminApplication extends WebApplication
     protected function init()
     {
         parent::init();
-        (new EntityUpdater())->update();
+        #(new EntityUpdater())->update();
         $this->getTranslator()->addPath(__DIR__ . '/translations');
 
         $this->route('/:id+', new EntityPostHandler(), 'POST');

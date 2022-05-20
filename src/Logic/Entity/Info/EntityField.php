@@ -36,6 +36,7 @@ class EntityField extends JsonObject
         if (isset($array['reference'])) {
             $array['reference'] = (new Entity())->from($array['reference']);
         }
+        $array['order'] = (int) ($array['order'] ?? 0);
         parent::__construct($array, $flags, $iteratorClass);
     }
 
@@ -203,6 +204,7 @@ class EntityField extends JsonObject
 
     /**
      * @return array
+     * @throws EntityException
      */
     public function getOptions(): array
     {
