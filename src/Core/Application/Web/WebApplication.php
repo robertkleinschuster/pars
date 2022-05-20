@@ -28,14 +28,14 @@ class WebApplication extends AbstractApplication
     {
         $response = parent::handle($request->withAttribute(Layout::class, $this->getLayout()));
         $this->initLayout($request, $response);
+        $hidden = array_map('trim', explode(',', $request->getHeaderLine('x-layout-hide')));
+        $this->getLayout()->hide($hidden);
         return $response->withBody($this->getRenderer()->render());
     }
 
     protected function initLayout(ServerRequestInterface $request, ResponseInterface $response): void
     {
         $this->getLayout()->setMain($response->getBody());
-        $hidden = array_map('trim', explode(',', $request->getHeaderLine('x-layout-hide')));
-        $this->getLayout()->hide($hidden);
     }
 
     protected function getRenderer(): ViewRenderer
