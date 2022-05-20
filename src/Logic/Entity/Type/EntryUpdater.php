@@ -46,7 +46,7 @@ class EntryUpdater
             $entity = $repo->find($entity)->current();
         } else {
             $entity->setName($name);
-            $repo->save($entity);
+            $entity = $repo->save($entity);
         }
 
         return $entity;

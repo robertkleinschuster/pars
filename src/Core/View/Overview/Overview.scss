@@ -11,10 +11,47 @@
   &__head {
     background: #525252;
     color: #fff;
+
     th {
       padding: .25rem;
       font-weight: lighter;
       text-align: left;
+    }
+
+    th:not(:empty) {
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+
+    th:not(:empty):after {
+      content: '';
+      background: url("sort_undefined.svg") no-repeat;
+      background-size: contain;
+      display: inline-block;
+      width: 15px;
+      height: 17px;
+      position: absolute;
+      right: 0;
+    }
+
+    th:not([data-direction]):after {
+      opacity: .5;
+      transition: opacity .1s ease-in-out;
+    }
+
+    th:not(:empty):hover:after {
+      opacity: 1;
+    }
+
+    th[data-direction='1']:after {
+      background: url("sort_up.svg") no-repeat;
+      background-size: contain;
+    }
+
+    th[data-direction='-1']:after {
+      background: url("sort_down.svg") no-repeat;
+      background-size: contain;
     }
   }
 
@@ -52,6 +89,7 @@
   &__button:hover {
     background: #dadada;
   }
+
   &__button:active {
     background: #b0b0b0;
   }

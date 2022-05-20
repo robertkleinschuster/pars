@@ -109,35 +109,30 @@ class EntityInfo extends JsonObject
             $field->setCode("info[fields][$code][code]");
             $field->setName('Code');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][name]");
             $field->setName('Name');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
-            $fields[$field->getNormalizedCode()] = $field;
-
-            $field = new EntityField();
-            $field->setCode("info[fields][$code][group]");
-            $field->setName('Group');
-            $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][chapter]");
             $field->setName('Chapter');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code][group]");
+            $field->setName('Group');
+            $field->setGroup($typeField->getName());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][reference][type]");
             $field->setName('Reference Type');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
             $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
             $field->getReference()->setType(Entity::TYPE_TYPE);
             $fields[$field->getNormalizedCode()] = $field;
@@ -146,7 +141,6 @@ class EntityInfo extends JsonObject
             $field->setCode("info[fields][$code][input][type]");
             $field->setName('Input Type');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
             $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
             $field->setOptions([
                 'text' => 'Text',
@@ -159,7 +153,6 @@ class EntityInfo extends JsonObject
             $field->setCode("info[fields][$code][viewOptions][overview]");
             $field->setName('Show in overview');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
             $field->getInput()->setType(EntityFieldInput::TYPE_CHECKBOX);
             $fields[$field->getNormalizedCode()] = $field;
 
@@ -167,7 +160,6 @@ class EntityInfo extends JsonObject
             $field->setCode("info[fields][$code][order]");
             $field->setName('Order');
             $field->setGroup($typeField->getName());
-            $field->setChapter($typeField->getChapter());
             $field->getInput()->setType(EntityFieldInput::TYPE_NUMBER);
             $fields[$field->getNormalizedCode()] = $field;
         }
