@@ -23,7 +23,7 @@ abstract class BaseBuilder
         return $this->field;
     }
 
-    protected function createChangeEvent(): ViewEvent
+    protected function createEvent(): ViewEvent
     {
         $event = ViewEvent::action();
         $event->setMethod('POST');

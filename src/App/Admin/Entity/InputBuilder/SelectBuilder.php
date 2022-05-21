@@ -11,7 +11,7 @@ class SelectBuilder extends BaseBuilder
     {
         $field = $this->getField();
         $select = new Select();
-        $select->setEvent($this->createChangeEvent());
+        $select->setEvent($this->createEvent());
         $select->setId($this->getId());
         $select->setKey($field->getCode());
         $select->setLabel($field->getName());

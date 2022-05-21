@@ -9,7 +9,7 @@ use Pars\Logic\Entity\Entity;
 class EntityInfo extends JsonObject
 {
     /**
-     * @var EntityField[]
+     * @var EntityField[]|string[]|array[]|null[]
      */
     public array $fields = [];
 
@@ -17,7 +17,15 @@ class EntityInfo extends JsonObject
     {
         parent::__construct($array, $flags, $iteratorClass);
         foreach ($this->fields as $key => $field) {
-            $this->fields[$key] = new EntityField($field);
+            if (!isset($field) || is_scalar($field) || empty($key)) {
+                unset($this->fields[$key]);
+            } else {
+                if (isset($field['code'])) {
+                    unset($this->fields[$key]);
+                    $key = $field['code'];
+                }
+                $this->fields[$key] = new EntityField($field);
+            }
         }
         if (!isset($this['fields'])) {
             $this['fields'] = &$this->fields;
@@ -106,6 +114,15 @@ class EntityInfo extends JsonObject
             $code = $typeField->getNormalizedCode();
 
             $field = new EntityField();
+            $field->setCode("info[fields][$code]");
+            $field->setName('Delete');
+            $field->setChapter('Fields');
+            $field->setGroup($typeField->getName());
+            $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
+            $field->setDefaultValue('Delete');
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
             $field->setCode("info[fields][$code][code]");
             $field->setName('Code');
             $field->setChapter('Fields');
@@ -173,8 +190,10 @@ class EntityInfo extends JsonObject
         }
 
         $field = new EntityField();
-        $field->setCode('info[fields][][code]');
+        $field->setCode('info[fields][new][code]');
         $field->setName('Code');
+        $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
+        $field->setDefaultValue('New');
         $field->setChapter('Add field');
 
         $fields[$field->getNormalizedCode()] = $field;

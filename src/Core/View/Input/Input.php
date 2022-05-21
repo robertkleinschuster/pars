@@ -4,6 +4,7 @@ namespace Pars\Core\View\Input;
 
 use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\FormViewComponent;
+use Pars\Core\View\Input\Type\Button;
 use Pars\Core\View\Input\Type\Checkbox;
 use Pars\Core\View\Input\Type\InputType;
 use Pars\Core\View\Input\Type\Number;
@@ -18,7 +19,8 @@ class Input extends FormViewComponent implements EntrypointInterface
     private static array $types = [
         'text' => Text::class,
         'checkbox' => Checkbox::class,
-        'number' => Number::class
+        'number' => Number::class,
+        'button' => Button::class,
     ];
 
     /**

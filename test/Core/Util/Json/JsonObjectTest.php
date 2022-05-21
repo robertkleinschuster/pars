@@ -41,4 +41,23 @@ class JsonObjectTest extends TestCase
         $this->assertEquals('value', $jsonObject->find('root[first][second][third]'));
         $this->assertEquals('value', $jsonObject->find('super[root][first][second][third]', null, 'super'));
     }
+
+    public function testShouldClearValueWhenKeySetToNull()
+    {
+        $jsonObject = new JsonObject([
+            'root' => [
+                'first' => [
+                    'second' => [
+                        'third' => 'value'
+                    ]
+                ]
+            ]
+        ]);
+        $jsonObject->from([
+            'root' => [
+                'first' => null
+            ]
+        ]);
+        $this->assertNull($jsonObject['root']['first']);
+    }
 }

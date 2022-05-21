@@ -310,6 +310,7 @@ class Entity implements JsonSerializable
      */
     public function getData(): string
     {
+        $this->reloadInfo();
         return $this->getDataObject();
     }
 
@@ -388,6 +389,11 @@ class Entity implements JsonSerializable
         }
         $this->getDataObject()->offsetSet(self::DATA_INFO, $data);
         return $data;
+    }
+
+    private function reloadInfo(): void
+    {
+        $this->getInfo();
     }
 
     public function clear(): self

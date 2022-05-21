@@ -11,6 +11,7 @@ class EntityFieldInput extends JsonObject
     public const TYPE_SELECT = 'select';
     public const TYPE_CHECKBOX = 'checkbox';
     public const TYPE_NUMBER = 'number';
+    public const TYPE_BUTTON = 'button';
 
     public string $type = self::TYPE_TEXT;
     public bool $disabled = false;

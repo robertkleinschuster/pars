@@ -12,7 +12,8 @@ class BuilderFactory
         EntityFieldInput::TYPE_NUMBER => NumberBuilder::class,
         EntityFieldInput::TYPE_CHECKBOX => CheckboxBuilder::class,
         EntityFieldInput::TYPE_EDITOR => EditorBuilder::class,
-        EntityFieldInput::TYPE_SELECT => SelectBuilder::class
+        EntityFieldInput::TYPE_SELECT => SelectBuilder::class,
+        EntityFieldInput::TYPE_BUTTON => ButtonBuilder::class,
     ];
 
     public static function create(EntityField $field): BaseBuilder
@@ -20,6 +21,4 @@ class BuilderFactory
         $class = self::$inputTypes[$field->getInput()->getType()] ?? TextBuilder::class;
         return new $class($field);
     }
-
-
 }

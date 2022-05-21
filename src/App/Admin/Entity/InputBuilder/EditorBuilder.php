@@ -11,7 +11,7 @@ class EditorBuilder extends BaseBuilder
     {
         $field = $this->getField();
         $editor = new Editor();
-        $editor->setEvent($this->createChangeEvent());
+        $editor->setEvent($this->createEvent());
         $editor->setId($this->getId());
         $editor->setKey($field->getCode());
         $editor->setLabel($field->getName());

@@ -26,7 +26,7 @@ class Type extends Entity
 
         if (self::TYPE_TYPE === $this->getCode()) {
             $this->setAllowEditFields(true);
-            $this->getInfo()->addCheckboxField('options[allow_fields]', 'Custom fields');
+            #$this->getInfo()->addCheckboxField('options[allow_fields]', 'Custom fields');
         }
     }
 
