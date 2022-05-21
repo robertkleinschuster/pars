@@ -20,11 +20,12 @@ class EntityInfo extends JsonObject
             if (!isset($field) || is_scalar($field) || empty($key)) {
                 unset($this->fields[$key]);
             } else {
-                if (isset($field['code'])) {
+                $fieldObj = new EntityField($field);
+                if ($fieldObj->getNormalizedCode()) {
                     unset($this->fields[$key]);
-                    $key = $field['code'];
+                    $key = $fieldObj->getNormalizedCode();
                 }
-                $this->fields[$key] = new EntityField($field);
+                $this->fields[$key] = $fieldObj;
             }
         }
         if (!isset($this['fields'])) {
