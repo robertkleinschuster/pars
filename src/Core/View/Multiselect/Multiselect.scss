@@ -1,0 +1,14 @@
+.multiselect {
+  &__label {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__options {
+    max-height: 4rem;
+    overflow: auto;
+    border: 1px solid rgba(145, 145, 145, 0.51);
+    border-radius: 5px;
+    background: #e8e8e8;
+  }
+}

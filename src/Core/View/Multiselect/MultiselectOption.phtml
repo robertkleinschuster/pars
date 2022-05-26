@@ -1,0 +1,9 @@
+<?php
+/* @var Pars\Core\View\Multiselect\MultiselectOption $this */ ?>
+<div class="multiselect__option">
+    <input type="checkbox"
+           id="<?= $this->getInputName() ?>"
+           name="<?= $this->getInputName() ?>"
+           value="1" <?= $this->getChecked() ?>>
+    <label for="<?= $this->getInputName() ?>"><?= $this->label ?></label>
+</div>

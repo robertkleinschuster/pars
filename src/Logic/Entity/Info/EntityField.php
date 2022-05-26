@@ -23,6 +23,7 @@ class EntityField extends JsonObject
     public string $defaultValue = '';
     public ?string $chapter = null;
     public ?string $group = null;
+    public ?string $icon = null;
 
     public ?Entity $reference = null;
     public array $options = [];
@@ -36,7 +37,7 @@ class EntityField extends JsonObject
         if (isset($array['reference'])) {
             $array['reference'] = (new Entity())->from($array['reference']);
         }
-        $array['order'] = (int) ($array['order'] ?? 0);
+        $array['order'] = (int)($array['order'] ?? 0);
         parent::__construct($array, $flags, $iteratorClass);
     }
 
@@ -177,6 +178,24 @@ class EntityField extends JsonObject
     public function setDataType(string $dataType): EntityField
     {
         $this->dataType = $dataType;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string|null $icon
+     * @return EntityField
+     */
+    public function setIcon(?string $icon): EntityField
+    {
+        $this->icon = $icon;
         return $this;
     }
 

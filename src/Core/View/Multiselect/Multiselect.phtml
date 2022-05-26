@@ -1,0 +1,10 @@
+<?php
+/* @var Pars\Core\View\Multiselect\Multiselect $this */ ?>
+<div is="core-multiselect" class="multiselect" id="<?= $this->id ?>">
+    <div class="multiselect__label">
+        <?= $this->label ?>
+    </div>
+    <div class="multiselect__options" <?= $this->attr() ?>>
+        <?= $this->getContent() ?>
+    </div>
+</div>

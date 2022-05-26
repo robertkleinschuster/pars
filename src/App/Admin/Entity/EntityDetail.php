@@ -42,13 +42,13 @@ class EntityDetail extends Detail
             $builder = new EntityInputBuilder($field);
             $input = $builder->build();
             $value = $this->getValue($field->getCode());
+            $model = $this->getModel();
 
             if ($value) {
-                $input->getModel()->setValue($value);
-                $input->getModel()->set($field->getCode(), $value);
+                $model->setValue($value);
             }
 
-            $this->push($input, $field->getChapter(), $field->getGroup());
+            $this->push($input->withModel($model), $field->getChapter(), $field->getGroup());
         }
 
         return $this;

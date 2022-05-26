@@ -25,7 +25,11 @@ class EntityInfo extends JsonObject
                     unset($this->fields[$key]);
                     $key = $fieldObj->getNormalizedCode();
                 }
-                $this->fields[$key] = $fieldObj;
+                if ($fieldObj->getCode()) {
+                    $this->fields[$key] = $fieldObj;
+                } else {
+                    unset($this->fields[$key]);
+                }
             }
         }
         if (!isset($this['fields'])) {
@@ -115,46 +119,37 @@ class EntityInfo extends JsonObject
             $code = $typeField->getNormalizedCode();
 
             $field = new EntityField();
-            $field->setCode("info[fields][$code]");
-            $field->setName('Delete');
-            $field->setChapter('Fields');
-            $field->setGroup($typeField->getName());
-            $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
-            $field->setDefaultValue('Delete');
-            $fields[$field->getNormalizedCode()] = $field;
-
-            $field = new EntityField();
             $field->setCode("info[fields][$code][code]");
-            $field->setName('Code');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.code'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][name]");
-            $field->setName('Name');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.name'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][chapter]");
-            $field->setName('Chapter');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.chapter'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][group]");
-            $field->setName('Group');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.group'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][reference][type]");
-            $field->setName('Reference Type');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.reference_type'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
             $field->getReference()->setType(Entity::TYPE_TYPE);
@@ -162,8 +157,8 @@ class EntityInfo extends JsonObject
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][input][type]");
-            $field->setName('Input Type');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.input_type'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
             $field->setOptions([
@@ -174,31 +169,56 @@ class EntityInfo extends JsonObject
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
-            $field->setCode("info[fields][$code][viewOptions][overview]");
-            $field->setName('Show in overview');
-            $field->setChapter('Fields');
+            $field->setCode("info[fields][$code][viewOptions]");
+            $field->setName(__('entity.edit.field.viewOptions'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
-            $field->getInput()->setType(EntityFieldInput::TYPE_CHECKBOX);
+            $field->getInput()->setType(EntityFieldInput::TYPE_MULTISELECT);
+            $field->setOptions([
+                'overview' => 'Overview',
+                'detail' => 'Detail'
+            ]);
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][order]");
-            $field->setName('Order');
-            $field->setChapter('Fields');
+            $field->setName(__('entity.edit.field.order'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $field->getInput()->setType(EntityFieldInput::TYPE_NUMBER);
             $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setCode("info[fields][$code]");
+            $field->setIcon('trash');
+            $field->setChapter(__('entity.edit.chapter.fields'));
+            #  $field->setGroup($typeField->getName());
+            $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
+            $fields[$field->getNormalizedCode()] = $field;
         }
 
+        $newFieldCode = $this->newFieldCode();
+
         $field = new EntityField();
-        $field->setCode('info[fields][new][code]');
-        $field->setName('Code');
+        $field->setCode("info[fields][$newFieldCode][code]");
         $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
-        $field->setDefaultValue('New');
-        $field->setChapter('Add field');
+        $field->setIcon('plus');
+        $field->setDefaultValue($newFieldCode);
 
         $fields[$field->getNormalizedCode()] = $field;
 
+
         return $fields;
+    }
+
+    protected function newFieldCode()
+    {
+        $newFieldCode = "new";
+        $newFieldIndex = 1;
+        while (isset($this->fields[$newFieldCode])) {
+            $newFieldCode = "new-$newFieldIndex";
+            $newFieldIndex++;
+        }
+        return $newFieldCode;
     }
 }

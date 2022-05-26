@@ -25,5 +25,4 @@ class SelectBuilder extends BaseBuilder
 
         return $select;
     }
-
 }

@@ -1,0 +1,30 @@
+.button {
+  display: flex;
+
+  ~ .detail__group {
+    margin-top: 1rem;
+  }
+
+  &__field {
+    flex-grow: 1;
+    height: 2rem;
+    margin-top: auto;
+    margin-bottom: 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #006ec7;
+    color: #fff;
+    transition: background .2s ease-in-out, box-shadow .2s ease-in-out;
+  }
+
+  &__field:focus,
+  &__field:hover {
+    background: #007ce3;
+    box-shadow: 0 1px 4px 1px #77777788;
+  }
+
+  &__field:active {
+    background: #008dff;
+  }
+}

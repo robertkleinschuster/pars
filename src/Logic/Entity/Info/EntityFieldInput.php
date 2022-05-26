@@ -9,6 +9,7 @@ class EntityFieldInput extends JsonObject
     public const TYPE_TEXT = 'text';
     public const TYPE_EDITOR = 'editor';
     public const TYPE_SELECT = 'select';
+    public const TYPE_MULTISELECT = 'multiselect';
     public const TYPE_CHECKBOX = 'checkbox';
     public const TYPE_NUMBER = 'number';
     public const TYPE_BUTTON = 'button';

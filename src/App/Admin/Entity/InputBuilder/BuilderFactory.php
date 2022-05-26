@@ -13,6 +13,7 @@ class BuilderFactory
         EntityFieldInput::TYPE_CHECKBOX => CheckboxBuilder::class,
         EntityFieldInput::TYPE_EDITOR => EditorBuilder::class,
         EntityFieldInput::TYPE_SELECT => SelectBuilder::class,
+        EntityFieldInput::TYPE_MULTISELECT => MultiselectBuilder::class,
         EntityFieldInput::TYPE_BUTTON => ButtonBuilder::class,
     ];
 
