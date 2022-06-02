@@ -24,7 +24,7 @@ class Editor extends FormViewComponent implements EntrypointInterface
     {
         $content = parent::getContent();
         if (empty($content)) {
-            $content = $this->getModel()->getValue();
+            $content = $this->getModel()->get($this->key);
         }
         return $content;
     }
