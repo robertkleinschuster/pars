@@ -15,7 +15,7 @@ class DetailChapter extends ViewComponent
     protected function init()
     {
         parent::init();
-        $this->setTemplate(__DIR__ . '/templates/detail_chapter.phtml');
+        $this->setTemplate(__DIR__ . '/DetailChapter.phtml');
     }
 
 

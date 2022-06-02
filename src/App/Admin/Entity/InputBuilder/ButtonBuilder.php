@@ -16,13 +16,10 @@ class ButtonBuilder extends BaseBuilder
         $button->setEvent($this->createEvent());
         $button->setId($this->getId());
         $button->setKey($field->getCode());
+        $button->setLabel($field->getName());
         if ($field->getIcon()) {
             $button->push((new Icon())->setIcon($field->getIcon()));
-        } else {
-            $button->setLabel($field->getName());
         }
-        $button->getModel()->setValue($field->getDefaultValue());
-        $button->getModel()->set($field->getCode(), $field->getDefaultValue());
         return $button;
     }
 
@@ -30,7 +27,6 @@ class ButtonBuilder extends BaseBuilder
     {
         $event = parent::createEvent();
         $event->setEvent('click');
-        $event->setSelector('main');
         return $event;
     }
 }

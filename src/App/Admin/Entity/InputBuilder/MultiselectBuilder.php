@@ -15,7 +15,7 @@ class MultiselectBuilder extends BaseBuilder
         $multiselect->setId($this->getId());
         $multiselect->setKey($field->getCode());
         $multiselect->setLabel($field->getName());
-
+        $multiselect->setFullwidth($field->isFullwidth());
         foreach ($field->getOptions() as $key => $value) {
             $multiselect->addValue($key, $value);
         }

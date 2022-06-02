@@ -11,7 +11,7 @@ class TextBuilder extends BaseBuilder
     public function build(): FormViewComponent
     {
         $field = $this->getField();
-        $input = new Input();
+        $input = $this->createInput();
         $input->setEvent($this->createEvent());
         $input->setId($this->getId());
         $input->setKey($field->getCode());
@@ -21,5 +21,10 @@ class TextBuilder extends BaseBuilder
         $input->getModel()->setValue($field->getDefaultValue());
         $input->getModel()->set($field->getCode(), $field->getDefaultValue());
         return $input;
+    }
+
+    protected function createInput(): Input
+    {
+        return new Input();
     }
 }

@@ -4,7 +4,6 @@ namespace Pars\Core\View\Button;
 
 use Pars\Core\View\EntrypointInterface;
 use Pars\Core\View\FormViewComponent;
-use Psr\Http\Message\StreamInterface;
 
 class Button extends FormViewComponent implements EntrypointInterface
 {
@@ -25,13 +24,5 @@ class Button extends FormViewComponent implements EntrypointInterface
         $attributes[] = "name='$this->key'";
         $attributes[] = "value='{$this->getValue($this->key)}'";
         return $result . ' ' . implode(' ', $attributes);
-    }
-
-    public function getContent(): StreamInterface|string
-    {
-        if ($this->label) {
-            return $this->label;
-        }
-        return parent::getContent();
     }
 }

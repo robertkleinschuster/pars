@@ -1,8 +1,9 @@
 <?php
+
 namespace Pars\Core\View;
 
 /* @var $this ViewComponent */ ?>
 
-<<?= $this->getTag() ?><?= $this->attr() ?>>
+<<?= $this->getTag() ?> id="<?= $this->getId() ?>" class="<?= $this->getClass() ?>" <?= $this->attr() ?>>
 <?= $this->getContent() ?>
 </<?= $this->getTag() ?>>

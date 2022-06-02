@@ -1,0 +1,7 @@
+<?php /* @var Pars\Core\View\Editor\Editor $this */ ?>
+<div class="editor" is="core-editor" id="<?= $this->id ?>">
+    <div class="content" contenteditable="true" id="input_<?= $this->key ?>"
+         data-name="<?= $this->key ?>" <?= $this->attr() ?>>
+        <?= $this->getContent() ?>
+    </div>
+</div>

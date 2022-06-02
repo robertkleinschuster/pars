@@ -80,13 +80,7 @@ class ViewComponent
 
     public function getId(): string
     {
-        static $id = null;
-        $current = ltrim(str_replace(['/', '.', '?', '&', '#'], '-', url()), '-');
-        if ($id !== $current) {
-            $id = $current;
-            return $current;
-        }
-        return '';
+        return $this->getModel()->getId();
     }
 
     public function onRender(ViewRenderer $renderer)
@@ -208,12 +202,12 @@ class ViewComponent
             $result .= ' ' . $this->getEvent()->toAttributes($this);
         }
 
-        if (!empty($this->class)) {
-            $class = implode(' ', $this->class);
-            $result .= " class='$class'";
-        }
-
         return $result;
+    }
+
+    public function getClass(): string
+    {
+        return implode(' ', $this->class);
     }
 
     public function getValue(string $key)

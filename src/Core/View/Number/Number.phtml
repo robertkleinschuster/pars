@@ -1,0 +1,18 @@
+<?php
+/* @var Pars\Core\View\Number\Number */ ?>
+<div is="core-number" class="number" id="<?= $this->id ?>">
+    <label for="number_<?= $this->key ?>" class="number__label"><?= $this->label ?></label>
+    <div class="number__input">
+        <button class="number__decrease">
+            <svg class="icon">
+                <use href="/icons.svg#minus"></use>
+            </svg>
+        </button>
+        <input type="number" class="number__field" id="number_<?= $this->key ?>" <?= $this->attr() ?>>
+        <button class="number__increase">
+            <svg class="icon">
+                <use href="/icons.svg#plus"></use>
+            </svg>
+        </button>
+    </div>
+</div>

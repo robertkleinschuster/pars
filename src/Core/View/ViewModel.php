@@ -23,6 +23,10 @@ class ViewModel implements IteratorAggregate
     {
     }
 
+    public function getId(): string
+    {
+        return '';
+    }
 
     public function push(ViewModel $model): ViewModel
     {

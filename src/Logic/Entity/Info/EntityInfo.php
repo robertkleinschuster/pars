@@ -119,6 +119,7 @@ class EntityInfo extends JsonObject
             $code = $typeField->getNormalizedCode();
 
             $field = new EntityField();
+            $field->setScope(EntityField::SCOPE_ENTRY);
             $field->setCode("info[fields][$code][code]");
             $field->setName(__('entity.edit.field.code'));
             $field->setChapter(__('entity.edit.chapter.fields'));
@@ -126,34 +127,41 @@ class EntityInfo extends JsonObject
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
+            $field->setScope(EntityField::SCOPE_ENTRY);
             $field->setCode("info[fields][$code][name]");
             $field->setName(__('entity.edit.field.name'));
             $field->setChapter(__('entity.edit.chapter.fields'));
             $field->setGroup($typeField->getName());
             $fields[$field->getNormalizedCode()] = $field;
 
-            $field = new EntityField();
-            $field->setCode("info[fields][$code][chapter]");
-            $field->setName(__('entity.edit.field.chapter'));
-            $field->setChapter(__('entity.edit.chapter.fields'));
-            $field->setGroup($typeField->getName());
-            $fields[$field->getNormalizedCode()] = $field;
+            if ($typeField->getViewOptions()->has('chapter')) {
+                $field = new EntityField();
+                $field->setCode("info[fields][$code][chapter]");
+                $field->setName(__('entity.edit.field.chapter'));
+                $field->setChapter(__('entity.edit.chapter.fields'));
+                $field->setGroup($typeField->getName());
+                $fields[$field->getNormalizedCode()] = $field;
+            }
 
-            $field = new EntityField();
-            $field->setCode("info[fields][$code][group]");
-            $field->setName(__('entity.edit.field.group'));
-            $field->setChapter(__('entity.edit.chapter.fields'));
-            $field->setGroup($typeField->getName());
-            $fields[$field->getNormalizedCode()] = $field;
+            if ($typeField->getViewOptions()->has('group')) {
+                $field = new EntityField();
+                $field->setCode("info[fields][$code][group]");
+                $field->setName(__('entity.edit.field.group'));
+                $field->setChapter(__('entity.edit.chapter.fields'));
+                $field->setGroup($typeField->getName());
+                $fields[$field->getNormalizedCode()] = $field;
+            }
 
-            $field = new EntityField();
-            $field->setCode("info[fields][$code][reference][type]");
-            $field->setName(__('entity.edit.field.reference_type'));
-            $field->setChapter(__('entity.edit.chapter.fields'));
-            $field->setGroup($typeField->getName());
-            $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
-            $field->getReference()->setType(Entity::TYPE_TYPE);
-            $fields[$field->getNormalizedCode()] = $field;
+            if ($typeField->getViewOptions()->has('reference')) {
+                $field = new EntityField();
+                $field->setCode("info[fields][$code][reference][type]");
+                $field->setName(__('entity.edit.field.reference_type'));
+                $field->setChapter(__('entity.edit.chapter.fields'));
+                $field->setGroup($typeField->getName());
+                $field->getInput()->setType(EntityFieldInput::TYPE_SELECT);
+                $field->getReference()->setType(Entity::TYPE_TYPE);
+                $fields[$field->getNormalizedCode()] = $field;
+            }
 
             $field = new EntityField();
             $field->setCode("info[fields][$code][input][type]");
@@ -169,18 +177,7 @@ class EntityInfo extends JsonObject
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
-            $field->setCode("info[fields][$code][viewOptions]");
-            $field->setName(__('entity.edit.field.viewOptions'));
-            $field->setChapter(__('entity.edit.chapter.fields'));
-            $field->setGroup($typeField->getName());
-            $field->getInput()->setType(EntityFieldInput::TYPE_MULTISELECT);
-            $field->setOptions([
-                'overview' => 'Overview',
-                'detail' => 'Detail'
-            ]);
-            $fields[$field->getNormalizedCode()] = $field;
-
-            $field = new EntityField();
+            $field->setScope(EntityField::SCOPE_ENTRY);
             $field->setCode("info[fields][$code][order]");
             $field->setName(__('entity.edit.field.order'));
             $field->setChapter(__('entity.edit.chapter.fields'));
@@ -189,18 +186,37 @@ class EntityInfo extends JsonObject
             $fields[$field->getNormalizedCode()] = $field;
 
             $field = new EntityField();
+            $field->setScope(EntityField::SCOPE_ENTRY);
+            $field->setCode("info[fields][$code][viewOptions]");
+            $field->setName(__('entity.edit.field.viewOptions'));
+            $field->setChapter(__('entity.edit.chapter.fields'));
+            $field->setGroup($typeField->getName());
+            $field->getInput()->setType(EntityFieldInput::TYPE_MULTISELECT);
+            $field->setFullwidth(true);
+            $field->setOptions([
+                EntityField::VIEW_OPTION_OVERVIEW => 'Overview',
+                EntityField::VIEW_OPTION_DETAIL => 'Detail',
+                EntityField::VIEW_OPTION_GROUP => 'Group',
+                EntityField::VIEW_OPTION_CHAPTER => 'Chapter',
+                EntityField::VIEW_OPTION_REFERENCE => 'Reference',
+            ]);
+            $fields[$field->getNormalizedCode()] = $field;
+
+            $field = new EntityField();
+            $field->setScope(EntityField::SCOPE_ENTRY);
             $field->setCode("info[fields][$code]");
+            $field->setName(__('entity.edit.button.delete_field'));
             $field->setIcon('trash');
             $field->setChapter(__('entity.edit.chapter.fields'));
-            #  $field->setGroup($typeField->getName());
             $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
             $fields[$field->getNormalizedCode()] = $field;
         }
 
         $newFieldCode = $this->newFieldCode();
-
         $field = new EntityField();
+        $field->setScope(EntityField::SCOPE_ENTRY);
         $field->setCode("info[fields][$newFieldCode][code]");
+        $field->setName(__('entity.edit.button.add_field'));
         $field->getInput()->setType(EntityFieldInput::TYPE_BUTTON);
         $field->setIcon('plus');
         $field->setDefaultValue($newFieldCode);

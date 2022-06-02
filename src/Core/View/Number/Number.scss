@@ -1,19 +1,23 @@
-.input {
+.number {
   display: inline-flex;
   flex-direction: column;
   flex-grow: 1;
   gap: .25rem;
 
-  &.checkbox {
-    flex-direction: row;
-    .input__label {
-      margin: auto 0;
-      flex-grow: 0;
+  &__input {
+    display: inline-flex;
+    gap: .25rem;
+  }
+
+  &__decrease,
+  &__increase {
+    border: none;
+    border-radius: .5rem;
+    &:hover {
+      background: #919090;
     }
-    .input__field {
-      margin: auto .25rem;
-      height: auto;
-      flex-grow: 0;
+    &:active {
+      background: #b0b0b0;
     }
   }
 

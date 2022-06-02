@@ -35,4 +35,14 @@ class FormViewComponent extends ViewComponent
         $this->id = $id;
         return $this;
     }
+
+    public function setFullwidth(bool $state): self
+    {
+        if ($state) {
+            $this->class['fullwidth'] = 'fullwidth';
+        } else {
+            unset($this->class['fullwidth']);
+        }
+        return $this;
+    }
 }

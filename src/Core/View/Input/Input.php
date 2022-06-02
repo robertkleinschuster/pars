@@ -26,7 +26,7 @@ class Input extends FormViewComponent implements EntrypointInterface
     /**
      * @throws ViewException
      */
-    public function init()
+    protected function init()
     {
         parent::init();
         $this->setType('text');

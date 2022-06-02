@@ -60,8 +60,6 @@ class Entity implements JsonSerializable
     private JsonObject $dataHelper;
     private OptionsObject $optionsHelper;
 
-    private EntityInfo $info;
-
     final public function __construct()
     {
         $this->init();

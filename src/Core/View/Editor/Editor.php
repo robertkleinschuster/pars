@@ -12,7 +12,7 @@ class Editor extends FormViewComponent implements EntrypointInterface
     protected function init()
     {
         parent::init();
-        $this->setTemplate(__DIR__ . '/templates/editor.phtml');
+        $this->setTemplate(__DIR__ . '/Editor.phtml');
     }
 
     public static function getEntrypoint(): string

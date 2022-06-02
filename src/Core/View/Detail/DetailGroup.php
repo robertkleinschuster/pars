@@ -12,7 +12,7 @@ class DetailGroup extends ViewComponent
     protected function init()
     {
         parent::init();
-        $this->setTemplate(__DIR__ . '/templates/detail_group.phtml');
+        $this->setTemplate(__DIR__ . '/DetailGroup.phtml');
     }
 
 

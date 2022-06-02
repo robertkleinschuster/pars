@@ -14,7 +14,7 @@ class Detail extends ViewComponent implements EntrypointInterface
     protected function init()
     {
         parent::init();
-        $this->setTemplate(__DIR__ . '/templates/detail.phtml');
+        $this->setTemplate(__DIR__ . '/Detail.phtml');
     }
 
 

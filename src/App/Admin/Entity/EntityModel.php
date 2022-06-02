@@ -45,7 +45,9 @@ class EntityModel extends ViewModel
     public function getFields(): array
     {
         $fields = $this->getType()->getInfo()->getFields();
-
+        if ($this->getType()->isAllowOwnFields()) {
+            $fields = array_merge($fields, $this->getEntity()->getInfo()->getFields());
+        }
         if ($this->getType()->isAllowEditFields()) {
             $fields = array_merge($fields, $this->getEntity()->getInfo()->getEditFields());
         }
@@ -118,7 +120,7 @@ class EntityModel extends ViewModel
             return $this->getType()->find(substr($name, 5));
         }
         if ($name) {
-            return $this->getEntityValue($name);
+            return $this->getEntityValue($name) ?? parent::get($name);
         }
         return parent::get($name);
     }

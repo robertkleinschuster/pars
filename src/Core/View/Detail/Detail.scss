@@ -1,5 +1,13 @@
 .detail {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
   padding: 1rem;
+
+  .button__field {
+    margin-right: 0;
+  }
+
   &__chapter {
     background: #fff;
     margin-bottom: .5rem;
@@ -17,6 +25,7 @@
     &__content {
       display: flex;
       flex-direction: column;
+      gap: .5rem;
     }
 
     .input {
@@ -25,11 +34,6 @@
   }
 
   &__group {
-    margin-bottom: 1rem;
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-
     &__name {
       position: relative;
       margin: 0 0 .5rem;
@@ -47,7 +51,7 @@
 
     &__content {
       display: flex;
-      gap: 1rem;
+      gap: .5rem;
       flex-wrap: wrap;
       padding: 0 1rem;
     }

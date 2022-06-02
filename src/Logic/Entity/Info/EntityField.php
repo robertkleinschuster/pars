@@ -15,6 +15,13 @@ class EntityField extends JsonObject
     public const DATATYPE_STRING = 'string';
     public const VIEW_OPTION_OVERVIEW = 'overview';
     public const VIEW_OPTION_DETAIL = 'detail';
+    public const VIEW_OPTION_CHAPTER = 'chapter';
+    public const VIEW_OPTION_GROUP = 'group';
+    public const VIEW_OPTION_REFERENCE = 'reference';
+    public const VIEW_OPTION_FULLWIDTH = 'fullwidth';
+
+    public const SCOPE_ENTRY = 'entry';
+    public const SCOPE_FIELD = 'field';
 
     public string $code = '';
     public string $name = '';
@@ -24,6 +31,7 @@ class EntityField extends JsonObject
     public ?string $chapter = null;
     public ?string $group = null;
     public ?string $icon = null;
+    public string $scope = self::SCOPE_FIELD;
 
     public ?Entity $reference = null;
     public array $options = [];
@@ -38,6 +46,9 @@ class EntityField extends JsonObject
             $array['reference'] = (new Entity())->from($array['reference']);
         }
         $array['order'] = (int)($array['order'] ?? 0);
+        if (isset($array['chapter']) && strlen($array['chapter']) === 0) {
+            unset($array['chapter']);
+        }
         parent::__construct($array, $flags, $iteratorClass);
     }
 
@@ -114,7 +125,10 @@ class EntityField extends JsonObject
      */
     public function getChapter(): ?string
     {
-        return $this->chapter;
+        if ($this->getViewOptions()->has(self::VIEW_OPTION_CHAPTER)) {
+            return $this->chapter ?? '';
+        }
+        return null;
     }
 
     /**
@@ -124,6 +138,7 @@ class EntityField extends JsonObject
     public function setChapter(?string $chapter): EntityField
     {
         $this->chapter = $chapter;
+        $this->getViewOptions()->enable(self::VIEW_OPTION_CHAPTER);
         return $this;
     }
 
@@ -132,7 +147,10 @@ class EntityField extends JsonObject
      */
     public function getGroup(): ?string
     {
-        return $this->group;
+        if ($this->getViewOptions()->has(self::VIEW_OPTION_GROUP)) {
+            return $this->group ?? '';
+        }
+        return null;
     }
 
     /**
@@ -142,6 +160,7 @@ class EntityField extends JsonObject
     public function setGroup(?string $group): EntityField
     {
         $this->group = $group;
+        $this->getViewOptions()->enable(self::VIEW_OPTION_GROUP);
         return $this;
     }
 
@@ -178,6 +197,24 @@ class EntityField extends JsonObject
     public function setDataType(string $dataType): EntityField
     {
         $this->dataType = $dataType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope(): string
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @param string $scope
+     * @return EntityField
+     */
+    public function setScope(string $scope): EntityField
+    {
+        $this->scope = $scope;
         return $this;
     }
 
@@ -263,5 +300,16 @@ class EntityField extends JsonObject
             $this->viewOptions = new OptionsObject($this['viewOptions'] ?? []);
         }
         return $this->viewOptions;
+    }
+
+    public function setFullwidth(bool $state): self
+    {
+        $this->getViewOptions()->set(self::VIEW_OPTION_FULLWIDTH, $state);
+        return $this;
+    }
+
+    public function isFullwidth(): bool
+    {
+        return $this->getViewOptions()->has(self::VIEW_OPTION_FULLWIDTH);
     }
 }

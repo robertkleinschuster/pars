@@ -28,29 +28,30 @@ class EntityDetail extends Detail
     }
 
     /**
-     * @throws ViewException
      * @throws EntityException
      */
     public function setId(string $id): static
     {
-        $this->getModel()->setId($id);
-
-        foreach ($this->getModel()->getFields() as $field) {
+        $model = $this->getModel();
+        $model->setId($id);
+        $entity = $model->getEntity();
+        foreach ($model->getFields() as $field) {
             if (empty($field->getCode()) && !$field->getViewOptions()->has(EntityField::VIEW_OPTION_DETAIL)) {
                 continue;
             }
-            $builder = new EntityInputBuilder($field);
+            $builder = new EntityInputBuilder($entity, $field);
             $input = $builder->build();
-            $value = $this->getValue($field->getCode());
-            $model = $this->getModel();
-
-            if ($value) {
-                $model->setValue($value);
+            if (null === $model->get($field->getCode()) || '' === $model->get($field->getCode())) {
+                $model->set($field->getCode(), $field->getDefaultValue());
             }
-
             $this->push($input->withModel($model), $field->getChapter(), $field->getGroup());
         }
 
         return $this;
+    }
+
+    public function getId(): string
+    {
+        return 'entity-' . $this->getModel()->getId();
     }
 }
