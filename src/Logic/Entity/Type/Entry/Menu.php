@@ -15,7 +15,8 @@ class Menu extends Entity
 
     public function getParameter()
     {
-        return $this->getDataObject()->find(self::DATA_PARAMETER, []);
+        $params = $this->getDataObject()->find(self::DATA_PARAMETER, []);
+        return array_filter($params, 'strlen');
     }
 
     public function setParameter(array $parameter): self
