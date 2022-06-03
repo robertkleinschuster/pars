@@ -4,6 +4,7 @@ import ViewDivElement from '../ViewDivElement'
 class Editor extends ViewDivElement {
   protected content: HTMLDivElement
   protected prevHtml: string | null
+  protected selectedRange: Range | null
 
   constructor () {
     super()
@@ -11,9 +12,10 @@ class Editor extends ViewDivElement {
   }
 
   protected init () {
-    this.content = this.querySelector('.content') as HTMLDivElement
+    this.content = this.querySelector('.editor__content') as HTMLDivElement
     this.content.addEventListener('blur', this.onBlur.bind(this))
     this.content.addEventListener('focus', this.onFocus.bind(this))
+    this.attachSelectionListener()
   }
 
   protected onFocus () {
@@ -26,6 +28,30 @@ class Editor extends ViewDivElement {
       this.content.dispatchEvent(event)
     }
   }
+
+  attachSelectionListener (): void {
+    this.content.onselectstart = () => this.handleSelectionChange()
+  }
+
+  handleSelectionChange (): void {
+    this.content.onmouseup = () => this.retrieveSelection()
+    this.content.onkeyup = () => this.retrieveSelection()
+  }
+
+  retrieveSelection (): void {
+    const selection = document.getSelection()
+
+    // Ignore empty selection
+    if (!selection || (selection.toString() === '')) {
+      this.selectedRange = null
+      return
+    }
+
+    if (selection.rangeCount !== 0) {
+      this.selectedRange = selection.getRangeAt(0)
+    }
+  }
+
 }
 
 customElements.define('core-editor', Editor, { extends: 'div' })

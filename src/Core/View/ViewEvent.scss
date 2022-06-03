@@ -53,14 +53,6 @@ html.loading .loader {
   }
 }
 
-[data-event]:not(button, input, tr, td) {
-  cursor: pointer;
-}
-
-td[data-event] {
-  cursor: pointer;
-}
-
 [data-event]:hover {
 
 }
