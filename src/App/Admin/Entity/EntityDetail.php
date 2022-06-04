@@ -4,7 +4,6 @@ namespace Pars\App\Admin\Entity;
 
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Input\Input;
-use Pars\Core\View\ViewException;
 use Pars\Logic\Entity\EntityException;
 use Pars\Logic\Entity\Info\EntityField;
 

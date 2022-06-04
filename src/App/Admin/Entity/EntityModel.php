@@ -31,6 +31,7 @@ class EntityModel extends ViewModel
      */
     public function reloadEntity(): void
     {
+        unset($this->type);
         if (!empty($this->getId())) {
             $repo = new EntityRepository();
             $this->entity = $repo->findById($this->getId());
@@ -58,15 +59,8 @@ class EntityModel extends ViewModel
     public function getType(): Type
     {
         if (!isset($this->type)) {
-            if ($this->getEntity()->getType()) {
-                $filterEntity = new Entity();
-                $filterEntity->setType(Entity::TYPE_TYPE);
-                $filterEntity->setCode($this->getEntity()->getType());
-                $repo = new EntityRepository();
-                $this->type = $repo->find($filterEntity, Type::class)->current() ?? new Type();
-            } else {
-                $this->type = new Type();
-            }
+            $repo = new EntityRepository();
+            $this->type = $repo->findType($this->getEntity()->getType());
         }
         return $this->type;
     }

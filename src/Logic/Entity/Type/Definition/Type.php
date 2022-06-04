@@ -11,25 +11,42 @@ class Type extends Entity
     public const OPTION_ALLOW_EDIT_FIELDS = 'allow_edit_fields';
     public const OPTION_ALLOW_OWN_FIELDS = 'allow_own_fields';
 
+    public const DATA_CHILD_TYPE = 'child_type';
 
     protected function init()
     {
         parent::init();
         $this->initDefaults();
+        if (empty($this->getChildType())) {
+            $this->getDataObject()->offsetUnset(self::DATA_CHILD_TYPE);
+        }
     }
 
     public function initDefaults()
     {
-        $this->getInfo()->addTextField('code')
-            ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
-        $this->getInfo()->addTextField('name')
-            ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
-
         if (self::TYPE_TYPE === $this->getCode()) {
+            $this->getInfo()->addTextField('code')
+                ->setOrder(0)
+                ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
+            $this->getInfo()->addTextField('name')
+                ->setOrder(0)
+                ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
+            
             $this->setAllowEditFields(true);
 
-            $this->getInfo()->addCheckboxField('options[allow_edit_fields]', __('entity.type.option.allow_edit_fields'));
-            $this->getInfo()->addCheckboxField('options[allow_own_fields]', __('entity.type.option.allow_own_fields'));
+            $this->getInfo()->addOptionField(
+                self::OPTION_ALLOW_EDIT_FIELDS,
+                __('entity.type.option.allow_edit_fields')
+            );
+            $this->getInfo()->addOptionField(
+                self::OPTION_ALLOW_OWN_FIELDS,
+                __('entity.type.option.allow_own_fields')
+            );
+            $this->getInfo()->addOptionField(
+                self::OPTION_ALLOW_CHILDREN,
+                __('entity.type.option.allow_children')
+            );
+            $this->getInfo()->addSelectField(self::DATA_CHILD_TYPE, __('entity.type.option.child_type'), 'type');
         }
     }
 
@@ -77,5 +94,10 @@ class Type extends Entity
     {
         $this->getOptionsObject()->set(self::OPTION_ALLOW_OWN_FIELDS, $state);
         return $this;
+    }
+
+    final public function getChildType(): string
+    {
+        return $this->find(self::DATA_CHILD_TYPE, $this->getCode());
     }
 }

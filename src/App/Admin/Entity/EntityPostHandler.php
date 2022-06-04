@@ -27,6 +27,8 @@ class EntityPostHandler implements RequestHandlerInterface
             $entity = new Entity();
         }
 
+        $type = $repo->findType($entity->getType());
+
         if ('child' === $mode) {
             $entity->setId('');
             $entity->setCode('');
@@ -34,6 +36,7 @@ class EntityPostHandler implements RequestHandlerInterface
             $entity->getDataObject()->clear();
             $entity->getOptionsObject()->clear();
             $entity->setParent($id);
+            $entity->setType($type->getChildType());
         }
 
         $entity->from($params);

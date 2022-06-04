@@ -3,6 +3,7 @@
 namespace Pars\Logic\Entity;
 
 use Generator;
+use Pars\Logic\Entity\Type\Definition\Type;
 use PDO;
 use PDOStatement;
 
@@ -119,6 +120,11 @@ class EntityRepository
         } else {
             throw new EntityException('Unable to load Entities');
         }
+    }
+
+    public function findType(string $type): Type
+    {
+        return $this->find((new Type())->setCode($type))->current() ?? new Type();
     }
 
     public function exists(Entity $entity): bool

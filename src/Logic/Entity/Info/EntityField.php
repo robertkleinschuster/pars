@@ -282,6 +282,12 @@ class EntityField extends JsonObject
         return $this;
     }
 
+    public function addOption(string $code, string $name)
+    {
+        $this->options[$code] = $name;
+        return $this;
+    }
+
     /**
      * @return Generator&Entity[]
      * @throws EntityException

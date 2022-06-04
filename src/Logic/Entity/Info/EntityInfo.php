@@ -79,6 +79,19 @@ class EntityInfo extends JsonObject
         return $field;
     }
 
+    public function addOptionField(string $option, string $name = null)
+    {
+        $field = $this->getField('options') ?? new EntityField();
+        $field->setScope(EntityField::SCOPE_ENTRY);
+        $field->setCode('options');
+        $field->setName(__('entity.options'));
+        $field->getInput()->setType(EntityFieldInput::TYPE_MULTISELECT);
+        $field->setFullwidth(true);
+        $field->addOption($option, $name);
+        $this->addField($field);
+        return $field;
+    }
+
     public function addDisabledField(string $code, string $name = null)
     {
         $field = $this->addTextField($code, $name);
