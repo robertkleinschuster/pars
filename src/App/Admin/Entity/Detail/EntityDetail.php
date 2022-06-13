@@ -1,7 +1,9 @@
 <?php
 
-namespace Pars\App\Admin\Entity;
+namespace Pars\App\Admin\Entity\Detail;
 
+use Pars\App\Admin\Entity\EntityInputBuilder;
+use Pars\App\Admin\Entity\EntityModel;
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Input\Input;
 use Pars\Logic\Entity\EntityException;

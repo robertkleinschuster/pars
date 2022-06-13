@@ -2,17 +2,16 @@
 
 namespace Pars\App\Admin;
 
+use Pars\App\Admin\Entity\Detail\EntityDetailHandler;
 use Pars\App\Admin\Entity\EntityDeleteHandler;
-use Pars\App\Admin\Entity\EntityDetailHandler;
 use Pars\App\Admin\Entity\EntityNavigation;
-use Pars\App\Admin\Entity\EntityOverviewHandler;
 use Pars\App\Admin\Entity\EntityPostHandler;
+use Pars\App\Admin\Entity\Overview\EntityOverviewHandler;
 use Pars\Core\Application\Web\WebApplication;
 use Pars\Core\Config\Config;
 use Pars\Core\Container\ContainerResolver;
 use Pars\Core\Session\SessionTrait;
 use Pars\Core\Translator\Translator;
-use Pars\Logic\Entity\EntityUpdater;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;

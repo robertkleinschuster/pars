@@ -1,11 +1,15 @@
 <?php
 
-namespace Pars\App\Admin\Entity;
+namespace Pars\App\Admin\Entity\Detail;
 
+use Pars\App\Admin\Entity\Overview\EntityOverviewHandler;
 use Pars\Core\Http\Stream\QueueStream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use function render;
+use function response;
 
 class EntityDetailHandler implements RequestHandlerInterface
 {

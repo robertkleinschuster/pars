@@ -1,12 +1,16 @@
 <?php
 
-namespace Pars\App\Admin\Entity;
+namespace Pars\App\Admin\Entity\Overview;
 
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\Toolbar\Toolbar;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use function render;
+use function response;
+use function url;
 
 class EntityOverviewHandler implements RequestHandlerInterface
 {

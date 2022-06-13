@@ -31,7 +31,7 @@ class Type extends Entity
             $this->getInfo()->addTextField('name')
                 ->setOrder(0)
                 ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
-            
+
             $this->setAllowEditFields(true);
 
             $this->getInfo()->addOptionField(

@@ -1,10 +1,13 @@
 <?php
 
-namespace Pars\App\Admin\Entity;
+namespace Pars\App\Admin\Entity\Overview;
 
+use Pars\App\Admin\Entity\EntityModel;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
 use Pars\Logic\Entity\Info\EntityField;
+
+use function url;
 
 /**
  * @method EntityModel getRowModel()
