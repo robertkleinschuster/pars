@@ -14,6 +14,7 @@ class EntityField extends JsonObject
 {
     public const DATATYPE_STRING = 'string';
     public const VIEW_OPTION_OVERVIEW = 'overview';
+    public const VIEW_OPTION_OVERVIEW_HEAD = 'overview_head';
     public const VIEW_OPTION_DETAIL = 'detail';
     public const VIEW_OPTION_CHAPTER = 'chapter';
     public const VIEW_OPTION_GROUP = 'group';

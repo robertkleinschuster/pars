@@ -28,9 +28,15 @@ class Type extends Entity
             $this->getInfo()->addTextField('code')
                 ->setOrder(0)
                 ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
+
             $this->getInfo()->addTextField('name')
                 ->setOrder(0)
                 ->getViewOptions()->enable(EntityField::VIEW_OPTION_OVERVIEW);
+
+            $this->getInfo()->addTextField('heading')
+                ->setOrder(0)
+                ->setDefaultValue('{type:nameFallback}: {nameFallback}')
+                ->getViewOptions()->enable(EntityField::VIEW_OPTION_DETAIL);
 
             $this->setAllowEditFields(true);
 

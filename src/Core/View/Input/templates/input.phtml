@@ -3,7 +3,7 @@
 
 ?>
 <div is="core-input" class="input <?= $this->type ?>" id="<?= $this->id ?>">
-    <label class="input__label" for="input_<?= $this->key ?>"><?= $this->label ?></label>
-    <input class="input__field" id="input_<?= $this->key ?>" <?= $this->attr() ?>/>
+    <label class="input__label" for="input_<?= $this->key ?>-<?= $this->id ?>"><?= $this->label ?></label>
+    <input class="input__field" id="input_<?= $this->key ?>-<?= $this->id ?>" <?= $this->attr() ?>/>
 </div>
 

@@ -29,7 +29,6 @@ class ViewComponent
 
     final public function __construct()
     {
-        $this->formatter = new ViewFormatter($this);
         $this->init();
     }
 
@@ -80,13 +79,12 @@ class ViewComponent
 
     public function getId(): string
     {
-        return $this->getModel()->getId();
+        return 'id-' .  $this->getModel()->getId();
     }
 
     public function onRender(ViewRenderer $renderer)
     {
     }
-
 
     public function isFirstChild(): bool
     {
@@ -128,6 +126,14 @@ class ViewComponent
         return $this->children;
     }
 
+    public function getFormatter(): ViewFormatter
+    {
+        if (!isset($this->formatter)) {
+            $this->formatter = new ViewFormatter($this);
+        }
+        return $this->formatter;
+    }
+
     public function push(ViewComponent $component): static
     {
         $component->parent = $this;
@@ -138,17 +144,6 @@ class ViewComponent
     public function getEvent(): ?ViewEvent
     {
         return $this->event;
-    }
-
-    /**
-     * @param ViewEvent $event
-     * @return $this
-     */
-    public function withEvent(ViewEvent $event): self
-    {
-        $clone = clone $this;
-        $clone->event = $event;
-        return $this;
     }
 
     public function setEvent(?ViewEvent $event): ViewComponent
@@ -210,9 +205,15 @@ class ViewComponent
         return implode(' ', $this->class);
     }
 
+    public function addClass(string $class): self
+    {
+        $this->class[] = $class;
+        return $this;
+    }
+
     public function getValue(string $key)
     {
-        return $this->formatter->format($key, $this->getModel());
+        return $this->getFormatter()->format($key, $this->getModel());
     }
 
     public function getParentValue(string $key)

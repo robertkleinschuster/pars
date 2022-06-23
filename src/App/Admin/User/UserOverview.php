@@ -9,7 +9,7 @@ class UserOverview extends Overview
     public function init()
     {
         parent::init();
-        $this->trow->model = new UserModel();
+        $this->model = new UserModel();
         $this->addField('name')->setEventLink(url('/user/:id'));
     }
 }

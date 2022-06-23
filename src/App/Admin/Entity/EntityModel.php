@@ -2,6 +2,7 @@
 
 namespace Pars\App\Admin\Entity;
 
+use Generator;
 use Pars\Core\View\ViewModel;
 use Pars\Logic\Entity\Entity;
 use Pars\Logic\Entity\EntityException;
@@ -54,6 +55,22 @@ class EntityModel extends ViewModel
         }
 
         return $fields;
+    }
+
+    public function buildInputs(string $viewOption, bool $strictOption = false): Generator
+    {
+        foreach ($this->getFields() as $field) {
+            if ((!empty($field->getCode()) && !$strictOption) || $field->getViewOptions()->has($viewOption)) {
+                $builder = new EntityInputBuilder($this->getEntity(), $field);
+                $input = $builder->build();
+                if (null === $this->get($field->getCode()) || '' === $this->get($field->getCode())) {
+                    $this->set($field->getCode(), $field->getDefaultValue());
+                }
+                yield $input->withModel($this)
+                    ->setGroup($field->getGroup())
+                    ->setChapter($field->getChapter());
+            }
+        }
     }
 
     public function getType(): Type

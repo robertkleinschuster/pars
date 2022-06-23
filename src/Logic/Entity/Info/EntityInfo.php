@@ -208,6 +208,7 @@ class EntityInfo extends JsonObject
             $field->setFullwidth(true);
             $field->setOptions([
                 EntityField::VIEW_OPTION_OVERVIEW => 'Overview',
+                EntityField::VIEW_OPTION_OVERVIEW_HEAD => 'Overview head',
                 EntityField::VIEW_OPTION_DETAIL => 'Detail',
                 EntityField::VIEW_OPTION_GROUP => 'Group',
                 EntityField::VIEW_OPTION_CHAPTER => 'Chapter',

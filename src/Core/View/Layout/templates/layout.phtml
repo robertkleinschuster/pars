@@ -28,6 +28,9 @@
         <?= $this->footer ?>
     </footer>
 <?php endif; ?>
+<template id="additional-css">
+    <?= Pars\Core\View\Entrypoints::dumpCss(); ?>
+</template>
 <?= Pars\Core\View\Entrypoints::dumpJs(); ?>
 </body>
 </html>

@@ -2,22 +2,23 @@
 
 namespace Pars\App\Admin\Entity\Overview;
 
+use Pars\App\Admin\Entity\EntityInputBuilder;
 use Pars\App\Admin\Entity\EntityModel;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
-use Pars\Logic\Entity\Info\EntityField;
 
 use function url;
 
 /**
- * @method EntityModel getRowModel()
+ * @method EntityModel getModel()()
  */
 class EntityOverview extends Overview
 {
     public function init()
     {
         parent::init();
-        $this->setRowModel(new EntityModel());
+        $this->model = new EntityModel();
+        $this->setHeading('{type:nameFallback}');
         $link = url('/')->withAppendedPath('/:id');
 
         $this->addIconButton(Icon::edit())
@@ -27,22 +28,7 @@ class EntityOverview extends Overview
             ->setEventAction()
             ->setUrl($link)
             ->setMethod('DELETE');
-    }
 
-    public function initFields()
-    {
-        if ($this->getRowModel()->getEntity()->getType()) {
-            $type = $this->getRowModel()->getType();
-
-            foreach ($type->getInfo()->getFields() as $field) {
-                if ($field->getViewOptions()->has(EntityField::VIEW_OPTION_OVERVIEW)) {
-                    $this->addField($field->getCode(), $field->getName());
-                }
-            }
-        } else {
-            $this->addField('type', 'type');
-            $this->addField('code', 'code');
-            $this->addField('name', 'name');
-        }
+        $this->pushField(new EntityOverviewField());
     }
 }

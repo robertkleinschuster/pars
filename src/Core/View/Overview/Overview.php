@@ -2,33 +2,22 @@
 
 namespace Pars\Core\View\Overview;
 
-use Pars\Core\View\{EntrypointInterface, Icon\Icon, ViewComponent, ViewModel, ViewRenderer};
+use Pars\Core\View\{EntrypointInterface, Entrypoints, Icon\Icon, ViewComponent, ViewModel, ViewRenderer};
+use Psr\Http\Message\StreamInterface;
 
 class Overview extends ViewComponent implements EntrypointInterface
 {
-    public string $toolbar = '';
-    public string $heading = '';
-    protected OverviewField $buttons;
-    protected ViewComponent $thead;
-    protected ViewComponent $tbody;
-    protected ViewComponent $trow;
+    private string|StreamInterface|ViewComponent $toolbar = '';
+    private string|StreamInterface|ViewComponent $heading = '';
+
+    private OverviewHead $head;
+    private OverviewItem $item;
+    private OverviewButtonField $buttons;
 
     public function init()
     {
         parent::init();
-        $this->setTemplate(__DIR__ . '/templates/overview.phtml');
-        $this->thead = create(ViewComponent::class);
-        $this->tbody = create(ViewComponent::class);
-        $this->trow = create(ViewComponent::class);
-        $this->thead->setTemplate(__DIR__ . '/templates/overview_head.phtml');
-        $this->tbody->setTag('tbody');
-        $this->trow->setTag('tr');
-        $this->push($this->thead);
-        $this->push($this->tbody);
-        $this->tbody->push($this->trow);
-        $this->buttons = $this->createField();
-        $this->buttons->setTemplate(__DIR__ . '/templates/overview_buttons.phtml');
-        $this->pushField($this->buttons);
+        $this->setTemplate(__DIR__ . '/Overview.phtml');
     }
 
     public static function getEntrypoint(): string
@@ -36,54 +25,76 @@ class Overview extends ViewComponent implements EntrypointInterface
         return __DIR__ . '/Overview.ts';
     }
 
-    public function setRowModel(ViewModel $model): self
-    {
-        $this->trow->model = $model;
-        return $this;
-    }
-
-    public function getRowModel(): ViewModel
-    {
-        return $this->trow->getModel();
-    }
-
     public function onRender(ViewRenderer $renderer)
     {
         parent::onRender($renderer);
-        if (!$this->trow->getModel()->isList()) {
-            $this->clearChildren();
+
+        if ($this->heading instanceof ViewComponent) {
+            $this->heading = $renderer->setComponent($this->heading)->render();
         }
+
+        $this->heading = $this->getFormatter()->format($this->heading, $this->getModel());
+
+        if ($this->toolbar instanceof ViewComponent) {
+            $this->toolbar = $renderer->setComponent($this->toolbar)->render();
+        }
+
+        if (isset($this->buttons)) {
+            $this->getItem()->getChildren()->unshift($this->buttons);
+        }
+
+        if (isset($this->head)) {
+            $this->head->model = $this->getModel();
+            $this->push($this->head);
+        }
+
+        if (isset($this->item)) {
+            $this->item->model = $this->getModel();
+            $this->push($this->item);
+        }
+        unset($this->model);
+    }
+
+    /**
+     * @return OverviewButtonField
+     */
+    public function getButtons(): OverviewButtonField
+    {
+        if (!isset($this->buttons)) {
+            $this->buttons = new OverviewButtonField();
+        }
+        return $this->buttons;
+    }
+
+    /**
+     * @param OverviewButtonField $buttons
+     * @return OverviewItem
+     */
+    public function setButtons(OverviewButtonField $buttons): OverviewItem
+    {
+        $this->buttons = $buttons;
+        return $this;
     }
 
     public function addButton(string $name): OverviewButton
     {
-        $button = $this->createButton();
+        $button = new OverviewButton();
         $button->setContent($name);
-        $this->buttons->push($button);
+        $this->getButtons()->push($button);
         return $button;
     }
 
     public function addIconButton(Icon $icon): OverviewButton
     {
-        $button = $this->createButton();
+        $button = new OverviewButton();
         $button->push($icon);
-        $this->buttons->push($button);
+        $this->getButtons()->push($button);
         return $button;
-    }
-
-    protected function createButton(): OverviewButton
-    {
-        return create(OverviewButton::class);
-    }
-
-    protected function createField(): OverviewField
-    {
-        return create(OverviewField::class);
     }
 
     public function addField(string $key, string $name = ''): OverviewField
     {
-        $field = $this->createField();
+        $field = new OverviewField();
         $field->setKey($key);
         $field->setName($name);
         $this->pushField($field);
@@ -92,50 +103,72 @@ class Overview extends ViewComponent implements EntrypointInterface
 
     protected function pushField(ViewComponent $field): static
     {
-        $this->thead->push($field);
-        $this->trow->push($field);
+        $this->getHead()->push($field);
+        $this->getItem()->push($field);
         return $this;
     }
 
     public function addEntry(ViewModel $model): static
     {
-        $this->trow->getModel()->push($model);
+        $this->getModel()->push($model);
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|StreamInterface|ViewComponent
      */
-    public function getToolbar(): string
+    public function getToolbar(): string|StreamInterface|ViewComponent
     {
         return $this->toolbar;
     }
 
     /**
-     * @param string $toolbar
+     * @param string|StreamInterface|ViewComponent $toolbar
      * @return Overview
      */
-    public function setToolbar(string $toolbar): Overview
+    public function setToolbar(string|StreamInterface|ViewComponent $toolbar): Overview
     {
         $this->toolbar = $toolbar;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|StreamInterface|ViewComponent
      */
-    public function getHeading(): string
+    public function getHeading(): string|StreamInterface|ViewComponent
     {
         return $this->heading;
     }
 
     /**
-     * @param string $heading
+     * @param string|StreamInterface|ViewComponent $heading
      * @return Overview
      */
-    public function setHeading(string $heading): Overview
+    public function setHeading(string|StreamInterface|ViewComponent $heading): Overview
     {
         $this->heading = $heading;
         return $this;
+    }
+
+    /**
+     * @return OverviewHead
+     */
+    protected function getHead(): OverviewHead
+    {
+        if (!isset($this->head)) {
+            $this->head = new OverviewHead();
+        }
+        return $this->head;
+    }
+
+    /**
+     * @return OverviewItem
+     */
+    protected function getItem(): OverviewItem
+    {
+        if (!isset($this->item)) {
+            $this->item = new OverviewItem();
+        }
+        return $this->item;
     }
 }

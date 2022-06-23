@@ -9,8 +9,8 @@ class OverviewButton extends ViewComponent
     public function init()
     {
         parent::init();
-        $this->class[] = 'overview__button';
-        $this->tag = 'button';
+        $this->addClass('overview__button');
+        $this->setTag('button');
     }
 
     public function getValue(string $key)

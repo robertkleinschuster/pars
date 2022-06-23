@@ -5,6 +5,10 @@ namespace Pars\Core\View\Tree;
 use Pars\Core\View\{EntrypointInterface, ViewComponent, ViewModel, ViewRenderer};
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * @method TreeModel getModel()
+ * @property TreeModel $model
+ */
 class Tree extends ViewComponent implements EntrypointInterface
 {
     protected TreeItem $item;
@@ -17,6 +21,7 @@ class Tree extends ViewComponent implements EntrypointInterface
     {
         parent::init();
         $this->setTemplate(__DIR__ . '/templates/tree.phtml');
+        $this->model = create(TreeModel::class);
     }
 
     public static function getEntrypoint(): string
@@ -47,19 +52,24 @@ class Tree extends ViewComponent implements EntrypointInterface
     public function onRender(ViewRenderer $renderer)
     {
         parent::onRender($renderer);
-        if ($this->getItem()->isList()) {
-            $this->push($this->getItem());
+        foreach ($this->getModel() as $item) {
+            $this->push($this->getItem()->withModel($item));
         }
+    }
+
+    public function isList(): bool
+    {
+        return false;
     }
 
     public function addEntry(string $value, ...$params): TreeModel
     {
-        return $this->getItem()->addEntry($value, ...$params);
+        return $this->getModel()->addEntry($value, ...$params);
     }
 
-    public function setItemModel(ViewModel $model)
+    public function setModel(ViewModel $model)
     {
-        $this->item = $this->getItem()->withModel($model);
+        $this->model = $model;
         return $this;
     }
 

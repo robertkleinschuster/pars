@@ -20,7 +20,9 @@ class EntityPostHandler implements RequestHandlerInterface
         $id = explode('/', $request->getAttribute('id'));
         $id = array_pop($id);
         $mode = $params['mode'] ?? null;
+        $redirect = $params['redirect'] ?? null;
         unset($params['mode']);
+        unset($params['redirect']);
         if ($id) {
             $entity = $repo->findById($id);
         } else {
@@ -43,7 +45,7 @@ class EntityPostHandler implements RequestHandlerInterface
         $entity->from($request->getParsedBody());
 
         $repo->save($entity);
-
-        return redirect_response(url()->withParams($params), 303);
+        $redirect = $redirect ?? url()->withParams($params);
+        return redirect_response($redirect, 303);
     }
 }

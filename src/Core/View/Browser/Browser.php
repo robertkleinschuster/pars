@@ -20,8 +20,7 @@ class Browser extends ViewComponent implements EntrypointInterface
         $this->setTemplate(__DIR__ . '/templates/browser.phtml');
         $model = new DirectoryOnlyTreeModel();
         $model->setDirectory('data/files');
-        $this->getTree()->setItemModel($model);
-        $this->push($this->getTree());
+        $this->push($this->getTree()->withModel($model));
         $model = new DirectoryTreeModel();
         $model->setDirectory('data/files');
         $this->getDesktop()->setIconModel($model);

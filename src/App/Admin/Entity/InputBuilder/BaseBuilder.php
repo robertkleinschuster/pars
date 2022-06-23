@@ -39,8 +39,10 @@ abstract class BaseBuilder
         $event = ViewEvent::action();
         $event->setMethod('POST');
         $event->setEvent('change');
+        $event->setUrl(url()->withAppendedPath('/:id'));
+        $event->setParam('redirect', url());
         if (EntityField::SCOPE_ENTRY === $this->getField()->getScope()) {
-            $event->setSelector("#entity-{$this->getEntity()->getId()}");
+            $event->setSelector("#id-{$this->getEntity()->getId()}");
         } else {
             $event->setSelector("#{$this->getId()}");
         }
@@ -49,7 +51,7 @@ abstract class BaseBuilder
 
     protected function getId(): string
     {
-        return $this->getField()->getNormalizedCode();
+        return $this->getField()->getNormalizedCode() . '-' . $this->getEntity()->getId();
     }
 
     abstract public function build(): FormViewComponent;

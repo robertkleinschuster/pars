@@ -15,7 +15,6 @@ class NavigationItem extends TreeItem
     {
         parent::init();
         $this->setTemplate(__DIR__ . '/templates/navigation_item.phtml');
-        $this->setTreeClass(Navigation::class);
         $this->model = new NavigationModel();
     }
 }

@@ -13,7 +13,7 @@ class OverviewField extends ViewComponent
     public function init()
     {
         parent::init();
-        $this->setTemplate(__DIR__ . '/templates/overview_field.phtml');
+        $this->setTemplate(__DIR__ . '/OverviewField.phtml');
     }
 
     /**
@@ -52,7 +52,6 @@ class OverviewField extends ViewComponent
         return $this;
     }
 
-
     public function getContent(): StreamInterface|string
     {
         if ($this->getValue($this->key)) {
@@ -64,6 +63,6 @@ class OverviewField extends ViewComponent
 
     public function getValue(string $key)
     {
-        return $this->getParent()->getModel()->get($key);
+        return $this->getParent()->getValue($key);
     }
 }

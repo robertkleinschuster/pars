@@ -2,7 +2,6 @@
 
 namespace Pars\App\Admin\Entity\Detail;
 
-use Pars\App\Admin\Entity\EntityInputBuilder;
 use Pars\App\Admin\Entity\EntityModel;
 use Pars\Core\View\Detail\Detail;
 use Pars\Core\View\Input\Input;
@@ -35,24 +34,13 @@ class EntityDetail extends Detail
     {
         $model = $this->getModel();
         $model->setId($id);
-        $entity = $model->getEntity();
-        foreach ($model->getFields() as $field) {
-            if (empty($field->getCode()) && !$field->getViewOptions()->has(EntityField::VIEW_OPTION_DETAIL)) {
-                continue;
-            }
-            $builder = new EntityInputBuilder($entity, $field);
-            $input = $builder->build();
-            if (null === $model->get($field->getCode()) || '' === $model->get($field->getCode())) {
-                $model->set($field->getCode(), $field->getDefaultValue());
-            }
-            $this->push($input->withModel($model), $field->getChapter(), $field->getGroup());
+
+        $this->setHeadingKey($this->getModel()->get('type:heading') ?? $this->getHeadingKey());
+
+        foreach ($model->buildInputs(EntityField::VIEW_OPTION_DETAIL) as $input) {
+            $this->push($input);
         }
 
         return $this;
-    }
-
-    public function getId(): string
-    {
-        return 'entity-' . $this->getModel()->getId();
     }
 }

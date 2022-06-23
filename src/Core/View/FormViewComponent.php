@@ -9,6 +9,8 @@ class FormViewComponent extends ViewComponent
     public string $key = '';
     public ?string $id = null;
     public string $label = '';
+    public ?string $chapter = null;
+    public ?string $group = null;
 
     /**
      * @param string $key
@@ -43,6 +45,42 @@ class FormViewComponent extends ViewComponent
         } else {
             unset($this->class['fullwidth']);
         }
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getChapter(): ?string
+    {
+        return $this->chapter;
+    }
+
+    /**
+     * @param string|null $chapter
+     * @return FormViewComponent
+     */
+    public function setChapter(?string $chapter): FormViewComponent
+    {
+        $this->chapter = $chapter;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getGroup(): ?string
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param string|null $group
+     * @return FormViewComponent
+     */
+    public function setGroup(?string $group): FormViewComponent
+    {
+        $this->group = $group;
         return $this;
     }
 }

@@ -24,6 +24,8 @@ class ViewEvent
     public string $method;
     public string $selector;
 
+    private array $params = [];
+
     final public function __construct()
     {
         $this->url = url();
@@ -127,7 +129,7 @@ class ViewEvent
 
     public function setParam(string $name, string $value)
     {
-        $this->{"param-$name"} = $value;
+        $this->params[$name] = $value;
         return $this;
     }
 
@@ -160,6 +162,9 @@ class ViewEvent
         }
         if (!empty($this->selector)) {
             $attributes .= " data-selector='{$this->selector}'";
+        }
+        foreach ($this->params as $name => $value) {
+            $attributes .= " data-param-$name='$value'";
         }
         $attributes .= " tabindex='0'";
         return $attributes;

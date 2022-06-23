@@ -2,7 +2,7 @@
 
 namespace Pars\Core\View\Detail;
 
-use Pars\Core\View\{EntrypointInterface, Input\Input, ViewComponent};
+use Pars\Core\View\{EntrypointInterface, FormViewComponent, Input\Input, ViewComponent};
 
 class Detail extends ViewComponent implements EntrypointInterface
 {
@@ -43,6 +43,10 @@ class Detail extends ViewComponent implements EntrypointInterface
 
     public function push(ViewComponent $component, string $chapter = null, string $group = null): static
     {
+        if ($component instanceof FormViewComponent) {
+            $chapter = $chapter ?? $component->getChapter();
+            $group = $group ?? $component->getGroup();
+        }
         if (null !== $chapter) {
             $this->getChapter($chapter)->push($component, $group);
         } elseif (null !== $group) {

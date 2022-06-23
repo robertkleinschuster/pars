@@ -20,12 +20,7 @@ class ViewRenderer
         if (!$this->component) {
             throw new ViewException('No component set!');
         }
-        if ($this->component->isList()) {
-            $result = $this->renderList($this->component);
-        } else {
-            $result = $this->renderComponent($this->component);
-        }
-        return $result;
+        return $this->renderComponent($this->component);
     }
 
     public function setComponent(ViewComponent $component): ViewRenderer
@@ -42,11 +37,18 @@ class ViewRenderer
     protected function renderComponent(ViewComponent $component): StreamInterface
     {
         try {
+            $component = clone $component;
+
+            $component->onRender(clone $this);
+
             if ($component instanceof EntrypointInterface) {
                 Entrypoints::add($component::getEntrypoint());
             }
-            $component = clone $component;
-            $component->onRender(clone $this);
+
+            if ($component->isList()) {
+                return $this->renderList($component);
+            }
+
             if (!$component->getContent()) {
                 $content = $this->renderChildren($component);
                 if (!$content->isEmpty()) {
@@ -76,11 +78,7 @@ class ViewRenderer
         $queueStream = new QueueStream();
 
         foreach ($component->getChildren() as $child) {
-            if ($child->isList()) {
-                $queueStream->push($this->renderList($child));
-            } else {
-                $queueStream->push($this->renderComponent($child));
-            }
+            $queueStream->push($this->renderComponent($child));
         }
 
         return $queueStream;
