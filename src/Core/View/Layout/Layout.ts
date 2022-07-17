@@ -4,6 +4,22 @@ import ViewInjector from '../ViewInjector'
 
 export default class Layout extends ViewHtmlElement {
 
+  constructor () {
+    super()
+    const url = new URL(window.location.href, document.baseURI);
+    url.protocol = 'ws';
+    const socket = new WebSocket(url);
+
+    socket.onopen = () => {
+      socket.send('Layout');
+    };
+    socket.onerror = (e) => {
+      console.error(e)
+    }
+    socket.onmessage = (data) => {
+      console.log(data);
+    };
+  }
 }
 
 customElements.define('core-layout', Layout, { extends: 'html' })

@@ -31,9 +31,6 @@ Encore
     config: [__filename],
   })
 if (fs.existsSync('entrypoints.json')) {
-  Encore.enableBuildCache({
-    config: [__filename, 'entrypoints.json'],
-  })
   const entrypointsJson = fs.readFileSync('entrypoints.json')
   const entrypoints = JSON.parse(entrypointsJson)
   for (const [key, value] of Object.entries(entrypoints)) {
