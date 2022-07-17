@@ -23,15 +23,9 @@ class ClosureStream implements StreamInterface
 
     public function __toString()
     {
-        if (headers_sent()) {
-            echo $this->closure->call($this->getContext());
-            flush();
-            return '';
-        } else {
-            ob_start();
-            echo $this->closure->call($this->getContext());
-            return ob_get_clean();
-        }
+        ob_start();
+        echo $this->closure->call($this->getContext());
+        return ob_get_clean();
     }
 
     private function getContext(): object

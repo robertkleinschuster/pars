@@ -1,28 +1,18 @@
 version: '3'
 
 services:
-  php-fpm:
+  php-swoole:
     build:
-      context: ./docker/php-fpm
+      context: ./docker/php-swoole
     volumes:
       - .:/var/www
-      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php-swoole/php.ini:/usr/local/etc/php/php.ini
     links:
       - mariadb
     depends_on:
       - mariadb
-  nginx:
-    build:
-      context: ./docker/nginx
-    volumes:
-      - .:/var/www
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/sites/:/etc/nginx/sites-available
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d
-    depends_on:
-      - php-fpm
     ports:
-      - "8080:80"
+      - "8080:8080"
   mariadb:
     build:
       context: ./docker/mariadb
@@ -33,4 +23,3 @@ services:
       - MYSQL_ROOT_PASSWORD=pars
     volumes:
       - ./data/mariadb:/var/lib/mysql
-      - ./docker/mariadb/data.sql:/docker-entrypoint-initdb.d/data.sql

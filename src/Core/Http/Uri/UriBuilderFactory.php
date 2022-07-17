@@ -2,21 +2,13 @@
 
 namespace Pars\Core\Http\Uri;
 
-use Pars\Core\Container\ContainerFactoryInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\UriFactoryInterface;
 
-class UriBuilderFactory implements ContainerFactoryInterface
+class UriBuilderFactory
 {
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): UriBuilder
     {
-        $this->container = $container;
-    }
-
-    public function create(string $id): UriBuilder
-    {
-        return new UriBuilder($this->container->get(UriFactoryInterface::class));
+        return new UriBuilder($container->get(UriFactoryInterface::class));
     }
 }

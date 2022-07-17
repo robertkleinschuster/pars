@@ -3,7 +3,7 @@
 namespace ParsTest\Core\Application\Base;
 
 use HttpSoft\Message\Response;
-use Pars\Core\Application\Base\AbstractApplication;
+use Pars\Core\Application\AbstractApplication;
 use Pars\Core\Container\Container;
 use Pars\Core\Http\Emitter\SapiEmitter;
 use ParsTest\Core\Http\Emitter\MockSapiEmitter;

@@ -13,7 +13,7 @@ trait ParentRouteTrait
 
     private function matchChildRoute(ServerRequestInterface $request): void
     {
-        $this->route->match($request->withAttribute(get_class($this), $this));
+        $this->route->match($request->withAttribute(RouteInterface::class, $this));
         if ($this->route->isMatched()) {
             $this->matchedRequest = $this->route->getMatchedRequest();
         }

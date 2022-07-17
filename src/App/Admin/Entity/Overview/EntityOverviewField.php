@@ -4,6 +4,7 @@ namespace Pars\App\Admin\Entity\Overview;
 
 use Pars\App\Admin\Entity\EntityModel;
 use Pars\Core\View\Overview\OverviewField;
+use Pars\Core\View\Select\Select;
 use Pars\Core\View\ViewRenderer;
 use Pars\Logic\Entity\Info\EntityField;
 
@@ -21,11 +22,6 @@ class EntityOverviewField extends OverviewField
                     $hasInput = true;
                 }
             } else {
-                foreach ($model->buildInputs(EntityField::VIEW_OPTION_OVERVIEW_HEAD, true) as $input) {
-                    unset($input->model);
-                    #$this->push($input);
-                    $hasInput = true;
-                }
                 unset($this->model);
             }
         }

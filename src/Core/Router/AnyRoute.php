@@ -18,7 +18,7 @@ class AnyRoute implements RouteInterface
 
     public function match(ServerRequestInterface $request): void
     {
-        $this->matchedRequest = $request->withAttribute(AnyRoute::class, $this);
+        $this->matchedRequest = $request->withAttribute(RouteInterface::class, $this);
     }
 
     public function getHandler(): RequestHandlerInterface

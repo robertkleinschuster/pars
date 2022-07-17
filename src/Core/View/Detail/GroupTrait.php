@@ -9,7 +9,7 @@ trait GroupTrait
     public function getGroup(string $name): DetailGroup
     {
         if (!isset($this->group[$name])) {
-            $this->group[$name] = create(DetailGroup::class);
+            $this->group[$name] = new DetailGroup();
             $this->group[$name]->setName($name);
             $this->push($this->group[$name]);
         }

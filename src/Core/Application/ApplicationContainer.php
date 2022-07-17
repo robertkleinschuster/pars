@@ -1,21 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pars\Core\Application;
 
-use Pars\Core\Application\Base\AbstractApplication;
-use Pars\Core\Container\Container;
+use Laminas\ServiceManager\ServiceManager;
 
-/**
- * @method static $this getInstance()
- */
-class ApplicationContainer extends Container
+class ApplicationContainer extends ServiceManager
 {
-    public function init(AbstractApplication $application)
+    public function __construct(ApplicationContainerConfig $config = null)
     {
-        $application->override($this->getResolver());
-        $changedServices = $this->getResolver()->reloadConfig();
-        foreach ($changedServices as $changedService) {
-            unset($this->services[$changedService]);
-        }
+        $config ??= new ApplicationContainerConfig();
+        parent::__construct($config->toArray());
     }
 }

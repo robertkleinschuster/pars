@@ -21,7 +21,7 @@ class Tree extends ViewComponent implements EntrypointInterface
     {
         parent::init();
         $this->setTemplate(__DIR__ . '/templates/tree.phtml');
-        $this->model = create(TreeModel::class);
+        $this->model = new TreeModel();
     }
 
     public static function getEntrypoint(): string
@@ -76,7 +76,7 @@ class Tree extends ViewComponent implements EntrypointInterface
     public function getItem(): TreeItem
     {
         if (!isset($this->item)) {
-            $this->item = create($this->getItemClass());
+            $this->item = new ($this->getItemClass())();
         }
         return $this->item;
     }

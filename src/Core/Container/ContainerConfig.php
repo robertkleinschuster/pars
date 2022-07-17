@@ -3,10 +3,6 @@
 namespace Pars\Core\Container;
 
 use Pars\Core\Config\{Config, ConfigFactory};
-use Pars\Core\Error\ErrorMiddleware;
-use Pars\Core\Error\ErrorMiddlewareFactory;
-use Pars\Core\Error\NotFound\NotFoundHandler;
-use Pars\Core\Error\NotFound\NotFoundHandlerFactory;
 use Pars\Core\Http\HttpFactory;
 use Pars\Core\Log\{Log, LogFactory};
 use Pars\Core\Pipeline\BasePath\{BasePathMiddleware, BasePathMiddlewareFactory};
@@ -69,8 +65,6 @@ class ContainerConfig
             RequestRouter::class => RequestRouterFactory::class,
             MiddlewarePipeline::class => MiddlewarePipelineFactory::class,
             BasePathMiddleware::class => BasePathMiddlewareFactory::class,
-            NotFoundHandler::class => NotFoundHandlerFactory::class,
-            ErrorMiddleware::class => ErrorMiddlewareFactory::class,
             FileEditorHandler::class => FileEditorHandlerFactory::class,
         ];
     }

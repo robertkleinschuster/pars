@@ -4,6 +4,7 @@ namespace Pars\App\Admin\Entity\Overview;
 
 use Pars\App\Admin\Entity\EntityInputBuilder;
 use Pars\App\Admin\Entity\EntityModel;
+use Pars\Core\Http\Uri\UriBuilder;
 use Pars\Core\View\Icon\Icon;
 use Pars\Core\View\Overview\Overview;
 
@@ -19,14 +20,13 @@ class EntityOverview extends Overview
         parent::init();
         $this->model = new EntityModel();
         $this->setHeading('{type:nameFallback}');
-        $link = url('/')->withAppendedPath('/:id');
 
         $this->addIconButton(Icon::edit())
-            ->setEventLink($link);
+            ->setEventLink('/:id');
 
         $this->addIconButton(Icon::delete())
             ->setEventAction()
-            ->setUrl($link)
+            ->setUrl('/:id')
             ->setMethod('DELETE');
 
         $this->pushField(new EntityOverviewField());

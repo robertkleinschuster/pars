@@ -18,7 +18,7 @@ class Navigation extends Tree implements EntrypointInterface
         parent::init();
         $this->setTemplate(__DIR__ . '/templates/navigation.phtml');
         $this->setItemClass(NavigationItem::class);
-        $this->model = create(NavigationModel::class);
+        $this->model = new NavigationModel();
     }
 
     public static function getEntrypoint(): string

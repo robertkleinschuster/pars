@@ -19,7 +19,7 @@ class Toolbar extends ViewComponent implements EntrypointInterface
 
     public function addButton(string $name): ToolbarButton
     {
-        $button = create(ToolbarButton::class);
+        $button = new ToolbarButton();
         $button->setContent($name);
         $this->push($button);
         return $button;
@@ -27,7 +27,7 @@ class Toolbar extends ViewComponent implements EntrypointInterface
 
     public function addIconButton(Icon $icon): ToolbarButton
     {
-        $button = create(ToolbarButton::class);
+        $button = new ToolbarButton();
         $button->push($icon);
         $this->push($button);
         return $button;

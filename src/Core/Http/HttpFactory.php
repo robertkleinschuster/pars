@@ -20,6 +20,7 @@ use Psr\Http\Message\{RequestFactoryInterface,
     UploadedFileFactoryInterface,
     UriFactoryInterface
 };
+use Swoole\Http\Request;
 
 class HttpFactory implements ContainerFactoryInterface
 {
@@ -36,9 +37,19 @@ class HttpFactory implements ContainerFactoryInterface
         };
     }
 
-    public function createServerRequest(): ServerRequestInterface
+    public function createServerRequest(Request $request = null): ServerRequestInterface
     {
-        $request = ServerRequestCreator::create();
+        if ($request) {
+            $request = ServerRequestCreator::createFromGlobals(
+                $request->server,
+                $request->files,
+                $request->cookie,
+                $request->get,
+                $request->post
+            );
+        } else {
+            $request = ServerRequestCreator::create();
+        }
         return $request->withAttribute(AcceptHeader::class, new AcceptHeader($request));
     }
 

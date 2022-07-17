@@ -32,6 +32,6 @@ class ConsoleCommandFactory
         if (!isset($map[$command])) {
             throw new ConsoleException($message->unknownCommand($command));
         }
-        return create($map[$command]);
+        return new $map[$command]();
     }
 }

@@ -67,17 +67,5 @@ class NavigationModel extends TreeModel
     public function isActive(): bool
     {
         return false;
-        /* @var UriFactoryInterface $uriFactory */
-        $uriFactory = get(UriFactoryInterface::class);
-        $currentUri = $uriFactory->createUri($_SERVER['REQUEST_URI']);
-        $active = rtrim($this->link, '/') === rtrim($currentUri->getPath(), '/');
-        if (!$active) {
-            foreach ($this->getList() as $item) {
-                if ($item->isActive()) {
-                    return true;
-                }
-            }
-        }
-        return $active;
     }
 }

@@ -27,15 +27,20 @@ Encore
   .enablePostCssLoader()
   .enableTypeScriptLoader()
   .enableIntegrityHashes(Encore.isProduction())
-
+  .enableBuildCache({
+    config: [__filename],
+  })
 if (fs.existsSync('entrypoints.json')) {
+  Encore.enableBuildCache({
+    config: [__filename, 'entrypoints.json'],
+  })
   const entrypointsJson = fs.readFileSync('entrypoints.json')
   const entrypoints = JSON.parse(entrypointsJson)
   for (const [key, value] of Object.entries(entrypoints)) {
     if (fs.existsSync(value)) {
       Encore.addEntry(key, value)
     } else {
-      console.error(`Missing ${value}`);
+      console.error(`Missing ${value}`)
     }
   }
 }

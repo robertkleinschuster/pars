@@ -1,12 +1,11 @@
 #!/usr/bin/env php
 <?php
 use Pars\Core\Console\Console;
-use Pars\Core\Container\Container;
 
 chdir(dirname(__DIR__));
 require_once "vendor/autoload.php";
-/* @var Console $console */
-$console = Container::getInstance()->get(Console::class);
+
+$console = new Console();
 if ($argv[0] == './bin/console' || $argv[0] == 'bin/console') {
     array_shift($argv);
 }

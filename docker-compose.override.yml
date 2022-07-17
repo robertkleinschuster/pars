@@ -1,20 +1,13 @@
 version: '3'
 
 services:
-  php-fpm:
+  php-swoole:
     build:
-      context: ./docker/php-fpm-dev
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      context: ./docker/php-swoole
+    volumes:
+      - ./docker/php-swoole-dev/boot.sh:/usr/local/boot/boot.sh
     environment:
-      XDEBUG_MODE: debug
-      XDEBUG_CONFIG: >-
-        client_host=host.docker.internal
-        idekey=PHPSTORM
-      PHP_IDE_CONFIG: serverName=localhost:8080
-    expose:
-      - 9000
-      - 9003
+      - DEV_DOMAIN=localhost
   yarn:
     image: node:16.14.2
     command: [ "sh", "/development.sh" ]

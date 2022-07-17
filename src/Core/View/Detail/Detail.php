@@ -60,7 +60,7 @@ class Detail extends ViewComponent implements EntrypointInterface
     public function getChapter(string $name): DetailChapter
     {
         if (!isset($this->chapter[$name])) {
-            $this->chapter[$name] = create(DetailChapter::class);
+            $this->chapter[$name] = new DetailChapter();
             $this->chapter[$name]->setName($name);
             $this->push($this->chapter[$name]);
         }
@@ -69,8 +69,7 @@ class Detail extends ViewComponent implements EntrypointInterface
 
     public function addInput(string $key, string $label, string $chapter = null, string $group = null): Input
     {
-        /* @var Input $input */
-        $input = create(Input::class);
+        $input = new Input();
         $input->key = $key;
         $input->label = $label;
         $this->push($input, $chapter, $group);

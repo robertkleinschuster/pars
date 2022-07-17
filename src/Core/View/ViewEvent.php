@@ -28,7 +28,6 @@ class ViewEvent
 
     final public function __construct()
     {
-        $this->url = url();
     }
 
     /**
@@ -172,8 +171,7 @@ class ViewEvent
 
     public static function window(string $uri, string $title): static
     {
-        /* @var $event ViewEvent */
-        $event = create(static::class);
+        $event = new static();
         $event->url = $uri;
         $event->target = self::TARGET_WINDOW;
         $event->title = $title;
@@ -182,8 +180,7 @@ class ViewEvent
 
     public static function self(string $uri): static
     {
-        /* @var $event ViewEvent */
-        $event = create(static::class);
+        $event = new static();
         $event->url = $uri;
         $event->target = self::TARGET_SELF;
         return $event;
@@ -191,8 +188,7 @@ class ViewEvent
 
     public static function action(string $title = ''): static
     {
-        /* @var $event ViewEvent */
-        $event = create(static::class);
+        $event = new static();
         $event->target = self::TARGET_ACTION;
         $event->title = $title;
         return $event;
@@ -200,8 +196,7 @@ class ViewEvent
 
     public static function blank(string $uri, string $title): static
     {
-        /* @var $event ViewEvent */
-        $event = create(static::class);
+        $event = new static();
         $event->url = $uri;
         $event->target = self::TARGET_BLANK;
         $event->title = $title;

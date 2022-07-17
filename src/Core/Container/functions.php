@@ -10,44 +10,21 @@ use Pars\Core\View\{ViewComponent, ViewRenderer};
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-function create(string $class, ...$params)
-{
-    $container = Container::getInstance();
-    return $container->create($class, ...$params);
-}
 
-function get(string $class, ...$params)
-{
-    $container = Container::getInstance();
-    return $container->get($class, ...$params);
-}
 
 function url(string $path = null, $params = []): UriBuilder
 {
-    $container = Container::getInstance();
-    /* @var UriBuilder $builder */
-    $builder = $container->get(UriBuilder::class);
-    if ($path) {
-        return $builder->withPath($path)->withParams($params);
-    } else {
-        return $builder->withCurrentUri();
-    }
+    return new UriBuilder(new \Laminas\Diactoros\UriFactory());
 }
 
 function __(string $code, array $placeholder = []): string
 {
-    $container = Container::getInstance();
-    /* @var Translator $translator */
-    $translator = $container->get(Translator::class);
-    return $translator->translate($code, $placeholder);
+    return $code;
 }
 
 function __pl(string $code, int $count, array $placeholder = []): string
 {
-    $container = Container::getInstance();
-    /* @var Translator $translator */
-    $translator = $container->get(Translator::class);
-    return $translator->translatepl($code, $count, $placeholder);
+    return $code;
 }
 
 function render(ViewComponent $component): StreamInterface

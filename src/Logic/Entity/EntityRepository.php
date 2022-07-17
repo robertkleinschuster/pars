@@ -3,6 +3,7 @@
 namespace Pars\Logic\Entity;
 
 use Generator;
+use Pars\Core\Config\Config;
 use Pars\Logic\Entity\Type\Definition\Type;
 use PDO;
 use PDOStatement;
@@ -13,7 +14,12 @@ class EntityRepository
 
     public function __construct()
     {
-        $this->pdo = new PDO(config('db.dsn'), config('db.username'), config('db.password'));
+        $config = new Config();
+        $this->pdo = new PDO(
+            $config->get('db.dsn'),
+            $config->get('db.username'),
+            $config->get('db.password')
+        );
     }
 
     public function delete(Entity $entity): bool

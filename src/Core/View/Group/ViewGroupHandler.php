@@ -13,12 +13,11 @@ class ViewGroupHandler implements RequestHandlerInterface
     protected SplQueue $requests;
     protected ResponseFactoryInterface $responseFactory;
 
-    public function __construct()
+    public function __construct(ResponseFactoryInterface $responseFactory)
     {
-        $this->responseFactory = get(ResponseFactoryInterface::class);
+        $this->responseFactory = $responseFactory;
         $this->requests = new SplQueue();
     }
-
 
     /**
      * @param ServerRequestInterface $request

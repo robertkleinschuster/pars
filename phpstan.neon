@@ -2,7 +2,5 @@ parameters:
     level: 5
     paths:
         - src
-    bootstrapFiles:
-        - test/bootstrap.php
     excludes_analyse:
         - **/*.phtml
