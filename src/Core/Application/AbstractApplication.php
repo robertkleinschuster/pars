@@ -15,6 +15,8 @@ use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Middleware\RouteMiddleware;
 use Mezzio\Router\RouteCollectorInterface;
+use Pars\Core\Application\Event\Message\ApplicationMessageListener;
+use Pars\Core\Application\Socket\WebSocketMiddleware;
 
 abstract class AbstractApplication extends Application
 {
@@ -29,6 +31,7 @@ abstract class AbstractApplication extends Application
             $container->get(RouteCollectorInterface::class),
             $container->get(RequestHandlerRunnerInterface::class)
         );
+        $this->pipe(WebSocketMiddleware::class);
         $this->pipe(RouteMiddleware::class);
         $this->init();
         $this->pipe(ImplicitHeadMiddleware::class);
@@ -43,5 +46,16 @@ abstract class AbstractApplication extends Application
     public function getContainer(): ApplicationContainer
     {
         return $this->container;
+    }
+
+    public function getMessageListener(): ApplicationMessageListener
+    {
+        return $this->getContainer()->get(ApplicationMessageListener::class);
+    }
+
+    public function message(callable $handler): self
+    {
+        $this->getMessageListener()->addHandler($handler);
+        return $this;
     }
 }

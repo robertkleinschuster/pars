@@ -9,7 +9,7 @@ use Psr\Http\Server\MiddlewareInterface;
 class MiddlewareContainer extends \Mezzio\MiddlewareContainer
 {
     private ContainerInterface $applicationContainer;
-
+    private array $applications = [];
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
@@ -19,9 +19,17 @@ class MiddlewareContainer extends \Mezzio\MiddlewareContainer
     public function get($service): MiddlewareInterface
     {
         if (class_exists($service) && in_array(AbstractApplication::class, class_parents($service))) {
-            return new $service($this->applicationContainer);
+            return $this->applications[$service] ??= new $service($this->applicationContainer);
         }
         return parent::get($service);
+    }
+
+    /**
+     * @return AbstractApplication[]
+     */
+    public function getApplications(): array
+    {
+        return $this->applications;
     }
 
     public function has($service): bool

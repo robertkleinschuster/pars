@@ -1,13 +1,13 @@
 <?php
 
-namespace Pars\Core\Application\Server\Event;
+namespace Pars\Core\Application\Client;
 
 use Psr\Container\ContainerInterface;
 
-class MessageListenerFactory
+class ClientMiddlewareFactory
 {
     public function __invoke(ContainerInterface $container)
     {
-        return new MessageListener();
+        return new ClientMiddleware();
     }
 }

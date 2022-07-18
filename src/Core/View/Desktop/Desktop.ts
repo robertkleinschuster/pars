@@ -6,7 +6,6 @@ class Desktop extends ViewDivElement {
   constructor () {
     super()
     this.addEventListener('click', () => {
-      this.helper.trigger('desktop click')
 
     })
   }

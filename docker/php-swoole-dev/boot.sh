@@ -1,3 +1,3 @@
 #!/bin/sh
 composer update
-#bin/console build-entrypoints
+bin/console build-entrypoints

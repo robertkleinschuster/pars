@@ -9,9 +9,12 @@ use Mezzio\Swoole\Event\HotCodeReloaderWorkerStartListener;
 use Mezzio\Swoole\Event\WorkerStartEvent;
 use Pars\Core\Application\Host\HostRouteMiddleware;
 use Pars\Core\Application\Host\HostRouteMiddlewareFactory;
-use Pars\Core\Application\Server\Event\MessageEvent;
-use Pars\Core\Application\Server\Event\MessageListener;
-use Pars\Core\Application\Server\Event\MessageListenerFactory;
+use Pars\Core\Application\Server\Event\Message\ServerMessageEvent;
+use Pars\Core\Application\Server\Event\Message\ServerMessageListener;
+use Pars\Core\Application\Server\Event\Message\ServerMessageListenerFactory;
+use Pars\Core\Application\Server\Event\Open\ServerOpenEvent;
+use Pars\Core\Application\Server\Event\Open\ServerOpenListener;
+use Pars\Core\Application\Server\Event\Open\ServerOpenListenerFactory;
 use Pars\Core\Application\Server\HandlerRunner\SwooleRequestHandlerRunner;
 use Pars\Core\Application\Server\HandlerRunner\SwooleRequestHandlerRunnerFactory;
 use Pars\Core\Application\Server\Swoole\WebSocketServerFactory;
@@ -48,8 +51,11 @@ class ConfigProvider
                     WorkerStartEvent::class => [
                         HotCodeReloaderWorkerStartListener::class,
                     ],
-                    MessageEvent::class => [
-                        MessageListener::class
+                    ServerMessageEvent::class => [
+                        ServerMessageListener::class
+                    ],
+                    ServerOpenEvent::class => [
+                        ServerOpenListener::class
                     ]
                 ]
             ],
@@ -66,7 +72,8 @@ class ConfigProvider
                 HostRouteMiddleware::class => HostRouteMiddlewareFactory::class,
                 SwooleRequestHandlerRunner::class => SwooleRequestHandlerRunnerFactory::class,
                 SwooleWebSocketServer::class => WebSocketServerFactory::class,
-                MessageListener::class => MessageListenerFactory::class
+                ServerMessageListener::class => ServerMessageListenerFactory::class,
+                ServerOpenListener::class => ServerOpenListenerFactory::class
             ]
         ];
     }

@@ -1,17 +1,18 @@
 <?php
 
-namespace Pars\Core\Application\Server\Event;
+namespace Pars\Core\Application\Server\Event\Message;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
 
-class MessageEvent implements StoppableEventInterface
+class ServerMessageEvent implements StoppableEventInterface
 {
     private Frame $frame;
     private Server $server;
 
     /**
+     * @param Server $server
      * @param Frame $frame
      */
     public function __construct(Server $server, Frame $frame)

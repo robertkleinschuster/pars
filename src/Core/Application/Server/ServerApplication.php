@@ -7,6 +7,7 @@ use Mezzio\Swoole\ConfigProvider as SwooleConfigProvider;
 use Pars\Core\Application\AbstractApplication;
 use Pars\Core\Application\ApplicationContainer;
 use Pars\Core\Application\ApplicationContainerConfig;
+use Pars\Core\Application\Client\ClientMiddleware;
 use Pars\Core\Application\Debug\ConfigProvider as DebugConfigProvider;
 use Pars\Core\Application\Host\HostRouteMiddleware;
 
@@ -27,6 +28,7 @@ class ServerApplication extends AbstractApplication
     protected function init()
     {
         $this->pipe(ErrorHandler::class);
+        $this->pipe(ClientMiddleware::class);
         $this->pipe(HostRouteMiddleware::class);
     }
 }

@@ -10,7 +10,6 @@ class BuildEntrypointsCommand extends AbstractCommand
 {
     public function execute()
     {
-        ini_set('error_reporting', '0');
         $classes = $this->findClasses();
 
         $entrypoints = [];

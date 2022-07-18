@@ -1,50 +1,50 @@
-import ViewEventInitializer from './ViewEventInitializer'
 import ViewMessage from './ViewMessage'
 import ViewElementInterface from './ViewElementInterface'
 import '@ungap/custom-elements'
+import ViewSocket from './ViewSocket'
 
-export default class ViewHelper {
+Element.prototype.dispatch = function (e) {
+  if (null === this.helper || undefined === this.helper) {
+    this.helper = new ViewHelper(this)
+  }
+  this.helper.dispatch(e)
+}
+
+export default class ViewHelper implements IViewHelper {
   public element: ViewElementInterface
-  public eventHandler: ViewEventInitializer
+  public socket: ViewSocket = ViewSocket.instance
 
   constructor (element: ViewElementInterface) {
     this.element = element
-    this.eventHandler = new ViewEventInitializer(this)
-    this.eventHandler.init()
-    this.init()
-  }
-
-  private init () {
-    this.element.addEventListener(ViewMessage.name, this.dispatchToChildNodes.bind(this, this.element))
-  }
-
-  private dispatchToChildNodes (node: Node, event: CustomEvent) {
-    node.childNodes.forEach(child => {
-      if ('helper' in child) {
-        child.dispatchEvent(new CustomEvent(ViewMessage.name, {
-          detail: event.detail
-        }))
-      } else {
-        this.dispatchToChildNodes(child, event)
+    this.socket.onMessage(message => {
+      if (this.element.dataset.id === message.id && message.html != null) {
+        this.element.innerHTML = message.html
       }
     })
   }
 
   public on (code: string, listener: (message: ViewMessage) => void) {
-    this.element.addEventListener(ViewMessage.name, (event: CustomEvent) => {
-      const message = event.detail as ViewMessage
+    this.socket.onMessage(message => {
       if (code === message.code) {
         listener(message)
       }
     })
   }
 
-  public trigger (code: string) {
-    this.element.dispatchEvent(
-      new CustomEvent(ViewMessage.name, {
-        detail: new ViewMessage(code),
-        bubbles: true
-      })
-    )
+  public dispatch (message: string | ViewMessage | Event) {
+    if (typeof message == 'string') {
+      message = new ViewMessage(message)
+    } else if (message instanceof MessageEvent) {
+      message = new ViewMessage(message.type, message.data)
+    } else if (message instanceof CustomEvent) {
+      message = new ViewMessage(message.type, message.detail)
+    } else if (message instanceof Event) {
+      message = new ViewMessage(message.type)
+    }
+    if (this.element.dataset.id != null) {
+      message.id = this.element.dataset.id
+    }
+    console.log(message)
+    this.socket.send(message)
   }
 }
