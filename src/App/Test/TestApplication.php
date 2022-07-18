@@ -11,7 +11,6 @@ use Pars\Core\Application\Socket\WebSocketContainer;
 use Pars\Core\View\Button\Button;
 use Pars\Core\View\Layout\Layout;
 use Pars\Core\View\ViewHelper;
-use Pars\Core\View\ViewMessage;
 use Pars\Core\View\ViewRenderer;
 use Pars\Core\View\ViewSocket;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,21 +32,20 @@ class TestApplication extends AbstractApplication
     protected function init()
     {
         $this->route('/', function (ServerRequestInterface $request) {
-            $layout = new Layout();
+            $socket = $request->getAttribute(WebSocket::class);
+            $layout = new Layout($socket);
+            /**
+             * @var ViewRenderer $renderer
+             */
             $renderer = $this->getContainer()->get(ViewRenderer::class);
-
-            $button = new Button();
-            $viewHelper = new ViewHelper($button, new ViewSocket($request->getAttribute(WebSocket::class)));
-            $button->setHelper($viewHelper);
-
+            $renderer->getEntrypoints()->enable(Button::getEntrypoint());
+            $renderer->getEntrypoints()->enable(Layout::getEntrypoint());
+            $button = new Button($socket);
             $button->setLabel('Send from: ' . $request->getAttribute(WebSocket::class)->getId());
             $renderer->setComponent($button);
             $layout->setMain($renderer->render());
 
-            $button = new Button();
-            $viewHelper = new ViewHelper($button, new ViewSocket($request->getAttribute(WebSocket::class)));
-            $button->setHelper($viewHelper);
-
+            $button = new Button($socket);
             $button->setLabel('Send from: ' . $request->getAttribute(WebSocket::class)->getId());
             $renderer->setComponent($button);
             $layout->setFooter($renderer->render());

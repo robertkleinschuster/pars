@@ -2,7 +2,7 @@
 
 namespace Pars\Core\View\Layout;
 
-use Pars\Core\View\{EntrypointInterface, ViewComponent};
+use Pars\Core\View\{EntrypointInterface, ViewComponent, ViewRenderer};
 use Psr\Http\Message\StreamInterface;
 
 class Layout extends ViewComponent implements EntrypointInterface
@@ -12,6 +12,8 @@ class Layout extends ViewComponent implements EntrypointInterface
     protected StreamInterface $footer;
     protected string $language = 'en';
     protected string $title = 'Default Title';
+    protected string $css = '';
+    protected string $js = '';
 
     public function init()
     {
@@ -108,5 +110,12 @@ class Layout extends ViewComponent implements EntrypointInterface
         if (in_array('header', $hidden)) {
             $this->unsetFooter();
         }
+    }
+
+    public function onRender(ViewRenderer $renderer)
+    {
+        parent::onRender($renderer);
+        $this->css = $renderer->getEntrypoints()->dumpCss();
+        $this->js = $renderer->getEntrypoints()->dumpJs();
     }
 }

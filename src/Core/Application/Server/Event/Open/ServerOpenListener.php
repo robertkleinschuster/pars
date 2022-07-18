@@ -20,6 +20,10 @@ class ServerOpenListener
 
     public function __invoke(ServerOpenEvent $event): void
     {
+        if (empty($this->container->getApplications())) {
+            $event->getServer()->push($event->getRequest()->fd, json_encode(['ctrl' => 'reload']));
+        }
+
         foreach ($this->container->getApplications() as $application) {
             /**
              * @var ApplicationEventDispatcher $dispatcher

@@ -10,7 +10,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $this->title ?></title>
-    <?= Pars\Core\View\Entrypoints::dumpCss(); ?>
+    <?= $this->css ?>
 </head>
 <body>
 <?php if (!empty($this->header)): ?>
@@ -28,9 +28,6 @@
         <?= $this->footer ?>
     </footer>
 <?php endif; ?>
-<template id="additional-css">
-    <?= Pars\Core\View\Entrypoints::dumpCss(); ?>
-</template>
-<?= Pars\Core\View\Entrypoints::dumpJs(); ?>
+<?= $this->js ?>
 </body>
 </html>

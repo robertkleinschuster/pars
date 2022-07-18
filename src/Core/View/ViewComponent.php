@@ -2,6 +2,7 @@
 
 namespace Pars\Core\View;
 
+use Pars\Core\Application\Socket\WebSocket;
 use Pars\Core\Util\Option\OptionTrait;
 use Psr\Http\Message\StreamInterface;
 use SplDoublyLinkedList;
@@ -13,6 +14,7 @@ class ViewComponent
     use OptionTrait;
 
     protected ?string $template = __DIR__ . '/templates/default.phtml';
+    protected ViewHelper $helper;
     protected ViewModel $model;
     protected ViewFormatter $formatter;
     protected ?ViewEvent $event = null;
@@ -27,9 +29,19 @@ class ViewComponent
     protected string $tag = 'div';
     protected array $class = [];
 
-    final public function __construct()
+    final public function __construct(WebSocket $socket)
     {
+        $this->helper = new ViewHelper($this, new ViewSocket($socket));
         $this->init();
+    }
+
+
+    /**
+     * @return ViewHelper
+     */
+    public function getHelper(): ViewHelper
+    {
+        return $this->helper;
     }
 
     protected function init()
@@ -79,7 +91,7 @@ class ViewComponent
 
     public function getId(): string
     {
-        return 'id-' .  $this->getModel()->getId();
+        return 'id-' . $this->getModel()->getId();
     }
 
     public function onRender(ViewRenderer $renderer)
@@ -188,16 +200,13 @@ class ViewComponent
 
     protected function attr(): string
     {
-        $result = '';
-        if (null !== $this->getEvent()) {
-            $params = $this->getEvent()->getRouteParams();
-            foreach ($params as $param) {
-                $this->getEvent()->setRouteParam($param, $this->getValue($param));
-            }
-            $result .= ' ' . $this->getEvent()->toAttributes($this);
+        $attributes = [];
+        $attributes[] = "data-id='{$this->getHelper()->getId()}'";
+        foreach ($this->getHelper()->getEvents() as $event) {
+            $attributes[] = "on$event='this.dispatch(arguments[0])'";
         }
 
-        return $result;
+        return implode(' ', $attributes);
     }
 
     public function getClass(): string

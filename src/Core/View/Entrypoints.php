@@ -2,31 +2,20 @@
 
 namespace Pars\Core\View;
 
-use Psr\Http\Message\ResponseInterface;
-
 class Entrypoints
 {
-    protected static Entrypoints $instance;
-
-    final private function __construct()
-    {
-        // private singleton
-    }
-
-    public static function getInstance(): Entrypoints
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new Entrypoints();
-        }
-        return self::$instance;
-    }
-
     protected array $entrypointData = [];
     protected array $entrypointsEnabled = [];
 
-    public static function add(string $entrypoint)
+    public function __construct()
     {
-        self::getInstance()->entrypointsEnabled[] = self::buildEntrypointName(self::buildEntrypoint($entrypoint));
+        $this->enable(ViewHelper::getEntrypoint());
+    }
+
+
+    public function enable(string $entrypoint)
+    {
+        $this->entrypointsEnabled[] = self::buildEntrypointName(self::buildEntrypoint($entrypoint));
     }
 
     public static function buildEntrypoint(string $entrypoint)
@@ -47,7 +36,7 @@ class Entrypoints
         }
     }
 
-    protected function dumpFiles(string $key)
+    public function dumpFiles(string $key)
     {
         $this->load();
         $result = [];
@@ -63,44 +52,21 @@ class Entrypoints
     }
 
 
-    public static function dumpCss()
+    public function dumpCss()
     {
         $result = '';
-        foreach (self::getInstance()->dumpFiles('css') as $dumpFile) {
+        foreach ($this->dumpFiles('css') as $dumpFile) {
             $result .= "<link class='css' rel='stylesheet' href='$dumpFile'>";
         }
         return $result;
     }
 
-    public static function dumpJs()
+    public function dumpJs()
     {
         $result = '';
-        foreach (self::getInstance()->dumpFiles('js') as $dumpFile) {
+        foreach ($this->dumpFiles('js') as $dumpFile) {
             $result .= "<script class='script' defer src='$dumpFile'></script>";
         }
         return $result;
-    }
-
-    public static function injectHeaders(ResponseInterface $response): ResponseInterface
-    {
-        $css = self::getInstance()->dumpFiles('css');
-        $js = self::getInstance()->dumpFiles('js');
-        if (!empty($css)) {
-            foreach ($css as $key => $file) {
-                if ($key > 3) {
-                    break;
-                }
-                $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=style;");
-            }
-        }
-        if (!empty($js)) {
-            foreach ($js as $key => $file) {
-                if ($key > 1) {
-                    break;
-                }
-                $response = $response->withAddedHeader('Link', "<$file>; rel=preload; as=script;");
-            }
-        }
-        return $response;
     }
 }

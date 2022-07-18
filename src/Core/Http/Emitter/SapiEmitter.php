@@ -55,7 +55,7 @@ class SapiEmitter
 
     private function injectHeaders(ResponseInterface $response): ResponseInterface
     {
-        return Entrypoints::injectHeaders($response);
+        return $response;
     }
 
     protected function emitHeaders(ResponseInterface $response): void

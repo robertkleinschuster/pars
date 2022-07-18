@@ -1,20 +1,24 @@
 import ViewMessage from './ViewMessage'
-import ViewElementInterface from './ViewElementInterface'
 import '@ungap/custom-elements'
 import ViewSocket from './ViewSocket'
 
-Element.prototype.dispatch = function (e) {
-  if (null === this.helper || undefined === this.helper) {
-    this.helper = new ViewHelper(this)
+HTMLElement.prototype.getHelper = function () {
+  if (null === this._helper || undefined === this._helper) {
+    this._helper = new ViewHelper(this)
   }
-  this.helper.dispatch(e)
+  return this._helper;
 }
 
+HTMLElement.prototype.dispatch = function (e) {
+  this.getHelper().dispatch(e)
+}
+
+
 export default class ViewHelper implements IViewHelper {
-  public element: ViewElementInterface
+  public element: HTMLElement
   public socket: ViewSocket = ViewSocket.instance
 
-  constructor (element: ViewElementInterface) {
+  constructor (element: HTMLElement) {
     this.element = element
     this.socket.onMessage(message => {
       if (this.element.dataset.id === message.id && message.html != null) {

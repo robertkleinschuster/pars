@@ -11,6 +11,20 @@ use Throwable;
 class ViewRenderer
 {
     protected ?ViewComponent $component = null;
+    protected Entrypoints $entrypoints;
+
+    public function __construct()
+    {
+        $this->entrypoints = new Entrypoints();
+    }
+
+    /**
+     * @return Entrypoints
+     */
+    public function getEntrypoints(): Entrypoints
+    {
+        return $this->entrypoints;
+    }
 
     /**
      * @throws ViewException
@@ -42,7 +56,7 @@ class ViewRenderer
             $component->onRender(clone $this);
 
             if ($component instanceof EntrypointInterface) {
-                Entrypoints::add($component::getEntrypoint());
+                $this->entrypoints->enable($component::getEntrypoint());
             }
 
             if ($component->isList()) {

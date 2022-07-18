@@ -20,9 +20,13 @@ class ApplicationOpenListener
     {
         $request = $event->getRequest();
         $server = $event->getServer();
-        $this->container
-            ->getById($request->cookie['client'])
-            ->setServer($server)
-            ->setFd($request->fd);
+        if ($this->container->hasById($request->cookie['client'])) {
+            $this->container
+                ->getById($request->cookie['client'])
+                ->setServer($server)
+                ->setFd($request->fd);
+        } else {
+            $server->push($request->fd, json_encode(['ctrl' => 'reload']));
+        }
     }
 }

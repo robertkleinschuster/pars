@@ -24,6 +24,15 @@ class WebSocketContainer
 
     public function getById(string $id): WebSocket
     {
+        if (!isset($this->sockets[$id])) {
+            $this->sockets[$id] = new WebSocket($id);
+        }
+
         return $this->sockets[$id];
+    }
+
+    public function hasById(string $id): bool
+    {
+        return isset($this->sockets[$id]);
     }
 }
