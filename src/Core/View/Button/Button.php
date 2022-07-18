@@ -12,30 +12,13 @@ class Button extends FormViewComponent implements EntrypointInterface
 {
     private int $count = 0;
 
-    /**
-     * @param ViewHelper $helper
-     * @return Button
-     */
-    public function setHelper(ViewHelper $helper): Button
-    {
-        $this->helper = $helper;
-        return $this;
-    }
-
-    public function onClick(callable $listener)
-    {
-        $this->getHelper()->on('click', $listener);
-    }
-
     protected function init()
     {
         parent::init();
         $this->setTemplate(__DIR__ . '/Button.phtml');
         $this->onClick(function (ViewMessage $message) {
-            if ($message->id == $this->getHelper()->getId()) {
-                $message->html = 'test: ' . $this->count++;
-                $this->getHelper()->dispatch($message);
-            }
+            $message->html = 'test: ' . $this->count++;
+            $this->getHelper()->dispatch($message);
         });
     }
 

@@ -247,4 +247,13 @@ class ViewComponent
         $this->setEvent(ViewEvent::action($title));
         return $this->getEvent();
     }
+
+    public function onClick(callable $listener)
+    {
+        $this->getHelper()->on('click', function (ViewMessage $message) use ($listener) {
+            if ($message->id == $this->getHelper()->getId()) {
+                $listener($message);
+            }
+        });
+    }
 }
